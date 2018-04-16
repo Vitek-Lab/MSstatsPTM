@@ -1,23 +1,25 @@
 
-#' Locate potential modification sites.
+#' Locate potential modification sites with a peptide.
 #'
-#' \code{locate_site} locates modifiable sites on a peptide.
+#' \code{locate_site} locates modifiable sites with a peptide.
 #'
-#' @param pep_seq A string. Peptide sequence.
+#' @param peptide A string. Peptide sequence.
 #' @param pep_idx A matrix. Starting and ending indices of the peptide.
-#' @param mod_res A string. Modification residue.
+#' @param residue A string. Amino acid residue for the modification.
 #' @return A string.
 #'
 #' @examples
-#' locate_site(pep_seq, pep_idx, mod_res)
+#' idx <- matrix(c(2, 5), nrow = 1, dimnames = list(NULL, c("start", "end")))
+#' locate_site("ABCA", idx, "A")
+#' locate_site("ABCA", idx, "A|C")
 #'
 #' @export
 #'
-locate_site <- function(pep_seq, pep_idx, mod_res) {
-    pep_start <- unname(pep_idx[, "start"])
-    site_relidx <- stringr::str_locate_all(pep_seq, mod_res)[[1]]
-    site_relstart <- unname(site_relidx[, "start"])
-    site_idx <- site_relstart + pep_start - 1
+locate_site <- function(peptide, pep_idx, residue) {
+    aa_start <- unname(pep_idx[, "start"])
+    aa_rels <- stringr::str_locate_all(peptide, residue)[[1]]
+    aa_rel_idx <- unname(aa_rels[, "start"])
+    aa_idx <- aa_rel_idx + aa_start - 1
 
-    return(site_idx)
+    return(aa_idx)
 }
