@@ -1,6 +1,6 @@
 # MSstatsPTM
 
-The goal of MSstatsPTM is to ...
+The goal of MSstatsPTM is to provide general statistical methods for quantitative characterization of post-translational modifications. 
 
 ## Installation
 
