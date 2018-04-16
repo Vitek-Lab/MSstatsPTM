@@ -1,12 +1,25 @@
 Package: MSstatsPTM
-Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Version: 0.0.0.9000
+Title: Statistical Characterization of Post-translational Modifications
+Description: MSstatsPTM provides general statistical methods for quantitative 
+    characterization of post-translational modifications. 
+Authors@R: person("Tsung-Heng", "Tsai", , "tsai.tsungheng@gmail.com", c("aut", "cre"))
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
+ByteCompile: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
+Imports: 
+    broom, 
+    dplyr, 
+    MASS, 
+    purrr, 
+    stringr, 
+    survival, 
+    testthat, 
+    tibble,
+    tidyr
+Suggests: 
+    MASS, 
+    testthat
