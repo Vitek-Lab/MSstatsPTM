@@ -4,13 +4,7 @@ The goal of MSstatsPTM is to provide general statistical methods for quantitativ
 
 ## Installation
 
-You can install the released version of MSstatsPTM from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("MSstatsPTM")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the development version of MSstatsPTM from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
