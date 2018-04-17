@@ -14,7 +14,7 @@ A data frame.
 }
 \description{
 \code{fill_censored_aft} annotates censored feature intensities and imputes
-  the censored values using the accelerated failure time model.
+the censored values using the accelerated failure time model.
 }
 \examples{
 fill_censored_aft(data)

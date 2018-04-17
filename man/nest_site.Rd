@@ -7,7 +7,7 @@
 nest_site(df_sum, w_batch = FALSE)
 }
 \arguments{
-\item{df_sum}{A string. Peptide sequence.}
+\item{df_sum}{A data frame.}
 
 \item{w_batch}{A logical. \code{TRUE} considers batch effect, \code{FALSE}
 otherwise. Default is \code{FALSE}.}
@@ -16,8 +16,8 @@ otherwise. Default is \code{FALSE}.}
 An instance of nested data frame.
 }
 \description{
-\code{nest_site} fits and returns a whole-plot model considering experimental
-  design.
+\code{nest_site} fits and returns a whole-plot model for each site in
+consideration of the experimental design, organized in a nested data frame.
 }
 \examples{
 nest_site(df_sum, w_batch = FALSE)

@@ -2,24 +2,24 @@
 % Please edit documentation in R/locate_mod.R
 \name{locate_mod}
 \alias{locate_mod}
-\title{Locate modified sites.}
+\title{Locate modified sites with a peptide.}
 \usage{
-locate_mod(pep_seq, pep_idx, mod_res_symbol)
+locate_mod(peptide, pep_idx, residue_symbol)
 }
 \arguments{
-\item{pep_seq}{A string. Peptide sequence.}
+\item{peptide}{A string. Peptide sequence.}
 
 \item{pep_idx}{A matrix. Starting and ending indices of the peptide.}
 
-\item{mod_res_symbol}{A string. Modification residue and denoted symbol.}
+\item{residue_symbol}{A string. Modification residue and denoted symbol.}
 }
 \value{
 A string.
 }
 \description{
-\code{locate_mod} locates modified sites on a peptide.
+\code{locate_mod} locates modified sites with a peptide.
 }
 \examples{
-locate_mod(pep_seq, pep_idx, mod_res_symbol)
+locate_mod(peptide, pep_idx, residue_symbol)
 
 }

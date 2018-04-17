@@ -2,24 +2,26 @@
 % Please edit documentation in R/locate_site.R
 \name{locate_site}
 \alias{locate_site}
-\title{Locate potential modification sites.}
+\title{Locate potential modification sites with a peptide.}
 \usage{
-locate_site(pep_seq, pep_idx, mod_res)
+locate_site(peptide, pep_idx, residue)
 }
 \arguments{
-\item{pep_seq}{A string. Peptide sequence.}
+\item{peptide}{A string. Peptide sequence.}
 
 \item{pep_idx}{A matrix. Starting and ending indices of the peptide.}
 
-\item{mod_res}{A string. Modification residue.}
+\item{residue}{A string. Amino acid residue for the modification.}
 }
 \value{
 A string.
 }
 \description{
-\code{locate_site} locates modifiable sites on a peptide.
+\code{locate_site} locates modifiable sites with a peptide.
 }
 \examples{
-locate_site(pep_seq, pep_idx, mod_res)
+idx <- matrix(c(2, 5), nrow = 1, dimnames = list(NULL, c("start", "end")))
+locate_site("ABCA", idx, "A")
+locate_site("ABCA", idx, "A|C")
 
 }

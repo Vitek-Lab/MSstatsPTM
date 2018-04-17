@@ -4,14 +4,14 @@
 \alias{lm_group}
 \title{Fit a linear model with group effect (and batch effect if present).}
 \usage{
-lm_group(df_onesite, w_batch = FALSE)
+lm_group(onesite, w_batch = FALSE)
 }
 \arguments{
-\item{df_onesite}{A data frame containing columns \code{log2inty},
-\code{group}.}
+\item{onesite}{A data frame containing columns \code{log2inty},
+\code{group} for one modification site.}
 
 \item{w_batch}{A logical scalar. \code{TRUE} includes batch effect,
-\code{FALSE} otherwise. Default is \code{TRUE}.}
+\code{FALSE} otherwise. Default is \code{FALSE}.}
 }
 \value{
 An object of class \code{lm}.
@@ -20,6 +20,7 @@ An object of class \code{lm}.
 \code{lm_group} fits and returns a linear model with \code{group} effect.
 }
 \examples{
-lm_group(df_onesite)
+x <- data.frame(group = rep(c("1", "2"), 3), log2inty = rep(c(10, 12), 3) + rnorm(6))
+lm_group(x)
 
 }

@@ -4,18 +4,19 @@
 \alias{extract_param}
 \title{Extract estimated parameters.}
 \usage{
-extract_param(nested_data)
+extract_param(nested)
 }
 \arguments{
-\item{nested_data}{An instance of nested data frame.}
+\item{nested}{An instance of nested data frame.}
 }
 \value{
 A data frame restoring the estimated model parameters.
 }
 \description{
-\code{extract_param} extracts the estimated model parameters.
+\code{extract_param} extracts the estimated model parameters from nested data
+frame.
 }
 \examples{
-extract_param(nested_data)
+extract_param(nested)
 
 }

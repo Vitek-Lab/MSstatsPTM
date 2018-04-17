@@ -4,14 +4,14 @@
 \alias{annotate_site}
 \title{Annotate modification site.}
 \usage{
-annotate_site(aa_idx, index_full, residue)
+annotate_site(aa_idx, aa_idx_all, residue)
 }
 \arguments{
-\item{aa_idx}{An integer vector. Locations of the sites.}
+\item{aa_idx}{An integer vector. Location of the sites.}
 
-\item{index_full}{An integer vector. Locations of all sites of the protein.}
+\item{aa_idx_all}{An integer vector. Location of all sites of the protein.}
 
-\item{residue}{A string vector.}
+\item{residue}{A string vector. Amino acid residue.}
 }
 \value{
 A string.

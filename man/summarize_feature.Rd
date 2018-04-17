@@ -9,15 +9,15 @@ summarize_feature(df_prot, method = "tmp")
 \arguments{
 \item{df_prot}{A data frame.}
 
-\item{method}{A string. Default is \code{tmp}.}
+\item{method}{A string. Default is \code{"tmp"}.}
 }
 \value{
 A tibble restoring the run-level summarization.
 }
 \description{
 \code{summarize_feature} summarizes feature intensities and returns run-level
-  summarization. Tukey's median polish is used by default, log (base 2) of
-  the summed feature intensity is used otherwise.
+summarization. Tukey's median polish is used by default, log (base 2) of
+the summed feature intensity is used otherwise.
 }
 \examples{
 summarize_feature(df_prot)

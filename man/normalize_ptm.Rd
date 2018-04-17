@@ -14,7 +14,7 @@ A data frame.
 }
 \description{
 \code{normalize_ptm} normalizes feature intensities across runs in a PTM
-  dataset, using unpaired unmodified peptides.
+dataset, using unpaired unmodified peptides.
 }
 \examples{
 normalize_ptm(data)

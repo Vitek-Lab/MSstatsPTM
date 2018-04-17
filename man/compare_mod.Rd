@@ -21,7 +21,7 @@ A data frame.
 }
 \description{
 \code{compare_mod} performs significance analysis for differentially modified
-  sites across conditions.
+sites across conditions.
 }
 \examples{
 compare_mod(df_mod, grp_ctrl, grp_case, protadj = TRUE)

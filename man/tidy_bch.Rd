@@ -4,12 +4,12 @@
 \alias{tidy_bch}
 \title{Extract estimate of group effect.}
 \usage{
-tidy_bch(bch_fit, df_bch)
+tidy_bch(fit, df_fit)
 }
 \arguments{
-\item{bch_fit}{An object of class \code{lm}.}
+\item{fit}{An object of class \code{lm}.}
 
-\item{df_bch}{A number. Degrees of freedom.}
+\item{df_fit}{A number. Degrees of freedom.}
 }
 \value{
 A data frame restoring the estimated model parameters.
@@ -18,6 +18,6 @@ A data frame restoring the estimated model parameters.
 \code{tidy_bch} extracts the estimate of group effect.
 }
 \examples{
-tidy_bch(bch_fit, df_bch)
+tidy_bch(fit, df_fit)
 
 }
