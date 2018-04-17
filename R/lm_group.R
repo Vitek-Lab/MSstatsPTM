@@ -18,16 +18,16 @@
 lm_group <- function(onesite, w_batch = FALSE) {
     if (w_batch) {
         # Model with batch effect
-        if (n_distinct(onesite$batch) == 1)
+        if (dplyr::n_distinct(onesite$batch) == 1)
             stop("Cannot estimate batch effect with a single batch!")
 
-        if (n_distinct(onesite$group) == 1) {
+        if (dplyr::n_distinct(onesite$group) == 1) {
             fit <- lm(log2inty ~ batch, data = onesite)
         } else {
             fit <- lm(log2inty ~ 0 + group + batch, data = onesite)
         }
     } else {
-        if (n_distinct(onesite$group) == 1) {
+        if (dplyr::n_distinct(onesite$group) == 1) {
             fit <- lm(log2inty ~ 1, data = onesite)
         } else {
             fit <- lm(log2inty ~ 0 + group, data = onesite)
