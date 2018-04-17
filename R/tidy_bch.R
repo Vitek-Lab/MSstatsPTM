@@ -3,21 +3,21 @@
 #'
 #' \code{tidy_bch} extracts the estimate of group effect.
 #'
-#' @param bch_fit An object of class \code{lm}.
-#' @param df_bch A number. Degrees of freedom.
+#' @param fit An object of class \code{lm}.
+#' @param df_fit A number. Degrees of freedom.
 #' @return A data frame restoring the estimated model parameters.
 #'
 #' @examples
-#' tidy_bch(bch_fit, df_bch)
+#' tidy_bch(fit, df_fit)
 #'
 #' @export
 #'
-tidy_bch <- function(bch_fit, df_bch) {
-    params <- broom::tidy(bch_fit) %>%
+tidy_bch <- function(fit, df_fit) {
+    params <- broom::tidy(fit) %>%
         filter(!stringr::str_detect(term, "batch"))
-    if (n_distinct(df_bch$group) == 1) {
+    if (n_distinct(df_fit$group) == 1) {
         params <- params %>%
-            dplyr::mutate(group = unique(df_bch$group)) %>%
+            dplyr::mutate(group = unique(df_fit$group)) %>%
             dplyr::select(-term, -statistic, -p.value)
     } else {
         params <- params %>%

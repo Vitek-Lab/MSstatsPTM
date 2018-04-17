@@ -1,24 +1,25 @@
 
 #' Extract estimated parameters.
 #'
-#' \code{extract_param} extracts the estimated model parameters.
+#' \code{extract_param} extracts the estimated model parameters from nested data
+#'   frame.
 #'
-#' @param nested_data An instance of nested data frame.
+#' @param nested An instance of nested data frame.
 #' @return A data frame restoring the estimated model parameters.
 #'
 #' @examples
-#' extract_param(nested_data)
+#' extract_param(nested)
 #'
 #' @export
 #'
-extract_param <- function(nested_data) {
-    if ("batch" %in% names(nested_data)) {
+extract_param <- function(nested) {
+    if ("batch" %in% names(nested)) {
         # per-batch model
-        nested_param <- nested_data %>%
+        nested_param <- nested %>%
             dplyr::select(uniprot_iso, site_str, batch, param, df_res)
     } else {
         # all-batch model
-        nested_param <- nested_data %>%
+        nested_param <- nested %>%
             dplyr::select(uniprot_iso, site_str, param, df_res)
     }
     param_mod <- nested_param %>%

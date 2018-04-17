@@ -6,7 +6,7 @@
 #'   the summed feature intensity is used otherwise.
 #'
 #' @param df_prot A data frame.
-#' @param method A string. Default is \code{tmp}.
+#' @param method A string. Default is \code{"tmp"}.
 #' @return A tibble restoring the run-level summarization.
 #'
 #' @examples
