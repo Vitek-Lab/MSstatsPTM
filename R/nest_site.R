@@ -21,7 +21,7 @@ nest_site <- function(df_sum, w_batch = FALSE) {
 
         # One model for all batches (need data with >1 batches)
         nested_sum <- df_sum %>%
-            dplyr::group_by(uniprot_iso, site_str) %>%
+            dplyr::group_by(protein, site) %>%
             tidyr::nest() %>%
             dplyr::mutate(nb_bch = purrr::map_int(data, ~ n_distinct(.$batch))) %>%
             dplyr::filter(nb_bch > 1) %>%
@@ -41,11 +41,11 @@ nest_site <- function(df_sum, w_batch = FALSE) {
         # One model per site (and potentially batch)
         if ("batch" %in% names(df_sum)) {
             nested_sum <- df_sum %>%
-                dplyr::group_by(uniprot_iso, site_str, batch) %>%
+                dplyr::group_by(protein, site, batch) %>%
                 tidyr::nest()
         } else {
             nested_sum <- df_sum %>%
-                dplyr::group_by(uniprot_iso, site_str) %>%
+                dplyr::group_by(protein, site) %>%
                 tidyr::nest()
         }
         # Linear model and associated parameter estimates

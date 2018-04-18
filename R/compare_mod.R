@@ -17,6 +17,8 @@
 #' @export
 #'
 compare_mod <- function(df_mod, grp_ctrl, grp_case, protadj = TRUE) {
+    df_mod <- df_mod %>%
+        tidyr::unite(protsite, protein, site, sep = "--")
     if ("batch" %in% names(df_mod)) {
         # Batch-aggregated testing (with multiple difference estimates)
         if (protadj) {
@@ -40,7 +42,7 @@ compare_mod <- function(df_mod, grp_ctrl, grp_case, protadj = TRUE) {
                 dplyr::group_by(protsite) %>%
                 dplyr::summarise(
                     log2FC = mean(log2fc) - mean(log2fc_unmod),
-                    std_error = sqrt(sum(se2) + sum(se2_unmod)) / dplyr::n(),
+                    std_error = sqrt(sum(se2) + sum(se2_unmod)) / n(),
                     DF = (sum(se2) + sum(se2_unmod)) ^ 2 / sum(se2 ^ 2 / df_res + se2_unmod ^ 2 / df_unmod),
                     statistic = log2FC / std_error, p_value = 2 * pt(abs(statistic), df = DF, lower.tail = FALSE)
                 ) %>%
@@ -84,7 +86,7 @@ compare_mod <- function(df_mod, grp_ctrl, grp_case, protadj = TRUE) {
             res <- diff_mod %>%
                 dplyr::group_by(protsite) %>%
                 dplyr::summarise(
-                    log2FC = mean(log2fc), std_error = sqrt(sum(se2)) / dplyr::n(),
+                    log2FC = mean(log2fc), std_error = sqrt(sum(se2)) / n(),
                     DF = sum(se2) ^ 2 / sum(se2 ^ 2 / df_res), statistic = log2FC / std_error,
                     p_value = 2 * pt(abs(statistic), df = DF, lower.tail = FALSE)
                 ) %>%
@@ -195,6 +197,5 @@ compare_mod <- function(df_mod, grp_ctrl, grp_case, protadj = TRUE) {
         }
     }
 
-    return(res)
+    return(res %>% tidyr::separate(protsite, into = c("protein", "site"), sep = "--"))
 }
-
