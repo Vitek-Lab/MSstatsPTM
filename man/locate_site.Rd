@@ -4,12 +4,12 @@
 \alias{locate_site}
 \title{Locate potential modification sites with a peptide.}
 \usage{
-locate_site(peptide, pep_idx, residue)
+locate_site(peptide, aa_start, residue)
 }
 \arguments{
 \item{peptide}{A string. Peptide sequence.}
 
-\item{pep_idx}{A matrix. Starting and ending indices of the peptide.}
+\item{aa_start}{An integer. Starting index of the peptide.}
 
 \item{residue}{A string. Amino acid residue for the modification.}
 }
@@ -20,8 +20,7 @@ A string.
 \code{locate_site} locates modifiable sites with a peptide.
 }
 \examples{
-idx <- matrix(c(2, 5), nrow = 1, dimnames = list(NULL, c("start", "end")))
-locate_site("ABCA", idx, "A")
-locate_site("ABCA", idx, "A|C")
+locate_site("ABCA", 2, "A")
+locate_site("ABCA", 2, "A|C")
 
 }

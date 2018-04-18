@@ -4,12 +4,12 @@
 \alias{locate_mod}
 \title{Locate modified sites with a peptide.}
 \usage{
-locate_mod(peptide, pep_idx, residue_symbol)
+locate_mod(peptide, aa_start, residue_symbol)
 }
 \arguments{
 \item{peptide}{A string. Peptide sequence.}
 
-\item{pep_idx}{A matrix. Starting and ending indices of the peptide.}
+\item{aa_start}{An integer. Starting index of the peptide.}
 
 \item{residue_symbol}{A string. Modification residue and denoted symbol.}
 }
@@ -20,6 +20,6 @@ A string.
 \code{locate_mod} locates modified sites with a peptide.
 }
 \examples{
-locate_mod(peptide, pep_idx, residue_symbol)
+locate_mod(peptide, aa_start, residue_symbol)
 
 }
