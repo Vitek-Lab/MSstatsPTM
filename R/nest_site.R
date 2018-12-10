@@ -28,11 +28,18 @@ nest_site <- function(df_sum, w_batch = FALSE) {
             dplyr::select(-nb_bch)
         # Linear model and associated parameter estimates
         nested_sum <- nested_sum %>%
-            dplyr::mutate(lm_fit = purrr::map(data, lm_group, w_batch)) %>%
+            dplyr::mutate(lm_fit = purrr::map(data, purrr::possibly(lm_group, otherwise = NA_real_), w_batch)) %>%
+            filter(!is.na(lm_fit)) %>%
             dplyr::mutate(
                 param = purrr::map2(lm_fit, data, tidy_bch),
                 df_res = purrr::map_dbl(lm_fit, df.residual)
             )
+        # nested_sum <- nested_sum %>%
+        #     dplyr::mutate(lm_fit = purrr::map(data, lm_group, w_batch)) %>%
+        #     dplyr::mutate(
+        #         param = purrr::map2(lm_fit, data, tidy_bch),
+        #         df_res = purrr::map_dbl(lm_fit, df.residual)
+        #     )
         # Remove cases not eligible for hypothesis testing (SE is NA)
         # [TODO]: consider another option to report FC alone
         nested_sum <- nested_sum %>%
@@ -50,11 +57,18 @@ nest_site <- function(df_sum, w_batch = FALSE) {
         }
         # Linear model and associated parameter estimates
         nested_sum <- nested_sum %>%
-            dplyr::mutate(lm_fit = purrr::map(data, lm_group, w_batch)) %>%
+            dplyr::mutate(lm_fit = purrr::map(data, purrr::possibly(lm_group, otherwise = NA_real_), w_batch)) %>%
+            filter(!is.na(lm_fit)) %>%
             dplyr::mutate(
                 param = purrr::map2(lm_fit, data, tidy_bch),
                 df_res = purrr::map_dbl(lm_fit, df.residual)
             )
+        # nested_sum <- nested_sum %>%
+        #     dplyr::mutate(lm_fit = purrr::map(data, lm_group, w_batch)) %>%
+        #     dplyr::mutate(
+        #         param = purrr::map2(lm_fit, data, tidy_bch),
+        #         df_res = purrr::map_dbl(lm_fit, df.residual)
+        #     )
         # Remove cases not eligible for hypothesis testing (SE is NA)
         # [TODO]: consider another option to report FC alone
         nested_sum <- nested_sum %>%

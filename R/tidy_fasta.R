@@ -1,18 +1,20 @@
 
-#' Read and tidy FASTA file.
+#' Read and tidy a FASTA file.
 #'
 #' \code{tidy_fasta} reads and tidys FASTA file.
 #'
-#' @param path A string. Path to the FASTA file.
-#' @return A data frame.
+#' @param filepath A single string that contains the path to read the FASTA file.
+#'
+#' @return A tibble with columns named \code{header}, \code{sequence},
+#' \code{uniprot_ac}, \code{uniprot_iso}, \code{entry_name}.
 #'
 #' @examples
-#' tidy_fasta(path)
+#' tidy_fasta(filepath)
 #'
 #' @export
 #'
-tidy_fasta <- function(path) {
-    hs_fasta <- Biostrings::readAAStringSet(path)
+tidy_fasta <- function(filepath) {
+    hs_fasta <- Biostrings::readAAStringSet(filepath)
     hs_fasta <- as.data.frame(hs_fasta) %>%
         dplyr::tbl_df() %>%
         tibble::rownames_to_column(var = "header") %>%
@@ -27,6 +29,18 @@ tidy_fasta <- function(path) {
             uniprot_iso = stringr::str_extract(header, pattern = regex_uniprot_iso),
             entry_name = stringr::str_extract(header, pattern = "([^\\s\\|]*)(?=\\s)")
         )
+
+    # hs_fasta <- hs_fasta %>%
+    #     dplyr::mutate(
+    #         uniprot_ac = stringr::str_extract(header, pattern = regex_uniprot_ac),
+    #         uniprot_iso = stringr::str_extract(header, pattern = regex_uniprot_iso)
+    #     ) %>%
+    #     dplyr::mutate(
+    #         entry_name = stringr::str_extract(header, pattern = "([^\\s]*)(?=\\s)") %>%
+    #             stringr::str_replace("^[A-Za-z]+\\|", "") %>%
+    #             stringr::str_replace(regex_uniprot_iso, "") %>%
+    #             stringr::str_replace("\\|", "")
+    #     )
 
     return(hs_fasta)
 }

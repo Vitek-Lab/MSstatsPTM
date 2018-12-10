@@ -2,20 +2,21 @@
 % Please edit documentation in R/tidy_fasta.R
 \name{tidy_fasta}
 \alias{tidy_fasta}
-\title{Read and tidy FASTA file.}
+\title{Read and tidy a FASTA file.}
 \usage{
-tidy_fasta(path)
+tidy_fasta(filepath)
 }
 \arguments{
-\item{path}{A string. Path to the FASTA file.}
+\item{filepath}{A single string that contains the path to read the FASTA file.}
 }
 \value{
-A data frame.
+A tibble with columns named \code{header}, \code{sequence},
+\code{uniprot_ac}, \code{uniprot_iso}, \code{entry_name}.
 }
 \description{
 \code{tidy_fasta} reads and tidys FASTA file.
 }
 \examples{
-tidy_fasta(path)
+tidy_fasta(filepath)
 
 }
