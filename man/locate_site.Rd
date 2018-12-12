@@ -22,5 +22,4 @@ A string.
 \examples{
 locate_site("ABCA", 2, "A")
 locate_site("ABCA", 2, "A|C")
-
 }

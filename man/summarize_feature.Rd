@@ -22,5 +22,4 @@ the summed feature intensity is used otherwise.
 \examples{
 summarize_feature(df_prot)
 summarize_feature(df_prot, method = "tmp")
-
 }

@@ -21,5 +21,4 @@ the experimental design, and returns the estimates of model parameters.
 }
 \examples{
 model_ptm(df_sum, w_batch = FALSE)
-
 }

@@ -18,5 +18,4 @@ dataset, using unpaired unmodified peptides.
 }
 \examples{
 normalize_ptm(data)
-
 }

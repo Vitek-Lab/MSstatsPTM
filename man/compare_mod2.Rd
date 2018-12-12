@@ -25,5 +25,4 @@ sites across conditions.
 }
 \examples{
 compare_mod(df_mod, grp_ctrl, grp_case, protadj = TRUE)
-
 }

@@ -21,5 +21,4 @@ A string.
 }
 \examples{
 locate_mod(peptide, aa_start, residue_symbol)
-
 }

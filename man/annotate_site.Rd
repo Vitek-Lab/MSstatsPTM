@@ -22,5 +22,4 @@ A string.
 \examples{
 annotate_site(10, c(10, 100), "K")
 annotate_site(c(10, 13), c(10, 13, 100), c("K", "K"))
-
 }

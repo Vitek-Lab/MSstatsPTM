@@ -1,4 +1,3 @@
-
 #' Annotate modification site.
 #'
 #' \code{annot_site} annotates modified sites as their residues and locations.
@@ -7,13 +6,11 @@
 #' @param residue A string vector. Amino acid residue.
 #' @param len_idx An integer. Default is \code{NULL}
 #' @return A string.
+#' @export
 #'
 #' @examples
 #' annot_site(10, "K")
 #' annot_site(10, "K", 3)
-#'
-#' @export
-#'
 annot_site <- function(aa_idx, residue, len_idx = NULL) {
     if (purrr::is_empty(aa_idx)) {
         site <- "None"

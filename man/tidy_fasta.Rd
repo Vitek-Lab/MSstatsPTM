@@ -18,5 +18,4 @@ A tibble with columns named \code{header}, \code{sequence},
 }
 \examples{
 tidy_fasta(filepath)
-
 }

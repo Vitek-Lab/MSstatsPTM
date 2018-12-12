@@ -18,5 +18,4 @@ frame.
 }
 \examples{
 extract_param(nested)
-
 }

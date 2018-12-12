@@ -18,5 +18,4 @@ the censored values using the accelerated failure time model.
 }
 \examples{
 fill_censored_aft(data)
-
 }

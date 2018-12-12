@@ -19,5 +19,4 @@ A data frame restoring the estimated model parameters.
 }
 \examples{
 tidy_bch(fit, df_fit)
-
 }

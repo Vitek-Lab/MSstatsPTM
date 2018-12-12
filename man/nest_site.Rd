@@ -21,5 +21,4 @@ consideration of the experimental design, organized in a nested data frame.
 }
 \examples{
 nest_site(df_sum, w_batch = FALSE)
-
 }
