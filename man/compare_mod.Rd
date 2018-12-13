@@ -4,14 +4,14 @@
 \alias{compare_mod}
 \title{Compare abundance of a modified site across conditions.}
 \usage{
-compare_mod(df_mod, grp_ctrl, grp_case, protadj = TRUE)
+compare_mod(df_mod, controls, cases, protadj = TRUE)
 }
 \arguments{
 \item{df_mod}{A data frame.}
 
-\item{grp_ctrl}{Control group as reference.}
+\item{controls}{Control group as reference.}
 
-\item{grp_case}{Case group.}
+\item{cases}{Case group.}
 
 \item{protadj}{A logical. \code{TRUE} performs protein-level adjustment,
 \code{FALSE} otherwise. Default is \code{TRUE}.}
@@ -24,5 +24,5 @@ A data frame.
 sites across conditions.
 }
 \examples{
-compare_mod(df_mod, grp_ctrl, grp_case, protadj = TRUE)
+compare_mod(df_mod, controls, cases, protadj = TRUE)
 }
