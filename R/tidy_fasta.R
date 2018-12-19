@@ -4,7 +4,7 @@
 #'
 #' @importFrom magrittr %>%
 #' @importFrom dplyr select mutate
-#' @importFrom stringr str_extract
+#' @importFrom stringr str_extract str_remove str_remove_all
 #' @importFrom tibble as_data_frame rownames_to_column
 #' @param filepath A single string that contains the path to read the FASTA file.
 #' @return A tibble with columns named \code{header}, \code{sequence},
@@ -24,23 +24,17 @@ tidy_fasta <- function(filepath) {
     regex_uniprot_iso <- regex("([OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2})([-]\\d{1,}){0,1}")
 
     hs_fasta <- hs_fasta %>%
+        mutate(defline = str_extract(header, pattern = "([^\\s]*)(?=\\s)")) %>%
         mutate(
-            uniprot_ac = str_extract(header, pattern = regex_uniprot_ac),
-            uniprot_iso = str_extract(header, pattern = regex_uniprot_iso),
-            entry_name = str_extract(header, pattern = "([^\\s\\|]*)(?=\\s)")
-        )
-
-    # hs_fasta <- hs_fasta %>%
-    #     mutate(
-    #         uniprot_ac = str_extract(header, pattern = regex_uniprot_ac),
-    #         uniprot_iso = str_extract(header, pattern = regex_uniprot_iso)
-    #     ) %>%
-    #     mutate(
-    #         entry_name = str_extract(header, pattern = "([^\\s]*)(?=\\s)") %>%
-    #             str_replace("^[A-Za-z]+\\|", "") %>%
-    #             str_replace(regex_uniprot_iso, "") %>%
-    #             str_replace("\\|", "")
-    #     )
+            uniprot_ac = str_extract(defline, pattern = regex_uniprot_ac),
+            uniprot_iso = str_extract(defline, pattern = regex_uniprot_iso)
+        ) %>%
+        mutate(
+            entry_name = str_remove(defline, "^(sp|tr)(?=\\|)") %>%
+                str_remove(regex_uniprot_iso) %>%
+                str_remove_all("\\|")
+        ) %>%
+        select(-defline)
 
     return(hs_fasta)
 }
