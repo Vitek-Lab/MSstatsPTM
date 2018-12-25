@@ -1,7 +1,8 @@
 #' Annotate modified sites with associated peptides.
 #'
-#' \code{peptide2site} annotate modified sites with associated peptides.
+#' \code{peptide2site} annotates modified sites with associated peptides.
 #'
+#' @importFrom magrittr %>%
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter select mutate group_by ungroup left_join bind_rows
 #' @importFrom stringr str_detect str_remove_all str_locate_all str_count str_c

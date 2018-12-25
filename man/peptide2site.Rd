@@ -28,5 +28,5 @@ A data frame of three columns: \code{uniprot_iso}, \code{peptide},
 \code{site}.
 }
 \description{
-\code{peptide2site} annotate modified sites with associated peptides.
+\code{peptide2site} annotates modified sites with associated peptides.
 }
