@@ -29,8 +29,7 @@ extract_param <- function(nested) {
         filter(site == "None") %>%
         select(-site) %>%
         unnest(param) %>%
-        rename(df_unmod = df_res, est_unmod = estimate,
-                      se_unmod = std.error)
+        rename(df_unmod = df_res, est_unmod = estimate, se_unmod = std.error)
 
     return(left_join(param_mod, param_unmod))
 }

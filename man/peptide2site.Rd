@@ -8,8 +8,8 @@ peptide2site(peptide, uniprot, fasta, mod_residue, mod_symbol,
   remove_confounding = FALSE)
 }
 \arguments{
-\item{peptide}{A string vector of peptide sequences. The sequences do not
-include the preceding and following AAs.}
+\item{peptide}{A string vector of peptide sequences. The peptide sequence
+does not include its preceding and following AAs.}
 
 \item{uniprot}{A string vector of Uniprot identifiers of the peptides'
 originating proteins. UniProtKB entry isoform sequence is used.}
@@ -24,7 +24,7 @@ originating proteins. UniProtKB entry isoform sequence is used.}
 unmodified sites, \code{FALSE} otherwise. Default is \code{FALSE}.}
 }
 \value{
-A data frame of three columns: \code{uniprot_iso}, \code{peptide},
+A data frame with three columns: \code{uniprot_iso}, \code{peptide},
 \code{site}.
 }
 \description{

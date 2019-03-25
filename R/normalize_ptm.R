@@ -12,7 +12,13 @@
 #' @examples
 #' normalize_ptm(data)
 normalize_ptm <- function(data) {
+
+    if (!is.data.frame(data))
+        stop("Input data should be a data frame!")
     cols <- names(data)
+    if (!all(c("is_mod", "run", "log2inty") %in% cols))
+        stop("Input data frame should contain columns of is_mod, run, log2inty!")
+
     # Based on unmodified peptides
     if ("batch" %in% cols) {
         medians <- data %>%

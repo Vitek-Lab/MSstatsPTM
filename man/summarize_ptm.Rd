@@ -7,19 +7,20 @@
 summarize_ptm(df_site, method = "tmp", impute_missing = FALSE)
 }
 \arguments{
-\item{df_site}{A data frame that includes columns of \code{protein},
-\code{site}, \code{group}, \code{run}, \code{feature}, and \code{log2inty}.}
+\item{df_site}{A data frame with columns of \code{protein}, \code{site},
+\code{group}, \code{run}, \code{feature}, \code{log2inty}, and possibly,
+\code{batch}.}
 
 \item{method}{A string defining the summarization method. Default is
 \code{"tmp"}, which applies Tukey's median polish.}
 
 \item{impute_missing}{A logical. \code{TRUE} performs missing value
-imputation confounded with accelerated failure time model, \code{FALSE}
-does not handle missing values. Default is \code{FALSE}.}
+imputation with the accelerated failure time model, \code{FALSE} does not
+handle missing values. Default is \code{FALSE}.}
 }
 \value{
-A data frame of five columns: \code{protein}, \code{site},
-\code{group}, \code{run}, and \code{log2inty}.
+A data frame with columns of \code{protein}, \code{site},
+\code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}.
 }
 \description{
 \code{summarize_ptm} summarizes feature log-intensities for each PTM site.

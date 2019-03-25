@@ -8,8 +8,8 @@
 #' @importFrom stringr str_detect str_remove_all str_locate_all str_count str_c
 #'   str_sub str_length
 #' @importFrom purrr map map2 pmap map_int map2_lgl pmap_chr
-#' @param peptide A string vector of peptide sequences. The sequences do not
-#'   include the preceding and following AAs.
+#' @param peptide A string vector of peptide sequences. The peptide sequence
+#'   does not include its preceding and following AAs.
 #' @param uniprot A string vector of Uniprot identifiers of the peptides'
 #'   originating proteins. UniProtKB entry isoform sequence is used.
 #' @param fasta A tibble with FASTA information. Output of \code{tidy_fasta}.
@@ -17,17 +17,33 @@
 #' @param mod_symbol A string. Symbol of a modified site.
 #' @param remove_confounding A logical. \code{TRUE} removes confounded
 #'   unmodified sites, \code{FALSE} otherwise. Default is \code{FALSE}.
-#' @return A data frame of three columns: \code{uniprot_iso}, \code{peptide},
+#' @return A data frame with three columns: \code{uniprot_iso}, \code{peptide},
 #'   \code{site}.
 #' @export
 #'
 peptide2site <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
                          remove_confounding = FALSE) {
 
+    if (missing(peptide))
+        stop("Input peptide is missing!")
+    if (missing(uniprot))
+        stop("Input uniprot is missing!")
+    if (missing(fasta))
+        stop("Input fasta is missing!")
+    if (missing(mod_residue))
+        stop("Input mod_residue is missing!")
+    if (missing(mod_symbol))
+        stop("Input mod_symbol is missing!")
+    if (!is.character(peptide))
+        stop("Please provide peptide sequence as character in peptide!")
+    if (!is.character(uniprot))
+        stop("Please provide Uniprot protein ID as character in uniprot!")
     if (length(peptide) != length(uniprot))
-        stop("Length of peptide and uniprot don't match!")
+        stop("peptide and uniprot must be of the same length")
+    if (!is.data.frame(fasta))
+        stop("Please provide the FASTA information in a data frame!")
     if (!all(c("uniprot_iso", "sequence") %in% names(fasta)))
-        stop("Column of uniprot_iso or sequence is missing from fasta!")
+        stop("Column of uniprot_iso or sequence is missing from FASTA data frame!")
 
     peptide_seq <- tibble(uniprot_iso = uniprot, peptide = peptide) %>%
         mutate(is_mod = str_detect(peptide, mod_symbol)) %>%

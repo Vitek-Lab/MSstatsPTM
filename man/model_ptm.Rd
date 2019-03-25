@@ -7,7 +7,8 @@
 model_ptm(df_sum, w_batch = FALSE)
 }
 \arguments{
-\item{df_sum}{A data frame.}
+\item{df_sum}{A data frame with columns of \code{protein}, \code{site},
+\code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}.}
 
 \item{w_batch}{A logical. \code{TRUE} considers batch effect, \code{FALSE}
 otherwise. Default is \code{FALSE}.}
