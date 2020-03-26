@@ -43,14 +43,23 @@ summarize_ptm <- function(df_site, method = "tmp", impute_missing = FALSE) {
     if ("batch" %in% cols) {
         nested_site <- df_site %>%
             select(protein, site, batch, run, feature, log2inty) %>%
-            group_by(protein, site, batch) %>%
-            nest()
+            nest(data = one_of("run", "feature", "log2inty"))
     } else {
         nested_site <- df_site %>%
             select(protein, site, run, feature, log2inty) %>%
-            group_by(protein, site) %>%
-            nest()
+            nest(data = one_of("run", "feature", "log2inty"))
     }
+    # if ("batch" %in% cols) {
+    #     nested_site <- df_site %>%
+    #         select(protein, site, batch, run, feature, log2inty) %>%
+    #         group_by(protein, site, batch) %>%
+    #         nest()
+    # } else {
+    #     nested_site <- df_site %>%
+    #         select(protein, site, run, feature, log2inty) %>%
+    #         group_by(protein, site) %>%
+    #         nest()
+    # }
 
     if (!impute_missing) {
         # No missing value imputation
@@ -66,9 +75,20 @@ summarize_ptm <- function(df_site, method = "tmp", impute_missing = FALSE) {
             mutate(sumdata = map(aftdata, summarize_feature, method))
     }
     # Run-level summaries with grouping information
-    df_sum <- nested_site %>%
-        unnest(sumdata) %>%
-        left_join(design)
+    if (!impute_missing) {
+        df_sum <- nested_site %>%
+            select(-data) %>%
+            unnest(one_of("sumdata")) %>%
+            left_join(design)
+    } else {
+        df_sum <- nested_site %>%
+            select(-data, aftdata) %>%
+            unnest(one_of("sumdata")) %>%
+            left_join(design)
+    }
+    # df_sum <- nested_site %>%
+    #     unnest(sumdata) %>%
+    #     left_join(design)
 
     return(df_sum)
 }

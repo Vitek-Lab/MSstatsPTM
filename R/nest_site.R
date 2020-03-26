@@ -22,11 +22,17 @@ nest_site <- function(df_sum, w_batch = FALSE) {
 
         # One model for all batches (need data with >1 batches)
         nested_sum <- df_sum %>%
-            group_by(protein, site) %>%
-            nest() %>%
+            nest(data = -one_of("protein", "site")) %>%
             mutate(nb_bch = map_int(data, ~ n_distinct(.$batch))) %>%
             filter(nb_bch > 1) %>%
             select(-nb_bch)
+        # nested_sum <- df_sum %>%
+        #     group_by(protein, site) %>%
+        #     nest_legacy() %>%
+        #     mutate(nb_bch = map_int(data, ~ n_distinct(.$batch))) %>%
+        #     filter(nb_bch > 1) %>%
+        #     select(-nb_bch)
+
         # Linear model and associated parameter estimates
         nested_sum <- nested_sum %>%
             mutate(lm_fit = map(data, possibly(lm_group, otherwise = NA_real_), w_batch)) %>%
@@ -49,12 +55,16 @@ nest_site <- function(df_sum, w_batch = FALSE) {
         # One model per site (and potentially batch)
         if ("batch" %in% names(df_sum)) {
             nested_sum <- df_sum %>%
-                group_by(protein, site, batch) %>%
-                nest()
+                nest(data = -one_of("protein", "site", "batch"))
+            # nested_sum <- df_sum %>%
+            #     group_by(protein, site, batch) %>%
+            #     nest_legacy()
         } else {
             nested_sum <- df_sum %>%
-                group_by(protein, site) %>%
-                nest()
+                nest(data = -one_of("protein", "site"))
+            # nested_sum <- df_sum %>%
+            #     group_by(protein, site) %>%
+            #     nest_legacy()
         }
         # Linear model and associated parameter estimates
         nested_sum <- nested_sum %>%
