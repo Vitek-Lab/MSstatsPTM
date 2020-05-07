@@ -1,6 +1,6 @@
 # MSstatsPTM
 
-The goal of MSstatsPTM is to provide general statistical methods for quantitative characterization of post-translational modifications. 
+The goal of MSstatsPTM is to provide general statistical methods for characterization of quantitative changes in global post-translational modification profiling experiments.
 
 ## Installation
 
@@ -10,11 +10,3 @@ You can install the development version of MSstatsPTM from [GitHub](https://gith
 # install.packages("devtools")
 devtools::install_github("tsunghengtsai/MSstatsPTM")
 ```
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-## basic example code
-```
-

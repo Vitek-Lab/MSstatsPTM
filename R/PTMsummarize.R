@@ -1,7 +1,7 @@
 #' Site-level summarization.
 #'
-#' \code{PTMsummarize} summarizes feature log2-intensities into one value per
-#' PTM site, per run.
+#' \code{PTMsummarize} summarizes log2-intensities of spectral features for each
+#' PTM site into one value per run.
 #'
 #' @param df A data frame with columns of \code{protein}, \code{site},
 #'   \code{group}, \code{run}, \code{feature}, \code{log2inty}, and possibly,
@@ -31,10 +31,7 @@ PTMsummarize <- function(df, method = "tmp") {
     }
     df <- df[!is.na(df$log2inty), ]
 
-    # Experimental design
-    design <- unique(df[c("run", "group")])
-
-    # Nested data frame
+    # Nested data frame with site as the analysis unit
     cols_nested <- c("protein", "site", "run", "feature", "log2inty")
     if ("batch" %in% cols) {
         nested <- nest(df[, c(cols_nested, "batch")],
@@ -44,19 +41,21 @@ PTMsummarize <- function(df, method = "tmp") {
                        data = one_of("run", "feature", "log2inty"))
     }
 
-    # Run-level summaries with grouping information
+    # Summarize features per site per MS run
     nested$res <- lapply(nested$data, summarizeFeatures, method)
     nested <- nested[, names(nested) != "data"]
-    dplyr::left_join(tidyr::unnest(nested, one_of("res")), design)
+    design <- unique(df[c("run", "group")])  # Experimental design
+    left_join(unnest(nested, one_of("res")), design)
 }
 
 #' Summarization for one site.
 #'
-#' \code{summarizeFeatures} summarizes feature log-intensities for a PTM site
+#' \code{summarizeFeatures} summarizes feature log2-intensities for a PTM site
 #' and returns one summarized value per run. Tukey's median polish is used by
 #' default.
 #'
-#' @param df A data frame.
+#' @param df A data frame with columns of \code{run}, \code{feature}, and
+#'   \code{log2inty}.
 #' @param method A string defining the summarization method. Default is
 #'   \code{"tmp"}, which applies Tukey's median polish. Other methods include
 #'   log2 of intensity summation (\code{"logsum"}), and mean (\code{"mean"}),
@@ -106,6 +105,7 @@ summarizeMethods <- function() {
     c("tmp", "logsum", "mean", "median", "max")
 }
 
+#' @export
 summarize_tmp <- function(df, ...) {
     wd <- tidyr::pivot_wider(df[, c("feature", "run", "log2inty")],
                              names_from = feature, values_from = log2inty)
@@ -114,21 +114,25 @@ summarize_tmp <- function(df, ...) {
     tibble(run = wd$run, log2inty = res$overall + res$row)
 }
 
+#' @export
 summarize_logsum <- function(df, ...) {
     by_run <- dplyr::group_by(df, run)
     dplyr::summarise(by_run, log2inty = log2(sum(2 ^ log2inty, na.rm = TRUE)))
 }
 
+#' @export
 summarize_mean <- function(df, ...) {
     by_run <- dplyr::group_by(df, run)
     dplyr::summarise(by_run, log2inty = mean(log2inty, na.rm = TRUE))
 }
 
+#' @export
 summarize_med <- function(df, ...) {
     by_run <- dplyr::group_by(df, run)
     dplyr::summarise(by_run, log2inty = stats::median(log2inty, na.rm = TRUE))
 }
 
+#' @export
 summarize_max <- function(df, ...) {
     by_run <- dplyr::group_by(df, run)
     dplyr::summarise(by_run, log2inty = max(log2inty, na.rm = TRUE))
