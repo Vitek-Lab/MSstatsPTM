@@ -25,11 +25,11 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
         res_ref <- extractMeanDiff(data[["Protein"]], controls, cases)
         res <- adjustProteinLevel(res, res_ref)
     }
-
     res
 }
 
 
+#' @export
 extractMeanDiff <- function(data, controls, cases) {
     # Params per site in a row
     params <- tibble(
@@ -54,6 +54,7 @@ extractMeanDiff <- function(data, controls, cases) {
     bind_rows(res)
 }
 
+#' @export
 onetest <- function(param, df, ctrl, case) {
     if (!any(c(ctrl, case) %in% param$group)) {
         return(NULL)
@@ -76,10 +77,11 @@ onetest <- function(param, df, ctrl, case) {
 
 
 #' Protein-level adjustment.
+#' @export
 adjustProteinLevel <- function(data, refdata) {
 
     refdata <- dplyr::select(refdata, Protein, log2FC_ref = log2FC, SE_ref = SE, DF_ref = DF)
-    joined <- dplyr::inner_join(data, refdata)
+    joined <- inner_join(data, refdata)
 
     log2fc <- joined$log2FC - joined$log2FC_ref
     s2 <- joined$SE ^ 2

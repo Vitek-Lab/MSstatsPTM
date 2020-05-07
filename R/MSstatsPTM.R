@@ -20,7 +20,7 @@
 #' @importFrom magrittr %>%
 #' @importFrom tidyr nest unnest
 #' @importFrom tidyselect one_of
-#' @importFrom dplyr left_join bind_rows
+#' @importFrom dplyr left_join inner_join bind_rows
 #' @importFrom tibble tibble as_tibble
 #' @docType package
 #' @name MSstatsPTM
