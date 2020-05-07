@@ -1,10 +1,12 @@
 Package: MSstatsPTM
-Version: 0.0.0.9000
+Type: Package
 Title: Statistical Characterization of Post-translational Modifications
+Version: 0.0.0.9000
 Description: MSstatsPTM provides general statistical methods for quantitative 
     characterization of post-translational modifications. 
-Authors@R: person("Tsung-Heng", "Tsai", email = "tsai.tsungheng@gmail.com", role = c("aut", "cre"))
-License: GPL-3
+Authors@R: person("Tsung-Heng", "Tsai", role = c("aut", "cre"), 
+    email = "tsai.tsungheng@gmail.com")
+License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
@@ -14,6 +16,7 @@ Imports:
     broom, 
     dplyr, 
     purrr, 
+    stats, 
     stringr, 
     survival, 
     tibble,

@@ -1,7 +1,7 @@
-#' Estimate log-abundances of PTM sites.
+#' Estimate log2-abundances of PTM sites.
 #'
-#' \code{PTMestimateAbundance} fits a linear model with summarized
-#'   log-intensities for each PTM site, in consideration of the experimental
+#' \code{PTMestimateAbundance} fits a linear model with the summarized
+#'   log2-intensities for each PTM site, in consideration of the experimental
 #'   design and the underlying protein abundance, and returns the estimates of
 #'   model parameters.
 #'
@@ -41,8 +41,6 @@ PTMestimateAbundance <- function(df, fac_batch = FALSE) {
 #' \code{modelAbundance} fits and returns a whole-plot model for each site in
 #'   consideration of the experimental design.
 #'
-#' @importFrom tidyr nest
-#' @importFrom tidyselect one_of
 #' @param df A data frame.
 #' @param fac_batch A logical. \code{TRUE} considers batch effect, \code{FALSE}
 #'   otherwise. Default is \code{FALSE}.
@@ -60,7 +58,7 @@ modelAbundance <- function(df, fac_batch = FALSE) {
             stop("There is only one unique batch identifier!")
 
         # One model for all batches (need data with >1 batches)
-        nested <- tidyr::nest(df, data = -one_of("protein", "site"))
+        nested <- nest(df, data = -one_of("protein", "site"))
         singles <- sapply(nested$data, function(dat) length(unique(dat$batch)) == 1)
         nested <- nested[!singles, ]
         # nested <- df %>%
@@ -69,9 +67,9 @@ modelAbundance <- function(df, fac_batch = FALSE) {
     } else {
         # One model per site (and potentially batch)
         if ("batch" %in% names(df)) {
-            nested <- tidyr::nest(df, data = -one_of("protein", "site", "batch"))
+            nested <- nest(df, data = -one_of("protein", "site", "batch"))
         } else {
-            nested <- tidyr::nest(df, data = -one_of("protein", "site"))
+            nested <- nest(df, data = -one_of("protein", "site"))
         }
     }
     # Fit linear models
@@ -137,126 +135,6 @@ tidyEstimates <- function(fit, data) {
     param[, !(names(param) %in% c("term", "statistic", "p.value"))]
     # param %>%
     #     dplyr::mutate(df = (sigma(fit) ^ 2 / std.error ^ 2) - 1)
-}
-
-#' Aggregate parameter estimates across batches.
-aggregateBatchEstimates <- function(data) {
-    if (!("batch" %in% names(data)))
-        stop("There is no information about batch!")
-
-    n_batch <- length(unique(data$batch))
-    if (n_batch == 1) {
-        res <- list(protein = data[["protein"]],
-                    site = data[["site"]],
-                    param = data[["param"]])
-        return(res)
-    }
-
-    # Params from all batches per site in a row
-    df <- dplyr::tibble(
-        protein = data[["protein"]],
-        site = data[["site"]],
-        batch = data[["batch"]],
-        param = data[["param"]]
-    )
-    cnt <- dplyr::count(df, protein, site)
-    df <- dplyr::semi_join(df, cnt[cnt$n == n_batch, ])
-    nested <- tidyr::nest(df, params = one_of("batch", "param"))
-    # nested <- dplyr::tibble(
-    #     protein = data[["protein"]],
-    #     site = data[["site"]],
-    #     batch = data[["batch"]],
-    #     param = data[["param"]]
-    # ) %>%
-    #     dplyr::group_by(protein, site) %>%
-    #     filter(dplyr::n() == n_batch) %>%
-    #     dplyr::ungroup() %>%
-    #     tidyr::nest(params = one_of("batch", "param"))
-
-    aggre_params <- function(params, nb) {
-        unnested <- tidyr::unnest(params, one_of("param"))
-        grps <- unique(unnested$group)
-        valid <- rep(TRUE, length(grps))
-        hat <- se <- df <- vector("double", length(grps))
-        for (i in seq_along(grps)) {
-            sub <- unnested[unnested$group == grps[i], ]
-            if (nrow(sub) == nb) {
-                s2 <- sub$std.error ^ 2
-                hat[i] <- mean(sub$estimate)
-                se[i] <- sqrt(sum(s2)) / nb
-                df[i] <- sum(s2) ^ 2 / sum(s2 ^ 2 / sub$df)
-            } else {
-                valid[i] <- FALSE
-            }
-        }
-        data.frame(group = grps[valid], estimate = hat[valid],
-                   std.error = se[valid], df = df[valid])
-        # params %>%
-        #     tidyr::unnest(one_of("param")) %>%
-        #     dplyr::group_by(group) %>%
-        #     dplyr::filter(dplyr::n() == nb) %>%
-        #     dplyr::mutate(s2 = std.error ^ 2) %>%
-        #     dplyr::summarise(
-        #         estimate = mean(estimate),
-        #         std.error = sqrt(sum(s2)) / nb,
-        #         df = sum(s2) ^ 2 / sum(s2 ^ 2 / df)
-        #     )
-    }
-
-    nested$param <- lapply(nested$params, aggre_params, n_batch)
-    as.list(nested[, c("protein", "site", "param")])
-    # nested %>%
-    #     select(one_of("protein", "site", "param")) %>%
-    #     as.list()
-}
-
-#' Protein-level adjustment.
-adjustProteinEstimates <- function(data, refdata) {
-    nested <- dplyr::tibble(
-        protein = data[["protein"]],
-        site = data[["site"]],
-        param = data[["param"]]
-    )
-    nested_ref <- dplyr::tibble(
-        protein = refdata[["protein"]],
-        param_ref = refdata[["param"]]
-    )
-    joined <- dplyr::inner_join(nested, nested_ref)
-
-    adj_params <- function(param, param_ref) {
-        names(param_ref)[names(param_ref) == "estimate"] <- "estimate_ref"
-        names(param_ref)[names(param_ref) == "std.error"] <- "std.error_ref"
-        names(param_ref)[names(param_ref) == "df"] <- "df_ref"
-        # param_ref <- param_ref %>%
-        #     dplyr::rename(estimate_ref = estimate,
-        #                   std.error_ref = std.error,
-        #                   df_ref = df)
-
-        res <- dplyr::inner_join(param, param_ref)
-        s2 <- res$std.error ^ 2
-        s2_ref <- res$std.error_ref ^ 2
-        res$estimate <- res$estimate - res$estimate_ref
-        res$std.error <- sqrt(s2 + s2_ref) / 2
-        numer <- (s2 + s2_ref) ^ 2
-        denom <- (s2 ^ 2 / res$df + s2_ref ^ 2 / res$df_ref)
-        res$df <- numer / denom
-        res[, c("group", "estimate", "std.error", "df")]
-        # dplyr::inner_join(param, param_ref) %>%
-        #     dplyr::mutate(s2 = std.error ^ 2, s2_ref = std.error_ref ^ 2) %>%
-        #     dplyr::transmute(
-        #         group = group,
-        #         estimate = estimate - estimate_ref,
-        #         std.error = sqrt(s2 + s2_ref) / 2,
-        #         df = (s2 + s2_ref) ^ 2 / (s2 ^ 2 / df + s2_ref ^ 2 / df_ref)
-        #     )
-    }
-
-    joined$param <- mapply(adj_params, joined$param, joined$param_ref)
-    as.list(joined[, c("protein", "site", "param")])
-    # joined$param <- purrr::map2(joined$param, joined$param_ref, adj_params)
-    # joined %>%
-    #     select(one_of("protein", "site", "param")) %>%
-    #     as.list()
 }
 
 #' Fit linear models.
