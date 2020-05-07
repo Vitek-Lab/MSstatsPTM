@@ -5,8 +5,8 @@
 \alias{MSstatsPTM}
 \title{MSstatsPTM: A package for statistical characterization of PTMs.}
 \description{
-The MSstatsPTM package provides three categories of important functions:
-summarization, estimation and comparison
+The MSstatsPTM package provides three categories of important functions for
+quantitative analysis of PTMs: summarization, estimation and comparison
 }
 \section{Summarization functions}{
 
@@ -16,7 +16,7 @@ spectral features for each PTM site into one value per run.
 
 \section{Estimation functions}{
 
-The \code{PTMestimateAbundance} and related functions take as input the
+The \code{PTMestimate} and related functions take as input the
 summarized log2-intensities for each PTM site, performs statistical modeling
 for the abundance of the site, and returns the estimates of model parameters
 for all sites in all experimental conditions.

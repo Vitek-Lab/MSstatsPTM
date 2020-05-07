@@ -5,8 +5,6 @@
 \title{Compare mean abundances for all PTM sites across conditions.}
 \usage{
 PTMcompareMeans(data, controls, cases, adjProtein = FALSE)
-
-PTMcompareMeans(data, controls, cases, adjProtein = FALSE)
 }
 \arguments{
 \item{data}{A list that contain estimates for PTM site abundance
@@ -21,17 +19,11 @@ PTMcompareMeans(data, controls, cases, adjProtein = FALSE)
 }
 \value{
 A data frame.
-
-A data frame.
 }
 \description{
 \code{PTMcompareMeans} performs significance analysis for detection of
 changes in PTM mean abundances between conditions.
-
-\code{PTMcompareMeans} performs significance analysis for detection of
-changes in PTM mean abundances between conditions.
 }
 \examples{
-PTMcompareMeans(df_mod, controls, cases)
 PTMcompareMeans(df_mod, controls, cases)
 }

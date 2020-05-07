@@ -1,6 +1,30 @@
+#' Estimate log2-abundances of PTM sites and proteins.
+#'
+#' \code{PTMestimate} takes as input the summarized log2-intensities
+#' for each PTM site, performs statistical modeling for the abundance of the
+#' site, and returns the estimates of model parameters for all sites in all
+#' experimental conditions.
+#'
+#' @param data A list of two data frames named \code{PTM} and \code{Protein};
+#'   each contains columns of \code{protein}, \code{site}, \code{group},
+#'   \code{run}, \code{log2inty}, and possibly, \code{batch}.
+#' @param fac_batch A logical. \code{TRUE} considers a fixed batch effect,
+#'   \code{FALSE} otherwise. Default is \code{FALSE}.
+#' @return A list of two elements named \code{PTM} and \code{Protein}; each is
+#'   a list with four elements: \code{protein}, \code{site}, \code{df}, and
+#'   \code{param}.
+#'
+#' @export
+PTMestimate <- function(data, fac_batch = FALSE) {
+    est_ptm <- estimateAbundance(data[["PTM"]], fac_batch)
+    est_prot <- estimateAbundance(data[["Protein"]], fac_batch)
+    list(PTM = est_ptm, Protein = est_prot)
+}
+
+
 #' Estimate log2-abundances of PTM sites.
 #'
-#' \code{PTMestimateAbundance} takes as input the summarized log2-intensities
+#' \code{estimateAbundance} takes as input the summarized log2-intensities
 #' for each PTM site, performs statistical modeling for the abundance of the
 #' site, and returns the estimates of model parameters for all sites in all
 #' experimental conditions.
@@ -9,12 +33,13 @@
 #'   \code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}.
 #' @param fac_batch A logical. \code{TRUE} considers a fixed batch effect,
 #'   \code{FALSE} otherwise. Default is \code{FALSE}.
-#' @return A list.
+#' @return A list with four elements: \code{protein}, \code{site}, \code{df},
+#'   and \code{param}.
 #'
 #' @export
 #' @examples
-#' PTMestimateAbundance(df, fac_batch = FALSE)
-PTMestimateAbundance <- function(df, fac_batch = FALSE) {
+#' estimateAbundance(df, fac_batch = FALSE)
+estimateAbundance <- function(df, fac_batch = FALSE) {
     if (missing(df))
         stop("Input data frame is missing!")
     if (!is.data.frame(df))
@@ -56,6 +81,7 @@ PTMestimateAbundance <- function(df, fac_batch = FALSE) {
 
     # Remove cases not eligible for hypothesis testing (SE is NA)
     nested$param <- purrr::map2(nested$lm_fit, nested$data, tidyEstimates)
+    nested$df <- purrr::map_dbl(nested$lm_fit, df.residual)
     nas <- sapply(nested$param, function(res) any(is.na(res$std.error)))
     nested <- nested[!nas, ]
     as.list(nested[, !(names(nested) %in% c("data", "lm_fit"))])
@@ -178,21 +204,10 @@ tidyEstimates <- function(fit, data) {
     param <- broom::tidy(fit)
     batches <- grepl("batch", param$term)
     param <- param[!batches, ]
-    # param <- broom::tidy(fit) %>%
-    #     dplyr::filter(!stringr::str_detect(term, "batch"))
     if (length(unique(data$group)) == 1) {
         param$group <- data$group[1]
-        # param <- param %>%
-        #     dplyr::mutate(group = unique(data$group)) %>%
-        #     dplyr::select(-term, -statistic, -p.value)
     } else {
         param$group <- gsub("group", "", param$term)
-        # param <- param %>%
-        #     dplyr::mutate(group = stringr::str_replace(term, "group", "")) %>%
-        #     dplyr::select(-term, -statistic, -p.value)
     }
-    param$df <- (sigma(fit) ^ 2 / param$std.error ^ 2) - 1
     param[, !(names(param) %in% c("term", "statistic", "p.value"))]
-    # param %>%
-    #     dplyr::mutate(df = (sigma(fit) ^ 2 / std.error ^ 2) - 1)
 }
