@@ -3,8 +3,12 @@
 #' \code{PTMcompareMeans} performs significance analysis for detection of
 #' changes in PTM mean abundances between conditions.
 #'
-#' @param data A list that contain estimates for PTM site abundance
-#'   (\code{data$PTM}), and possibly, protein abundance (\code{data$Protein}).
+#' @param data A list of two elements named \code{PTM} and \code{Protein}. The
+#'   \code{PTM} list has four elements: \code{protein} (a string vector of
+#'   protein names), \code{site} (a string vector of PTM sites), \code{param}
+#'   (a list of model parameter estimates for each site), and \code{df} (a
+#'   numeric vector of degrees of freedom for each model). The \code{Protein}
+#'   list includes all as in \code{PTM}, except the element \code{site}.
 #' @param controls A string vector of control groups in the comparisons.
 #' @param cases A string vector of case groups.
 #' @param adjProtein A logical. \code{TRUE} performs protein-level adjustment,
