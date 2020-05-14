@@ -4,7 +4,7 @@
 \alias{adjustProteinLevel}
 \title{Protein-level adjustment.}
 \usage{
-adjustProteinLevel(data, refdata)
+adjustProteinLevel(diffSite, diffProtein)
 }
 \description{
 Protein-level adjustment.

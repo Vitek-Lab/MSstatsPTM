@@ -10,7 +10,7 @@ PTMcompareMeans(data, controls, cases, adjProtein = FALSE)
 \item{data}{A list that contain estimates for PTM site abundance
 (\code{data$PTM}), and possibly, protein abundance (\code{data$Protein}).}
 
-\item{controls}{A string vector of control groups as reference.}
+\item{controls}{A string vector of control groups in the comparisons.}
 
 \item{cases}{A string vector of case groups.}
 
