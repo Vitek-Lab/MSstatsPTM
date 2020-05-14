@@ -12,8 +12,8 @@ summarizeFeatures(df, method = "tmp", ...)
 
 \item{method}{A string defining the summarization method. Default is
 \code{"tmp"}, which applies Tukey's median polish. Other methods include
-log2 of intensity summation (\code{"logsum"}), and mean (\code{"mean"}),
-median (\code{"median"}) and max (\code{"max"}) of the log-intensities.}
+log2 of the sum of intensity (\code{"logsum"}), and mean (\code{"mean"}),
+median (\code{"median"}) and max (\code{"max"}) of the log2-intensities.}
 }
 \value{
 A tibble restoring one summarized value per MS run.

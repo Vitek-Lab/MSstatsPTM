@@ -7,21 +7,27 @@
 PTMestimate(data, fac_batch = FALSE)
 }
 \arguments{
-\item{data}{A list of two data frames named \code{PTM} and \code{Protein};
-each contains columns of \code{protein}, \code{site}, \code{group},
-\code{run}, \code{log2inty}, and possibly, \code{batch}.}
+\item{data}{A list of two data frames named \code{PTM} and \code{Protein}.
+The \code{PTM} data frame includes columns of \code{protein}, \code{site},
+\code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}. The
+\code{Protein} data frame includes all columns as in \code{PTM} except
+\code{site}.}
 
 \item{fac_batch}{A logical. \code{TRUE} considers a fixed batch effect,
 \code{FALSE} otherwise. Default is \code{FALSE}.}
 }
 \value{
-A list of two elements named \code{PTM} and \code{Protein}; each is
-a list with four elements: \code{protein}, \code{site}, \code{df}, and
-\code{param}.
+A list of two lists named \code{PTM} and \code{Protein}. The
+\code{PTM} list has four elements: \code{protein} (a string vector of
+protein names), \code{site} (a string vector of PTM sites), \code{param}
+(a list of model parameter estimates for each site), and \code{df} (a
+numeric vector of degrees of freedom for each model). The \code{Protein}
+list includes all as in \code{PTM}, except \code{site}.
 }
 \description{
-\code{PTMestimate} takes as input the summarized log2-intensities
-for each PTM site, performs statistical modeling for the abundance of the
-site, and returns the estimates of model parameters for all sites in all
-experimental conditions.
+\code{PTMestimate} takes as input the summarized log2-intensities for each
+PTM site, performs statistical modeling for the abundance of the site, and
+returns the estimates of model parameters for all sites in all experimental
+conditions. If protein log2-intensities are availble, the same estimation
+procedure is applied to each protein as well.
 }

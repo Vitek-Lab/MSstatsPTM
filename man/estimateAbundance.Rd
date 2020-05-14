@@ -2,9 +2,9 @@
 % Please edit documentation in R/PTMestimate.R
 \name{estimateAbundance}
 \alias{estimateAbundance}
-\title{Estimate log2-abundances of PTM sites.}
+\title{Estimate log2-abundances of PTM sites or proteins.}
 \usage{
-estimateAbundance(df, fac_batch = FALSE)
+estimateAbundance(df, fac_batch = FALSE, per_protein = FALSE)
 }
 \arguments{
 \item{df}{A data frame with columns of \code{protein}, \code{site},
@@ -12,15 +12,23 @@ estimateAbundance(df, fac_batch = FALSE)
 
 \item{fac_batch}{A logical. \code{TRUE} considers a fixed batch effect,
 \code{FALSE} otherwise. Default is \code{FALSE}.}
+
+\item{per_protein}{A logical. \code{TRUE} ignores the site-level information
+for PTM and considers protein as a whole, \code{FALSE} otherwise. Default
+is \code{FALSE}.}
 }
 \value{
-A list with four elements: \code{protein}, \code{site}, \code{df},
-and \code{param}.
+A list of two elements named \code{PTM} and \code{Protein}. The
+\code{PTM} list has four elements: \code{protein} (a string vector of
+protein names), \code{site} (a string vector of PTM sites), \code{param}
+(a list of model parameter estimates for each site), and \code{df} (a
+numeric vector of degrees of freedom for each model). The \code{Protein}
+list includes all as in \code{PTM}, except \code{site}.
 }
 \description{
-\code{estimateAbundance} takes as input the summarized log2-intensities
-for each PTM site, performs statistical modeling for the abundance of the
-site, and returns the estimates of model parameters for all sites in all
+\code{estimateAbundance} takes as input the summarized log2-intensities for
+each PTM site, performs statistical modeling for the abundance of the site,
+and returns the estimates of model parameters for all sites in all
 experimental conditions.
 }
 \examples{

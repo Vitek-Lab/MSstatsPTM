@@ -58,8 +58,8 @@ PTMsummarize <- function(df, method = "tmp") {
 #'   \code{log2inty}.
 #' @param method A string defining the summarization method. Default is
 #'   \code{"tmp"}, which applies Tukey's median polish. Other methods include
-#'   log2 of intensity summation (\code{"logsum"}), and mean (\code{"mean"}),
-#'   median (\code{"median"}) and max (\code{"max"}) of the log-intensities.
+#'   log2 of the sum of intensity (\code{"logsum"}), and mean (\code{"mean"}),
+#'   median (\code{"median"}) and max (\code{"max"}) of the log2-intensities.
 #'
 #' @return A tibble restoring one summarized value per MS run.
 #'
@@ -116,24 +116,24 @@ summarize_tmp <- function(df, ...) {
 
 #' @export
 summarize_logsum <- function(df, ...) {
-    by_run <- dplyr::group_by(df, run)
-    dplyr::summarise(by_run, log2inty = log2(sum(2 ^ log2inty, na.rm = TRUE)))
+    by_run <- group_by(df, run)
+    summarise(by_run, log2inty = log2(sum(2 ^ log2inty, na.rm = TRUE)))
 }
 
 #' @export
 summarize_mean <- function(df, ...) {
-    by_run <- dplyr::group_by(df, run)
-    dplyr::summarise(by_run, log2inty = mean(log2inty, na.rm = TRUE))
+    by_run <- group_by(df, run)
+    summarise(by_run, log2inty = mean(log2inty, na.rm = TRUE))
 }
 
 #' @export
 summarize_med <- function(df, ...) {
-    by_run <- dplyr::group_by(df, run)
-    dplyr::summarise(by_run, log2inty = stats::median(log2inty, na.rm = TRUE))
+    by_run <- group_by(df, run)
+    summarise(by_run, log2inty = stats::median(log2inty, na.rm = TRUE))
 }
 
 #' @export
 summarize_max <- function(df, ...) {
-    by_run <- dplyr::group_by(df, run)
-    dplyr::summarise(by_run, log2inty = max(log2inty, na.rm = TRUE))
+    by_run <- group_by(df, run)
+    summarise(by_run, log2inty = max(log2inty, na.rm = TRUE))
 }
