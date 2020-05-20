@@ -2,12 +2,6 @@
 #'
 #' \code{PTMlocate} annotates modified sites with associated peptides.
 #'
-#' @importFrom magrittr %>%
-#' @importFrom tibble tibble
-#' @importFrom dplyr filter select mutate group_by ungroup left_join bind_rows
-#' @importFrom stringr str_detect str_remove_all str_locate_all str_count str_c
-#'   str_sub str_length
-#' @importFrom purrr map map2 pmap map_int map2_lgl pmap_chr
 #' @param peptide A string vector of peptide sequences. The peptide sequence
 #'   does not include its preceding and following AAs.
 #' @param uniprot A string vector of Uniprot identifiers of the peptides'
@@ -15,14 +9,14 @@
 #' @param fasta A tibble with FASTA information. Output of \code{tidy_fasta}.
 #' @param mod_residue A string. Modifiable amino acid residues.
 #' @param mod_symbol A string. Symbol of a modified site.
-#' @param remove_confounding A logical. \code{TRUE} removes confounded
+#' @param rm_cnfnd A logical. \code{TRUE} removes confounded
 #'   unmodified sites, \code{FALSE} otherwise. Default is \code{FALSE}.
 #' @return A data frame with three columns: \code{uniprot_iso}, \code{peptide},
 #'   \code{site}.
 #' @export
 #'
 PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
-                      remove_confounding = FALSE) {
+                      rm_cnfnd = FALSE) {
 
     if (missing(peptide))
         stop("Input peptide is missing!")
@@ -48,19 +42,11 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
     peptide_seq <- tibble(uniprot_iso = uniprot, peptide = peptide)
     peptide_seq$is_mod <- grepl(mod_symbol, peptide_seq$peptide)
     peptide_seq$peptide_unmod <- gsub(mod_symbol, "", peptide_seq$peptide)
-    # peptide_seq <- tibble(uniprot_iso = uniprot, peptide = peptide) %>%
-    #     mutate(is_mod = str_detect(peptide, mod_symbol)) %>%
-    #     mutate(peptide_unmod = str_remove_all(peptide, mod_symbol))
 
     # Locate modifiable sites
     sub_fasta <- fasta[fasta$uniprot_iso %in% uniprot, c("uniprot_iso", "sequence")]
     loc <- gregexpr(mod_residue, sub_fasta$sequence, fixed = TRUE)
     sub_fasta$idx_site_full <- lapply(loc, location_start)
-    # sub_fasta <- fasta %>%
-    #     filter(uniprot_iso %in% peptide_seq$uniprot_iso) %>%
-    #     select(uniprot_iso, sequence) %>%
-    #     mutate(idx_site_full = str_locate_all(sequence, mod_residue) %>%
-    #                map(~unname(.[, "start"])))
 
     # Locate peptides
     # [TODO]: use extended AAs for more specific matching
@@ -74,12 +60,6 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
     peptide_fasta$idx_peptide <- lapply(loc, location)
     peptide_fasta$aa_start <- sapply(loc, location_start)
 
-    # peptide_fasta <- peptide_seq %>%
-    #     left_join(sub_fasta) %>%
-    #     filter(str_count(sequence, peptide_unmod) == 1) %>%
-    #     mutate(idx_peptide = str_locate_all(sequence, peptide_unmod)) %>%
-    #     mutate(aa_start = map_int(idx_peptide, ~.[, "start"]))
-
     # Pattern of modified sites
     mod_pattern <- paste0(mod_residue, mod_symbol)
 
@@ -90,12 +70,6 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
                                  as.list(peptide_fasta$peptide), as.list(peptide_fasta$aa_start))
     peptide_fasta$mod_aa <- Map(function(s, i) if (length(i) == 0) character() else substring(s, i, i),
                                 as.list(peptide_fasta$sequence), peptide_fasta$idx_mod)
-    # peptide_fasta <- peptide_fasta %>%
-    #     mutate(
-    #         idx_site = map2(idx_site_full, idx_peptide, ~.x[.x >= .y[1] & .x <= .y[2]]),
-    #         idx_mod = pmap(list(peptide, aa_start, mod_pattern), locate_mod),
-    #         mod_aa = pmap(list(sequence, idx_mod, idx_mod), str_sub)
-    #     )
 
     # Annotate modified sites
     peptide_fasta$len_site <- lapply(peptide_fasta$idx_site_full, function(x) nchar(x[length(x)]))
@@ -103,16 +77,21 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
     peptide_fasta$site <- as.character(peptide_fasta$site)
     peptide_fasta <- peptide_fasta[, c("uniprot_iso", "peptide", "peptide_unmod",
                                        "is_mod", "idx_site", "idx_mod", "site")]
-    # peptide_fasta <- peptide_fasta %>%
-    #     mutate(
-    #         len_site = map(idx_site_full, ~ str_length(.[length(.)])),
-    #         site = pmap_chr(list(idx_mod, mod_aa, len_site), annot_site)
-    #     ) %>%
-    #     select(uniprot_iso, peptide, peptide_unmod, is_mod, idx_site, idx_mod, site)
 
     # Handle confounded unmodified sites
-    if (remove_confounding) {
-        uncfd_unmod <- peptide_fasta %>%
+    col_res <- c("uniprot_iso", "peptide", "site")
+    if (rm_cnfnd) {
+
+        # by_prot <- group_by(peptide_fasta, uniprot_iso)
+        # by_prot <- mutate(by_prot, idx_mod_full = list(unique(unlist(idx_mod))))
+        # by_prot <- ungroup(by_prot)
+        # by_prot <- by_prot[!by_prot$is_mod, ]
+        # cnfnd <- vector("logical", nrow(by_prot))
+        # for (i in seq_along(cnfnd)) {
+        #     cnfnd[i] <- any(by_prot$idx_site %in% by_prot$idx_mod_full)
+        # }
+        # s_unmod <- by_prot[!cnfnd, col_res]
+        s_unmod <- peptide_fasta %>%
             group_by(uniprot_iso) %>%
             mutate(idx_mod_full = list(unique(unlist(idx_mod)))) %>%
             ungroup() %>%
@@ -120,15 +99,12 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
             filter(map2_lgl(idx_site, idx_mod_full, ~ !any(.x %in% .y))) %>%
             select(uniprot_iso, peptide, site)
 
-        res <- peptide_fasta %>%
-            filter(is_mod) %>%
-            filter(map_int(idx_mod, length) == 1) %>%
-            select(uniprot_iso, peptide, site) %>%
-            bind_rows(uncfd_unmod)
+        n1 <- sapply(peptide_fasta$idx_mod, function(x) length(x) == 1)
+        s_mod <- peptide_fasta[peptide_fasta$is_mod & n1, col_res]
+        res <- bind_rows(s_mod, s_unmod)
     } else {
-        res <- peptide_fasta %>%
-            filter(!is_mod | map_int(idx_mod, length) == 1) %>%
-            select(uniprot_iso, peptide, site)
+        n1 <- sapply(peptide_fasta$idx_mod, function(x) length(x) == 1)
+        res <- peptide_fasta[!peptide_fasta$is_mod | n1, col_res]
     }
 
     res
@@ -210,175 +186,4 @@ annot_site <- function(aa_idx, residue, len_idx = NULL) {
     }
 
     site
-}
-
-
-
-
-
-
-#' Annotate modified sites with associated peptides.
-#'
-#' \code{peptide2site} annotates modified sites with associated peptides.
-#'
-#' @importFrom magrittr %>%
-#' @importFrom tibble tibble
-#' @importFrom dplyr filter select mutate group_by ungroup left_join bind_rows
-#' @importFrom stringr str_detect str_remove_all str_locate_all str_count str_c
-#'   str_sub str_length
-#' @importFrom purrr map map2 pmap map_int map2_lgl pmap_chr
-#' @param peptide A string vector of peptide sequences. The peptide sequence
-#'   does not include its preceding and following AAs.
-#' @param uniprot A string vector of Uniprot identifiers of the peptides'
-#'   originating proteins. UniProtKB entry isoform sequence is used.
-#' @param fasta A tibble with FASTA information. Output of \code{tidy_fasta}.
-#' @param mod_residue A string. Modifiable amino acid residues.
-#' @param mod_symbol A string. Symbol of a modified site.
-#' @param remove_confounding A logical. \code{TRUE} removes confounded
-#'   unmodified sites, \code{FALSE} otherwise. Default is \code{FALSE}.
-#' @return A data frame with three columns: \code{uniprot_iso}, \code{peptide},
-#'   \code{site}.
-#' @export
-#'
-peptide2site <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
-                         remove_confounding = FALSE) {
-
-    if (missing(peptide))
-        stop("Input peptide is missing!")
-    if (missing(uniprot))
-        stop("Input uniprot is missing!")
-    if (missing(fasta))
-        stop("Input fasta is missing!")
-    if (missing(mod_residue))
-        stop("Input mod_residue is missing!")
-    if (missing(mod_symbol))
-        stop("Input mod_symbol is missing!")
-    if (!is.character(peptide))
-        stop("Please provide peptide sequence as character in peptide!")
-    if (!is.character(uniprot))
-        stop("Please provide Uniprot protein ID as character in uniprot!")
-    if (length(peptide) != length(uniprot))
-        stop("peptide and uniprot must be of the same length")
-    if (!is.data.frame(fasta))
-        stop("Please provide the FASTA information in a data frame!")
-    if (!all(c("uniprot_iso", "sequence") %in% names(fasta)))
-        stop("Column of uniprot_iso or sequence is missing from FASTA data frame!")
-
-    peptide_seq <- tibble(uniprot_iso = uniprot, peptide = peptide) %>%
-        mutate(is_mod = str_detect(peptide, mod_symbol)) %>%
-        mutate(peptide_unmod = str_remove_all(peptide, mod_symbol))
-
-    # Locate modifiable sites
-    sub_fasta <- fasta %>%
-        filter(uniprot_iso %in% peptide_seq$uniprot_iso) %>%
-        select(uniprot_iso, sequence) %>%
-        mutate(idx_site_full = str_locate_all(sequence, mod_residue) %>%
-                   map(~unname(.[, "start"])))
-
-    # Locate peptides
-    # [TODO]: use extended AAs for more specific matching
-    peptide_fasta <- peptide_seq %>%
-        left_join(sub_fasta) %>%
-        filter(str_count(sequence, peptide_unmod) == 1) %>%
-        mutate(idx_peptide = str_locate_all(sequence, peptide_unmod)) %>%
-        mutate(aa_start = map_int(idx_peptide, ~.[, "start"]))
-
-    # Pattern of modified sites
-    mod_pattern <- str_c(mod_residue, mod_symbol)
-
-    # Locate modifiable, modified sites (AA residues) associated with peptides
-    peptide_fasta <- peptide_fasta %>%
-        mutate(
-            idx_site = map2(idx_site_full, idx_peptide, ~.x[.x >= .y[1] & .x <= .y[2]]),
-            idx_mod = pmap(list(peptide, aa_start, mod_pattern), locate_mod2),
-            mod_aa = pmap(list(sequence, idx_mod, idx_mod), str_sub)
-        )
-
-    # Annotate modified sites
-    peptide_fasta <- peptide_fasta %>%
-        mutate(
-            len_site = map(idx_site_full, ~ str_length(.[length(.)])),
-            site = pmap_chr(list(idx_mod, mod_aa, len_site), annot_site2)
-        ) %>%
-        select(uniprot_iso, peptide, peptide_unmod, is_mod, idx_site, idx_mod, site)
-
-    # Handle confounded unmodified sites
-    if (remove_confounding) {
-        uncfd_unmod <- peptide_fasta %>%
-            group_by(uniprot_iso) %>%
-            mutate(idx_mod_full = list(unique(unlist(idx_mod)))) %>%
-            ungroup() %>%
-            filter(!is_mod) %>%
-            filter(map2_lgl(idx_site, idx_mod_full, ~ !any(.x %in% .y))) %>%
-            select(uniprot_iso, peptide, site)
-
-        res <- peptide_fasta %>%
-            filter(is_mod) %>%
-            filter(map_int(idx_mod, length) == 1) %>%
-            select(uniprot_iso, peptide, site) %>%
-            bind_rows(uncfd_unmod)
-    } else {
-        res <- peptide_fasta %>%
-            filter(!is_mod | map_int(idx_mod, length) == 1) %>%
-            select(uniprot_iso, peptide, site)
-    }
-
-    return(res)
-}
-
-#' Locate modified sites with a peptide.
-#'
-#' \code{locate_mod2} locates modified sites with a peptide.
-#'
-#' @importFrom stringr str_locate_all
-#' @param peptide A string. Peptide sequence.
-#' @param aa_start An integer. Starting index of the peptide.
-#' @param residue_symbol A string. Modification residue and denoted symbol.
-#' @return A string.
-#' @export
-#'
-#' @examples
-#' locate_mod2(peptide, aa_start, residue_symbol)
-locate_mod2 <- function(peptide, aa_start, residue_symbol) {
-    mod_rels <- str_locate_all(peptide, residue_symbol)[[1]]
-    mod_rel_idx <- unname(mod_rels[, "start"])
-    mod_idx <- mod_rel_idx - seq_along(mod_rel_idx) + aa_start
-
-    return(mod_idx)
-}
-
-#' Annotate modification site.
-#'
-#' \code{annot_site2} annotates modified sites as their residues and locations.
-#'
-#' @param aa_idx An integer vector. Location of the sites.
-#' @param residue A string vector. Amino acid residue.
-#' @param len_idx An integer. Default is \code{NULL}
-#' @return A string.
-#' @export
-#'
-#' @examples
-#' annot_site2(10, "K")
-#' annot_site2(10, "K", 3L)
-annot_site2 <- function(aa_idx, residue, len_idx = NULL) {
-    if (purrr::is_empty(aa_idx)) {
-        site <- "None"
-    } else {
-        if (length(residue) != 1 && length(aa_idx) != length(residue))
-            stop("Lengths of aa_idx and residue don't match!")
-
-        if (!is.null(len_idx)) {
-            if (!is.integer(len_idx))
-                stop("len_idx should be an integer!")
-            if (max(stringr::str_length(aa_idx)) > len_idx)
-                stop("len_idx doesn't reserve enough space for aa_idx!")
-
-            aa_idx_pad <- stringr::str_pad(aa_idx, width = len_idx, pad = "0")
-            site <- stringr::str_c(residue, aa_idx_pad, collapse = "-")
-        } else {
-            site <- stringr::str_c(residue, aa_idx, collapse = "-")
-        }
-    }
-
-    return(site)
 }
