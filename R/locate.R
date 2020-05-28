@@ -1,3 +1,49 @@
+#' Read and tidy a FASTA file.
+#'
+#' \code{tidy_fasta} reads and tidys FASTA file.
+#'
+#' @param path A string of path to a FASTA file.
+#' @return A tibble with columns named \code{header}, \code{sequence},
+#'   \code{uniprot_ac}, \code{uniprot_iso}, \code{entry_name}.
+#'
+#' @export
+#' @examples
+#' tidy_fasta(path)
+tidy_fasta <- function(path) {
+
+    ## Check input
+    if (missing(path))
+        stop(paste0("The input ", sQuote("path"), " is missing"))
+    if (!is.character(path))
+        stop("Provide the path to the FASTA file as a string")
+    if (length(path) != 1)
+        stop("Provide only one path to the FASTA file at a time")
+    # if (!file.exists(path))
+    #     stop(paste0("The file ", sQuote(path), " does not exist"))
+
+    aa <- Biostrings::readAAStringSet(path)
+    aa <- as.character(aa)  # named vector
+    header <- names(aa)
+
+    pat_ac <- paste0("([OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]",
+                     "([A-Z][A-Z0-9]{2}[0-9]){1,2})")
+    pat_iso <- paste0("([OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]",
+                      "([A-Z][A-Z0-9]{2}[0-9]){1,2})([-]\\d{1,}){0,1}")
+
+    matches <- regexpr(pattern = "([^\\s]*)(?=\\s)", text = header, perl = TRUE)
+    shead <- regmatches(header, m = matches)
+    ac <- regmatches(shead, regexpr(pattern = pat_ac, text = shead))
+    iso <- regmatches(shead, regexpr(pattern = pat_iso, text = shead))
+
+    trimmed <- sub("^(sp|tr)(?=\\|)", "", shead, perl = TRUE)
+    trimmed <- sub(pat_iso, "", trimmed)
+    entry <- gsub("\\|", "", trimmed)
+
+    tibble(header = header, sequence = as.vector(aa), uniprot_ac = ac,
+           uniprot_iso = iso, entry_name = entry)
+}
+
+
 #' Annotate modified sites with associated peptides.
 #'
 #' \code{PTMlocate} annotates modified sites with associated peptides.
