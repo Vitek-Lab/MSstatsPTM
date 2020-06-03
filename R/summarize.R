@@ -35,7 +35,7 @@ PTMsummarize <- function(df, method = "tmp") {
     cols_nested <- c("protein", "site", "run", "feature", "log2inty")
     if ("batch" %in% cols) {
         nested <- nest(df[, c(cols_nested, "batch")],
-                        data = one_of("run", "feature", "log2inty"))
+                       data = one_of("run", "feature", "log2inty"))
     } else {
         nested <- nest(df[, cols_nested],
                        data = one_of("run", "feature", "log2inty"))
