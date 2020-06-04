@@ -1,4 +1,4 @@
-#' Read and tidy a FASTA file.
+#' Read and tidy a FASTA file
 #'
 #' \code{tidy_fasta} reads and tidys FASTA file.
 #'
@@ -44,7 +44,7 @@ tidy_fasta <- function(path) {
 }
 
 
-#' Annotate modified sites with associated peptides.
+#' Annotate modified sites with associated peptides
 #'
 #' \code{PTMlocate} annotates modified sites with associated peptides.
 #'
@@ -179,7 +179,7 @@ covered_set <- function(x, y) x[covered(x, y)]
 
 length_one <- function(x) length(x) == 1
 
-#' Locate modified sites with a peptide.
+#' Locate modified sites with a peptide
 #'
 #' \code{locate_mod} locates modified sites with a peptide.
 #'
@@ -202,7 +202,7 @@ locate_mod <- function(peptide, aa_start, residue_symbol) {
     start - seq_along(start) + aa_start
 }
 
-#' Annotate modification site.
+#' Annotate modification site
 #'
 #' \code{annot_site} annotates modified sites as their residues and locations.
 #'

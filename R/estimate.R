@@ -1,4 +1,4 @@
-#' Estimate log2-abundances of PTM sites and proteins.
+#' Estimate log2-abundances of PTM sites and proteins
 #'
 #' \code{PTMestimate} takes as input the summarized log2-intensities for each
 #' PTM site, performs statistical modeling for the abundance of the site, and
@@ -60,7 +60,7 @@ PTMestimate <- function(data, fac_batch = FALSE) {
 }
 
 
-#' Estimate log2-abundances of PTM sites or proteins.
+#' Estimate log2-abundances of PTM sites or proteins
 #'
 #' \code{estimateAbundance} takes as input the summarized log2-intensities for
 #' each PTM site, performs statistical modeling for the abundance of the site,
@@ -139,7 +139,7 @@ estimateAbundance <- function(df, fac_batch = FALSE, per_protein = FALSE) {
 }
 
 
-#' Fit linear model.
+#' Fit linear model
 #'
 #' \code{fitLinearModel} fits and returns a linear model with \code{log2inty}
 #' as response, and \code{group} and possibly \code{batch} as fixed effects.
@@ -179,7 +179,7 @@ fitLinearModel <- function(df, fac_batch = FALSE) {
 }
 
 
-#' Linear model with group and batch effects.
+#' Linear model with group and batch effects
 #'
 #' \code{fixedGroupBatch} fits and returns a linear model with \code{log2inty}
 #' as response, and \code{group} and \code{batch} as fixed effects.
@@ -208,7 +208,7 @@ fixedGroupBatch <- function(df) {
 }
 
 
-#' Linear model with group effect.
+#' Linear model with group effect
 #'
 #' \code{fixedGroup} fits and returns a linear model with \code{group} as a
 #' fixed effect.
@@ -234,7 +234,7 @@ fixedGroup <- function(df) {
 }
 
 
-#' Extract estimate of group effect.
+#' Extract estimate of group effect
 #'
 #' \code{tidyEstimates} extracts the estimate of group effect from a fitted
 #' linear model.

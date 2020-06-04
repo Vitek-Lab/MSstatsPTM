@@ -1,4 +1,4 @@
-#' Site-level summarization.
+#' Site-level summarization
 #'
 #' \code{PTMsummarize} summarizes log2-intensities of spectral features for each
 #' PTM site into one value per run.
@@ -48,7 +48,7 @@ PTMsummarize <- function(df, method = "tmp") {
     left_join(unnest(nested, one_of("res")), design)
 }
 
-#' Summarization for one site.
+#' Summarization for one site
 #'
 #' \code{summarizeFeatures} summarizes feature log2-intensities for a PTM site
 #' and returns one summarized value per run. Tukey's median polish is used by

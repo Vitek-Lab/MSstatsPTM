@@ -1,4 +1,4 @@
-#' Compare mean abundances for all PTM sites across conditions.
+#' Compare mean abundances for all PTM sites across conditions
 #'
 #' \code{PTMcompareMeans} performs significance analysis for detection of
 #' changes in PTM mean abundances between conditions.
@@ -53,7 +53,7 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
 }
 
 
-#' Compare mean abundances for all PTM sites (or proteins) across conditions.
+#' Compare mean abundances for all PTM sites (or proteins) across conditions
 #'
 #' \code{PTMcompareMeans} performs significance analysis for detection of
 #' changes in PTM mean abundances between conditions.
@@ -133,7 +133,7 @@ onetest <- function(param, df, ctrl, case) {
 }
 
 
-#' Protein-level adjustment.
+#' Protein-level adjustment
 adjustProteinLevel <- function(diffSite, diffProtein) {
     diffRef <- diffProtein[, c("Protein", "log2FC", "SE", "DF")]
     names(diffRef)[names(diffRef) == "log2FC"] <- "log2FC_ref"
