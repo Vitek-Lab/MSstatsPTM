@@ -16,14 +16,10 @@ Depends: R (>= 3.6.0)
 Imports: 
     broom, 
     dplyr, 
-    purrr, 
     stats, 
-    stringr, 
-    survival, 
     tibble,
     tidyr
 Suggests: 
     knitr, 
-    MASS, 
     rmarkdown, 
     testthat
