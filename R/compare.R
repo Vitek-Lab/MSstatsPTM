@@ -17,7 +17,9 @@
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' PTMcompareMeans(df_mod, controls, cases)
+#' }
 PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
     # Check PTM estimates
     if (is.null(data[["PTM"]]))
@@ -47,7 +49,7 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
     if (adjProtein) {
         res_prot <- extractMeanDiff(data[["Protein"]], controls, cases,
                                    per_protein = TRUE)
-        res <- adjustProteinLevel(res, res_prot)
+        res <- .adjustProteinLevel(res, res_prot)
     }
     res
 }
@@ -98,7 +100,7 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
         ctrl <- controls[i]
         case <- cases[i]
         for (j in seq_along(params$param)) {
-            tests[[j]] <- onetest(params$param[[j]], params$df[j], ctrl, case)
+            tests[[j]] <- .onetest(params$param[[j]], params$df[j], ctrl, case)
         }
         onectrx <- bind_rows(tests)
         onectrx$Protein <- params$protein
@@ -112,7 +114,7 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 
 
 #' Test for one contrast in one site (or protein)
-onetest <- function(param, df, ctrl, case) {
+.onetest <- function(param, df, ctrl, case) {
     if (!any(c(ctrl, case) %in% param$group)) {
         return(NULL)
     } else if (sum(c(ctrl, case) %in% param$group) == 1) {
@@ -125,7 +127,7 @@ onetest <- function(param, df, ctrl, case) {
         log2fc <- param_case$estimate - param_ctrl$estimate
         stderr <- sqrt(param_case$std.error ^ 2 + param_ctrl$std.error ^ 2)
         tval <- log2fc / stderr
-        pval <- 2 * pt(abs(tval), df, lower.tail = FALSE)
+        pval <- 2 * stats::pt(abs(tval), df, lower.tail = FALSE)
         res <- tibble(Label = paste(case, ctrl, sep = " vs "), log2FC = log2fc,
                       SE = stderr, Tvalue = tval, DF = df, pvalue = pval)
     }
@@ -134,7 +136,7 @@ onetest <- function(param, df, ctrl, case) {
 
 
 #' Protein-level adjustment
-adjustProteinLevel <- function(diffSite, diffProtein) {
+.adjustProteinLevel <- function(diffSite, diffProtein) {
     diffRef <- diffProtein[, c("Protein", "log2FC", "SE", "DF")]
     names(diffRef)[names(diffRef) == "log2FC"] <- "log2FC_ref"
     names(diffRef)[names(diffRef) == "SE"] <- "SE_ref"
@@ -149,7 +151,7 @@ adjustProteinLevel <- function(diffSite, diffProtein) {
     denom <- (s2 ^ 2 / joined$DF + s2_ref ^ 2 / joined$DF_ref)
     df <- numer / denom
     tval <- log2fc / stderr
-    pval <- 2 * pt(abs(tval), df, lower.tail = FALSE)
+    pval <- 2 * stats::pt(abs(tval), df, lower.tail = FALSE)
 
     tibble(Protein = joined$Protein,
            Site = joined$Site,

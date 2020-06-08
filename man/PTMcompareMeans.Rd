@@ -29,5 +29,7 @@ A data frame.
 changes in PTM mean abundances between conditions.
 }
 \examples{
+\dontrun{
 PTMcompareMeans(df_mod, controls, cases)
+}
 }

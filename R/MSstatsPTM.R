@@ -19,6 +19,7 @@
 #'
 #' @name MSstatsPTM
 #' @docType package
+#' @importFrom rlang .data
 #' @importFrom tidyr nest unnest
 #' @importFrom tidyselect one_of
 #' @importFrom dplyr left_join inner_join bind_rows group_by ungroup summarise mutate

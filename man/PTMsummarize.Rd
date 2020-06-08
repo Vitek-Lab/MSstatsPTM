@@ -25,5 +25,7 @@ A data frame with columns of \code{protein}, \code{site},
 PTM site into one value per run.
 }
 \examples{
+\dontrun{
 PTMsummarize(df)
+}
 }

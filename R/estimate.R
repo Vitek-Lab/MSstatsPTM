@@ -83,7 +83,9 @@ PTMestimate <- function(data, fac_batch = FALSE) {
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' estimateAbundance(df, fac_batch = FALSE)
+#' }
 estimateAbundance <- function(df, fac_batch = FALSE, per_protein = FALSE) {
     if (missing(df))
         stop("Input data frame is missing!")
@@ -132,7 +134,7 @@ estimateAbundance <- function(df, fac_batch = FALSE, per_protein = FALSE) {
 
     # Remove cases not eligible for hypothesis testing (SE is NA)
     nested$param <- mapply(tidyEstimates, X = nested$lm_fit, Y = nested$data, SIMPLIFY = FALSE)
-    nested$df <- vapply(nested$lm_fit, df.residual, FUN.VALUE = double(1))
+    nested$df <- vapply(nested$lm_fit, stats::df.residual, FUN.VALUE = double(1))
     nas <- vapply(nested$param, function(x) any(is.na(x$std.error)), FUN.VALUE = logical(1))
     nested <- nested[!nas, ]
     as.list(nested[, !(names(nested) %in% c("data", "lm_fit"))])

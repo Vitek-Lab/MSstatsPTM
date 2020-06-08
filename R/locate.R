@@ -8,7 +8,9 @@
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' tidy_fasta(path)
+#' }
 tidy_fasta <- function(path) {
 
     ## Check input
@@ -127,8 +129,8 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
     # Handle confounded unmodified sites
     col_res <- c("uniprot_iso", "peptide", "site")
     if (rm_cnfnd) {
-        by_prot <- group_by(peptide_fasta, uniprot_iso)
-        by_prot <- mutate(by_prot, idx_mod_full = list(unique(unlist(idx_mod))))
+        by_prot <- group_by(peptide_fasta, .data$uniprot_iso)
+        by_prot <- mutate(by_prot, idx_mod_full = list(unique(unlist(.data$idx_mod))))
         by_prot <- ungroup(by_prot)
         by_prot <- by_prot[!by_prot$is_mod, ]
         cnfnd <- vector("logical", nrow(by_prot))
@@ -190,7 +192,9 @@ length_one <- function(x) length(x) == 1
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' locate_mod(peptide, aa_start, residue_symbol)
+#' }
 locate_mod <- function(peptide, aa_start, residue_symbol) {
 
     x <- gregexpr(residue_symbol, peptide)[[1]]

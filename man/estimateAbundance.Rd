@@ -32,5 +32,7 @@ and returns the estimates of model parameters for all sites in all
 experimental conditions.
 }
 \examples{
+\dontrun{
 estimateAbundance(df, fac_batch = FALSE)
+}
 }

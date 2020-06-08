@@ -34,5 +34,7 @@ A data frame with same columns as in \code{df}.
 MS runs.
 }
 \examples{
+\dontrun{
 PTMnormalize(df)
+}
 }

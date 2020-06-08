@@ -14,12 +14,15 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends: R (>= 3.6.0)
 Imports: 
-    broom, 
-    dplyr, 
-    stats, 
+    broom,
+    dplyr,
+    rlang,
+    stats,
     tibble,
-    tidyr
+    tidyr,
+    tidyselect,
+    Biostrings
 Suggests: 
-    knitr, 
-    rmarkdown, 
-    testthat
+    knitr,
+    rmarkdown,
+    testthat (>= 2.1.0)

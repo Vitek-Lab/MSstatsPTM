@@ -20,5 +20,7 @@ A string.
 \code{locate_mod} locates modified sites with a peptide.
 }
 \examples{
+\dontrun{
 locate_mod(peptide, aa_start, residue_symbol)
+}
 }

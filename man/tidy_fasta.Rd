@@ -17,5 +17,7 @@ A tibble with columns named \code{header}, \code{sequence},
 \code{tidy_fasta} reads and tidys FASTA file.
 }
 \examples{
+\dontrun{
 tidy_fasta(path)
+}
 }

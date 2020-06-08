@@ -17,7 +17,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' PTMsummarize(df)
+#' }
 PTMsummarize <- function(df, method = "tmp") {
     if (missing(df))
         stop(paste0("The input ", sQuote("df"), " is missing!"))
@@ -108,7 +110,7 @@ summarizeMethods <- function() {
 #' @export
 summarize_tmp <- function(df, ...) {
     wd <- tidyr::pivot_wider(df[, c("feature", "run", "log2inty")],
-                             names_from = feature, values_from = log2inty)
+                             names_from = .data$feature, values_from = .data$log2inty)
     m <- data.matrix(wd[, -1])
     res <- stats::medpolish(m, na.rm = TRUE, trace.iter = FALSE)
     tibble(run = wd$run, log2inty = res$overall + res$row)
@@ -116,24 +118,24 @@ summarize_tmp <- function(df, ...) {
 
 #' @export
 summarize_logsum <- function(df, ...) {
-    by_run <- group_by(df, run)
-    summarise(by_run, log2inty = log2(sum(2 ^ log2inty, na.rm = TRUE)))
+    by_run <- group_by(df, .data$run)
+    summarise(by_run, log2inty = log2(sum(2 ^ .data$log2inty, na.rm = TRUE)))
 }
 
 #' @export
 summarize_mean <- function(df, ...) {
-    by_run <- group_by(df, run)
-    summarise(by_run, log2inty = mean(log2inty, na.rm = TRUE))
+    by_run <- group_by(df, .data$run)
+    summarise(by_run, log2inty = mean(.data$log2inty, na.rm = TRUE))
 }
 
 #' @export
 summarize_med <- function(df, ...) {
-    by_run <- group_by(df, run)
-    summarise(by_run, log2inty = stats::median(log2inty, na.rm = TRUE))
+    by_run <- group_by(df, .data$run)
+    summarise(by_run, log2inty = stats::median(.data$log2inty, na.rm = TRUE))
 }
 
 #' @export
 summarize_max <- function(df, ...) {
-    by_run <- group_by(df, run)
-    summarise(by_run, log2inty = max(log2inty, na.rm = TRUE))
+    by_run <- group_by(df, .data$run)
+    summarise(by_run, log2inty = max(.data$log2inty, na.rm = TRUE))
 }

@@ -24,7 +24,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' PTMnormalize(df)
+#' }
 PTMnormalize <- function(df, method = "median", calc = "all", reference) {
     cols_req <- c("run", "feature", "is_mod", "log2inty")
     norm_opt <- c("median", "mean", "logsum", "ref")
@@ -79,13 +81,13 @@ PTMnormalize <- function(df, method = "median", calc = "all", reference) {
             s <- df
         }
 
-        g <- group_by(df, run)
+        g <- group_by(df, .data$run)
         if (method == "median") {
-            gs <- summarise(g, log2inty = stats::median(log2inty, na.rm = TRUE))
+            gs <- summarise(g, log2inty = stats::median(.data$log2inty, na.rm = TRUE))
         } else if (method == "mean") {
-            gs <- summarise(g, log2inty = mean(log2inty, na.rm = TRUE))
+            gs <- summarise(g, log2inty = mean(.data$log2inty, na.rm = TRUE))
         } else {
-            gs <- summarise(g, log2inty = log2(sum(2 ^ log2inty, na.rm = TRUE)))
+            gs <- summarise(g, log2inty = log2(sum(2 ^ .data$log2inty, na.rm = TRUE)))
         }
         ref <- stats::median(gs$log2inty)
         reference <- tibble(run = gs$run, adjLog2inty = ref - gs$log2inty)
