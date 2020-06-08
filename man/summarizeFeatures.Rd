@@ -4,7 +4,7 @@
 \alias{summarizeFeatures}
 \title{Summarization for one site}
 \usage{
-summarizeFeatures(df, method = "tmp", ...)
+summarizeFeatures(df, method = "tmp")
 }
 \arguments{
 \item{df}{A data frame with columns of \code{run}, \code{feature}, and

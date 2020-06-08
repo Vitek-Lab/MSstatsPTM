@@ -114,6 +114,7 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 
 
 #' Test for one contrast in one site (or protein)
+#' @keywords internal
 .onetest <- function(param, df, ctrl, case) {
     if (!any(c(ctrl, case) %in% param$group)) {
         return(NULL)
@@ -136,6 +137,7 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 
 
 #' Protein-level adjustment
+#' @keywords internal
 .adjustProteinLevel <- function(diffSite, diffProtein) {
     diffRef <- diffProtein[, c("Protein", "log2FC", "SE", "DF")]
     names(diffRef)[names(diffRef) == "log2FC"] <- "log2FC_ref"

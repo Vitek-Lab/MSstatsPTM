@@ -9,3 +9,4 @@
 \description{
 Test for one contrast in one site (or protein)
 }
+\keyword{internal}

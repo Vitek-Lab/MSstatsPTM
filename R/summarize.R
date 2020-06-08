@@ -73,7 +73,7 @@ PTMsummarize <- function(df, method = "tmp") {
 #'   feature = c("F1", "F2", "F3", "F1", "F3"),
 #'   log2inty = rnorm(5))
 #' summarizeFeatures(df, method = "tmp")
-summarizeFeatures <- function(df, method = "tmp", ...) {
+summarizeFeatures <- function(df, method = "tmp") {
     if (missing(df))
         stop(paste0("The input ", sQuote("df"), " is missing!"))
     if (!is.data.frame(df))
@@ -89,26 +89,26 @@ summarizeFeatures <- function(df, method = "tmp", ...) {
     )
 
     if (method == "tmp") {
-        res <- summarize_tmp(df, ...)
+        res <- .summarize_tmp(df)
     } else if (method == "logsum") {
-        res <- summarize_logsum(df, ...)
+        res <- .summarize_logsum(df)
     } else if (method == "mean") {
-        res <- summarize_mean(df, ...)
+        res <- .summarize_mean(df)
     } else if (method == "median") {
-        res <- summarize_med(df, ...)
+        res <- .summarize_med(df)
     } else if (method == "max") {
-        res <- summarize_max(df, ...)
+        res <- .summarize_max(df)
     }
     res
 }
 
-#' @export
+#' @keywords internal
 summarizeMethods <- function() {
     c("tmp", "logsum", "mean", "median", "max")
 }
 
-#' @export
-summarize_tmp <- function(df, ...) {
+#' @keywords internal
+.summarize_tmp <- function(df, ...) {
     wd <- tidyr::pivot_wider(df[, c("feature", "run", "log2inty")],
                              names_from = .data$feature, values_from = .data$log2inty)
     m <- data.matrix(wd[, -1])
@@ -116,26 +116,26 @@ summarize_tmp <- function(df, ...) {
     tibble(run = wd$run, log2inty = res$overall + res$row)
 }
 
-#' @export
-summarize_logsum <- function(df, ...) {
+#' @keywords internal
+.summarize_logsum <- function(df) {
     by_run <- group_by(df, .data$run)
     summarise(by_run, log2inty = log2(sum(2 ^ .data$log2inty, na.rm = TRUE)))
 }
 
-#' @export
-summarize_mean <- function(df, ...) {
+#' @keywords internal
+.summarize_mean <- function(df, ...) {
     by_run <- group_by(df, .data$run)
     summarise(by_run, log2inty = mean(.data$log2inty, na.rm = TRUE))
 }
 
-#' @export
-summarize_med <- function(df, ...) {
+#' @keywords internal
+.summarize_med <- function(df, ...) {
     by_run <- group_by(df, .data$run)
     summarise(by_run, log2inty = stats::median(.data$log2inty, na.rm = TRUE))
 }
 
-#' @export
-summarize_max <- function(df, ...) {
+#' @keywords internal
+.summarize_max <- function(df, ...) {
     by_run <- group_by(df, .data$run)
     summarise(by_run, log2inty = max(.data$log2inty, na.rm = TRUE))
 }
