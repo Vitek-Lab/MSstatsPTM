@@ -1,9 +1,11 @@
 #' Normalization of log2-intensities across MS runs
 #'
 #' \code{PTMnormalize} normalizes log2-intensities of spectral features across
-#' MS runs.
+#' MS runs using a reference, or by equalizing a chosen summary (the log2
+#' intensity summation, median, or mean of log2-intensities) from all features,
+#' features of modified peptides or features of unmodified peptides.
 #'
-#' @param df A data frame contains all the following columns: \code{run},
+#' @param df A data frame that contains all the following columns: \code{run},
 #'   \code{feature}, \code{is_mod}, and \code{log2inty}.
 #' @param method A string defining the normalization method. Default is
 #'   \code{"median"}, which equalizes the medians of log2-intensities across MS
@@ -17,7 +19,7 @@
 #'   peptides with PTMs of interest (\code{"mod"}) and log2-intensities from
 #'   unmodified peptides (\code{"unmod"}).
 #' @param reference A data frame defining the adjustment of log2-intensities for
-#' each MS runs, with columns of \code{run} and \code{adjLog2inty}.
+#'   each MS runs, with columns of \code{run} and \code{adjLog2inty}.
 #'
 #' @return A data frame with same columns as in \code{df}.
 #'
@@ -81,7 +83,7 @@ PTMnormalize <- function(df, method = "median", calc = "all", reference) {
             s <- df
         }
 
-        g <- group_by(df, .data$run)
+        g <- group_by(s, .data$run)
         if (method == "median") {
             gs <- summarise(g, log2inty = stats::median(.data$log2inty, na.rm = TRUE))
         } else if (method == "mean") {

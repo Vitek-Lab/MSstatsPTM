@@ -133,7 +133,7 @@ estimateAbundance <- function(df, fac_batch = FALSE, per_protein = FALSE) {
     nested <- nested[!errors, ]
 
     # Remove cases not eligible for hypothesis testing (SE is NA)
-    nested$param <- mapply(tidyEstimates, X = nested$lm_fit, Y = nested$data, SIMPLIFY = FALSE)
+    nested$param <- Map(tidyEstimates, nested$lm_fit, nested$data)
     nested$df <- vapply(nested$lm_fit, stats::df.residual, FUN.VALUE = double(1))
     nas <- vapply(nested$param, function(x) any(is.na(x$std.error)), FUN.VALUE = logical(1))
     nested <- nested[!nas, ]

@@ -13,7 +13,7 @@
 #' }
 tidy_fasta <- function(path) {
 
-    ## Check input
+    # Check input
     if (missing(path))
         stop(paste0("The input ", sQuote("path"), " is missing"))
     if (!is.character(path))
@@ -120,7 +120,6 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
 
     # Annotate modified sites
     peptide_fasta$len_site <- lapply(peptide_fasta$idx_site_full, function(x) nchar(x[length(x)]))
-    # peptide_fasta$len_site <- lapply(peptide_fasta$idx_site_full, function(x) nchar(last(x)))
     peptide_fasta$site <- Map(annot_site, peptide_fasta$idx_mod, peptide_fasta$mod_aa, peptide_fasta$len_site)
     peptide_fasta$site <- as.character(peptide_fasta$site)
     peptide_fasta <- peptide_fasta[, c("uniprot_iso", "peptide", "peptide_unmod",

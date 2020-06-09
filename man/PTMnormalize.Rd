@@ -7,7 +7,7 @@
 PTMnormalize(df, method = "median", calc = "all", reference)
 }
 \arguments{
-\item{df}{A data frame contains all the following columns: \code{run},
+\item{df}{A data frame that contains all the following columns: \code{run},
 \code{feature}, \code{is_mod}, and \code{log2inty}.}
 
 \item{method}{A string defining the normalization method. Default is
@@ -31,7 +31,9 @@ A data frame with same columns as in \code{df}.
 }
 \description{
 \code{PTMnormalize} normalizes log2-intensities of spectral features across
-MS runs.
+MS runs using a reference, or by equalizing a chosen summary (the log2
+intensity summation, median, or mean of log2-intensities) from all features,
+features of modified peptides or features of unmodified peptides.
 }
 \examples{
 \dontrun{

@@ -102,10 +102,11 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
         for (j in seq_along(params$param)) {
             tests[[j]] <- .onetest(params$param[[j]], params$df[j], ctrl, case)
         }
+        nores <- sapply(tests, is.null)
         onectrx <- bind_rows(tests)
-        onectrx$Protein <- params$protein
+        onectrx$Protein <- params$protein[!nores]
         if (!per_protein) {
-            onectrx$Site <- params$site
+            onectrx$Site <- params$site[!nores]
         }
         res[[i]] <- onectrx
     }
