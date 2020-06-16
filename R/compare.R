@@ -108,6 +108,9 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
         if (!per_protein) {
             onectrx$Site <- params$site[!nores]
         }
+        cols <- names(onectrx)
+        is_first <- cols %in% c("Protein", "Site")
+        onectrx <- onectrx[, c(cols[is_first], cols[!is_first])]
         res[[i]] <- onectrx
     }
     bind_rows(res)
@@ -140,7 +143,7 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 #' Protein-level adjustment
 #' @keywords internal
 .adjustProteinLevel <- function(diffSite, diffProtein) {
-    diffRef <- diffProtein[, c("Protein", "log2FC", "SE", "DF")]
+    diffRef <- diffProtein[, c("Protein", "Label", "log2FC", "SE", "DF")]
     names(diffRef)[names(diffRef) == "log2FC"] <- "log2FC_ref"
     names(diffRef)[names(diffRef) == "SE"] <- "SE_ref"
     names(diffRef)[names(diffRef) == "DF"] <- "DF_ref"
