@@ -13,8 +13,10 @@ The \code{PTM} data frame includes columns of \code{protein}, \code{site},
 \code{Protein} data frame includes all columns as in \code{PTM} except
 \code{site}.}
 
-\item{fac_batch}{A logical. \code{TRUE} considers a fixed batch effect,
-\code{FALSE} otherwise. Default is \code{FALSE}.}
+\item{fac_batch}{A logical defining the handling of batch effect for all data
+or two logicals for the \code{PTM} and \code{Protein} (if provided) data
+separately. \code{TRUE} considers a fixed batch effect, \code{FALSE}
+otherwise. Default is \code{FALSE}.}
 }
 \value{
 A list of two lists named \code{PTM} and \code{Protein}. The

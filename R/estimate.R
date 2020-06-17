@@ -11,8 +11,10 @@
 #'   \code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}. The
 #'   \code{Protein} data frame includes all columns as in \code{PTM} except
 #'   \code{site}.
-#' @param fac_batch A logical. \code{TRUE} considers a fixed batch effect,
-#'   \code{FALSE} otherwise. Default is \code{FALSE}.
+#' @param fac_batch A logical defining the handling of batch effect for all data
+#'   or two logicals for the \code{PTM} and \code{Protein} (if provided) data
+#'   separately. \code{TRUE} considers a fixed batch effect, \code{FALSE}
+#'   otherwise. Default is \code{FALSE}.
 #' @return A list of two lists named \code{PTM} and \code{Protein}. The
 #'   \code{PTM} list has four elements: \code{protein} (a string vector of
 #'   protein names), \code{site} (a string vector of PTM sites), \code{param}
@@ -49,11 +51,23 @@ PTMestimate <- function(data, fac_batch = FALSE) {
         }
     }
 
-    est_ptm <- estimateAbundance(data[["PTM"]], fac_batch, per_protein = FALSE)
+    # Define batch handling
+    if (!is.logical(fac_batch))
+        stop(sQuote("fac_batch"), " should be logical value(s)")
+    if (!(length(fac_batch) %in% c(1L, 2L)))
+        stop(paste0("Provide one logical value for all data or two logical",
+                    " values for PTM and protein separately in ", sQuote("fac_batch")))
+    if (length(fac_batch) == 2L && wo_prot)
+        stop(paste0("Batch handling parameter is defined for protein data, but",
+                    " the data is missing!"))
+    if (length(fac_batch) == 1L && !wo_prot)
+        fac_batch <- rep(fac_batch, 2)
+
+    est_ptm <- estimateAbundance(data[["PTM"]], fac_batch[1], per_protein = FALSE)
     if (wo_prot) {
         res <- list(PTM = est_ptm)
     } else {
-        est_prot <- estimateAbundance(data[["Protein"]], fac_batch, per_protein = TRUE)
+        est_prot <- estimateAbundance(data[["Protein"]], fac_batch[2], per_protein = TRUE)
         res <- list(PTM = est_ptm, Protein = est_prot)
     }
     res
