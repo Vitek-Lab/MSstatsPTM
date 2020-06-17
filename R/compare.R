@@ -149,22 +149,34 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
     names(diffRef)[names(diffRef) == "DF"] <- "DF_ref"
     joined <- inner_join(diffSite, diffRef)
 
-    log2fc <- joined$log2FC - joined$log2FC_ref
-    s2 <- joined$SE ^ 2
-    s2_ref <- joined$SE_ref ^ 2
+    missing_ctrl <- joined[joined$log2FC == Inf, ]  # PTM missing in control
+    missing_case <- joined[joined$log2FC == -Inf, ] # PTM missing in case
+    res_mctrl <- tibble(Protein = missing_ctrl$Protein,
+                        Site = missing_ctrl$Site, Label = missing_ctrl$Label,
+                        log2FC = Inf, SE = NA, Tvalue = NA, DF = NA, pvalue = NA)
+    res_mcase <- tibble(Protein = missing_case$Protein,
+                        Site = missing_case$Site, Label = missing_case$Label,
+                        log2FC = -Inf, SE = NA, Tvalue = NA, DF = NA, pvalue = NA)
+
+    idx_full <- abs(joined$log2FC) != Inf & abs(joined$log2FC_ref) != Inf
+    full <- joined[idx_full, ]
+    log2fc <- full$log2FC - full$log2FC_ref
+    s2 <- full$SE ^ 2
+    s2_ref <- full$SE_ref ^ 2
     stderr <- sqrt(s2 + s2_ref)
     numer <- (s2 + s2_ref) ^ 2
-    denom <- (s2 ^ 2 / joined$DF + s2_ref ^ 2 / joined$DF_ref)
+    denom <- (s2 ^ 2 / full$DF + s2_ref ^ 2 / full$DF_ref)
     df <- numer / denom
     tval <- log2fc / stderr
     pval <- 2 * stats::pt(abs(tval), df, lower.tail = FALSE)
+    res_full <- tibble(Protein = full$Protein,
+                       Site = full$Site,
+                       Label = full$Label,
+                       log2FC = log2fc,
+                       SE = stderr,
+                       Tvalue = tval,
+                       DF = df,
+                       pvalue = pval)
 
-    tibble(Protein = joined$Protein,
-           Site = joined$Site,
-           Label = joined$Label,
-           log2FC = log2fc,
-           SE = stderr,
-           Tvalue = tval,
-           DF = df,
-           pvalue = pval)
+    bind_rows(res_full, res_mctrl, res_mcase)
 }
