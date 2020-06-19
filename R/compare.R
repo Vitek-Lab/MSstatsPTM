@@ -60,7 +60,7 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
 
 #' Compare mean abundances for all PTM sites (or proteins) across conditions
 #'
-#' \code{PTMcompareMeans} performs significance analysis for detection of
+#' \code{extractMeanDiff} performs significance analysis for detection of
 #' changes in PTM mean abundances between conditions.
 #'
 #' @param data A list of abundance estimates with the following elements:
@@ -76,51 +76,6 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
 #'
 #' @export
 extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
-    if (!per_protein && is.null(data[["site"]]))
-        stop("Site-level analysis requires the information of PTM site")
-
-    if (per_protein) {
-        # One row per protein
-        params <- tibble(
-            protein = data[["protein"]],
-            param = data[["param"]],
-            df = data[["df"]]
-        )
-    } else {
-        # One row per site
-        params <- tibble(
-            protein = data[["protein"]],
-            site = data[["site"]],
-            param = data[["param"]],
-            df = data[["df"]]
-        )
-    }
-
-    res <- vector("list", length(controls))
-    for (i in seq_along(controls)) {
-        # Test for one contrast
-        tests <- vector("list", nrow(params))
-        ctrl <- controls[i]
-        case <- cases[i]
-        for (j in seq_along(params$param)) {
-            tests[[j]] <- .onetest(params$param[[j]], params$df[j], ctrl, case)
-        }
-        nores <- sapply(tests, is.null)
-        onectrx <- bind_rows(tests)
-        onectrx$Protein <- params$protein[!nores]
-        if (!per_protein) {
-            onectrx$Site <- params$site[!nores]
-        }
-        cols <- names(onectrx)
-        is_first <- cols %in% c("Protein", "Site")
-        onectrx <- onectrx[, c(cols[is_first], cols[!is_first])]
-        res[[i]] <- onectrx
-    }
-    bind_rows(res)
-}
-
-
-extractMeanDiff2 <- function(data, controls, cases, per_protein = FALSE) {
     if (!per_protein && is.null(data[["site"]]))
         stop("Site-level analysis requires the information of PTM site")
 
@@ -167,12 +122,10 @@ extractMeanDiff2 <- function(data, controls, cases, per_protein = FALSE) {
         }
         nores <- sapply(tests, is.null)
         onectrx <- bind_rows(tests)
-
         onectrx$Protein <- params$protein[!nores]
         if (!per_protein) {
             onectrx$Site <- params$site[!nores]
         }
-
         if (w_batch) {
             if (per_protein) {
                 cnt <- count(onectrx, .data$Protein)
@@ -218,6 +171,9 @@ extractMeanDiff2 <- function(data, controls, cases, per_protein = FALSE) {
     res
 }
 
+
+#' Aggregate FC estimates from multiple sources by averaging over them
+#' @keywords internal
 .aggregateFC <- function(data) {
     log2fc <- mean(data$log2FC)
     s2 <- data$SE ^ 2
@@ -230,7 +186,6 @@ extractMeanDiff2 <- function(data, controls, cases, per_protein = FALSE) {
 
     tibble(log2FC = log2fc, SE = stderr, Tvalue = tval, DF = df, pvalue = pval)
 }
-
 
 
 #' Protein-level adjustment

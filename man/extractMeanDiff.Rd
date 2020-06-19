@@ -24,6 +24,6 @@ analysis. Default is \code{FALSE}.}
 A data frame.
 }
 \description{
-\code{PTMcompareMeans} performs significance analysis for detection of
+\code{extractMeanDiff} performs significance analysis for detection of
 changes in PTM mean abundances between conditions.
 }
