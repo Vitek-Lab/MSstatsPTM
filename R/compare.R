@@ -45,10 +45,13 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
         stop(paste0("The lengths of ", sQuote("controls"), " and ",
                     sQuote("cases"), " should be identical"))
 
-    res <- extractMeanDiff(data[["PTM"]], controls, cases, per_protein = FALSE)
+    res <- extractMeanDiff2(data[["PTM"]], controls, cases, per_protein = FALSE)
+    # res <- extractMeanDiff(data[["PTM"]], controls, cases, per_protein = FALSE)
     if (adjProtein) {
-        res_prot <- extractMeanDiff(data[["Protein"]], controls, cases,
+        res_prot <- extractMeanDiff2(data[["Protein"]], controls, cases,
                                    per_protein = TRUE)
+        # res_prot <- extractMeanDiff(data[["Protein"]], controls, cases,
+        #                             per_protein = TRUE)
         res <- .adjustProteinLevel(res, res_prot)
     }
     res
@@ -117,6 +120,82 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 }
 
 
+extractMeanDiff2 <- function(data, controls, cases, per_protein = FALSE) {
+    if (!per_protein && is.null(data[["site"]]))
+        stop("Site-level analysis requires the information of PTM site")
+
+    w_batch <- "batch" %in% names(data)
+    if (per_protein) {
+        # One row per protein
+        params <- tibble(
+            protein = data[["protein"]],
+            param = data[["param"]],
+            df = data[["df"]]
+        )
+        if (w_batch) {
+            nb <- length(unique(data[["batch"]]))
+            params$batch <- data[["batch"]]
+            cnt <- count(params, .data$protein)
+            cnt <- cnt[cnt$n == nb, ]
+            params <- semi_join(params, cnt)
+        }
+    } else {
+        # One row per site
+        params <- tibble(
+            protein = data[["protein"]],
+            site = data[["site"]],
+            param = data[["param"]],
+            df = data[["df"]]
+        )
+        if (w_batch) {
+            nb <- length(unique(data[["batch"]]))
+            params$batch <- data[["batch"]]
+            cnt <- count(params, .data$protein, .data$site)
+            cnt <- cnt[cnt$n == nb, ]
+            params <- semi_join(params, cnt)
+        }
+    }
+
+    res <- vector("list", length(controls))
+    for (i in seq_along(controls)) {
+        # Test for one contrast
+        tests <- vector("list", nrow(params))
+        ctrl <- controls[i]
+        case <- cases[i]
+        for (j in seq_along(params$param)) {
+            tests[[j]] <- .onetest(params$param[[j]], params$df[j], ctrl, case)
+        }
+        nores <- sapply(tests, is.null)
+        onectrx <- bind_rows(tests)
+
+        onectrx$Protein <- params$protein[!nores]
+        if (!per_protein) {
+            onectrx$Site <- params$site[!nores]
+        }
+
+        if (w_batch) {
+            if (per_protein) {
+                cnt <- count(onectrx, .data$Protein)
+            } else {
+                cnt <- count(onectrx, .data$Protein, .data$Site)
+            }
+            cnt <- cnt[cnt$n == nb, ]
+            onectrx <- semi_join(onectrx, cnt)
+            onectrx <- onectrx[, !(names(onectrx) %in% c("Tvalue", "pvalue"))]
+            nested <- nest(onectrx, data = one_of(c("log2FC", "SE", "DF")))
+            nested$ave <- lapply(nested$data, .aggregateFC)
+            nested <- nested[, !(names(nested) %in% c("data"))]
+            onectrx <- unnest(nested, one_of("ave"))
+        }
+        cols <- names(onectrx)
+        is_first <- cols %in% c("Protein", "Site")
+        onectrx <- onectrx[, c(cols[is_first], cols[!is_first])]
+        res[[i]] <- onectrx
+    }
+    bind_rows(res)
+}
+
+
 #' Test for one contrast in one site (or protein)
 #' @keywords internal
 .onetest <- function(param, df, ctrl, case) {
@@ -138,6 +217,20 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
     }
     res
 }
+
+.aggregateFC <- function(data) {
+    log2fc <- mean(data$log2FC)
+    s2 <- data$SE ^ 2
+    stderr <- sqrt(sum(s2)) / nrow(data)
+    numer <- sum(s2) ^ 2
+    denom <- sum(s2 ^ 2 / data$DF)
+    df <- numer / denom
+    tval <- log2fc / stderr
+    pval <- 2 * stats::pt(abs(tval), df, lower.tail = FALSE)
+
+    tibble(log2FC = log2fc, SE = stderr, Tvalue = tval, DF = df, pvalue = pval)
+}
+
 
 
 #' Protein-level adjustment
