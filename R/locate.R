@@ -97,7 +97,7 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
     sub_fasta$idx_site_full <- lapply(loc, location_start)
 
     # Locate peptides
-    # [TODO]: use extended AAs for more specific matching
+    # [TODO]: whenever possible, use extended AAs for more specific matching
     peptide_fasta <- left_join(peptide_seq, sub_fasta)
 
     loc <- Map(function(p, s) gregexpr(p, s, fixed = TRUE)[[1]],
@@ -112,15 +112,30 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
     mod_pattern <- paste0(mod_residue, mod_symbol)
 
     # Locate modifiable, modified sites (AA residues) associated with peptides
-    peptide_fasta$idx_site <- Map(covered_set, peptide_fasta$idx_site_full, peptide_fasta$idx_peptide)
-    peptide_fasta$idx_mod <- Map(function(p, a) locate_mod(p, a, residue_symbol = mod_pattern),
-                                 as.list(peptide_fasta$peptide), as.list(peptide_fasta$aa_start))
-    peptide_fasta$mod_aa <- Map(function(s, i) if (length(i) == 0) character() else substring(s, i, i),
-                                as.list(peptide_fasta$sequence), peptide_fasta$idx_mod)
+    peptide_fasta$idx_site <- Map(
+        covered_set, peptide_fasta$idx_site_full, peptide_fasta$idx_peptide
+    )
+    peptide_fasta$idx_mod <- Map(
+        function(p, a) locate_mod(p, a, residue_symbol = mod_pattern),
+        as.list(peptide_fasta$peptide),
+        as.list(peptide_fasta$aa_start)
+    )
+    peptide_fasta$mod_aa <- Map(
+        function(s, i) if (length(i) == 0) character() else substring(s, i, i),
+        as.list(peptide_fasta$sequence),
+        peptide_fasta$idx_mod
+    )
 
     # Annotate modified sites
-    peptide_fasta$len_site <- lapply(peptide_fasta$idx_site_full, function(x) nchar(x[length(x)]))
-    peptide_fasta$site <- Map(annot_site, peptide_fasta$idx_mod, peptide_fasta$mod_aa, peptide_fasta$len_site)
+    peptide_fasta$len_site <- lapply(
+        peptide_fasta$idx_site_full, function(x) nchar(x[length(x)])
+    )
+    peptide_fasta$site <- Map(
+        annot_site,
+        peptide_fasta$idx_mod,
+        peptide_fasta$mod_aa,
+        peptide_fasta$len_site
+    )
     peptide_fasta$site <- as.character(peptide_fasta$site)
     peptide_fasta <- peptide_fasta[, c("uniprot_iso", "peptide", "peptide_unmod",
                                        "is_mod", "idx_site", "idx_mod", "site")]
