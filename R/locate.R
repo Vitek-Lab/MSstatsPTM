@@ -32,8 +32,11 @@ tidy_fasta <- function(path) {
     pat_iso <- paste0("([OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]",
                       "([A-Z][A-Z0-9]{2}[0-9]){1,2})([-]\\d{1,}){0,1}")
 
-    matches <- regexpr(pattern = "([^\\s]*)(?=\\s)", text = header, perl = TRUE)
-    shead <- regmatches(header, m = matches)
+    mch_head <- regexpr(pattern = "([^\\s]*)(?=\\s)", text = header, perl = TRUE)
+    shead <- regmatches(header, m = mch_head)
+
+    mch_uniprot <- regexpr(pattern = pat_ac, text = shead)
+    matched <- mch_uniprot != (-1)
     ac <- regmatches(shead, regexpr(pattern = pat_ac, text = shead))
     iso <- regmatches(shead, regexpr(pattern = pat_iso, text = shead))
 
@@ -41,8 +44,8 @@ tidy_fasta <- function(path) {
     trimmed <- sub(pat_iso, "", trimmed)
     entry <- gsub("\\|", "", trimmed)
 
-    tibble(header = header, sequence = as.vector(aa), uniprot_ac = ac,
-           uniprot_iso = iso, entry_name = entry)
+    tibble(header = header[matched], sequence = as.vector(aa[matched]),
+           uniprot_ac = ac, uniprot_iso = iso, entry_name = entry[matched])
 }
 
 
