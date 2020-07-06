@@ -45,13 +45,10 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
         stop(paste0("The lengths of ", sQuote("controls"), " and ",
                     sQuote("cases"), " should be identical"))
 
-    res <- extractMeanDiff2(data[["PTM"]], controls, cases, per_protein = FALSE)
-    # res <- extractMeanDiff(data[["PTM"]], controls, cases, per_protein = FALSE)
+    res <- extractMeanDiff(data[["PTM"]], controls, cases, per_protein = FALSE)
     if (adjProtein) {
-        res_prot <- extractMeanDiff2(data[["Protein"]], controls, cases,
-                                   per_protein = TRUE)
-        # res_prot <- extractMeanDiff(data[["Protein"]], controls, cases,
-        #                             per_protein = TRUE)
+        res_prot <- extractMeanDiff(data[["Protein"]], controls, cases,
+                                    per_protein = TRUE)
         res <- .adjustProteinLevel(res, res_prot)
     }
     res
