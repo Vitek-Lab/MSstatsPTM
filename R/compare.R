@@ -111,7 +111,6 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
     res <- vector("list", length(controls))
     for (i in seq_along(controls)) {
         # Test for one contrast
-        n_test <- nrow(params)
         ctrl <- controls[i]
         case <- cases[i]
         tests <- Map(.onetest, params$param, params$df, ctrl, case)
