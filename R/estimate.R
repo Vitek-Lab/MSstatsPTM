@@ -97,6 +97,10 @@ PTMestimate <- function(data, fac_batch = FALSE) {
 #'
 #' @export
 #' @examples
+#' sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
+#' list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
+#' list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+#' estimateAbundance(sim, fac_batch = FALSE)
 #' \dontrun{
 #' estimateAbundance(df, fac_batch = FALSE)
 #' }

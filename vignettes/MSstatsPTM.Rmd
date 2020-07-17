@@ -1,0 +1,79 @@
+---
+title: "MSstatsPTM"
+author: "Tsung-Heng Tsai (<tsai.tsungheng@gmail.com>)"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MSstatsPTM}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+devtools::load_all()
+library(MSstatsPTM)
+```
+
+# Introduction
+
+The goal of MSstatsPTM is to provide the implementation of general statistical methods for characterization of quantitative changes in global post-translational modification profiling experiments.
+
+The MSstatsPTM package provides three categories of important functions for quantitative analysis of PTMs: summarization, estimation and comparison. 
+
+- The `PTMsummarize` and related functions summarize log2-intensities of spectral features for each PTM site into one value per run.
+- The `PTMestimate` and related functions take as input the summarized log2-intensities for each PTM site, performs statistical modeling for the abundance of the site, and returns the estimates of model parameters for all sites in all experimental conditions.
+- The `PTMcompareMeans` and related functions perform significance analysis for detecting changes in PTM mean abundances between conditions.
+
+# Required data format
+
+```{r}
+PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 2, nFeature = 5,
+                      list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
+                      list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+```
+
+## Site-level representation
+
+### Working with FASTA files
+
+## Simulated data
+
+# PTM data processing
+
+## Normalization
+
+### Normalization by equalizing medians
+
+### Normalization with reference
+
+# PTM summarization
+
+## Summarization options
+
+# PTM estimation
+
+## Site-specific analysis
+
+### Total protein abundance
+
+## Data acquired in multiple batches
+
+### Linear models with a fixed batch effect
+
+### Separate linear models for different batches
+
+# PTM comparison
+
+## Detection of changes in mean abundances of PTM sites
+
+## Protein-level adjustment
+
+## Integration of inferences from multiple batches
+
