@@ -1,4 +1,4 @@
-#' MSstatsPTM: A package for statistical characterization of PTMs.
+#' MSstatsPTM: A package for statistical characterization of PTMs
 #'
 #' The MSstatsPTM package provides three categories of important functions for
 #' quantitative analysis of PTMs: summarization, estimation and comparison

@@ -22,4 +22,5 @@ A string.
 \examples{
 annot_site(10, "K")
 annot_site(10, "K", 3L)
+
 }

@@ -54,4 +54,5 @@ corresponding proteins, in multiple MS runs and conditions.
 PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 2, nFeature = 5,
 list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
 list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+
 }

@@ -22,6 +22,13 @@
 #'   numeric vector of degrees of freedom for each model). The \code{Protein}
 #'   list includes all as in \code{PTM}, except \code{site}.
 #'
+#' @examples
+#' sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
+#' list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
+#' list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+#' s <- PTMsummarize(sim)
+#' PTMestimate(s)
+#'
 #' @export
 PTMestimate <- function(data, fac_batch = FALSE) {
     # Check PTM data
@@ -43,7 +50,7 @@ PTMestimate <- function(data, fac_batch = FALSE) {
         wo_prot <- FALSE
         if (!is.data.frame(data[["Protein"]]))
             stop(paste0("Provide a data frame of summarized log2-intensity for",
-                        " each protein in each run in ", sQuote("data$PTM")))
+                        " each protein in each run in ", sQuote("data$Protein")))
         cols_prot <- setdiff(cols_site, "site")
         if (!all(cols_prot %in% names(data[["Protein"]]))) {
             stop("Please include in the protein data frame all the following columns: ",
@@ -88,6 +95,7 @@ PTMestimate <- function(data, fac_batch = FALSE) {
 #' @param per_protein A logical. \code{TRUE} ignores the site-level information
 #'   for PTM and considers protein as a whole, \code{FALSE} otherwise. Default
 #'   is \code{FALSE}.
+#'
 #' @return A list of two elements named \code{PTM} and \code{Protein}. The
 #'   \code{PTM} list has four elements: \code{protein} (a string vector of
 #'   protein names), \code{site} (a string vector of PTM sites), \code{param}
@@ -95,15 +103,15 @@ PTMestimate <- function(data, fac_batch = FALSE) {
 #'   numeric vector of degrees of freedom for each model). The \code{Protein}
 #'   list includes all as in \code{PTM}, except \code{site}.
 #'
-#' @export
 #' @examples
 #' sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
 #' list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
 #' list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
-#' estimateAbundance(sim, fac_batch = FALSE)
-#' \dontrun{
-#' estimateAbundance(df, fac_batch = FALSE)
-#' }
+#' s <- PTMsummarize(sim)
+#' estimateAbundance(s[["PTM"]])
+#' estimateAbundance(s[["Protein"]], per_protein = TRUE)
+#'
+#' @export
 estimateAbundance <- function(df, fac_batch = FALSE, per_protein = FALSE) {
     if (missing(df))
         stop("Input data frame is missing!")
@@ -168,9 +176,9 @@ estimateAbundance <- function(df, fac_batch = FALSE, per_protein = FALSE) {
 #'   \code{batch} for one PTM site.
 #' @param fac_batch A logical. \code{TRUE} considers batch effect, \code{FALSE}
 #'   otherwise. Default is \code{FALSE}.
+#'
 #' @return An \code{lm} model object.
 #'
-#' @export
 #' @examples
 #' x1 <- data.frame(
 #'   batch = rep(c("1", "2"), each = 4),
@@ -184,6 +192,8 @@ estimateAbundance <- function(df, fac_batch = FALSE, per_protein = FALSE) {
 #'   log2inty = rep(c(10, 12), 3) + rnorm(6)
 #' )
 #' fitLinearModel(x2)
+#'
+#' @export
 fitLinearModel <- function(df, fac_batch = FALSE) {
     if (missing(df))
         stop(paste0("The input ", sQuote("df"), " is missing!"))
@@ -206,9 +216,9 @@ fitLinearModel <- function(df, fac_batch = FALSE) {
 #'
 #' @param df A data frame with columns \code{log2inty}, \code{group}, and
 #'   \code{batch} for one PTM site.
+#'
 #' @return An \code{lm} model object.
 #'
-#' @export
 #' @examples
 #' x <- data.frame(
 #'   batch = rep(c("1", "2"), each = 4),
@@ -216,6 +226,8 @@ fitLinearModel <- function(df, fac_batch = FALSE) {
 #'   log2inty = rep(c(10, 12), 4) + rnorm(8)
 #' )
 #' fixedGroupBatch(x)
+#'
+#' @export
 fixedGroupBatch <- function(df) {
     if (length(unique(df$batch)) == 1)
         stop("Cannot estimate batch effect with a single batch!")
@@ -235,15 +247,17 @@ fixedGroupBatch <- function(df) {
 #'
 #' @param df A data frame with columns \code{log2inty} and \code{group} for one
 #'   PTM site.
+#'
 #' @return An \code{lm} model object.
 #'
-#' @export
 #' @examples
 #' x <- data.frame(
 #'   group = rep(c("1", "2"), 3),
 #'   log2inty = rep(c(10, 12), 3) + rnorm(6)
 #' )
 #' fixedGroup(x)
+#'
+#' @export
 fixedGroup <- function(df) {
     if (length(unique(df$group)) == 1) {
         fit <- stats::lm(log2inty ~ 1, data = df)
@@ -261,9 +275,9 @@ fixedGroup <- function(df) {
 #'
 #' @param fit An \code{lm} model object.
 #' @param data A data frame used to derive the model object \code{fit}.
+#'
 #' @return A data frame restoring the estimated model parameters.
 #'
-#' @export
 #' @examples
 #' x <- data.frame(
 #'   group = rep(c("1", "2"), 3),
@@ -271,6 +285,8 @@ fixedGroup <- function(df) {
 #' )
 #' fit <- fitLinearModel(x)
 #' tidyEstimates(fit, x)
+#'
+#' @export
 tidyEstimates <- function(fit, data) {
     param <- broom::tidy(fit)
     batches <- grepl("batch", param$term)

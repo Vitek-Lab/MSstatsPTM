@@ -23,4 +23,5 @@ x <- data.frame(
   log2inty = rep(c(10, 12), 3) + rnorm(6)
 )
 fixedGroup(x)
+
 }

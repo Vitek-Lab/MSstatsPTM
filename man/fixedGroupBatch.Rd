@@ -24,4 +24,5 @@ x <- data.frame(
   log2inty = rep(c(10, 12), 4) + rnorm(8)
 )
 fixedGroupBatch(x)
+
 }

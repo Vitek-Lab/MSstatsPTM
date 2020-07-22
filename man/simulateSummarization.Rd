@@ -29,4 +29,5 @@ condition
 }
 \examples{
 simulateSummarization(nGroup = 2, nRep = 3, 25, c(0, 1), 0.2)
+
 }

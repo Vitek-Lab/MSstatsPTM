@@ -32,4 +32,5 @@ changes in PTM mean abundances between conditions.
 \dontrun{
 PTMcompareMeans(df_mod, controls, cases)
 }
+
 }

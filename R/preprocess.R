@@ -5,44 +5,57 @@
 #' intensity summation, median, or mean of log2-intensities) from all features,
 #' features of modified peptides or features of unmodified peptides.
 #'
-#' @param df A data frame that contains all the following columns: \code{run},
-#'   \code{feature}, \code{is_mod}, and \code{log2inty}.
+#' @param data A list of two data frames named \code{PTM} and \code{Protein}.
+#'   Both the \code{PTM} data frame and the \code{Protein} data frame include
+#'   columns of \code{run}, \code{feature}, and \code{log2inty}.
 #' @param method A string defining the normalization method. Default is
 #'   \code{"median"}, which equalizes the medians of log2-intensities across MS
 #'   runs. Other methods include to equalize log2 of intensity summation
 #'   (\code{"logsum"}), to equalize the means of log2-intensities
 #'   (\code{"mean"}), and to adjust the log2-intensities based on a reference
-#'   (\code{"ref"}) given by (\code{reference}).
-#' @param calc A string defining parts of log2-intensities used for calculating
-#'   the adjustment value for each MS run. Default is \code{"all"}, which uses
-#'   all measurements. Other options include to use only log2-intensities from
-#'   peptides with PTMs of interest (\code{"mod"}) and log2-intensities from
-#'   unmodified peptides (\code{"unmod"}).
-#' @param reference A data frame defining the adjustment of log2-intensities for
-#'   each MS runs, with columns of \code{run} and \code{adjLog2inty}.
+#'   (\code{"ref"}) given by (\code{refs}).
+#' @param refs A list of two data frames named \code{PTM} and \code{Protein}.
+#'   Each defines the adjustment of log2-intensities for the MS runs in its
+#'   corresponding data.
 #'
-#' @return A data frame with same columns as in \code{df}.
-#'
-#' @export
+#' @return Normalized data stored as in \code{data}.
 #'
 #' @examples
 #' \dontrun{
 #' PTMnormalize(df)
 #' }
-PTMnormalize <- function(df, method = "median", calc = "all", reference) {
-    cols_req <- c("run", "feature", "is_mod", "log2inty")
+#'
+#' @export
+PTMnormalize <- function(data, method = "median", refs) {
+    cols_req <- c("run", "feature", "log2inty")
     norm_opt <- c("median", "mean", "logsum", "ref")
-    calc_opt <- c("all", "mod", "unmod")
 
-    if (missing(df))
-        stop("The input ", sQuote("df"), " is missing!")
-    if (!is.data.frame(df))
-        stop("Provide the peak list as a data frame in ", sQuote("df"))
-    if (!all(cols_req %in% names(df))) {
-        stop("Please include in the data frame all the following columns: ",
+    # Check the PTM data
+    if (is.null(data[["PTM"]]))
+        stop("PTM peak list is missing!")
+    if (!is.data.frame(data[["PTM"]]))
+        stop(paste0("Provide a data frame of peak log2-intensity for",
+                    " the PTM data in ", sQuote("data$PTM")))
+    if (!all(cols_req %in% names(data[["PTM"]]))) {
+        stop("Please include in the PTM data frame all the following columns: ",
              paste0(sQuote(cols_req), collapse = ", "))
     }
 
+    # Check the Protein data
+    if (is.null(data[["Protein"]])) {
+        wo_prot <- TRUE
+    } else {
+        wo_prot <- FALSE
+        if (!is.data.frame(data[["Protein"]]))
+            stop(paste0("Provide a data frame of peak log2-intensity for",
+                        " the Protein data in ", sQuote("data$Protein")))
+        if (!all(cols_req %in% names(data[["Protein"]]))) {
+            stop("Please include in the protein data frame all the following columns: ",
+                 paste0(sQuote(cols_req), collapse = ", "))
+        }
+    }
+
+    # Check input method
     if (!is.character(method) || length(method) != 1) {
         stop("Define normalization method as a string in ", sQuote("method"))
     }
@@ -51,53 +64,74 @@ PTMnormalize <- function(df, method = "median", calc = "all", reference) {
              paste0(sQuote(norm_opt), collapse = ", "))
     }
 
-    if (method != "ref") {
-        if (missing(calc) || !is.character(calc) || length(calc) != 1) {
-            stop("Define calculation option as a string in ", sQuote("calc"))
-        }
-        if (!(calc %in% calc_opt)) {
-            stop("Define the calculation option as one of the following: ",
-                 paste0(sQuote(calc_opt), collapse = ", "))
-        }
-    }
-
     if (method == "ref") {
-        if (missing(reference) || !is.data.frame(reference)) {
-            stop("Define the adjustment as a data frame in ", sQuote("reference"))
+        # Check and obtain reference
+        if (missing(refs))
+            stop("Define the adjustment in ", sQuote("refs"))
+
+        # Check the reference for the PTM data
+        if (!is.data.frame(refs[["PTM"]])) {
+            stop("Define the adjustment for PTM data as a data frame in ", sQuote("refs$PTM"))
         }
-        if (!all(c("run", "adjLog2inty") %in% names(reference))) {
-            stop("Please include in ", sQuote("reference"),
+        if (!all(c("run", "adjLog2inty") %in% names(refs[["PTM"]]))) {
+            stop("Please include in ", sQuote("refs$PTM"),
                  " the following columns: ", sQuote("run"), sQuote("adjLog2inty"))
         }
-        if (!all(unique(df$run) %in% reference$run)) {
+        if (!all(unique(data[["PTM"]]$run) %in% refs[["PTM"]]$run)) {
             stop("Adjustment is not fully defined for all MS runs!")
         }
+        ref_PTM <- refs[["PTM"]]
+
+        if (!wo_prot) {
+            # Check the reference for the Protein data
+            if (!is.data.frame(refs[["Protein"]])) {
+                stop("Define the adjustment for Protein data as a data frame in ", sQuote("refs$Protein"))
+            }
+            if (!all(c("run", "adjLog2inty") %in% names(refs[["Protein"]]))) {
+                stop("Please include in ", sQuote("refs$Protein"),
+                     " the following columns: ", sQuote("run"), sQuote("adjLog2inty"))
+            }
+            if (!all(unique(data[["Protein"]]$run) %in% refs[["Protein"]]$run)) {
+                stop("Adjustment is not fully defined for all MS runs!")
+            }
+            ref_prot <- refs[["Protein"]]
+        }
+    } else {
+        # Compute reference
+        ref_PTM <- .getReference(data[["PTM"]], method)
+        if (!wo_prot) {
+            ref_prot <- .getReference(data[["Protein"]], method)
+        }
     }
 
-    if (method != "ref") {
-        if (calc == "mod") {
-            s <- df[df$is_mod, ]
-        } else if (calc == "unmod") {
-            s <- df[!df$is_mod, ]
-        } else {
-            s <- df
-        }
-
-        g <- group_by(s, .data$run)
-        if (method == "median") {
-            gs <- summarise(g, log2inty = stats::median(.data$log2inty, na.rm = TRUE))
-        } else if (method == "mean") {
-            gs <- summarise(g, log2inty = mean(.data$log2inty, na.rm = TRUE))
-        } else {
-            gs <- summarise(g, log2inty = log2(sum(2 ^ .data$log2inty, na.rm = TRUE)))
-        }
-        ref <- stats::median(gs$log2inty)
-        reference <- tibble(run = gs$run, adjLog2inty = ref - gs$log2inty)
+    # Adjust based on the reference
+    if (wo_prot) {
+        res <- list(PTM = .byReference(data[["PTM"]], ref_PTM))
+    } else {
+        res <- list(PTM = .byReference(data[["PTM"]], ref_PTM),
+                    Protein = .byReference(data[["Protein"]], ref_prot))
     }
-
-    df_aug <- left_join(df, reference)
-    df_aug$log2inty <- df_aug$log2inty + df_aug$adjLog2inty
-
-    df_aug[, names(df_aug) != "adjLog2inty"]
+    res
 }
 
+
+#' @keywords internal
+.getReference <- function(df, method = "median") {
+    g <- group_by(df, .data$run)
+    if (method == "median") {
+        gs <- summarise(g, log2inty = stats::median(.data$log2inty, na.rm = TRUE))
+    } else if (method == "mean") {
+        gs <- summarise(g, log2inty = mean(.data$log2inty, na.rm = TRUE))
+    } else {
+        gs <- summarise(g, log2inty = log2(sum(2 ^ .data$log2inty, na.rm = TRUE)))
+    }
+    gbl <- stats::median(gs$log2inty)
+    tibble(run = gs$run, adjLog2inty = gbl - gs$log2inty)
+}
+
+#' @keywords internal
+.byReference <- function(df, ref) {
+    df_aug <- left_join(df, ref)
+    df_aug$log2inty <- df_aug$log2inty + df_aug$adjLog2inty
+    df_aug[, names(df_aug) != "adjLog2inty"]
+}

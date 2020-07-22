@@ -25,4 +25,5 @@ x <- data.frame(
 )
 fit <- fitLinearModel(x)
 tidyEstimates(fit, x)
+
 }

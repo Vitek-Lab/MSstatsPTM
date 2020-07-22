@@ -3,14 +3,16 @@
 #' \code{tidy_fasta} reads and tidys FASTA file.
 #'
 #' @param path A string of path to a FASTA file.
+#'
 #' @return A tibble with columns named \code{header}, \code{sequence},
 #'   \code{uniprot_ac}, \code{uniprot_iso}, \code{entry_name}.
 #'
-#' @export
 #' @examples
 #' \dontrun{
 #' tidy_fasta(path)
 #' }
+#'
+#' @export
 tidy_fasta <- function(path) {
 
     # Check input
@@ -62,10 +64,11 @@ tidy_fasta <- function(path) {
 #' @param mod_symbol A string. Symbol of a modified site.
 #' @param rm_cnfnd A logical. \code{TRUE} removes confounded
 #'   unmodified sites, \code{FALSE} otherwise. Default is \code{FALSE}.
+#'
 #' @return A data frame with three columns: \code{uniprot_iso}, \code{peptide},
 #'   \code{site}.
-#' @export
 #'
+#' @export
 PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
                       rm_cnfnd = FALSE) {
 
@@ -97,7 +100,7 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
     # Locate modifiable sites
     sub_fasta <- fasta[fasta$uniprot_iso %in% uniprot, c("uniprot_iso", "sequence")]
     loc <- gregexpr(mod_residue, sub_fasta$sequence, fixed = TRUE)
-    sub_fasta$idx_site_full <- lapply(loc, location_start)
+    sub_fasta$idx_site_full <- lapply(loc, .location_start)
 
     # Locate peptides
     # [TODO]: whenever possible, use extended AAs for more specific matching
@@ -105,18 +108,18 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
 
     loc <- Map(function(p, s) gregexpr(p, s, fixed = TRUE)[[1]],
                as.list(peptide_fasta$peptide_unmod), as.list(peptide_fasta$sequence))
-    n <- vapply(loc, num_match, FUN.VALUE = integer(1))
+    n <- vapply(loc, .num_match, FUN.VALUE = integer(1))
     peptide_fasta <- peptide_fasta[n == 1L, ]
     loc <- loc[n == 1L]
-    peptide_fasta$idx_peptide <- lapply(loc, location)
-    peptide_fasta$aa_start <- sapply(loc, location_start)
+    peptide_fasta$idx_peptide <- lapply(loc, .location)
+    peptide_fasta$aa_start <- sapply(loc, .location_start)
 
     # Pattern of modified sites
     mod_pattern <- paste0(mod_residue, mod_symbol)
 
     # Locate modifiable, modified sites (AA residues) associated with peptides
     peptide_fasta$idx_site <- Map(
-        covered_set, peptide_fasta$idx_site_full, peptide_fasta$idx_peptide
+        .covered_set, peptide_fasta$idx_site_full, peptide_fasta$idx_peptide
     )
     peptide_fasta$idx_mod <- Map(
         function(p, a) locate_mod(p, a, residue_symbol = mod_pattern),
@@ -156,11 +159,11 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
         }
         s_unmod <- by_prot[!cnfnd, col_res]
 
-        n1 <- vapply(peptide_fasta$idx_mod, length_one, FUN.VALUE = logical(1))
+        n1 <- vapply(peptide_fasta$idx_mod, .length_one, FUN.VALUE = logical(1))
         s_mod <- peptide_fasta[peptide_fasta$is_mod & n1, col_res]
         res <- bind_rows(s_mod, s_unmod)
     } else {
-        n1 <- vapply(peptide_fasta$idx_mod, length_one, FUN.VALUE = logical(1))
+        n1 <- vapply(peptide_fasta$idx_mod, .length_one, FUN.VALUE = logical(1))
         res <- peptide_fasta[!peptide_fasta$is_mod | n1, col_res]
     }
 
@@ -168,12 +171,15 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
 }
 
 
-num_match <- function(x) {
+#' @keywords internal
+.num_match <- function(x) {
     ifelse(is.na(x) || identical(as.vector(x), -1L), 0L,
            length(attr(x, "match.length")))
 }
 
-location_start <- function(x) {
+
+#' @keywords internal
+.location_start <- function(x) {
     start <- as.vector(x)
     if (identical(start, -1L)) {
         return(integer())
@@ -181,7 +187,9 @@ location_start <- function(x) {
     start
 }
 
-location <- function(x) {
+
+#' @keywords internal
+.location <- function(x) {
     start <- as.vector(x)
     if (identical(start, -1L)) {
         return(cbind(start = integer(), end = integer()))
@@ -192,11 +200,16 @@ location <- function(x) {
     cbind(start = start, end = end)
 }
 
-covered <- function(x, y) x >= y[1] & x <= y[2]
 
-covered_set <- function(x, y) x[covered(x, y)]
+#' @keywords internal
+.covered_set <- function(x, y) {
+    x[x >= y[1] & x <= y[2]]
+}
 
-length_one <- function(x) length(x) == 1
+
+#' @keywords internal
+.length_one <- function(x) length(x) == 1
+
 
 #' Locate modified sites with a peptide
 #'
@@ -205,13 +218,15 @@ length_one <- function(x) length(x) == 1
 #' @param peptide A string. Peptide sequence.
 #' @param aa_start An integer. Starting index of the peptide.
 #' @param residue_symbol A string. Modification residue and denoted symbol.
+#'
 #' @return A string.
-#' @export
 #'
 #' @examples
 #' \dontrun{
 #' locate_mod(peptide, aa_start, residue_symbol)
 #' }
+#'
+#' @export
 locate_mod <- function(peptide, aa_start, residue_symbol) {
 
     x <- gregexpr(residue_symbol, peptide)[[1]]
@@ -230,12 +245,14 @@ locate_mod <- function(peptide, aa_start, residue_symbol) {
 #' @param aa_idx An integer vector. Location of the sites.
 #' @param residue A string vector. Amino acid residue.
 #' @param len_idx An integer. Default is \code{NULL}
+#'
 #' @return A string.
-#' @export
 #'
 #' @examples
 #' annot_site(10, "K")
 #' annot_site(10, "K", 3L)
+#'
+#' @export
 annot_site <- function(aa_idx, residue, len_idx = NULL) {
     if (length(aa_idx) == 0) {
         return("None")

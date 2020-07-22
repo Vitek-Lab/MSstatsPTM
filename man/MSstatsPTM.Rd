@@ -3,7 +3,7 @@
 \docType{package}
 \name{MSstatsPTM}
 \alias{MSstatsPTM}
-\title{MSstatsPTM: A package for statistical characterization of PTMs.}
+\title{MSstatsPTM: A package for statistical characterization of PTMs}
 \description{
 The MSstatsPTM package provides three categories of important functions for
 quantitative analysis of PTMs: summarization, estimation and comparison

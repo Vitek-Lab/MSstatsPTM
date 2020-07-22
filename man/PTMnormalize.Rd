@@ -4,30 +4,26 @@
 \alias{PTMnormalize}
 \title{Normalization of log2-intensities across MS runs}
 \usage{
-PTMnormalize(df, method = "median", calc = "all", reference)
+PTMnormalize(data, method = "median", refs)
 }
 \arguments{
-\item{df}{A data frame that contains all the following columns: \code{run},
-\code{feature}, \code{is_mod}, and \code{log2inty}.}
+\item{data}{A list of two data frames named \code{PTM} and \code{Protein}.
+Both the \code{PTM} data frame and the \code{Protein} data frame include
+columns of \code{run}, \code{feature}, and \code{log2inty}.}
 
 \item{method}{A string defining the normalization method. Default is
 \code{"median"}, which equalizes the medians of log2-intensities across MS
 runs. Other methods include to equalize log2 of intensity summation
 (\code{"logsum"}), to equalize the means of log2-intensities
 (\code{"mean"}), and to adjust the log2-intensities based on a reference
-(\code{"ref"}) given by (\code{reference}).}
+(\code{"ref"}) given by (\code{refs}).}
 
-\item{calc}{A string defining parts of log2-intensities used for calculating
-the adjustment value for each MS run. Default is \code{"all"}, which uses
-all measurements. Other options include to use only log2-intensities from
-peptides with PTMs of interest (\code{"mod"}) and log2-intensities from
-unmodified peptides (\code{"unmod"}).}
-
-\item{reference}{A data frame defining the adjustment of log2-intensities for
-each MS runs, with columns of \code{run} and \code{adjLog2inty}.}
+\item{refs}{A list of two data frames named \code{PTM} and \code{Protein}.
+Each defines the adjustment of log2-intensities for the MS runs in its
+corresponding data.}
 }
 \value{
-A data frame with same columns as in \code{df}.
+Normalized data stored as in \code{data}.
 }
 \description{
 \code{PTMnormalize} normalizes log2-intensities of spectral features across
@@ -39,4 +35,5 @@ features of modified peptides or features of unmodified peptides.
 \dontrun{
 PTMnormalize(df)
 }
+
 }

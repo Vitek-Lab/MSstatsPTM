@@ -23,11 +23,12 @@
 #' @return A tibble with columns of \code{protein}, \code{site}, \code{group},
 #'   \code{run}, \code{feature}, \code{log2inty}.
 #'
-#' @export
 #' @examples
 #' PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 2, nFeature = 5,
 #' list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
 #' list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+#'
+#' @export
 PTMsimulateExperiment <- function(nGroup, nRep, nProtein, nSite, nFeature,
                                   mu, delta, sRep, sPeak) {
     # Site data
@@ -49,11 +50,10 @@ PTMsimulateExperiment <- function(nGroup, nRep, nProtein, nSite, nFeature,
     prots <- bind_rows(peaks)
     prots$protein <- rep(paste0("Protein_", 1:nProtein),
                          each = nGroup * nRep * nFeature)
-    prots$site <- "None"
 
     # Combine PTM and Protein data
     cols <- c("protein", "site", "group", "run", "feature", "log2inty")
-    bind_rows(sites[, cols], prots[, cols])
+    list(PTM = sites[, cols], Protein = prots[, setdiff(cols, "site")])
 }
 
 
@@ -78,9 +78,10 @@ PTMsimulateExperiment <- function(nGroup, nRep, nProtein, nSite, nFeature,
 #' @return A tibble with columns of \code{site}, \code{group}, \code{run},
 #'   \code{feature}, \code{log2inty}.
 #'
-#' @export
 #' @examples
 #' simulateSites(nGroup = 2, nRep = 2, nSite = 2, nFeature = 5, 25, c(0, 1), 0.2, 0.05)
+#'
+#' @export
 simulateSites <- function(nGroup, nRep, nSite, nFeature, mu, delta, sRep, sPeak) {
     peaks <- vector("list", nSite)
     for (i in 1:nSite) {
@@ -111,9 +112,10 @@ simulateSites <- function(nGroup, nRep, nSite, nFeature, mu, delta, sRep, sPeak)
 #' @return A tibble with columns of \code{group}, \code{run}, \code{feature},
 #'   and \code{log2inty}.
 #'
-#' @export
 #' @examples
 #' simulatePeaks(nGroup = 2, nRep = 3, nFeature = 5, 25, c(0, 1), 0.2, 0.05)
+#'
+#' @export
 simulatePeaks <- function(nGroup, nRep, nFeature, mu, delta, sRep, sPeak) {
     summarized <- simulateSummarization(nGroup, nRep, mu, delta, sRep)
 
@@ -142,9 +144,10 @@ simulatePeaks <- function(nGroup, nRep, nFeature, mu, delta, sRep, sPeak) {
 #'
 #' @return A tibble with columns of \code{group}, \code{run} and \code{log2inty}.
 #'
-#' @export
 #' @examples
 #' simulateSummarization(nGroup = 2, nRep = 3, 25, c(0, 1), 0.2)
+#'
+#' @export
 simulateSummarization <- function(nGroup, nRep, mu, delta, sRep) {
     all_mu <- rep(mu, nGroup) + delta
 

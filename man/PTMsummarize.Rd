@@ -4,32 +4,36 @@
 \alias{PTMsummarize}
 \title{Site-level summarization}
 \usage{
-PTMsummarize(df, method = "tmp")
+PTMsummarize(data, method = "tmp")
 }
 \arguments{
-\item{df}{A data frame with columns of \code{protein}, \code{site},
+\item{data}{A list of two data frames named \code{PTM} and \code{Protein}.
+The \code{PTM} data frame includes columns of \code{protein}, \code{site},
 \code{group}, \code{run}, \code{feature}, \code{log2inty}, and possibly,
-\code{batch}.}
+\code{batch}. The \code{Protein} data frame includes all columns as in
+\code{PTM} except \code{site}.}
 
 \item{method}{A string defining the summarization method. Default is
 \code{"tmp"}, which applies Tukey's median polish. Other methods include
-log2 of intensity summation (\code{"logsum"}), and mean (\code{"mean"}),
-median (\code{"median"}) and max (\code{"max"}) of the log-intensities.}
+log2 of the summation of peak intensities (\code{"logsum"}), and mean
+(\code{"mean"}), median (\code{"median"}) and max (\code{"max"}) of the
+log2-intensities.}
 }
 \value{
-A data frame with columns of \code{protein}, \code{site},
-\code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}.
+A list of two data frames named \code{PTM} and \code{Protein}. The
+\code{PTM} data frame has columns of \code{protein}, \code{site},
+\code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}. The
+\code{Protein} data frame includes all as in \code{PTM}, except \code{site}.
 }
 \description{
-\code{PTMsummarize} summarizes log2-intensities of spectral features for each
-PTM site into one value per run.
+\code{PTMsummarize} summarizes the peak log2-intensities for each PTM site
+into one value per run. If protein peak-intensities are availble, the same
+summarization procedure is applied to each protein as well.
 }
 \examples{
 sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
 list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
 list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
 PTMsummarize(sim)
-\dontrun{
-PTMsummarize(df)
-}
+
 }

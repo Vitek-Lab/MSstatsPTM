@@ -20,4 +20,5 @@ A tibble with columns named \code{header}, \code{sequence},
 \dontrun{
 tidy_fasta(path)
 }
+
 }

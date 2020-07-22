@@ -29,4 +29,5 @@ df <- data.frame(
   feature = c("F1", "F2", "F3", "F1", "F3"),
   log2inty = rnorm(5))
 summarizeFeatures(df, method = "tmp")
+
 }

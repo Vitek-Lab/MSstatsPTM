@@ -1,10 +1,10 @@
 ---
-title: "MSstatsPTM"
+title: "MSstatsPTM for statistical quantification of PTMs"
 author: "Tsung-Heng Tsai (<tsai.tsungheng@gmail.com>)"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{MSstatsPTM}
+  %\VignetteIndexEntry{MSstatsPTM for statistical quantification of PTMs}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
-devtools::load_all()
+# devtools::load_all()
 library(MSstatsPTM)
 ```
 

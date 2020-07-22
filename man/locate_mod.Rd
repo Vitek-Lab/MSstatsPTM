@@ -23,4 +23,5 @@ A string.
 \dontrun{
 locate_mod(peptide, aa_start, residue_symbol)
 }
+
 }

@@ -13,13 +13,15 @@
 #' @param cases A string vector of case groups.
 #' @param adjProtein A logical. \code{TRUE} performs protein-level adjustment,
 #'   \code{FALSE} otherwise. Default is \code{FALSE}.
+#'
 #' @return A data frame.
 #'
-#' @export
 #' @examples
 #' \dontrun{
 #' PTMcompareMeans(df_mod, controls, cases)
 #' }
+#'
+#' @export
 PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
     # Check PTM estimates
     if (is.null(data[["PTM"]]))
@@ -69,6 +71,7 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
 #' @param per_protein A logical. \code{TRUE} ignores the site-level information
 #'   for PTM and considers protein as a whole, \code{FALSE} performs site-level
 #'   analysis. Default is \code{FALSE}.
+#'
 #' @return A data frame.
 #'
 #' @export
