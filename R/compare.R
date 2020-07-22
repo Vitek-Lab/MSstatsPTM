@@ -146,7 +146,6 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 }
 
 
-#' Test for one contrast in one site (or protein)
 #' @keywords internal
 .onetest <- function(param, df, ctrl, case) {
     if (!any(c(ctrl, case) %in% param$group)) {
@@ -169,7 +168,6 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 }
 
 
-#' Aggregate FC estimates from multiple sources by averaging over them
 #' @keywords internal
 .aggregateFC <- function(data) {
     log2fc <- mean(data$log2FC)
@@ -185,7 +183,6 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 }
 
 
-#' Protein-level adjustment
 #' @keywords internal
 .adjustProteinLevel <- function(diffSite, diffProtein) {
     diffRef <- diffProtein[, c("Protein", "Label", "log2FC", "SE", "DF")]
