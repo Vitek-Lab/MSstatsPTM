@@ -107,25 +107,39 @@ _MSstatsPTM_ provides several help functions to facilitate the transformation:
 
 ### Working with FASTA files
 
-`tidy_fasta()` takes as input the path to a FASTA file (either a local path or an URL). For example, we can access to the information of Alpha-synuclein (P37840) on [uniprot](https://www.uniprot.org/uniprot/P37840) and extract the sequence information as follows:
+`tidy_fasta()` takes as input the path to a FASTA file (either a local path or an URL). For example, we can access to the information of alpha-synuclein (P37840) on [Uniprot](https://www.uniprot.org/uniprot/P37840) and extract the sequence information as follows:
 
 ```{r fasta}
-tidy_fasta("https://www.uniprot.org/uniprot/P37840.fasta")
+fas <- tidy_fasta("https://www.uniprot.org/uniprot/P37840.fasta")
+fas
 ```
-
 
 # Normalization
 
-The normalization can be performed by equalizing sensible summary statistics (such as the median of the log2-intensities) across MS runs, or by using a reference dervied from either spiked-in internal standard or other orthogonal evidence. The PTM data and the protein data are normalized separately, using `PTMnormalize()`.
+Normalization of log2-intensities can be performed by equalizing sensible summary statistics (such as the median of the log2-intensities) across MS runs, or by using a reference derived from either spiked-in internal standard or other orthogonal evidence. The PTM data and the protein data are normalized separately, using `PTMnormalize()`.
 
 ## Normalization based on the summary statistics of each run
 
+Normalization often relies on the assumption about the distribution of log2-intensities for each MS run. For example, one common assumption that the abundances of most PTM sites and proteins do not change across conditions. It is therefore sensible to equalize measures of distribution location across MS runs. 
+
+The data can be normalized with `PTMnormalize()`. Different summary statistics can be defined through the `method` option: the median of log2-intensities (`median`, default), the mean of log2-intensities (`mean`), and the log2 of intensity summation (`logsum`). 
+
 ```{r normalization, message=FALSE}
-normalized <- PTMnormalize(sim)
+normalized <- PTMnormalize(sim, method = "median")
+normalized
 ```
 
 ## Normalization with reference
 
+The assumption taken in the summary-based normalization may not be valid in all scenarios. When experimental design allows to derive a reference for the normalization (e.g., using internal standard), it can be useful to perform normalization using the reference. For example, the hypothetical reference below defines an adjustment of `c(2, -2, 0, 0)` in the PTM data and `c(1.5, -1, 0, 0)` in the protein data, for the 4 MS runs. 
+
+```{r normalization-ref, message=FALSE}
+refs <- list(
+  PTM = data.frame(run = paste0("R_", 1:4), adjLog2inty = c(2, -2, 0, 0)), 
+  Protein = data.frame(run = paste0("R_", 1:4), adjLog2inty = c(3, -1, 0, 0))
+)
+PTMnormalize(sim, method = "ref", refs = refs)
+```
 
 # Summarization
 
