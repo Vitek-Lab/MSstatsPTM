@@ -1,5 +1,5 @@
 ---
-title: "MSstatsPTM for statistical characterization of PTMs"
+title: "Introduction to MSstatsPTM"
 author: "Tsung-Heng Tsai (tsai.tsungheng@gmail.com)"
 output:
   BiocStyle::html_document:
@@ -7,7 +7,7 @@ output:
   pdf_document: default
 package: MSstatsPTM
 vignette: >
-  %\VignetteIndexEntry{MSstatsPTM for statistical characterization of PTMs}
+  %\VignetteIndexEntry{Introduction to MSstatsPTM}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -33,13 +33,13 @@ library(MSstatsPTM)
 
 Quantative analyses of PTMs are supported by four main function of _MSstatsPTM_:
 
-- `PTMnormalize()` normalizes the quantified peak log2-intensities to correct systematic variation across MS runs.
+* `PTMnormalize()` normalizes the quantified peak log2-intensities to correct systematic variation across MS runs.
 
-- `PTMsummarize()` summarizes log2-intensities of spectral features into one value per PTM site (or protein) per MS run.
+* `PTMsummarize()` summarizes log2-intensities of spectral features into one value per PTM site (or protein) per MS run.
 
-- `PTMestimate()` takes as input the summarized log2-intensities for each PTM site, performs statistical modeling for the abundance of the site, and returns the estimates of model parameters for all sites in all experimental conditions.
+* `PTMestimate()` takes as input the summarized log2-intensities for each PTM site, performs statistical modeling for the abundance of the site, and returns the estimates of model parameters for all sites in all experimental conditions.
 
-- `PTMcompareMeans()` function performs significance analysis for detecting changes in PTM mean abundances between conditions.
+* `PTMcompareMeans()` performs significance analysis for detecting changes in PTM mean abundances between conditions.
 
 # Installation
 
@@ -55,11 +55,11 @@ Once intalled, _MSstatsPTM_ can be loaded with `library()`:
 library(MSstatsPTM)
 ```
 
-# Data from a PTM experiment
+# Data preparation
 
-The PTM abundances consist of two factors: (1) the proportion of proteins carrying the PTM, and (2) the underlying protein abundance. Quantification of PTMs alone cannot provide full information about the degree of the modification. Therefore, a quantitative PTM experiment often includes analysis of both enriched samples (for PTMs) and unenriched samples (for proteins). 
+The PTM abundance is affected by two factors: (1) the proportion of proteins carrying the PTM, and (2) the underlying protein abundance. Quantification of PTMs alone cannot provide full information about the degree of the modification. Therefore, a quantitative PTM experiment often involves analysis of both enriched samples (for PTMs) and unenriched samples (for proteins). 
 
-Input data for `MSstatsPTM` analysis are provided as a list of two data frames, named `PTM` and `Protein`. 
+The _MSstatsPTM_ analysis workflow takes as input a list of two data frames, named `PTM` and `Protein`. 
 
 ## Example dataset
 
@@ -75,33 +75,44 @@ sim <- PTMsimulateExperiment(
 )
 ```
 
-This creates a list of two data frames named `PTM` and `Protein`:
+The function takes in account several parameters in a PTM experiment: number of groups (`nGroup`), number of replicates per group (`nRep`), number of proteins (`nProtein`), number of sites per protein (`nSite`), number of spectral features per site (`nFeature`), mean log2-abundance of PTM and protein (`mu`), deviation from the mean log2-abundance in each group (`delta`), standard deviation among replicates (`sRep`), and standard deviation among log2-intensities (`sPeak`), and creates a list of two data frames named `PTM` and `Protein`. 
 
-```{r}
+Note here we use the generic term "feature" to refer to precursor ions in DDA, fragments in DIA, or transitions in SRM. 
+
+```{r data-structure}
 str(sim)
 ```
 
-The `PTM` data frame contains 6 columns representing the quantified `log2inty` for each `feature` of its `protein` and `site`, in the corresponding `group` and `run`: 
+The `PTM` data frame contains 6 columns representing the quantified `log2inty` of each `feature`, `site` and `protein`, in the corresponding `group` and `run`: 
 
-```{r}
+```{r data-ptm}
 sim[["PTM"]]
 ```
 
 The `Protein` data frame includes the same columns except `site`:
 
-```{r}
+```{r data-protein}
 sim[["Protein"]]
 ```
 
 ## Site-level representation
 
-A main difference is that PTM analysis typically has a focus on modification sites of PTMs. A site can be spanned by multiple peptides, quantified with multiple spectral features (i.e., peptide ions in DDA, fragments in DIA, or transitions in SRM). Transformation from peptide-level representation to site-level representation requires locating PTM sites on protein sequence. 
+A main difference of the PTM analysis from general proteomics analyses is the focus on the PTM sites (i.e., modified residues), where the basic analysis unit is a PTM site, rather than a protein. A site can be spanned by multiple peptides, quantified with multiple spectral features. Transformation from peptide-level representation to site-level representation requires locating PTM sites on protein sequence, usually provided in a FASTA format. 
 
-The package provides several help functions to facilitate the transformation.
+_MSstatsPTM_ provides several help functions to facilitate the transformation: 
+
+* `tidy_fasta()` reads and returns the sequence information in a tidy format.
+
+* `PTMlocate()` annotates PTM sites with the associated peptides and protein sequences. 
 
 ### Working with FASTA files
 
-## More about `PTMsimulateExperiment()`
+`tidy_fasta()` takes as input the path to a FASTA file (either a local path or an URL). For example, we can access to the information of Alpha-synuclein (P37840) on [uniprot](https://www.uniprot.org/uniprot/P37840) and extract the sequence information as follows:
+
+```{r fasta}
+tidy_fasta("https://www.uniprot.org/uniprot/P37840.fasta")
+```
+
 
 # Normalization
 
@@ -109,7 +120,7 @@ The normalization can be performed by equalizing sensible summary statistics (su
 
 ## Normalization based on the summary statistics of each run
 
-```{r}
+```{r normalization, message=FALSE}
 normalized <- PTMnormalize(sim)
 ```
 
