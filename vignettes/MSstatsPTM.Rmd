@@ -131,7 +131,7 @@ normalized
 
 ## Normalization with reference
 
-The assumption taken in the summary-based normalization may not be valid in all scenarios. When experimental design allows to derive a reference for the normalization (e.g., using internal standard), it can be useful to perform normalization using the reference. For example, the hypothetical reference below defines an adjustment of `c(2, -2, 0, 0)` in the PTM data and `c(1.5, -1, 0, 0)` in the protein data, for the 4 MS runs. 
+The assumption taken in the summary-based normalization may not be valid in all scenarios. When experimental design allows to derive a reference for the normalization (e.g., using internal standard), it can be useful to perform normalization using the reference. For example, the hypothetical reference below defines an adjustment of `c(2, -2, 0, 0)` for each run in the PTM data and `c(1.5, -1, 0, 0)` in the protein data. 
 
 ```{r normalization-ref, message=FALSE}
 refs <- list(
@@ -143,11 +143,17 @@ PTMnormalize(sim, method = "ref", refs = refs)
 
 # Summarization
 
-Use `PTMsummarize()` to summarize feature log2-intensities into one value for PTM site per run. 
+_MSstatsPTM_ performs the statistical modeling with a split-plot approach, which summarizes the log2-intensities into one single value per site (in `PTM`) or protein (in `Protein`) per run, and expresses the summarized values in consideration of experimental conditions and replicates. 
+The summarization of log2-intensities can be performed using `PTMsummarize()`. 
+
+```{r summarization, message=FALSE}
+summarized <- PTMsummarize(normalized)
+summarized
+```
 
 ## Summarization options
 
-There are four summarization options avaialble in _MSstatsPTM_: 
+There are 5 summarization options avaialble with `PTMsummarize()`: 
 
 - `tmp` (default): Tukey's median polish procedure
 - `logsum`: log2 of the summation of peak intensities
@@ -157,16 +163,37 @@ There are four summarization options avaialble in _MSstatsPTM_:
 
 # Estimation
 
-Use `PTMestimate()` to perform the statistical model and inference of the abundance of each PTM site in each group.
+Statistical inference of the abundance of each site (in `PTM`) or protein (in `Protein`) in each group is performed by applying `PTMestimate()`, which expresses the summarized log2-intensities using linear models and returns the parameters of the fitted models. 
+
+```{r estimation, message=FALSE}
+estimates <- PTMestimate(summarized)
+estimates
+```
+
+The log2-abundance estimate and its standard error of each PTM site and protein in each group are returned by `PTMestimate()`. 
 
 # Detection of changes in PTMs
 
-Use `PTMcompareMeans()` to detect changes in mean abundances of PTM sites
+With the estimates from the previous step, we can use `PTMcompareMeans()` to detect systematic changes in mean abundances of PTM sites between groups. 
 
 ## Detection of changes in mean abundances of PTM sites
 
+```{r}
+PTMcompareMeans(estimates, controls = "G_1", cases = "G_2")
+```
 
+* The first argument to `PTMcompareMeans()` is the object of estimates returned by `PTMestimate()`. 
+
+* The second argument `controls` defines the names of control groups (can be more than one) in the comparison.
+
+* The third argument `cases` defines the names of case groups in the comparison.
+
+`PTMcompareMeans()` returns a summary of the comparison, with names of proteins (`Protein`) and sites (`Site`), contrast in the comparison (`Label`), log2-fold change of the mean abundance (`log2FC`) and its standard error (`SE`), $t$-statistic (`Tvalue`), number of degrees of freedom (`DF`), and the resulting $p$-value (`pvalue`). 
 
 ## Protein-level adjustment
 
-Adjustment with respect to protein abundance
+By default, `PTMcompareMeans()` performs the comparison without taking into account of changes in the underlying protein abundance. We can incorporate the adjustment with respect to protein abundance by setting `adjProtein = TRUE`: 
+
+```{r}
+PTMcompareMeans(estimates, controls = "G_1", cases = "G_2", adjProtein = TRUE)
+```
