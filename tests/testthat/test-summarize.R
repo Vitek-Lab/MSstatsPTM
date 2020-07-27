@@ -15,3 +15,23 @@ test_that("summarizeFeatures() uses different methods for summarization", {
     expect_equal(summarizeFeatures(df, method = "median"), res_median)
     expect_equal(summarizeFeatures(df, method = "logsum"), res_logsum)
 })
+
+test_that("PTMsummarize() takes and returns the right format", {
+    s <- PTMsimulateExperiment(
+        nGroup = 2, nRep = 2, nProtein = 1, nSite = 2, nFeature = 5,
+        mu = list(PTM = 25, Protein = 25),
+        delta = list(PTM = c(0, 1), Protein = c(0, 1)),
+        sRep = list(PTM = 0.2, Protein = 0.2),
+        sPeak = list(PTM = 0.05, Protein = 0.05)
+    )
+    ns <- PTMnormalize(s)
+
+    expect_error(PTMnormalize(ns[["PTM"]]), "PTM peak list is missing!")
+    expect_output(str(PTMnormalize(ns)), "List of 2")
+    expect_identical(names(PTMnormalize(ns)), c("PTM", "Protein"))
+
+    ns[["Protein"]] <- NULL
+    expect_output(str(PTMnormalize(ns)), "List of 1")
+    expect_identical(names(PTMnormalize(ns)), "PTM")
+})
+
