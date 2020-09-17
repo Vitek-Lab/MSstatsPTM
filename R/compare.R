@@ -51,7 +51,7 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
     if (adjProtein) {
         res_prot <- extractMeanDiff(data[["Protein"]], controls, cases,
                                     per_protein = TRUE)
-        res <- .adjustProteinLevel(res, res_prot)
+        res <- adjustProteinLevel(res, res_prot)
     }
     res
 }
@@ -183,8 +183,19 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 }
 
 
-#' @keywords internal
-.adjustProteinLevel <- function(diffSite, diffProtein) {
+#' Adjust differential analysis result with respect to protein abundance
+#'
+#' \code{adjustProteinLevel} performs the adjustment with respect to protein
+#' abundance.
+#'
+#' @param diffSite A data frame for the differential analysis result of PTMs.
+#' @param diffProtein A data frame for the differential analysis result of
+#'   proteins.
+#'
+#' @return A data frame.
+#'
+#' @export
+adjustProteinLevel <- function(diffSite, diffProtein) {
     diffRef <- diffProtein[, c("Protein", "Label", "log2FC", "SE", "DF")]
     names(diffRef)[names(diffRef) == "log2FC"] <- "log2FC_ref"
     names(diffRef)[names(diffRef) == "SE"] <- "SE_ref"
