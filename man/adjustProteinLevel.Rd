@@ -7,10 +7,17 @@
 adjustProteinLevel(diffSite, diffProtein)
 }
 \arguments{
-\item{diffSite}{A data frame for the differential analysis result of PTMs.}
+\item{diffSite}{A data frame for the differential analysis result of PTMs,
+returned by the function \code{extractMeanDiff} with the option
+\code{per_protein = FALSE}. The data frame contains columns of
+\code{Protein}, \code{Site}, \code{Label}, \code{log2FC}, \code{SE},
+\code{Tvalue}, \code{DF}, and \code{pvalue}.}
 
 \item{diffProtein}{A data frame for the differential analysis result of
-proteins.}
+proteins, returned by the function \code{extractMeanDiff} with the option
+\code{per_protein = TRUE}. The data frame contains columns of
+\code{Protein}, \code{Label}, \code{log2FC}, \code{SE}, \code{Tvalue},
+\code{DF}, and \code{pvalue}.}
 }
 \value{
 A data frame.

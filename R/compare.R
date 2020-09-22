@@ -188,9 +188,16 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 #' \code{adjustProteinLevel} performs the adjustment with respect to protein
 #' abundance.
 #'
-#' @param diffSite A data frame for the differential analysis result of PTMs.
+#' @param diffSite A data frame for the differential analysis result of PTMs,
+#'   returned by the function \code{extractMeanDiff} with the option
+#'   \code{per_protein = FALSE}. The data frame contains columns of
+#'   \code{Protein}, \code{Site}, \code{Label}, \code{log2FC}, \code{SE},
+#'   \code{Tvalue}, \code{DF}, and \code{pvalue}.
 #' @param diffProtein A data frame for the differential analysis result of
-#'   proteins.
+#'   proteins, returned by the function \code{extractMeanDiff} with the option
+#'   \code{per_protein = TRUE}. The data frame contains columns of
+#'   \code{Protein}, \code{Label}, \code{log2FC}, \code{SE}, \code{Tvalue},
+#'   \code{DF}, and \code{pvalue}.
 #'
 #' @return A data frame.
 #'
