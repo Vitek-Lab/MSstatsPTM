@@ -7,10 +7,10 @@
 PTMsummarize(data, method = "tmp")
 }
 \arguments{
-\item{data}{A list of two data frames named \code{PTM} and \code{Protein}.
+\item{data}{A list of two data frames named \code{PTM} and \code{PROTEIN}.
 The \code{PTM} data frame includes columns of \code{protein}, \code{site},
 \code{group}, \code{run}, \code{feature}, \code{log2inty}, and possibly,
-\code{batch}. The \code{Protein} data frame includes all columns as in
+\code{batch}. The \code{PROTEIN} data frame includes all columns as in
 \code{PTM} except \code{site}.}
 
 \item{method}{A string defining the summarization method. Default is
@@ -20,10 +20,10 @@ log2 of the summation of peak intensities (\code{"logsum"}), and mean
 log2-intensities.}
 }
 \value{
-A list of two data frames named \code{PTM} and \code{Protein}. The
+A list of two data frames named \code{PTM} and \code{PROTEIN}. The
 \code{PTM} data frame has columns of \code{protein}, \code{site},
 \code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}. The
-\code{Protein} data frame includes all as in \code{PTM}, except \code{site}.
+\code{PROTEIN} data frame includes all as in \code{PTM}, except \code{site}.
 }
 \description{
 \code{PTMsummarize} summarizes the peak log2-intensities for each PTM site
@@ -32,8 +32,8 @@ summarization procedure is applied to each protein as well.
 }
 \examples{
 sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
-list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
-list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
+list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
 PTMsummarize(sim)
 
 }

@@ -3,11 +3,11 @@
 #' \code{PTMcompareMeans} performs significance analysis for detection of
 #' changes in PTM mean abundances between conditions.
 #'
-#' @param data A list of two elements named \code{PTM} and \code{Protein}. The
+#' @param data A list of two elements named \code{PTM} and \code{PROTEIN}. The
 #'   \code{PTM} list has four elements: \code{protein} (a string vector of
 #'   protein names), \code{site} (a string vector of PTM sites), \code{param}
 #'   (a list of model parameter estimates for each site), and \code{df} (a
-#'   numeric vector of degrees of freedom for each model). The \code{Protein}
+#'   numeric vector of degrees of freedom for each model). The \code{PROTEIN}
 #'   list includes all as in \code{PTM}, except the element \code{site}.
 #' @param controls A string vector of control groups in the comparisons.
 #' @param cases A string vector of case groups.
@@ -32,12 +32,12 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
              paste0(sQuote(elm_site), collapse = ", "))
     }
     if (adjProtein) {
-        # Check Protein estimates
-        if (is.null(data[["Protein"]]))
+        # Check PROTEIN estimates
+        if (is.null(data[["PROTEIN"]]))
             stop("To adjust for protein level, protein estimates are required")
         elm_prot <- c("protein", "param", "df")
-        if (!all(elm_prot %in% names(data[["Protein"]]))) {
-            stop("Please include in the Protein list all the following elements: ",
+        if (!all(elm_prot %in% names(data[["PROTEIN"]]))) {
+            stop("Please include in the PROTEIN list all the following elements: ",
                  paste0(sQuote(elm_site), collapse = ", "))
         }
     }
@@ -49,7 +49,7 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
 
     res <- extractMeanDiff(data[["PTM"]], controls, cases, per_protein = FALSE)
     if (adjProtein) {
-        res_prot <- extractMeanDiff(data[["Protein"]], controls, cases,
+        res_prot <- extractMeanDiff(data[["PROTEIN"]], controls, cases,
                                     per_protein = TRUE)
         res <- adjustProteinLevel(res, res_prot)
     }

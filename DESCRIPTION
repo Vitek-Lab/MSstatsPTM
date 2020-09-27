@@ -1,19 +1,17 @@
 Package: MSstatsPTM
 Type: Package
 Title: Statistical Characterization of Post-translational Modifications
-Version: 0.0.0.9000
+Version: 0.99.0
+Date: 2020-09-27
 Description: MSstatsPTM provides general statistical methods for quantitative 
     characterization of post-translational modifications (PTMs), including 
     functions for summarization, estimation of PTM site abundance, and detection 
     of changes in PTMs across experimental conditions. 
-Authors@R: person("Tsung-Heng", "Tsai", role = c("aut", "cre"), 
-    email = "tsai.tsungheng@gmail.com")
+Authors@R: c(
+    person("Tsung-Heng", "Tsai", email = "tsai.tsungheng@gmail.com", role = c("aut", "cre")),
+    person("Olga", "Vitek", email = "o.vitek@northeastern.edu", role = "aut"))
+Maintainer: Tsung-Heng Tsai <tsai.tsungheng@gmail.com>
 License: Artistic-2.0
-Encoding: UTF-8
-LazyData: true
-ByteCompile: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
 Depends: R (>= 3.6.0)
 Imports: 
     broom,
@@ -30,3 +28,9 @@ Suggests:
     testthat (>= 2.1.0),
     BiocStyle
 VignetteBuilder: knitr
+biocViews: ImmunoOncology, MassSpectrometry, Proteomics, Software, DifferentialExpression
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1

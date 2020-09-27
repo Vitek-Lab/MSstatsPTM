@@ -24,14 +24,14 @@ test_that("simulateSummarization() generates data with correct size", {
 test_that("PTMsimulateExperiment() returns the right format", {
     s <- PTMsimulateExperiment(
         nGroup = 2, nRep = 2, nProtein = 1, nSite = 2, nFeature = 5,
-        mu = list(PTM = 25, Protein = 25),
-        delta = list(PTM = c(0, 1), Protein = c(0, 1)),
-        sRep = list(PTM = 0.2, Protein = 0.2),
-        sPeak = list(PTM = 0.05, Protein = 0.05)
+        mu = list(PTM = 25, PROTEIN = 25),
+        delta = list(PTM = c(0, 1), PROTEIN = c(0, 1)),
+        sRep = list(PTM = 0.2, PROTEIN = 0.2),
+        sPeak = list(PTM = 0.05, PROTEIN = 0.05)
     )
 
     expect_output(str(s), "List of 2")
-    expect_identical(names(s), c("PTM", "Protein"))
+    expect_identical(names(s), c("PTM", "PROTEIN"))
     expect_is(s[["PTM"]], "data.frame")
-    expect_is(s[["Protein"]], "data.frame")
+    expect_is(s[["PROTEIN"]], "data.frame")
 })

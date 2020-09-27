@@ -4,10 +4,10 @@
 #' into one value per run. If protein peak-intensities are availble, the same
 #' summarization procedure is applied to each protein as well.
 #'
-#' @param data A list of two data frames named \code{PTM} and \code{Protein}.
+#' @param data A list of two data frames named \code{PTM} and \code{PROTEIN}.
 #'   The \code{PTM} data frame includes columns of \code{protein}, \code{site},
 #'   \code{group}, \code{run}, \code{feature}, \code{log2inty}, and possibly,
-#'   \code{batch}. The \code{Protein} data frame includes all columns as in
+#'   \code{batch}. The \code{PROTEIN} data frame includes all columns as in
 #'   \code{PTM} except \code{site}.
 #' @param method A string defining the summarization method. Default is
 #'   \code{"tmp"}, which applies Tukey's median polish. Other methods include
@@ -15,15 +15,15 @@
 #'   (\code{"mean"}), median (\code{"median"}) and max (\code{"max"}) of the
 #'   log2-intensities.
 #'
-#' @return A list of two data frames named \code{PTM} and \code{Protein}. The
+#' @return A list of two data frames named \code{PTM} and \code{PROTEIN}. The
 #'   \code{PTM} data frame has columns of \code{protein}, \code{site},
 #'   \code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}. The
-#'   \code{Protein} data frame includes all as in \code{PTM}, except \code{site}.
+#'   \code{PROTEIN} data frame includes all as in \code{PTM}, except \code{site}.
 #'
 #' @examples
 #' sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
-#' list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
-#' list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+#' list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
+#' list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
 #' PTMsummarize(sim)
 #'
 #' @export
@@ -40,17 +40,17 @@ PTMsummarize <- function(data, method = "tmp") {
              paste0(sQuote(cols_peak), collapse = ", "))
     }
 
-    # Check the Protein data
-    if (is.null(data[["Protein"]])) {
+    # Check the PROTEIN data
+    if (is.null(data[["PROTEIN"]])) {
         wo_prot <- TRUE
     } else {
         wo_prot <- FALSE
-        if (!is.data.frame(data[["Protein"]]))
+        if (!is.data.frame(data[["PROTEIN"]]))
             stop(paste0("Provide a data frame of peak log2-intensity for",
-                        " each protein in each run in ", sQuote("data$Protein")))
+                        " each protein in each run in ", sQuote("data$PROTEIN")))
         cols_prot <- setdiff(cols_peak, "site")
-        if (!all(cols_prot %in% names(data[["Protein"]]))) {
-            stop("Please include in the protein data frame all the following columns: ",
+        if (!all(cols_prot %in% names(data[["PROTEIN"]]))) {
+            stop("Please include in the PROTEIN data frame all the following columns: ",
                  paste0(sQuote(cols_prot), collapse = ", "))
         }
     }
@@ -78,8 +78,8 @@ PTMsummarize <- function(data, method = "tmp") {
     if (wo_prot) {
         res <- list(PTM = summ)
     } else {
-        # Summarize for the Protein data
-        df_prot <- data[["Protein"]]
+        # Summarize for the PROTEIN data
+        df_prot <- data[["PROTEIN"]]
         df_prot <- df_prot[!is.na(df_prot$log2inty), ]
 
         # Nested data frame with protein as the analysis unit
@@ -98,7 +98,7 @@ PTMsummarize <- function(data, method = "tmp") {
         design_prot <- unique(df_prot[c("run", "group")])  # Experimental design
         summ_prot <- left_join(unnest(nested_prot, one_of("res")), design_prot)
 
-        res <- list(PTM = summ, Protein = summ_prot)
+        res <- list(PTM = summ, PROTEIN = summ_prot)
     }
     res
 }

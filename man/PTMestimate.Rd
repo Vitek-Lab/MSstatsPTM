@@ -7,23 +7,23 @@
 PTMestimate(data, fac_batch = FALSE)
 }
 \arguments{
-\item{data}{A list of two data frames named \code{PTM} and \code{Protein}.
+\item{data}{A list of two data frames named \code{PTM} and \code{PROTEIN}.
 The \code{PTM} data frame includes columns of \code{protein}, \code{site},
 \code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}. The
-\code{Protein} data frame includes all columns as in \code{PTM} except
+\code{PROTEIN} data frame includes all columns as in \code{PTM} except
 \code{site}.}
 
 \item{fac_batch}{A logical defining the handling of batch effect for all data
-or two logicals for the \code{PTM} and \code{Protein} (if provided) data
+or two logicals for the \code{PTM} and \code{PROTEIN} (if provided) data
 separately. \code{TRUE} considers a fixed batch effect, \code{FALSE}
 otherwise. Default is \code{FALSE}.}
 }
 \value{
-A list of two lists named \code{PTM} and \code{Protein}. The
+A list of two lists named \code{PTM} and \code{PROTEIN}. The
 \code{PTM} list has four elements: \code{protein} (a string vector of
 protein names), \code{site} (a string vector of PTM sites), \code{param}
 (a list of model parameter estimates for each site), and \code{df} (a
-numeric vector of degrees of freedom for each model). The \code{Protein}
+numeric vector of degrees of freedom for each model). The \code{PROTEIN}
 list includes all as in \code{PTM}, except \code{site}.
 }
 \description{
@@ -35,8 +35,8 @@ procedure is applied to each protein as well.
 }
 \examples{
 sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
-list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
-list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
+list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
 s <- PTMsummarize(sim)
 PTMestimate(s)
 

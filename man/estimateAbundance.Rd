@@ -18,11 +18,11 @@ for PTM and considers protein as a whole, \code{FALSE} otherwise. Default
 is \code{FALSE}.}
 }
 \value{
-A list of two elements named \code{PTM} and \code{Protein}. The
+A list of two elements named \code{PTM} and \code{PROTEIN}. The
 \code{PTM} list has four elements: \code{protein} (a string vector of
 protein names), \code{site} (a string vector of PTM sites), \code{param}
 (a list of model parameter estimates for each site), and \code{df} (a
-numeric vector of degrees of freedom for each model). The \code{Protein}
+numeric vector of degrees of freedom for each model). The \code{PROTEIN}
 list includes all as in \code{PTM}, except \code{site}.
 }
 \description{
@@ -33,10 +33,10 @@ experimental conditions.
 }
 \examples{
 sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
-list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
-list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
+list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
 s <- PTMsummarize(sim)
 estimateAbundance(s[["PTM"]])
-estimateAbundance(s[["Protein"]], per_protein = TRUE)
+estimateAbundance(s[["PROTEIN"]], per_protein = TRUE)
 
 }

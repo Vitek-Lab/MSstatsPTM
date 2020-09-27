@@ -27,18 +27,18 @@ PTMsimulateExperiment(
 
 \item{nFeature}{An integer to specify the number of features per site.}
 
-\item{mu}{A list of two elements named \code{PTM} and \code{Protein}. Each
+\item{mu}{A list of two elements named \code{PTM} and \code{PROTEIN}. Each
 is a numeric representing the overall mean log2-intensity in the PTM or the
-Protein data.}
+PROTEIN data.}
 
-\item{delta}{A list of two elements named \code{PTM} and \code{Protein}. Each
+\item{delta}{A list of two elements named \code{PTM} and \code{PROTEIN}. Each
 specifies the deviation of the mean log2-abundance of each group from the
-overall mean in the PTM or the Protein data.}
+overall mean in the PTM or the PROTEIN data.}
 
-\item{sRep}{A list of two elements named \code{PTM} and \code{Protein}. Each
+\item{sRep}{A list of two elements named \code{PTM} and \code{PROTEIN}. Each
 is a numeric representing the standard deviation for run-to-run variation.}
 
-\item{sPeak}{A list of two elements named \code{PTM} and \code{Protein}. Each
+\item{sPeak}{A list of two elements named \code{PTM} and \code{PROTEIN}. Each
 is a numeric representing the standard deviation in peak log2-intensities.}
 }
 \value{
@@ -52,7 +52,7 @@ corresponding proteins, in multiple MS runs and conditions.
 }
 \examples{
 PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 2, nFeature = 5,
-list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
-list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
+list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
 
 }

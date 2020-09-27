@@ -9,15 +9,15 @@
 #' @param nProtein An integer to specify the number of protein.
 #' @param nSite An integer to specify the number of PTM sites per protein.
 #' @param nFeature An integer to specify the number of features per site.
-#' @param mu A list of two elements named \code{PTM} and \code{Protein}. Each
+#' @param mu A list of two elements named \code{PTM} and \code{PROTEIN}. Each
 #'   is a numeric representing the overall mean log2-intensity in the PTM or the
-#'   Protein data.
-#' @param delta A list of two elements named \code{PTM} and \code{Protein}. Each
+#'   PROTEIN data.
+#' @param delta A list of two elements named \code{PTM} and \code{PROTEIN}. Each
 #'   specifies the deviation of the mean log2-abundance of each group from the
-#'   overall mean in the PTM or the Protein data.
-#' @param sRep A list of two elements named \code{PTM} and \code{Protein}. Each
+#'   overall mean in the PTM or the PROTEIN data.
+#' @param sRep A list of two elements named \code{PTM} and \code{PROTEIN}. Each
 #'   is a numeric representing the standard deviation for run-to-run variation.
-#' @param sPeak A list of two elements named \code{PTM} and \code{Protein}. Each
+#' @param sPeak A list of two elements named \code{PTM} and \code{PROTEIN}. Each
 #'   is a numeric representing the standard deviation in peak log2-intensities.
 #'
 #' @return A tibble with columns of \code{protein}, \code{site}, \code{group},
@@ -25,13 +25,13 @@
 #'
 #' @examples
 #' PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 2, nFeature = 5,
-#' list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
-#' list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+#' list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
+#' list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
 #'
 #' @export
 PTMsimulateExperiment <- function(nGroup, nRep, nProtein, nSite, nFeature,
                                   mu, delta, sRep, sPeak) {
-    # Site data
+    # PTM data
     peaks <- vector("list", nProtein)
     for (i in 1:nProtein) {
         peaks[[i]] <- simulateSites(nGroup, nRep, nSite, nFeature,
@@ -41,19 +41,19 @@ PTMsimulateExperiment <- function(nGroup, nRep, nProtein, nSite, nFeature,
     sites$protein <- rep(paste0("Protein_", 1:nProtein),
                          each = nGroup * nRep * nSite * nFeature)
 
-    # Protein data
+    # PROTEIN data
     peaks <- vector("list", nProtein)
     for (i in 1:nProtein) {
-        peaks[[i]] <- simulatePeaks(nGroup, nRep, nFeature, mu$Protein,
-                                    delta$Protein, sRep$Protein, sPeak$Protein)
+        peaks[[i]] <- simulatePeaks(nGroup, nRep, nFeature, mu$PROTEIN,
+                                    delta$PROTEIN, sRep$PROTEIN, sPeak$PROTEIN)
     }
     prots <- bind_rows(peaks)
     prots$protein <- rep(paste0("Protein_", 1:nProtein),
                          each = nGroup * nRep * nFeature)
 
-    # Combine PTM and Protein data
+    # Combine PTM and PROTEIN data
     cols <- c("protein", "site", "group", "run", "feature", "log2inty")
-    list(PTM = sites[, cols], Protein = prots[, setdiff(cols, "site")])
+    list(PTM = sites[, cols], PROTEIN = prots[, setdiff(cols, "site")])
 }
 
 

@@ -5,8 +5,8 @@
 #' intensity summation, median, or mean of log2-intensities) from all features,
 #' features of modified peptides or features of unmodified peptides.
 #'
-#' @param data A list of two data frames named \code{PTM} and \code{Protein}.
-#'   Both the \code{PTM} data frame and the \code{Protein} data frame include
+#' @param data A list of two data frames named \code{PTM} and \code{PROTEIN}.
+#'   Both the \code{PTM} data frame and the \code{PROTEIN} data frame include
 #'   columns of \code{run}, \code{feature}, and \code{log2inty}.
 #' @param method A string defining the normalization method. Default is
 #'   \code{"median"}, which equalizes the medians of log2-intensities across MS
@@ -14,7 +14,7 @@
 #'   (\code{"logsum"}), to equalize the means of log2-intensities
 #'   (\code{"mean"}), and to adjust the log2-intensities based on a reference
 #'   (\code{"ref"}) given by (\code{refs}).
-#' @param refs A list of two data frames named \code{PTM} and \code{Protein}.
+#' @param refs A list of two data frames named \code{PTM} and \code{PROTEIN}.
 #'   Each defines the adjustment of log2-intensities for the MS runs in its
 #'   corresponding data.
 #'
@@ -41,16 +41,16 @@ PTMnormalize <- function(data, method = "median", refs) {
              paste0(sQuote(cols_req), collapse = ", "))
     }
 
-    # Check the Protein data
-    if (is.null(data[["Protein"]])) {
+    # Check the PROTEIN data
+    if (is.null(data[["PROTEIN"]])) {
         wo_prot <- TRUE
     } else {
         wo_prot <- FALSE
-        if (!is.data.frame(data[["Protein"]]))
+        if (!is.data.frame(data[["PROTEIN"]]))
             stop(paste0("Provide a data frame of peak log2-intensity for",
-                        " the Protein data in ", sQuote("data$Protein")))
-        if (!all(cols_req %in% names(data[["Protein"]]))) {
-            stop("Please include in the protein data frame all the following columns: ",
+                        " the PROTEIN data in ", sQuote("data$PROTEIN")))
+        if (!all(cols_req %in% names(data[["PROTEIN"]]))) {
+            stop("Please include in the PROTEIN data frame all the following columns: ",
                  paste0(sQuote(cols_req), collapse = ", "))
         }
     }
@@ -83,24 +83,24 @@ PTMnormalize <- function(data, method = "median", refs) {
         ref_PTM <- refs[["PTM"]]
 
         if (!wo_prot) {
-            # Check the reference for the Protein data
-            if (!is.data.frame(refs[["Protein"]])) {
-                stop("Define the adjustment for Protein data as a data frame in ", sQuote("refs$Protein"))
+            # Check the reference for the PROTEIN data
+            if (!is.data.frame(refs[["PROTEIN"]])) {
+                stop("Define the adjustment for PROTEIN data as a data frame in ", sQuote("refs$PROTEIN"))
             }
-            if (!all(c("run", "adjLog2inty") %in% names(refs[["Protein"]]))) {
-                stop("Please include in ", sQuote("refs$Protein"),
+            if (!all(c("run", "adjLog2inty") %in% names(refs[["PROTEIN"]]))) {
+                stop("Please include in ", sQuote("refs$PROTEIN"),
                      " the following columns: ", sQuote("run"), sQuote("adjLog2inty"))
             }
-            if (!all(unique(data[["Protein"]]$run) %in% refs[["Protein"]]$run)) {
+            if (!all(unique(data[["PROTEIN"]]$run) %in% refs[["PROTEIN"]]$run)) {
                 stop("Adjustment is not fully defined for all MS runs!")
             }
-            ref_prot <- refs[["Protein"]]
+            ref_prot <- refs[["PROTEIN"]]
         }
     } else {
         # Compute reference
         ref_PTM <- .getReference(data[["PTM"]], method)
         if (!wo_prot) {
-            ref_prot <- .getReference(data[["Protein"]], method)
+            ref_prot <- .getReference(data[["PROTEIN"]], method)
         }
     }
 
@@ -109,7 +109,7 @@ PTMnormalize <- function(data, method = "median", refs) {
         res <- list(PTM = .byReference(data[["PTM"]], ref_PTM))
     } else {
         res <- list(PTM = .byReference(data[["PTM"]], ref_PTM),
-                    Protein = .byReference(data[["Protein"]], ref_prot))
+                    PROTEIN = .byReference(data[["PROTEIN"]], ref_prot))
     }
     res
 }

@@ -7,8 +7,8 @@
 PTMnormalize(data, method = "median", refs)
 }
 \arguments{
-\item{data}{A list of two data frames named \code{PTM} and \code{Protein}.
-Both the \code{PTM} data frame and the \code{Protein} data frame include
+\item{data}{A list of two data frames named \code{PTM} and \code{PROTEIN}.
+Both the \code{PTM} data frame and the \code{PROTEIN} data frame include
 columns of \code{run}, \code{feature}, and \code{log2inty}.}
 
 \item{method}{A string defining the normalization method. Default is
@@ -18,7 +18,7 @@ runs. Other methods include to equalize log2 of intensity summation
 (\code{"mean"}), and to adjust the log2-intensities based on a reference
 (\code{"ref"}) given by (\code{refs}).}
 
-\item{refs}{A list of two data frames named \code{PTM} and \code{Protein}.
+\item{refs}{A list of two data frames named \code{PTM} and \code{PROTEIN}.
 Each defines the adjustment of log2-intensities for the MS runs in its
 corresponding data.}
 }

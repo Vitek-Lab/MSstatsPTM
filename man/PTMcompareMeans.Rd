@@ -7,11 +7,11 @@
 PTMcompareMeans(data, controls, cases, adjProtein = FALSE)
 }
 \arguments{
-\item{data}{A list of two elements named \code{PTM} and \code{Protein}. The
+\item{data}{A list of two elements named \code{PTM} and \code{PROTEIN}. The
 \code{PTM} list has four elements: \code{protein} (a string vector of
 protein names), \code{site} (a string vector of PTM sites), \code{param}
 (a list of model parameter estimates for each site), and \code{df} (a
-numeric vector of degrees of freedom for each model). The \code{Protein}
+numeric vector of degrees of freedom for each model). The \code{PROTEIN}
 list includes all as in \code{PTM}, except the element \code{site}.}
 
 \item{controls}{A string vector of control groups in the comparisons.}

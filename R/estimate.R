@@ -6,26 +6,26 @@
 #' conditions. If protein log2-intensities are availble, the same estimation
 #' procedure is applied to each protein as well.
 #'
-#' @param data A list of two data frames named \code{PTM} and \code{Protein}.
+#' @param data A list of two data frames named \code{PTM} and \code{PROTEIN}.
 #'   The \code{PTM} data frame includes columns of \code{protein}, \code{site},
 #'   \code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}. The
-#'   \code{Protein} data frame includes all columns as in \code{PTM} except
+#'   \code{PROTEIN} data frame includes all columns as in \code{PTM} except
 #'   \code{site}.
 #' @param fac_batch A logical defining the handling of batch effect for all data
-#'   or two logicals for the \code{PTM} and \code{Protein} (if provided) data
+#'   or two logicals for the \code{PTM} and \code{PROTEIN} (if provided) data
 #'   separately. \code{TRUE} considers a fixed batch effect, \code{FALSE}
 #'   otherwise. Default is \code{FALSE}.
-#' @return A list of two lists named \code{PTM} and \code{Protein}. The
+#' @return A list of two lists named \code{PTM} and \code{PROTEIN}. The
 #'   \code{PTM} list has four elements: \code{protein} (a string vector of
 #'   protein names), \code{site} (a string vector of PTM sites), \code{param}
 #'   (a list of model parameter estimates for each site), and \code{df} (a
-#'   numeric vector of degrees of freedom for each model). The \code{Protein}
+#'   numeric vector of degrees of freedom for each model). The \code{PROTEIN}
 #'   list includes all as in \code{PTM}, except \code{site}.
 #'
 #' @examples
 #' sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
-#' list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
-#' list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+#' list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
+#' list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
 #' s <- PTMsummarize(sim)
 #' PTMestimate(s)
 #'
@@ -43,17 +43,17 @@ PTMestimate <- function(data, fac_batch = FALSE) {
              paste0(sQuote(cols_site), collapse = ", "))
     }
 
-    # Check Protein data
-    if (is.null(data[["Protein"]])) {
+    # Check PROTEIN data
+    if (is.null(data[["PROTEIN"]])) {
         wo_prot <- TRUE
     } else {
         wo_prot <- FALSE
-        if (!is.data.frame(data[["Protein"]]))
+        if (!is.data.frame(data[["PROTEIN"]]))
             stop(paste0("Provide a data frame of summarized log2-intensity for",
-                        " each protein in each run in ", sQuote("data$Protein")))
+                        " each protein in each run in ", sQuote("data$PROTEIN")))
         cols_prot <- setdiff(cols_site, "site")
-        if (!all(cols_prot %in% names(data[["Protein"]]))) {
-            stop("Please include in the protein data frame all the following columns: ",
+        if (!all(cols_prot %in% names(data[["PROTEIN"]]))) {
+            stop("Please include in the PROTEIN data frame all the following columns: ",
                  paste0(sQuote(cols_prot), collapse = ", "))
         }
     }
@@ -63,9 +63,9 @@ PTMestimate <- function(data, fac_batch = FALSE) {
         stop(sQuote("fac_batch"), " should be logical value(s)")
     if (!(length(fac_batch) %in% c(1L, 2L)))
         stop(paste0("Provide one logical value for all data or two logical",
-                    " values for PTM and protein separately in ", sQuote("fac_batch")))
+                    " values for PTM and PROTEIN separately in ", sQuote("fac_batch")))
     if (length(fac_batch) == 2L && wo_prot)
-        stop(paste0("Batch handling parameter is defined for protein data, but",
+        stop(paste0("Batch handling parameter is defined for PROTEIN data, but",
                     " the data is missing!"))
     if (length(fac_batch) == 1L && !wo_prot)
         fac_batch <- rep(fac_batch, 2)
@@ -74,8 +74,8 @@ PTMestimate <- function(data, fac_batch = FALSE) {
     if (wo_prot) {
         res <- list(PTM = est_ptm)
     } else {
-        est_prot <- estimateAbundance(data[["Protein"]], fac_batch[2], per_protein = TRUE)
-        res <- list(PTM = est_ptm, Protein = est_prot)
+        est_prot <- estimateAbundance(data[["PROTEIN"]], fac_batch[2], per_protein = TRUE)
+        res <- list(PTM = est_ptm, PROTEIN = est_prot)
     }
     res
 }
@@ -96,20 +96,20 @@ PTMestimate <- function(data, fac_batch = FALSE) {
 #'   for PTM and considers protein as a whole, \code{FALSE} otherwise. Default
 #'   is \code{FALSE}.
 #'
-#' @return A list of two elements named \code{PTM} and \code{Protein}. The
+#' @return A list of two elements named \code{PTM} and \code{PROTEIN}. The
 #'   \code{PTM} list has four elements: \code{protein} (a string vector of
 #'   protein names), \code{site} (a string vector of PTM sites), \code{param}
 #'   (a list of model parameter estimates for each site), and \code{df} (a
-#'   numeric vector of degrees of freedom for each model). The \code{Protein}
+#'   numeric vector of degrees of freedom for each model). The \code{PROTEIN}
 #'   list includes all as in \code{PTM}, except \code{site}.
 #'
 #' @examples
 #' sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
-#' list(PTM = 25, Protein = 25), list(PTM = c(0, 1), Protein = c(0, 1)),
-#' list(PTM = 0.2, Protein = 0.2), list(PTM = 0.05, Protein = 0.05))
+#' list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
+#' list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
 #' s <- PTMsummarize(sim)
 #' estimateAbundance(s[["PTM"]])
-#' estimateAbundance(s[["Protein"]], per_protein = TRUE)
+#' estimateAbundance(s[["PROTEIN"]], per_protein = TRUE)
 #'
 #' @export
 estimateAbundance <- function(df, fac_batch = FALSE, per_protein = FALSE) {
