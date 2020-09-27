@@ -13,16 +13,20 @@ devtools::install_github("tsunghengtsai/MSstatsPTM")
 
 ## Functionality
 
-The MSstatsPTM package provides three categories of important functions for quantitative analysis of PTMs: summarization, estimation and comparison. 
+Quantitative analyses of PTMs are supported by four main functions of MSstatsPTM.
 
-### Summarization functions:
+### Normalization
 
-The `PTMsummarize` and related functions summarize log2-intensities of spectral features for each PTM site into one value per run.
+`PTMnormalize()` normalizes the quantified peak intensities to correct systematic variation across MS runs.
 
-### Estimation functions:
+### Summarization
 
-The `PTMestimate` and related functions take as input the summarized log2-intensities for each PTM site, performs statistical modeling for the abundance of the site, and returns the estimates of model parameters for all sites in all experimental conditions.
+`PTMsummarize()` summarizes log2-intensities of spectral features (i.e., precursor ions in DDA, fragments in DIA, or transitions in SRM) into one value per PTM site per run or one value per protein per run.
 
-### Comparison functions:
+### Estimation
 
-The `PTMcompareMeans` and related functions perform significance analysis for detecting changes in PTM mean abundances between conditions.
+`PTMestimate()` takes as input the summarized log2-intensities for each PTM site, performs statistical modeling for the log2-abundance of the site, and returns the estimates of model parameters for all PTM sites in all experimental conditions.
+
+### Comparison
+
+`PTMcompareMeans()` performs statistical testing for detecting changes in PTM mean abundances between conditions.

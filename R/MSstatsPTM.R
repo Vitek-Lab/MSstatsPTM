@@ -1,21 +1,28 @@
 #' MSstatsPTM: A package for statistical characterization of PTMs
 #'
-#' The MSstatsPTM package provides three categories of important functions for
-#' quantitative analysis of PTMs: summarization, estimation and comparison
+#' The MSstatsPTM package provides four main functions for quantitative analysis
+#' of PTMs
 #'
-#' @section Summarization functions:
-#' The \code{PTMsummarize} and related functions summarize log2-intensities of
-#' spectral features for each PTM site into one value per run.
+#' Quantitative analyses of PTMs are supported by four main functions of _MSstatsPTM_:
 #'
-#' @section Estimation functions:
-#' The \code{PTMestimate} and related functions take as input the summarized
-#' log2-intensities for each PTM site, performs statistical modeling for the
-#' abundance of the site, and returns the estimates of model parameters for all
-#' sites in all experimental conditions.
+#' @section Normalization:
+#' \code{PTMnormalize()} normalizes the quantified peak intensities to correct
+#' systematic variation across MS runs.
 #'
-#' @section Comparison functions:
-#' The \code{PTMcompareMeans} and related functions perform significance
-#' analysis for detecting changes in PTM mean abundances between conditions.
+#' @section Summarization:
+#' \code{PTMsummarize()} summarizes log2-intensities of spectral features
+#' (i.e., precursor ions in DDA, fragments in DIA, or transitions in SRM) into
+#' one value per PTM site per run or one value per protein per run.
+#'
+#' @section Estimation:
+#' \code{PTMestimate()} takes as input the summarized log2-intensities for
+#' each PTM site, performs statistical modeling for the log2-abundance of the
+#' site, and returns the estimates of model parameters for all PTM sites in all
+#' experimental conditions.
+#'
+#' @section Comparison:
+#' \code{PTMcompareMeans()} performs statistical testing for detecting changes
+#' in PTM mean abundances between conditions.
 #'
 #' @name MSstatsPTM
 #' @docType package
