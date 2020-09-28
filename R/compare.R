@@ -58,6 +58,7 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein=FALSE) {
             " should be identical"
         ))
 
+    # Protein-level correction
     res <- extractMeanDiff(data[["PTM"]], controls, cases, perProtein = FALSE)
     if (adjProtein) {
         res_prot <- extractMeanDiff(
@@ -65,6 +66,17 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein=FALSE) {
         )
         res <- adjustProteinLevel(res, res_prot)
     }
+
+    # Multiple testing adjustment
+    q <- vector("double", nrow(res))
+    p <- res$pvalue
+    l <- res$Label
+    ul <- unique(l)
+    for (i in seq_along(ul)) {
+        q[l == ul[i]] <- stats::p.adjust(p[l == ul[i]], method = "BH")
+    }
+    res$adj.pvalue <- q
+
     res
 }
 
