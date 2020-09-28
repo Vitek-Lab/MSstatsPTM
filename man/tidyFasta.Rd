@@ -17,6 +17,6 @@ A tibble with columns named \code{header}, \code{sequence},
 \code{tidyFasta} reads and tidys FASTA file.
 }
 \examples{
-tidyFasta("https://www.uniprot.org/uniprot/P37840.fasta")
+tidyFasta("https://www.uniprot.org/uniprot/O13297.fasta")
 
 }

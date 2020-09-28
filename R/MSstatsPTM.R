@@ -27,6 +27,7 @@
 #'
 #' @name MSstatsPTM
 #' @docType package
+#' @importFrom stats df.residual lm median medpolish p.adjust pt
 #' @importFrom rlang .data
 #' @importFrom tidyr nest unnest
 #' @importFrom tidyselect one_of

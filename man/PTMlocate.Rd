@@ -29,3 +29,8 @@ A data frame with three columns: \code{uniprot_iso}, \code{peptide},
 \description{
 \code{PTMlocate} annotates modified sites with associated peptides.
 }
+\examples{
+fasta <- tidyFasta("https://www.uniprot.org/uniprot/O13297.fasta")
+PTMlocate("DRVSYIHNDSC*TR", "O13297", fasta, "C", "\\\\*")
+
+}

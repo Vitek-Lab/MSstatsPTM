@@ -33,57 +33,22 @@
 #'
 #' @export
 PTMsummarize <- function(data, method="tmp") {
-    # Check the PTM data
-    if (is.null(data[["PTM"]]))
-        stop("PTM peak list is missing!")
-    if (!is.data.frame(data[["PTM"]]))
-        stop(paste0("Provide a data frame of peak log2-intensity for",
-                    " each site in each run in ", sQuote("data$PTM")))
     cols_peak <- c("protein", "site", "group", "run", "feature", "log2inty")
-    if (!all(cols_peak %in% names(data[["PTM"]]))) {
-        stop(
-            "Please include in the PTM data frame all the following columns: ",
-            paste0(sQuote(cols_peak), collapse = ", ")
-        )
-    }
-
-    # Check the PROTEIN data
-    if (is.null(data[["PROTEIN"]])) {
-        wo_prot <- TRUE
-    } else {
-        wo_prot <- FALSE
-        if (!is.data.frame(data[["PROTEIN"]]))
-            stop(paste0(
-                "Provide a data frame of peak log2-intensity for",
-                " each protein, each run in ", sQuote("data$PROTEIN")
-            ))
+    # Check PTM and PROTEIN data
+    wo_prot <- .summarizeCheck(data)
+    if (!wo_prot) {
         cols_prot <- setdiff(cols_peak, "site")
-        if (!all(cols_prot %in% names(data[["PROTEIN"]]))) {
-            stop(
-                "Include in the PROTEIN data frame the following columns: ",
-                paste0(sQuote(cols_prot), collapse = ", ")
-            )
-        }
     }
 
     # Summarize for the PTM data
     df <- data[["PTM"]]
     df <- df[!is.na(df$log2inty), ]
-
     # Nested data frame with site as the analysis unit
     cols_nested <- setdiff(cols_peak, "group")
-    if ("batch" %in% names(df)) {
-        nested <- nest(
-            df[, c(cols_nested, "batch")],
-            data = one_of("run", "feature", "log2inty")
-        )
-    } else {
-        nested <- nest(
-            df[, cols_nested],
-            data = one_of("run", "feature", "log2inty")
-        )
-    }
-
+    if ("batch" %in% names(df)) cols_nested <- c(cols_nested, "batch")
+    nested <- nest(
+        df[, cols_nested], data = one_of("run", "feature", "log2inty")
+    )
     # Summarize features per site per MS run
     nested$res <- lapply(nested$data, summarizeFeatures, method)
     nested <- nested[, names(nested) != "data"]
@@ -96,27 +61,17 @@ PTMsummarize <- function(data, method="tmp") {
         # Summarize for the PROTEIN data
         df_prot <- data[["PROTEIN"]]
         df_prot <- df_prot[!is.na(df_prot$log2inty), ]
-
         # Nested data frame with protein as the analysis unit
         cols_nested <- setdiff(cols_prot, "group")
-        if ("batch" %in% names(df_prot)) {
-            nested_prot <- nest(
-                df_prot[, c(cols_nested, "batch")],
-                data = one_of("run", "feature", "log2inty")
-            )
-        } else {
-            nested_prot <- nest(
-                df_prot[, cols_nested],
-                data = one_of("run", "feature", "log2inty")
-            )
-        }
-
+        if ("batch" %in% names(df_prot)) cols_nested <- c(cols_nested, "batch")
+        nested_prot <- nest(
+            df_prot[, cols_nested], data = one_of("run", "feature", "log2inty")
+        )
         # Summarize features per protein per MS run
         nested_prot$res <- lapply(nested_prot$data, summarizeFeatures, method)
         nested_prot <- nested_prot[, names(nested_prot) != "data"]
         design_prot <- unique(df_prot[c("run", "group")])  # Experimental design
         summ_prot <- left_join(unnest(nested_prot, one_of("res")), design_prot)
-
         res <- list(PTM = summ, PROTEIN = summ_prot)
     }
     res
@@ -179,6 +134,45 @@ summarizeFeatures <- function(df, method="tmp") {
 }
 
 #' @keywords internal
+.summarizeCheck <- function(data) {
+    # Check the PTM data
+    if (is.null(data[["PTM"]]))
+        stop("PTM peak list is missing!")
+    if (!is.data.frame(data[["PTM"]]))
+        stop(paste0(
+            "Provide a data frame of peak log2-intensities for",
+            " the PTM data in 'data$PTM'"
+        ))
+    cols_peak <- c("protein", "site", "group", "run", "feature", "log2inty")
+    if (!all(cols_peak %in% names(data[["PTM"]]))) {
+        stop(
+            "Please include in the PTM data frame all the following columns: ",
+            paste0(sQuote(cols_peak), collapse = ", ")
+        )
+    }
+    # Check the PROTEIN data
+    if (is.null(data[["PROTEIN"]])) {
+        wo_prot <- TRUE
+    } else {
+        wo_prot <- FALSE
+        if (!is.data.frame(data[["PROTEIN"]]))
+            stop(paste0(
+                "Provide a data frame of peak log2-intensities for",
+                " the PROTEIN data in 'data$PROTEIN'"
+            ))
+        cols_prot <- setdiff(cols_peak, "site")
+        if (!all(cols_prot %in% names(data[["PROTEIN"]]))) {
+            stop(
+                "Include in the PROTEIN data frame the following columns: ",
+                paste0(sQuote(cols_prot), collapse = ", ")
+            )
+        }
+    }
+    wo_prot
+}
+
+
+#' @keywords internal
 .summarizeMethods <- function() {
     c("tmp", "logsum", "mean", "median", "max")
 }
@@ -191,7 +185,7 @@ summarizeFeatures <- function(df, method="tmp") {
         values_from = .data$log2inty
     )
     m <- data.matrix(wd[, -1])
-    res <- stats::medpolish(m, na.rm = TRUE, trace.iter = FALSE)
+    res <- medpolish(m, na.rm = TRUE, trace.iter = FALSE)
     tibble(run = wd$run, log2inty = res$overall + res$row)
 }
 
@@ -210,7 +204,7 @@ summarizeFeatures <- function(df, method="tmp") {
 #' @keywords internal
 .summarize_med <- function(df, ...) {
     by_run <- group_by(df, .data$run)
-    summarise(by_run, log2inty = stats::median(.data$log2inty, na.rm = TRUE))
+    summarise(by_run, log2inty = median(.data$log2inty, na.rm = TRUE))
 }
 
 #' @keywords internal

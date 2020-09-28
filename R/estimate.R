@@ -39,8 +39,7 @@ PTMestimate <- function(data, fctBatch=FALSE) {
     if (is.null(data[["PTM"]]))
         stop("PTM information is missing!")
     if (!is.data.frame(data[["PTM"]]))
-        stop(paste0("Provide a data frame of summarized log2-intensity for",
-                    " each site in each run in ", sQuote("data$PTM")))
+        stop("Provide a data frame of summarized values in 'data$PTM'")
     cols_site <- c("protein", "site", "group", "run", "log2inty")
     if (!all(cols_site %in% names(data[["PTM"]]))) {
         stop(
@@ -48,15 +47,13 @@ PTMestimate <- function(data, fctBatch=FALSE) {
             paste0(sQuote(cols_site), collapse = ", ")
         )
     }
-
     # Check PROTEIN data
     if (is.null(data[["PROTEIN"]])) {
         wo_prot <- TRUE
     } else {
         wo_prot <- FALSE
         if (!is.data.frame(data[["PROTEIN"]]))
-            stop(paste0("Provide a data frame of summarized log2-intensity for",
-                        " each protein, each run in ", sQuote("data$PROTEIN")))
+            stop("Provide a data frame of summarized values in 'data$PROTEIN'")
         cols_prot <- setdiff(cols_site, "site")
         if (!all(cols_prot %in% names(data[["PROTEIN"]]))) {
             stop(
@@ -65,24 +62,17 @@ PTMestimate <- function(data, fctBatch=FALSE) {
             )
         }
     }
-
     # Define batch handling
     if (!is.logical(fctBatch))
-        stop(sQuote("fctBatch"), " should be logical value(s)")
+        stop("'fctBatch' should be logical value(s)")
     if (!(length(fctBatch) %in% c(1L, 2L)))
         stop(paste0(
             "Provide one logical value for all data or two logical",
-            " values for PTM and PROTEIN separately in ",
-            sQuote("fctBatch")
+            " values for PTM and PROTEIN separately in 'fctBatch'"
         ))
     if (length(fctBatch) == 2L && wo_prot)
-        stop(paste0(
-            "Batch handling parameter is defined for PROTEIN data, but",
-            " the data is missing!"
-        ))
-    if (length(fctBatch) == 1L && !wo_prot)
-        fctBatch <- rep(fctBatch, 2)
-
+        stop("'fctBatch' is defined for PROTEIN, but data is missing!")
+    if (length(fctBatch) == 1L && !wo_prot) fctBatch <- rep(fctBatch, 2)
     est_ptm <- estimateAbundance(data[["PTM"]], fctBatch[1], perProtein = FALSE)
     if (wo_prot) {
         res <- list(PTM = est_ptm)
@@ -132,18 +122,8 @@ PTMestimate <- function(data, fctBatch=FALSE) {
 #'
 #' @export
 estimateAbundance <- function(df, fctBatch=FALSE, perProtein=FALSE) {
-    if (missing(df))
-        stop("Input data frame is missing!")
-    if (!is.data.frame(df))
-        stop(paste0(
-            "Provide summarized log2-intensities as a data frame in ",
-            sQuote("df")
-        ))
-    if (perProtein) {
-        cols_summarized <- c("protein", "group", "run", "log2inty")
-    } else {
-        cols_summarized <- c("protein", "site", "group", "run", "log2inty")
-    }
+    cols_summarized <- c("protein", "group", "run", "log2inty")
+    if (!perProtein) cols_summarized <- c(cols_summarized, "site")
     cols <- names(df)
     if (!all(cols_summarized %in% cols)) {
         stop(
@@ -151,7 +131,6 @@ estimateAbundance <- function(df, fctBatch=FALSE, perProtein=FALSE) {
             paste0(sQuote(cols_summarized), collapse = ", ")
         )
     }
-
     if ("batch" %in% cols) {
         df <- df[, c(cols_summarized, "batch")]
         if (fctBatch && length(unique(df$batch)) == 1)
@@ -164,14 +143,12 @@ estimateAbundance <- function(df, fctBatch=FALSE, perProtein=FALSE) {
 
     cols_data <- c("group", "run", "log2inty")
     if (fctBatch) {
-        # One model for all batches (need data with >1 batches)
         nested <- nest(df, data = one_of(c(cols_data, "batch")))
         singles <- vapply(
             nested$data, function(x) length(unique(x$batch)) == 1, logical(1)
         )
         nested <- nested[!singles, ]
     } else {
-        # One model per site/protein (and potentially batch)
         nested <- nest(df, data = one_of(cols_data))
     }
     # Fit linear models
@@ -181,16 +158,13 @@ estimateAbundance <- function(df, fctBatch=FALSE, perProtein=FALSE) {
     errors <- vapply(
         nested$lm_fit, function(res) inherits(res, "try-error"), logical(1)
     )
-    if (any(errors)) {
+    if (any(errors))
         warning("There were 1 or more errors while fitting models")
-    }
     nested <- nested[!errors, ]
 
     # Remove cases not eligible for hypothesis testing (SE is NA)
     nested$param <- Map(tidyEstimates, nested$lm_fit, nested$data)
-    nested$df <- vapply(
-        nested$lm_fit, stats::df.residual, FUN.VALUE = double(1)
-    )
+    nested$df <- vapply(nested$lm_fit, df.residual, FUN.VALUE = double(1))
     nas <- vapply(
         nested$param, function(x) any(is.na(x$std.error)), logical(1)
     )
@@ -266,9 +240,9 @@ fixedGroupBatch <- function(df) {
     if (length(unique(df$batch)) == 1)
         stop("Cannot estimate batch effect with a single batch!")
     if (length(unique(df$group)) == 1) {
-        fit <- stats::lm(log2inty ~ batch, data = df)
+        fit <- lm(log2inty ~ batch, data = df)
     } else {
-        fit <- stats::lm(log2inty ~ 0 + group + batch, data = df)
+        fit <- lm(log2inty ~ 0 + group + batch, data = df)
     }
     fit
 }
@@ -294,9 +268,9 @@ fixedGroupBatch <- function(df) {
 #' @export
 fixedGroup <- function(df) {
     if (length(unique(df$group)) == 1) {
-        fit <- stats::lm(log2inty ~ 1, data = df)
+        fit <- lm(log2inty ~ 1, data = df)
     } else {
-        fit <- stats::lm(log2inty ~ 0 + group, data = df)
+        fit <- lm(log2inty ~ 0 + group, data = df)
     }
     fit
 }

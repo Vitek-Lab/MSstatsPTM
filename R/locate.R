@@ -8,7 +8,7 @@
 #'   \code{uniprot_ac}, \code{uniprot_iso}, \code{entry_name}.
 #'
 #' @examples
-#' tidyFasta("https://www.uniprot.org/uniprot/P37840.fasta")
+#' tidyFasta("https://www.uniprot.org/uniprot/O13297.fasta")
 #'
 #' @export
 tidyFasta <- function(path) {
@@ -74,30 +74,15 @@ tidyFasta <- function(path) {
 #' @return A data frame with three columns: \code{uniprot_iso}, \code{peptide},
 #'   \code{site}.
 #'
+#' @examples
+#' fasta <- tidyFasta("https://www.uniprot.org/uniprot/O13297.fasta")
+#' PTMlocate("DRVSYIHNDSC*TR", "O13297", fasta, "C", "\\*")
+#'
 #' @export
 PTMlocate <- function(peptide, uniprot, fasta, modResidue, modSymbol,
     rmConfound=FALSE) {
 
-    if (missing(peptide))
-        stop("Input peptide is missing!")
-    if (missing(uniprot))
-        stop("Input uniprot is missing!")
-    if (missing(fasta))
-        stop("Input fasta is missing!")
-    if (missing(modResidue))
-        stop("Input modResidue is missing!")
-    if (missing(modSymbol))
-        stop("Input modSymbol is missing!")
-    if (!is.character(peptide))
-        stop("Please provide peptide sequence as character in peptide!")
-    if (!is.character(uniprot))
-        stop("Please provide Uniprot protein ID as character in uniprot!")
-    if (length(peptide) != length(uniprot))
-        stop("peptide and uniprot must be of the same length")
-    if (!is.data.frame(fasta))
-        stop("Please provide the FASTA information in a data frame!")
-    if (!all(c("uniprot_iso", "sequence") %in% names(fasta)))
-        stop("Uniprot_iso or sequence is missing from FASTA data frame!")
+    good <- .locateCheck(peptide, uniprot, fasta, modResidue, modSymbol)
 
     peptide_seq <- tibble(uniprot_iso = uniprot, peptide = peptide)
     peptide_seq$is_mod <- grepl(modSymbol, peptide_seq$peptide)
@@ -109,48 +94,38 @@ PTMlocate <- function(peptide, uniprot, fasta, modResidue, modSymbol,
     loc <- gregexpr(modResidue, sub_fasta$sequence, fixed = TRUE)
     sub_fasta$idx_site_full <- lapply(loc, .location_start)
 
-    # Locate peptides
-    # [TODO]: whenever possible, use extended AAs for more specific matching
+    # Locate peptides (use extended AAs for specific matching when possible)
     peptide_fasta <- left_join(peptide_seq, sub_fasta)
-
     loc <- Map(
         function(p, s) gregexpr(p, s, fixed = TRUE)[[1]],
-        as.list(peptide_fasta$peptide_unmod),
-        as.list(peptide_fasta$sequence)
+        as.list(peptide_fasta$peptide_unmod), as.list(peptide_fasta$sequence)
     )
     n <- vapply(loc, .num_match, FUN.VALUE = integer(1))
     peptide_fasta <- peptide_fasta[n == 1L, ]
     loc <- loc[n == 1L]
     peptide_fasta$idx_peptide <- lapply(loc, .location)
     peptide_fasta$aa_start <- vapply(loc, .location_start, numeric(1))
-
     # Pattern of modified sites
     mod_pattern <- paste0(modResidue, modSymbol)
-
     # Locate modifiable, modified sites (AA residues) associated with peptides
     peptide_fasta$idx_site <- Map(
         .covered_set, peptide_fasta$idx_site_full, peptide_fasta$idx_peptide
     )
     peptide_fasta$idx_mod <- Map(
         function(p, a) locateMod(p, a, residueSymbol = mod_pattern),
-        as.list(peptide_fasta$peptide),
-        as.list(peptide_fasta$aa_start)
+        as.list(peptide_fasta$peptide), as.list(peptide_fasta$aa_start)
     )
     peptide_fasta$mod_aa <- Map(
         function(s, i) if (length(i) == 0) character() else substring(s, i, i),
-        as.list(peptide_fasta$sequence),
-        peptide_fasta$idx_mod
+        as.list(peptide_fasta$sequence), peptide_fasta$idx_mod
     )
-
     # Annotate modified sites
     peptide_fasta$len_site <- lapply(
         peptide_fasta$idx_site_full, function(x) nchar(x[length(x)])
     )
     peptide_fasta$site <- Map(
         annotSite,
-        peptide_fasta$idx_mod,
-        peptide_fasta$mod_aa,
-        peptide_fasta$len_site
+        peptide_fasta$idx_mod, peptide_fasta$mod_aa, peptide_fasta$len_site
     )
     peptide_fasta$site <- as.character(peptide_fasta$site)
     col_fasta <- c(
@@ -183,6 +158,31 @@ PTMlocate <- function(peptide, uniprot, fasta, modResidue, modSymbol,
         res <- peptide_fasta[!peptide_fasta$is_mod | n1, col_res]
     }
     res
+}
+
+#' @keywords internal
+.locateCheck <- function(peptide, uniprot, fasta, modResidue, modSymbol) {
+    if (missing(peptide))
+        stop("Input peptide is missing!")
+    if (missing(uniprot))
+        stop("Input uniprot is missing!")
+    if (missing(fasta))
+        stop("Input fasta is missing!")
+    if (missing(modResidue))
+        stop("Input modResidue is missing!")
+    if (missing(modSymbol))
+        stop("Input modSymbol is missing!")
+    if (!is.character(peptide))
+        stop("Please provide peptide sequence as character in peptide!")
+    if (!is.character(uniprot))
+        stop("Please provide Uniprot protein ID as character in uniprot!")
+    if (length(peptide) != length(uniprot))
+        stop("peptide and uniprot must be of the same length")
+    if (!is.data.frame(fasta))
+        stop("Please provide the FASTA information in a data frame!")
+    if (!all(c("uniprot_iso", "sequence") %in% names(fasta)))
+        stop("Uniprot_iso or sequence is missing from FASTA data frame!")
+    TRUE
 }
 
 #' @keywords internal
