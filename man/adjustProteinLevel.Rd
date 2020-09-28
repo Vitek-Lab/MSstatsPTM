@@ -9,13 +9,13 @@ adjustProteinLevel(diffSite, diffProtein)
 \arguments{
 \item{diffSite}{A data frame for the differential analysis result of PTMs,
 returned by the function \code{extractMeanDiff} with the option
-\code{per_protein = FALSE}. The data frame contains columns of
+\code{perProtein=FALSE}. The data frame contains columns of
 \code{Protein}, \code{Site}, \code{Label}, \code{log2FC}, \code{SE},
 \code{Tvalue}, \code{DF}, and \code{pvalue}.}
 
 \item{diffProtein}{A data frame for the differential analysis result of
 proteins, returned by the function \code{extractMeanDiff} with the option
-\code{per_protein = TRUE}. The data frame contains columns of
+\code{perProtein=TRUE}. The data frame contains columns of
 \code{Protein}, \code{Label}, \code{log2FC}, \code{SE}, \code{Tvalue},
 \code{DF}, and \code{pvalue}.}
 }
@@ -25,4 +25,17 @@ A data frame.
 \description{
 \code{adjustProteinLevel} performs the adjustment with respect to protein
 abundance.
+}
+\examples{
+sim <- PTMsimulateExperiment(
+    nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+    list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+    list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+)
+summarized <- PTMsummarize(sim)
+estimates <- PTMestimate(summarized)
+res <- extractMeanDiff(estimates[["PTM"]], "G_1", "G_2", FALSE)
+res_prot <- extractMeanDiff(estimates[["PROTEIN"]], "G_1", "G_2", TRUE)
+adjustProteinLevel(res, res_prot)
+
 }

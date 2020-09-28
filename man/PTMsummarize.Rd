@@ -23,7 +23,8 @@ log2-intensities.}
 A list of two data frames named \code{PTM} and \code{PROTEIN}. The
 \code{PTM} data frame has columns of \code{protein}, \code{site},
 \code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}. The
-\code{PROTEIN} data frame includes all as in \code{PTM}, except \code{site}.
+\code{PROTEIN} data frame includes all as in \code{PTM}, except
+\code{site}.
 }
 \description{
 \code{PTMsummarize} summarizes the peak log2-intensities for each PTM site
@@ -31,9 +32,11 @@ into one value per run. If protein peak-intensities are availble, the same
 summarization procedure is applied to each protein as well.
 }
 \examples{
-sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
-list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
-list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
+sim <- PTMsimulateExperiment(
+    nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+    list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+    list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+)
 PTMsummarize(sim)
 
 }

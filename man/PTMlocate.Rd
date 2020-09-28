@@ -4,7 +4,7 @@
 \alias{PTMlocate}
 \title{Annotate modified sites with associated peptides}
 \usage{
-PTMlocate(peptide, uniprot, fasta, mod_residue, mod_symbol, rm_cnfnd = FALSE)
+PTMlocate(peptide, uniprot, fasta, modResidue, modSymbol, rmConfound = FALSE)
 }
 \arguments{
 \item{peptide}{A string vector of peptide sequences. The peptide sequence
@@ -13,13 +13,13 @@ does not include its preceding and following AAs.}
 \item{uniprot}{A string vector of Uniprot identifiers of the peptides'
 originating proteins. UniProtKB entry isoform sequence is used.}
 
-\item{fasta}{A tibble with FASTA information. Output of \code{tidy_fasta}.}
+\item{fasta}{A tibble with FASTA information. Output of \code{tidyFasta}.}
 
-\item{mod_residue}{A string. Modifiable amino acid residues.}
+\item{modResidue}{A string. Modifiable amino acid residues.}
 
-\item{mod_symbol}{A string. Symbol of a modified site.}
+\item{modSymbol}{A string. Symbol of a modified site.}
 
-\item{rm_cnfnd}{A logical. \code{TRUE} removes confounded
+\item{rmConfound}{A logical. \code{TRUE} removes confounded
 unmodified sites, \code{FALSE} otherwise. Default is \code{FALSE}.}
 }
 \value{

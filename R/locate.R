@@ -1,6 +1,6 @@
 #' Read and tidy a FASTA file
 #'
-#' \code{tidy_fasta} reads and tidys FASTA file.
+#' \code{tidyFasta} reads and tidys FASTA file.
 #'
 #' @param path A string of path to a FASTA file.
 #'
@@ -8,12 +8,10 @@
 #'   \code{uniprot_ac}, \code{uniprot_iso}, \code{entry_name}.
 #'
 #' @examples
-#' \dontrun{
-#' tidy_fasta(path)
-#' }
+#' tidyFasta("https://www.uniprot.org/uniprot/P37840.fasta")
 #'
 #' @export
-tidy_fasta <- function(path) {
+tidyFasta <- function(path) {
 
     # Check input
     if (missing(path))
@@ -29,12 +27,18 @@ tidy_fasta <- function(path) {
     aa <- as.character(aa)  # named vector
     header <- names(aa)
 
-    pat_ac <- paste0("([OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]",
-                     "([A-Z][A-Z0-9]{2}[0-9]){1,2})")
-    pat_iso <- paste0("([OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]",
-                      "([A-Z][A-Z0-9]{2}[0-9]){1,2})([-]\\d{1,}){0,1}")
+    pat_ac <- paste0(
+        "([OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]",
+        "([A-Z][A-Z0-9]{2}[0-9]){1,2})"
+    )
+    pat_iso <- paste0(
+        "([OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]",
+        "([A-Z][A-Z0-9]{2}[0-9]){1,2})([-]\\d{1,}){0,1}"
+    )
 
-    mch_head <- regexpr(pattern = "([^\\s]*)(?=\\s)", text = header, perl = TRUE)
+    mch_head <- regexpr(
+        pattern = "([^\\s]*)(?=\\s)", text = header, perl = TRUE
+    )
     shead <- regmatches(header, m = mch_head)
 
     mch_uniprot <- regexpr(pattern = pat_ac, text = shead)
@@ -46,8 +50,10 @@ tidy_fasta <- function(path) {
     trimmed <- sub(pat_iso, "", trimmed)
     entry <- gsub("\\|", "", trimmed)
 
-    tibble(header = header[matched], sequence = as.vector(aa[matched]),
-           uniprot_ac = ac, uniprot_iso = iso, entry_name = entry[matched])
+    tibble(
+        header = header[matched], sequence = as.vector(aa[matched]),
+        uniprot_ac = ac, uniprot_iso = iso, entry_name = entry[matched]
+    )
 }
 
 
@@ -59,18 +65,18 @@ tidy_fasta <- function(path) {
 #'   does not include its preceding and following AAs.
 #' @param uniprot A string vector of Uniprot identifiers of the peptides'
 #'   originating proteins. UniProtKB entry isoform sequence is used.
-#' @param fasta A tibble with FASTA information. Output of \code{tidy_fasta}.
-#' @param mod_residue A string. Modifiable amino acid residues.
-#' @param mod_symbol A string. Symbol of a modified site.
-#' @param rm_cnfnd A logical. \code{TRUE} removes confounded
+#' @param fasta A tibble with FASTA information. Output of \code{tidyFasta}.
+#' @param modResidue A string. Modifiable amino acid residues.
+#' @param modSymbol A string. Symbol of a modified site.
+#' @param rmConfound A logical. \code{TRUE} removes confounded
 #'   unmodified sites, \code{FALSE} otherwise. Default is \code{FALSE}.
 #'
 #' @return A data frame with three columns: \code{uniprot_iso}, \code{peptide},
 #'   \code{site}.
 #'
 #' @export
-PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
-                      rm_cnfnd = FALSE) {
+PTMlocate <- function(peptide, uniprot, fasta, modResidue, modSymbol,
+    rmConfound=FALSE) {
 
     if (missing(peptide))
         stop("Input peptide is missing!")
@@ -78,10 +84,10 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
         stop("Input uniprot is missing!")
     if (missing(fasta))
         stop("Input fasta is missing!")
-    if (missing(mod_residue))
-        stop("Input mod_residue is missing!")
-    if (missing(mod_symbol))
-        stop("Input mod_symbol is missing!")
+    if (missing(modResidue))
+        stop("Input modResidue is missing!")
+    if (missing(modSymbol))
+        stop("Input modSymbol is missing!")
     if (!is.character(peptide))
         stop("Please provide peptide sequence as character in peptide!")
     if (!is.character(uniprot))
@@ -91,38 +97,42 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
     if (!is.data.frame(fasta))
         stop("Please provide the FASTA information in a data frame!")
     if (!all(c("uniprot_iso", "sequence") %in% names(fasta)))
-        stop("Column of uniprot_iso or sequence is missing from FASTA data frame!")
+        stop("Uniprot_iso or sequence is missing from FASTA data frame!")
 
     peptide_seq <- tibble(uniprot_iso = uniprot, peptide = peptide)
-    peptide_seq$is_mod <- grepl(mod_symbol, peptide_seq$peptide)
-    peptide_seq$peptide_unmod <- gsub(mod_symbol, "", peptide_seq$peptide)
+    peptide_seq$is_mod <- grepl(modSymbol, peptide_seq$peptide)
+    peptide_seq$peptide_unmod <- gsub(modSymbol, "", peptide_seq$peptide)
 
     # Locate modifiable sites
-    sub_fasta <- fasta[fasta$uniprot_iso %in% uniprot, c("uniprot_iso", "sequence")]
-    loc <- gregexpr(mod_residue, sub_fasta$sequence, fixed = TRUE)
+    col_seq <- c("uniprot_iso", "sequence")
+    sub_fasta <- fasta[fasta$uniprot_iso %in% uniprot, col_seq]
+    loc <- gregexpr(modResidue, sub_fasta$sequence, fixed = TRUE)
     sub_fasta$idx_site_full <- lapply(loc, .location_start)
 
     # Locate peptides
     # [TODO]: whenever possible, use extended AAs for more specific matching
     peptide_fasta <- left_join(peptide_seq, sub_fasta)
 
-    loc <- Map(function(p, s) gregexpr(p, s, fixed = TRUE)[[1]],
-               as.list(peptide_fasta$peptide_unmod), as.list(peptide_fasta$sequence))
+    loc <- Map(
+        function(p, s) gregexpr(p, s, fixed = TRUE)[[1]],
+        as.list(peptide_fasta$peptide_unmod),
+        as.list(peptide_fasta$sequence)
+    )
     n <- vapply(loc, .num_match, FUN.VALUE = integer(1))
     peptide_fasta <- peptide_fasta[n == 1L, ]
     loc <- loc[n == 1L]
     peptide_fasta$idx_peptide <- lapply(loc, .location)
-    peptide_fasta$aa_start <- sapply(loc, .location_start)
+    peptide_fasta$aa_start <- vapply(loc, .location_start, numeric(1))
 
     # Pattern of modified sites
-    mod_pattern <- paste0(mod_residue, mod_symbol)
+    mod_pattern <- paste0(modResidue, modSymbol)
 
     # Locate modifiable, modified sites (AA residues) associated with peptides
     peptide_fasta$idx_site <- Map(
         .covered_set, peptide_fasta$idx_site_full, peptide_fasta$idx_peptide
     )
     peptide_fasta$idx_mod <- Map(
-        function(p, a) locate_mod(p, a, residue_symbol = mod_pattern),
+        function(p, a) locateMod(p, a, residueSymbol = mod_pattern),
         as.list(peptide_fasta$peptide),
         as.list(peptide_fasta$aa_start)
     )
@@ -137,25 +147,31 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
         peptide_fasta$idx_site_full, function(x) nchar(x[length(x)])
     )
     peptide_fasta$site <- Map(
-        annot_site,
+        annotSite,
         peptide_fasta$idx_mod,
         peptide_fasta$mod_aa,
         peptide_fasta$len_site
     )
     peptide_fasta$site <- as.character(peptide_fasta$site)
-    peptide_fasta <- peptide_fasta[, c("uniprot_iso", "peptide", "peptide_unmod",
-                                       "is_mod", "idx_site", "idx_mod", "site")]
+    col_fasta <- c(
+        "uniprot_iso", "peptide", "peptide_unmod", "is_mod",
+        "idx_site", "idx_mod", "site"
+    )
+    peptide_fasta <- peptide_fasta[, col_fasta]
 
     # Handle confounded unmodified sites
     col_res <- c("uniprot_iso", "peptide", "site")
-    if (rm_cnfnd) {
+    if (rmConfound) {
         by_prot <- group_by(peptide_fasta, .data$uniprot_iso)
-        by_prot <- mutate(by_prot, idx_mod_full = list(unique(unlist(.data$idx_mod))))
+        by_prot <- mutate(
+            by_prot, idx_mod_full = list(unique(unlist(.data$idx_mod)))
+        )
         by_prot <- ungroup(by_prot)
         by_prot <- by_prot[!by_prot$is_mod, ]
         cnfnd <- vector("logical", nrow(by_prot))
         for (i in seq_along(cnfnd)) {
-            cnfnd[i] <- any(by_prot$idx_site[[i]] %in% by_prot$idx_mod_full[[i]])
+            cnfnds <- by_prot$idx_site[[i]] %in% by_prot$idx_mod_full[[i]]
+            cnfnd[i] <- any(cnfnds)
         }
         s_unmod <- by_prot[!cnfnd, col_res]
 
@@ -166,17 +182,16 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
         n1 <- vapply(peptide_fasta$idx_mod, .length_one, FUN.VALUE = logical(1))
         res <- peptide_fasta[!peptide_fasta$is_mod | n1, col_res]
     }
-
     res
 }
 
-
 #' @keywords internal
 .num_match <- function(x) {
-    ifelse(is.na(x) || identical(as.vector(x), -1L), 0L,
-           length(attr(x, "match.length")))
+    ifelse(
+        is.na(x) || identical(as.vector(x), -1L),
+        0L, length(attr(x, "match.length"))
+    )
 }
-
 
 #' @keywords internal
 .location_start <- function(x) {
@@ -187,91 +202,83 @@ PTMlocate <- function(peptide, uniprot, fasta, mod_residue, mod_symbol,
     start
 }
 
-
 #' @keywords internal
 .location <- function(x) {
     start <- as.vector(x)
     if (identical(start, -1L)) {
         return(cbind(start = integer(), end = integer()))
     }
-
     end <- as.vector(x) + attr(x, "match.length") - 1
 
     cbind(start = start, end = end)
 }
-
 
 #' @keywords internal
 .covered_set <- function(x, y) {
     x[x >= y[1] & x <= y[2]]
 }
 
-
 #' @keywords internal
 .length_one <- function(x) length(x) == 1
 
-
 #' Locate modified sites with a peptide
 #'
-#' \code{locate_mod} locates modified sites with a peptide.
+#' \code{locateMod} locates modified sites with a peptide.
 #'
 #' @param peptide A string. Peptide sequence.
-#' @param aa_start An integer. Starting index of the peptide.
-#' @param residue_symbol A string. Modification residue and denoted symbol.
+#' @param aaStart An integer. Starting index of the peptide.
+#' @param residueSymbol A string. Modification residue and denoted symbol.
 #'
 #' @return A string.
 #'
 #' @examples
-#' \dontrun{
-#' locate_mod(peptide, aa_start, residue_symbol)
-#' }
+#' locateMod("P*EP*TIDE", 3, "\\*")
 #'
 #' @export
-locate_mod <- function(peptide, aa_start, residue_symbol) {
-
-    x <- gregexpr(residue_symbol, peptide)[[1]]
+locateMod <- function(peptide, aaStart, residueSymbol) {
+    x <- gregexpr(residueSymbol, peptide)[[1]]
     start <- as.vector(x)
     if (identical(start, -1L)) {
         return(integer())
     }
-
-    start - seq_along(start) + aa_start
+    start - seq_along(start) + aaStart
 }
 
 #' Annotate modification site
 #'
-#' \code{annot_site} annotates modified sites as their residues and locations.
+#' \code{annotSite} annotates modified sites as their residues and locations.
 #'
-#' @param aa_idx An integer vector. Location of the sites.
+#' @param aaIndex An integer vector. Location of the sites.
 #' @param residue A string vector. Amino acid residue.
-#' @param len_idx An integer. Default is \code{NULL}
+#' @param lenIndex An integer. Default is \code{NULL}
 #'
 #' @return A string.
 #'
 #' @examples
-#' annot_site(10, "K")
-#' annot_site(10, "K", 3L)
+#' annotSite(10, "K")
+#' annotSite(10, "K", 3L)
 #'
 #' @export
-annot_site <- function(aa_idx, residue, len_idx = NULL) {
-    if (length(aa_idx) == 0) {
+annotSite <- function(aaIndex, residue, lenIndex=NULL) {
+    if (length(aaIndex) == 0) {
         return("None")
     } else {
-        if (length(residue) != 1 && length(aa_idx) != length(residue))
-            stop("Lengths of aa_idx and residue don't match!")
-        if (!is.null(len_idx)) {
-            if (!is.integer(len_idx))
-                stop("len_idx should be an integer!")
-            if (max(nchar(aa_idx)) > len_idx)
-                stop("len_idx doesn't reserve enough space for aa_idx!")
+        if (length(residue) != 1 && length(aaIndex) != length(residue))
+            stop("Lengths of aaIndex and residue don't match!")
+        if (!is.null(lenIndex)) {
+            if (!is.integer(lenIndex))
+                stop("lenIndex should be an integer!")
+            if (max(nchar(aaIndex)) > lenIndex)
+                stop("lenIndex doesn't reserve enough space for aaIndex!")
 
-            aa_idx_pad <- formatC(aa_idx, width = len_idx, format = "d", flag = "0")
+            aa_idx_pad <- formatC(
+                aaIndex, width = lenIndex, format = "d", flag = "0"
+            )
             site <- paste0(residue, aa_idx_pad, collapse = "-")
         } else {
-            site <- paste0(residue, aa_idx, collapse = "-")
+            site <- paste0(residue, aaIndex, collapse = "-")
         }
     }
-
     site
 }
 

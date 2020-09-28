@@ -9,7 +9,8 @@ The MSstatsPTM package provides four main functions for quantitative analysis
 of PTMs
 }
 \details{
-Quantitative analyses of PTMs are supported by four main functions of \emph{MSstatsPTM}:
+Quantitative analyses of PTMs are supported by four main functions of
+\emph{MSstatsPTM}:
 }
 \section{Normalization}{
 

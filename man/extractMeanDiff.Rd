@@ -2,21 +2,21 @@
 % Please edit documentation in R/compare.R
 \name{extractMeanDiff}
 \alias{extractMeanDiff}
-\title{Compare mean abundances for all PTM sites (or proteins) across conditions}
+\title{Compare mean abundances for PTM sites (or proteins) across conditions}
 \usage{
-extractMeanDiff(data, controls, cases, per_protein = FALSE)
+extractMeanDiff(data, controls, cases, perProtein = FALSE)
 }
 \arguments{
 \item{data}{A list of abundance estimates with the following elements:
 \code{protein}, \code{site}, \code{param}, and \code{df}. \code{site} may
-be excluded when performing per-protein analysis (\code{per_protein} is
+be excluded when performing per-protein analysis (\code{perProtein} is
 \code{TRUE}).}
 
 \item{controls}{A string vector of control groups in the comparisons.}
 
 \item{cases}{A string vector of case groups.}
 
-\item{per_protein}{A logical. \code{TRUE} ignores the site-level information
+\item{perProtein}{A logical. \code{TRUE} ignores the site-level information
 for PTM and considers protein as a whole, \code{FALSE} performs site-level
 analysis. Default is \code{FALSE}.}
 }
@@ -26,4 +26,16 @@ A data frame.
 \description{
 \code{extractMeanDiff} performs significance analysis for detection of
 changes in PTM mean abundances between conditions.
+}
+\examples{
+sim <- PTMsimulateExperiment(
+    nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+    list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+    list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+)
+summarized <- PTMsummarize(sim)
+estimates <- PTMestimate(summarized)
+extractMeanDiff(estimates[["PTM"]], controls="G_1", cases="G_2", FALSE)
+extractMeanDiff(estimates[["PROTEIN"]], controls="G_1", cases="G_2", TRUE)
+
 }

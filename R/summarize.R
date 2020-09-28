@@ -18,16 +18,19 @@
 #' @return A list of two data frames named \code{PTM} and \code{PROTEIN}. The
 #'   \code{PTM} data frame has columns of \code{protein}, \code{site},
 #'   \code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}. The
-#'   \code{PROTEIN} data frame includes all as in \code{PTM}, except \code{site}.
+#'   \code{PROTEIN} data frame includes all as in \code{PTM}, except
+#'   \code{site}.
 #'
 #' @examples
-#' sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
-#' list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
-#' list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
+#' sim <- PTMsimulateExperiment(
+#'     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+#'     list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+#'     list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+#' )
 #' PTMsummarize(sim)
 #'
 #' @export
-PTMsummarize <- function(data, method = "tmp") {
+PTMsummarize <- function(data, method="tmp") {
     # Check the PTM data
     if (is.null(data[["PTM"]]))
         stop("PTM peak list is missing!")
@@ -36,8 +39,10 @@ PTMsummarize <- function(data, method = "tmp") {
                     " each site in each run in ", sQuote("data$PTM")))
     cols_peak <- c("protein", "site", "group", "run", "feature", "log2inty")
     if (!all(cols_peak %in% names(data[["PTM"]]))) {
-        stop("Please include in the PTM data frame all the following columns: ",
-             paste0(sQuote(cols_peak), collapse = ", "))
+        stop(
+            "Please include in the PTM data frame all the following columns: ",
+            paste0(sQuote(cols_peak), collapse = ", ")
+        )
     }
 
     # Check the PROTEIN data
@@ -46,12 +51,16 @@ PTMsummarize <- function(data, method = "tmp") {
     } else {
         wo_prot <- FALSE
         if (!is.data.frame(data[["PROTEIN"]]))
-            stop(paste0("Provide a data frame of peak log2-intensity for",
-                        " each protein in each run in ", sQuote("data$PROTEIN")))
+            stop(paste0(
+                "Provide a data frame of peak log2-intensity for",
+                " each protein, each run in ", sQuote("data$PROTEIN")
+            ))
         cols_prot <- setdiff(cols_peak, "site")
         if (!all(cols_prot %in% names(data[["PROTEIN"]]))) {
-            stop("Please include in the PROTEIN data frame all the following columns: ",
-                 paste0(sQuote(cols_prot), collapse = ", "))
+            stop(
+                "Include in the PROTEIN data frame the following columns: ",
+                paste0(sQuote(cols_prot), collapse = ", ")
+            )
         }
     }
 
@@ -62,11 +71,15 @@ PTMsummarize <- function(data, method = "tmp") {
     # Nested data frame with site as the analysis unit
     cols_nested <- setdiff(cols_peak, "group")
     if ("batch" %in% names(df)) {
-        nested <- nest(df[, c(cols_nested, "batch")],
-                       data = one_of("run", "feature", "log2inty"))
+        nested <- nest(
+            df[, c(cols_nested, "batch")],
+            data = one_of("run", "feature", "log2inty")
+        )
     } else {
-        nested <- nest(df[, cols_nested],
-                       data = one_of("run", "feature", "log2inty"))
+        nested <- nest(
+            df[, cols_nested],
+            data = one_of("run", "feature", "log2inty")
+        )
     }
 
     # Summarize features per site per MS run
@@ -85,11 +98,15 @@ PTMsummarize <- function(data, method = "tmp") {
         # Nested data frame with protein as the analysis unit
         cols_nested <- setdiff(cols_prot, "group")
         if ("batch" %in% names(df_prot)) {
-            nested_prot <- nest(df_prot[, c(cols_nested, "batch")],
-                                data = one_of("run", "feature", "log2inty"))
+            nested_prot <- nest(
+                df_prot[, c(cols_nested, "batch")],
+                data = one_of("run", "feature", "log2inty")
+            )
         } else {
-            nested_prot <- nest(df_prot[, cols_nested],
-                                data = one_of("run", "feature", "log2inty"))
+            nested_prot <- nest(
+                df_prot[, cols_nested],
+                data = one_of("run", "feature", "log2inty")
+            )
         }
 
         # Summarize features per protein per MS run
@@ -121,20 +138,22 @@ PTMsummarize <- function(data, method = "tmp") {
 #'
 #' @examples
 #' df <- data.frame(
-#'   run = c("a", "a", "a", "b", "b"),
-#'   feature = c("F1", "F2", "F3", "F1", "F3"),
-#'   log2inty = rnorm(5))
-#' summarizeFeatures(df, method = "tmp")
+#'   run=c("a", "a", "a", "b", "b"),
+#'   feature=c("F1", "F2", "F3", "F1", "F3"),
+#'   log2inty=rnorm(5))
+#' summarizeFeatures(df, method="tmp")
 #'
 #' @export
-summarizeFeatures <- function(df, method = "tmp") {
+summarizeFeatures <- function(df, method="tmp") {
     if (missing(df))
         stop(paste0("The input ", sQuote("df"), " is missing!"))
     if (!is.data.frame(df))
         stop(paste0("Provide the peak list as a data frame in ", sQuote("df")))
     if (!all(c("run", "feature", "log2inty") %in% names(df))) {
-        stop("Missing columns! Please make sure the input data frame contains
-             columns of 'run', 'feature', 'log2inty'")
+        stop(paste0(
+            "Missing columns! Please make sure the input data frame contains",
+            " columns of 'run', 'feature', 'log2inty'"
+        ))
     }
     if (missing(method))
         stop("Please specify a summarization method.")
@@ -163,8 +182,11 @@ summarizeFeatures <- function(df, method = "tmp") {
 
 #' @keywords internal
 .summarize_tmp <- function(df, ...) {
-    wd <- tidyr::pivot_wider(df[, c("feature", "run", "log2inty")],
-                             names_from = .data$feature, values_from = .data$log2inty)
+    wd <- tidyr::pivot_wider(
+        df[, c("feature", "run", "log2inty")],
+        names_from = .data$feature,
+        values_from = .data$log2inty
+    )
     m <- data.matrix(wd[, -1])
     res <- stats::medpolish(m, na.rm = TRUE, trace.iter = FALSE)
     tibble(run = wd$run, log2inty = res$overall + res$row)

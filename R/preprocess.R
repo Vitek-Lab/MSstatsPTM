@@ -21,12 +21,15 @@
 #' @return Normalized data stored as in \code{data}.
 #'
 #' @examples
-#' \dontrun{
-#' PTMnormalize(df)
-#' }
+#' sim <- PTMsimulateExperiment(
+#'     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+#'     list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+#'     list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+#' )
+#' PTMnormalize(sim)
 #'
 #' @export
-PTMnormalize <- function(data, method = "median", refs) {
+PTMnormalize <- function(data, method="median", refs) {
     cols_req <- c("run", "feature", "log2inty")
     norm_opt <- c("median", "mean", "logsum", "ref")
 
@@ -37,8 +40,10 @@ PTMnormalize <- function(data, method = "median", refs) {
         stop(paste0("Provide a data frame of peak log2-intensity for",
                     " the PTM data in ", sQuote("data$PTM")))
     if (!all(cols_req %in% names(data[["PTM"]]))) {
-        stop("Please include in the PTM data frame all the following columns: ",
-             paste0(sQuote(cols_req), collapse = ", "))
+        stop(
+            "Include in the PTM data frame the following columns: ",
+            paste0(sQuote(cols_req), collapse = ", ")
+        )
     }
 
     # Check the PROTEIN data
@@ -47,11 +52,15 @@ PTMnormalize <- function(data, method = "median", refs) {
     } else {
         wo_prot <- FALSE
         if (!is.data.frame(data[["PROTEIN"]]))
-            stop(paste0("Provide a data frame of peak log2-intensity for",
-                        " the PROTEIN data in ", sQuote("data$PROTEIN")))
+            stop(paste0(
+                "Provide a data frame of peak log2-intensity for",
+                " the PROTEIN data in ", sQuote("data$PROTEIN")
+            ))
         if (!all(cols_req %in% names(data[["PROTEIN"]]))) {
-            stop("Please include in the PROTEIN data frame all the following columns: ",
-                 paste0(sQuote(cols_req), collapse = ", "))
+            stop(
+                "Include in the PROTEIN data frame the following columns: ",
+                paste0(sQuote(cols_req), collapse = ", ")
+            )
         }
     }
 
@@ -60,8 +69,10 @@ PTMnormalize <- function(data, method = "median", refs) {
         stop("Define normalization method as a string in ", sQuote("method"))
     }
     if (!(method %in% norm_opt)) {
-        stop("Define the normalization method as one of the following: ",
-             paste0(sQuote(norm_opt), collapse = ", "))
+        stop(
+            "Define the normalization method as one of the following: ",
+            paste0(sQuote(norm_opt), collapse = ", ")
+        )
     }
 
     if (method == "ref") {
@@ -71,11 +82,17 @@ PTMnormalize <- function(data, method = "median", refs) {
 
         # Check the reference for the PTM data
         if (!is.data.frame(refs[["PTM"]])) {
-            stop("Define the adjustment for PTM data as a data frame in ", sQuote("refs$PTM"))
+            stop(
+                "Define the adjustment for PTM data as a data frame in ",
+                sQuote("refs$PTM")
+            )
         }
         if (!all(c("run", "adjLog2inty") %in% names(refs[["PTM"]]))) {
-            stop("Please include in ", sQuote("refs$PTM"),
-                 " the following columns: ", sQuote("run"), sQuote("adjLog2inty"))
+            stop(
+                "Please include in ", sQuote("refs$PTM"),
+                " the following columns: ", sQuote("run"),
+                sQuote("adjLog2inty")
+            )
         }
         if (!all(unique(data[["PTM"]]$run) %in% refs[["PTM"]]$run)) {
             stop("Adjustment is not fully defined for all MS runs!")
@@ -85,13 +102,20 @@ PTMnormalize <- function(data, method = "median", refs) {
         if (!wo_prot) {
             # Check the reference for the PROTEIN data
             if (!is.data.frame(refs[["PROTEIN"]])) {
-                stop("Define the adjustment for PROTEIN data as a data frame in ", sQuote("refs$PROTEIN"))
+                stop(
+                    "Define adjustment for PROTEIN data as a data frame in ",
+                    sQuote("refs$PROTEIN")
+                )
             }
             if (!all(c("run", "adjLog2inty") %in% names(refs[["PROTEIN"]]))) {
-                stop("Please include in ", sQuote("refs$PROTEIN"),
-                     " the following columns: ", sQuote("run"), sQuote("adjLog2inty"))
+                stop(
+                    "Please include in ", sQuote("refs$PROTEIN"),
+                    " the following columns: ", sQuote("run"),
+                    sQuote("adjLog2inty")
+                )
             }
-            if (!all(unique(data[["PROTEIN"]]$run) %in% refs[["PROTEIN"]]$run)) {
+            wa <- all(unique(data[["PROTEIN"]]$run) %in% refs[["PROTEIN"]]$run)
+            if (!wa) {
                 stop("Adjustment is not fully defined for all MS runs!")
             }
             ref_prot <- refs[["PROTEIN"]]
@@ -108,22 +132,24 @@ PTMnormalize <- function(data, method = "median", refs) {
     if (wo_prot) {
         res <- list(PTM = .byReference(data[["PTM"]], ref_PTM))
     } else {
-        res <- list(PTM = .byReference(data[["PTM"]], ref_PTM),
-                    PROTEIN = .byReference(data[["PROTEIN"]], ref_prot))
+        res <- list(
+            PTM = .byReference(data[["PTM"]], ref_PTM),
+            PROTEIN = .byReference(data[["PROTEIN"]], ref_prot)
+        )
     }
     res
 }
 
 
 #' @keywords internal
-.getReference <- function(df, method = "median") {
+.getReference <- function(df, method="median") {
     g <- group_by(df, .data$run)
     if (method == "median") {
-        gs <- summarise(g, log2inty = stats::median(.data$log2inty, na.rm = TRUE))
+        gs <- summarise(g, log2inty = stats::median(.data$log2inty, na.rm=TRUE))
     } else if (method == "mean") {
-        gs <- summarise(g, log2inty = mean(.data$log2inty, na.rm = TRUE))
+        gs <- summarise(g, log2inty = mean(.data$log2inty, na.rm=TRUE))
     } else {
-        gs <- summarise(g, log2inty = log2(sum(2 ^ .data$log2inty, na.rm = TRUE)))
+        gs <- summarise(g, log2inty = log2(sum(2 ^ .data$log2inty, na.rm=TRUE)))
     }
     gbl <- stats::median(gs$log2inty)
     tibble(run = gs$run, adjLog2inty = gbl - gs$log2inty)

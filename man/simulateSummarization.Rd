@@ -19,7 +19,8 @@ log2-abundance of each group from the overall mean.}
 \item{sRep}{A numeric. Standard deviation of the log2-intensities.}
 }
 \value{
-A tibble with columns of \code{group}, \code{run} and \code{log2inty}.
+A tibble with columns of \code{group}, \code{run} and
+\code{log2inty}.
 }
 \description{
 \code{simulateSummarization} simulates the summarized log2-intensity value
@@ -28,6 +29,6 @@ normal distribtuion, where the average log2-intensity is defined for each
 condition
 }
 \examples{
-simulateSummarization(nGroup = 2, nRep = 3, 25, c(0, 1), 0.2)
+simulateSummarization(nGroup=2, nRep=3, 25, c(0, 1), 0.2)
 
 }

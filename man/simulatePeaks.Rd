@@ -33,6 +33,6 @@ and \code{log2inty}.
 spectral features of a PTM site, in multiple MS runs and conditions.
 }
 \examples{
-simulatePeaks(nGroup = 2, nRep = 3, nFeature = 5, 25, c(0, 1), 0.2, 0.05)
+simulatePeaks(nGroup=2, nRep=3, nFeature=5, 25, c(0, 1), 0.2, 0.05)
 
 }

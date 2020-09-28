@@ -19,9 +19,9 @@ as response, and \code{group} and \code{batch} as fixed effects.
 }
 \examples{
 x <- data.frame(
-  batch = rep(c("1", "2"), each = 4),
-  group = rep(c("1", "2"), 4),
-  log2inty = rep(c(10, 12), 4) + rnorm(8)
+    batch=rep(c("1", "2"), each=4),
+    group=rep(c("1", "2"), 4),
+    log2inty=rep(c(10, 12), 4) + rnorm(8)
 )
 fixedGroupBatch(x)
 

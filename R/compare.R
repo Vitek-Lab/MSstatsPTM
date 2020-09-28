@@ -17,19 +17,26 @@
 #' @return A data frame.
 #'
 #' @examples
-#' \dontrun{
-#' PTMcompareMeans(df_mod, controls, cases)
-#' }
+#' sim <- PTMsimulateExperiment(
+#'     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+#'     list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+#'     list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+#' )
+#' summarized <- PTMsummarize(sim)
+#' estimates <- PTMestimate(summarized)
+#' PTMcompareMeans(estimates, controls="G_1", cases="G_2")
 #'
 #' @export
-PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
+PTMcompareMeans <- function(data, controls, cases, adjProtein=FALSE) {
     # Check PTM estimates
     if (is.null(data[["PTM"]]))
         stop("PTM estimates are missing!")
     elm_site <- c("protein", "site", "param", "df")
     if (!all(elm_site %in% names(data[["PTM"]]))) {
-        stop("Please include in the PTM list all the following elements: ",
-             paste0(sQuote(elm_site), collapse = ", "))
+        stop(
+            "Please include in the PTM list all the following elements: ",
+            paste0(sQuote(elm_site), collapse = ", ")
+        )
     }
     if (adjProtein) {
         # Check PROTEIN estimates
@@ -37,50 +44,66 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein = FALSE) {
             stop("To adjust for protein level, protein estimates are required")
         elm_prot <- c("protein", "param", "df")
         if (!all(elm_prot %in% names(data[["PROTEIN"]]))) {
-            stop("Please include in the PROTEIN list all the following elements: ",
-                 paste0(sQuote(elm_site), collapse = ", "))
+            stop(
+                "Include in the PROTEIN list all the following elements: ",
+                paste0(sQuote(elm_site), collapse = ", ")
+            )
         }
     }
     if (!(is.character(controls) && is.character(cases)))
         stop("Provide the control and case groups as character vectors")
     if (length(controls) != length(cases))
-        stop(paste0("The lengths of ", sQuote("controls"), " and ",
-                    sQuote("cases"), " should be identical"))
+        stop(paste0(
+            "The lengths of ", sQuote("controls"), " and ", sQuote("cases"),
+            " should be identical"
+        ))
 
-    res <- extractMeanDiff(data[["PTM"]], controls, cases, per_protein = FALSE)
+    res <- extractMeanDiff(data[["PTM"]], controls, cases, perProtein = FALSE)
     if (adjProtein) {
-        res_prot <- extractMeanDiff(data[["PROTEIN"]], controls, cases,
-                                    per_protein = TRUE)
+        res_prot <- extractMeanDiff(
+            data[["PROTEIN"]], controls, cases, perProtein = TRUE
+        )
         res <- adjustProteinLevel(res, res_prot)
     }
     res
 }
 
 
-#' Compare mean abundances for all PTM sites (or proteins) across conditions
+#' Compare mean abundances for PTM sites (or proteins) across conditions
 #'
 #' \code{extractMeanDiff} performs significance analysis for detection of
 #' changes in PTM mean abundances between conditions.
 #'
 #' @param data A list of abundance estimates with the following elements:
 #'   \code{protein}, \code{site}, \code{param}, and \code{df}. \code{site} may
-#'   be excluded when performing per-protein analysis (\code{per_protein} is
+#'   be excluded when performing per-protein analysis (\code{perProtein} is
 #'   \code{TRUE}).
 #' @param controls A string vector of control groups in the comparisons.
 #' @param cases A string vector of case groups.
-#' @param per_protein A logical. \code{TRUE} ignores the site-level information
+#' @param perProtein A logical. \code{TRUE} ignores the site-level information
 #'   for PTM and considers protein as a whole, \code{FALSE} performs site-level
 #'   analysis. Default is \code{FALSE}.
+#'
+#' @examples
+#' sim <- PTMsimulateExperiment(
+#'     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+#'     list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+#'     list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+#' )
+#' summarized <- PTMsummarize(sim)
+#' estimates <- PTMestimate(summarized)
+#' extractMeanDiff(estimates[["PTM"]], controls="G_1", cases="G_2", FALSE)
+#' extractMeanDiff(estimates[["PROTEIN"]], controls="G_1", cases="G_2", TRUE)
 #'
 #' @return A data frame.
 #'
 #' @export
-extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
-    if (!per_protein && is.null(data[["site"]]))
+extractMeanDiff <- function(data, controls, cases, perProtein=FALSE) {
+    if (!perProtein && is.null(data[["site"]]))
         stop("Site-level analysis requires the information of PTM site")
 
     w_batch <- "batch" %in% names(data)
-    if (per_protein) {
+    if (perProtein) {
         # One row per protein
         params <- tibble(
             protein = data[["protein"]],
@@ -117,14 +140,14 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
         ctrl <- controls[i]
         case <- cases[i]
         tests <- Map(.onetest, params$param, params$df, ctrl, case)
-        nores <- sapply(tests, is.null)
+        nores <- vapply(tests, is.null, logical(1))
         onectrx <- bind_rows(tests)
         onectrx$Protein <- params$protein[!nores]
-        if (!per_protein) {
+        if (!perProtein) {
             onectrx$Site <- params$site[!nores]
         }
         if (w_batch) {
-            if (per_protein) {
+            if (perProtein) {
                 cnt <- count(onectrx, .data$Protein)
             } else {
                 cnt <- count(onectrx, .data$Protein, .data$Site)
@@ -151,9 +174,11 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
     if (!any(c(ctrl, case) %in% param$group)) {
         return(NULL)
     } else if (sum(c(ctrl, case) %in% param$group) == 1) {
-        res <- tibble(Label = paste(case, ctrl, sep = " vs "),
-                      log2FC = ifelse(case %in% param$group, Inf, -Inf),
-                      SE = NA, Tvalue = NA, DF = NA, pvalue = NA)
+        res <- tibble(
+            Label = paste(case, ctrl, sep = " vs "),
+            log2FC = ifelse(case %in% param$group, Inf, -Inf),
+            SE = NA, Tvalue = NA, DF = NA, pvalue = NA
+        )
     } else {
         param_case <- param[param$group == case, ]
         param_ctrl <- param[param$group == ctrl, ]
@@ -161,8 +186,10 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
         stderr <- sqrt(param_case$std.error ^ 2 + param_ctrl$std.error ^ 2)
         tval <- log2fc / stderr
         pval <- 2 * stats::pt(abs(tval), df, lower.tail = FALSE)
-        res <- tibble(Label = paste(case, ctrl, sep = " vs "), log2FC = log2fc,
-                      SE = stderr, Tvalue = tval, DF = df, pvalue = pval)
+        res <- tibble(
+            Label = paste(case, ctrl, sep = " vs "), log2FC = log2fc,
+            SE = stderr, Tvalue = tval, DF = df, pvalue = pval
+        )
     }
     res
 }
@@ -190,16 +217,28 @@ extractMeanDiff <- function(data, controls, cases, per_protein = FALSE) {
 #'
 #' @param diffSite A data frame for the differential analysis result of PTMs,
 #'   returned by the function \code{extractMeanDiff} with the option
-#'   \code{per_protein = FALSE}. The data frame contains columns of
+#'   \code{perProtein=FALSE}. The data frame contains columns of
 #'   \code{Protein}, \code{Site}, \code{Label}, \code{log2FC}, \code{SE},
 #'   \code{Tvalue}, \code{DF}, and \code{pvalue}.
 #' @param diffProtein A data frame for the differential analysis result of
 #'   proteins, returned by the function \code{extractMeanDiff} with the option
-#'   \code{per_protein = TRUE}. The data frame contains columns of
+#'   \code{perProtein=TRUE}. The data frame contains columns of
 #'   \code{Protein}, \code{Label}, \code{log2FC}, \code{SE}, \code{Tvalue},
 #'   \code{DF}, and \code{pvalue}.
 #'
 #' @return A data frame.
+#'
+#' @examples
+#' sim <- PTMsimulateExperiment(
+#'     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+#'     list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+#'     list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+#' )
+#' summarized <- PTMsummarize(sim)
+#' estimates <- PTMestimate(summarized)
+#' res <- extractMeanDiff(estimates[["PTM"]], "G_1", "G_2", FALSE)
+#' res_prot <- extractMeanDiff(estimates[["PROTEIN"]], "G_1", "G_2", TRUE)
+#' adjustProteinLevel(res, res_prot)
 #'
 #' @export
 adjustProteinLevel <- function(diffSite, diffProtein) {
@@ -211,12 +250,16 @@ adjustProteinLevel <- function(diffSite, diffProtein) {
 
     missing_ctrl <- joined[joined$log2FC == Inf, ]  # PTM missing in control
     missing_case <- joined[joined$log2FC == -Inf, ] # PTM missing in case
-    res_mctrl <- tibble(Protein = missing_ctrl$Protein,
-                        Site = missing_ctrl$Site, Label = missing_ctrl$Label,
-                        log2FC = Inf, SE = NA, Tvalue = NA, DF = NA, pvalue = NA)
-    res_mcase <- tibble(Protein = missing_case$Protein,
-                        Site = missing_case$Site, Label = missing_case$Label,
-                        log2FC = -Inf, SE = NA, Tvalue = NA, DF = NA, pvalue = NA)
+    res_mctrl <- tibble(
+        Protein = missing_ctrl$Protein,
+        Site = missing_ctrl$Site, Label = missing_ctrl$Label,
+        log2FC = Inf, SE = NA, Tvalue = NA, DF = NA, pvalue = NA
+    )
+    res_mcase <- tibble(
+        Protein = missing_case$Protein,
+        Site = missing_case$Site, Label = missing_case$Label,
+        log2FC = -Inf, SE = NA, Tvalue = NA, DF = NA, pvalue = NA
+    )
 
     idx_full <- abs(joined$log2FC) != Inf & abs(joined$log2FC_ref) != Inf
     full <- joined[idx_full, ]
@@ -229,14 +272,10 @@ adjustProteinLevel <- function(diffSite, diffProtein) {
     df <- numer / denom
     tval <- log2fc / stderr
     pval <- 2 * stats::pt(abs(tval), df, lower.tail = FALSE)
-    res_full <- tibble(Protein = full$Protein,
-                       Site = full$Site,
-                       Label = full$Label,
-                       log2FC = log2fc,
-                       SE = stderr,
-                       Tvalue = tval,
-                       DF = df,
-                       pvalue = pval)
+    res_full <- tibble(
+        Protein = full$Protein, Site = full$Site, Label = full$Label,
+        log2FC = log2fc, SE = stderr, Tvalue = tval, DF = df, pvalue = pval
+    )
 
     bind_rows(res_full, res_mctrl, res_mcase)
 }

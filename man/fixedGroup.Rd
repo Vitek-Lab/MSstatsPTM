@@ -19,8 +19,8 @@ fixed effect.
 }
 \examples{
 x <- data.frame(
-  group = rep(c("1", "2"), 3),
-  log2inty = rep(c(10, 12), 3) + rnorm(6)
+    group=rep(c("1", "2"), 3),
+    log2inty=rep(c(10, 12), 3) + rnorm(6)
 )
 fixedGroup(x)
 

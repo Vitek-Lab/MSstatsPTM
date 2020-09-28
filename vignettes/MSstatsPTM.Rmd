@@ -29,21 +29,35 @@ library(MSstatsPTM)
 
 # Introduction
 
-`r Githubpkg("tsunghengtsai/MSstatsPTM")` provides a set of general statistical methods for characterization of quantitative changes in global post-translational modification (PTM) profiling experiments. Typically, the analysis involves the quantification of PTM sites (i.e., modified residues) and their corresponding proteins, as well as the integration of the quantification results.
+`r Githubpkg("tsunghengtsai/MSstatsPTM")` provides a set of general statistical 
+methods for characterization of quantitative changes in global 
+post-translational modification (PTM) profiling experiments. Typically, the 
+analysis involves the quantification of PTM sites (i.e., modified residues) and 
+their corresponding proteins, as well as the integration of the quantification 
+results.
 
-Quantitative analyses of PTMs are supported by four main functions of _MSstatsPTM_:
+Quantitative analyses of PTMs are supported by four main functions of 
+_MSstatsPTM_:
 
-* `PTMnormalize()` normalizes the quantified peak intensities to correct systematic variation across MS runs.
+* `PTMnormalize()` normalizes the quantified peak intensities to correct 
+systematic variation across MS runs.
 
-* `PTMsummarize()` summarizes log2-intensities of spectral features (i.e., precursor ions in DDA, fragments in DIA, or transitions in SRM) into one value per PTM site per run or one value per protein per run.
+* `PTMsummarize()` summarizes log2-intensities of spectral features (i.e., 
+precursor ions in DDA, fragments in DIA, or transitions in SRM) into one value 
+per PTM site per run or one value per protein per run.
 
-* `PTMestimate()` takes as input the summarized log2-intensities for each PTM site, performs statistical modeling for the log2-abundance of the site, and returns the estimates of model parameters for all PTM sites in all experimental conditions.
+* `PTMestimate()` takes as input the summarized log2-intensities for each PTM 
+site, performs statistical modeling for the log2-abundance of the site, and 
+returns the estimates of model parameters for all PTM sites in all experimental 
+conditions.
 
-* `PTMcompareMeans()` performs statistical testing for detecting changes in PTM mean abundances between conditions.
+* `PTMcompareMeans()` performs statistical testing for detecting changes in PTM 
+mean abundances between conditions.
 
 # Installation
 
-The development version of `r Githubpkg("tsunghengtsai/MSstatsPTM")` can be installed from GitHub:
+The development version of `r Githubpkg("tsunghengtsai/MSstatsPTM")` can be 
+installed from GitHub:
 
 ```{r install, eval=FALSE}
 devtools::install_github("tsunghengtsai/MSstatsPTM")
@@ -57,31 +71,47 @@ library(MSstatsPTM)
 
 # Data preparation
 
-The abundance of a PTM site depends on two factors: (1) the proportion of proteins carrying the PTM, and (2) the underlying protein abundance. Quantification of PTMs alone cannot provide complete information about the degree of the modification. Therefore, a quantitative PTM experiment often involves analyses of enriched samples (for PTMs) and unenriched samples (for proteins). 
+The abundance of a PTM site depends on two factors: (1) the proportion of 
+proteins carrying the PTM, and (2) the underlying protein abundance. 
+Quantification of PTMs alone cannot provide complete information about the 
+degree of the modification. Therefore, a quantitative PTM experiment often 
+involves analyses of enriched samples (for PTMs) and unenriched samples (for 
+proteins). 
 
-The _MSstatsPTM_ analysis workflow takes as input a list of two data frames, named `PTM` and `PROTEIN`. 
+The _MSstatsPTM_ analysis workflow takes as input a list of two data frames, 
+named `PTM` and `PROTEIN`. 
 
 ## Example dataset
 
-We use `PTMsimulateExperiment()` to generate an example dataset. The function takes in account several parameters in a PTM experiment: number of groups (`nGroup`), number of replicates per group (`nRep`), number of proteins (`nProtein`), number of sites per protein (`nSite`), number of spectral features per site/protein (`nFeature`), mean log2-abundance of PTM and PROTEIN (`mu`), deviation from the mean log2-abundance in each group (`delta`), standard deviation among replicates (`sRep`), and standard deviation among log2-intensities (`sPeak`). 
+We use `PTMsimulateExperiment()` to generate an example dataset. The function 
+takes in account several parameters in a PTM experiment: number of groups 
+(`nGroup`), number of replicates per group (`nRep`), number of proteins 
+(`nProtein`), number of sites per protein (`nSite`), number of spectral 
+features per site/protein (`nFeature`), mean log2-abundance of PTM and PROTEIN 
+(`mu`), deviation from the mean log2-abundance in each group (`delta`), 
+standard deviation among replicates (`sRep`), and standard deviation among 
+log2-intensities (`sPeak`). 
 
 ```{r simulate}
 sim <- PTMsimulateExperiment(
-  nGroup = 2, nRep = 2, nProtein = 1, nSite = 2, nFeature = 5, 
-  mu = list(PTM = 25, PROTEIN = 25), 
-  delta = list(PTM = c(0, 1), PROTEIN = c(0, 1)), 
-  sRep = list(PTM = 0.2, PROTEIN = 0.2), 
-  sPeak = list(PTM = 0.05, PROTEIN = 0.05)
+  nGroup=2, nRep=2, nProtein=1, nSite=2, nFeature=5, 
+  mu=list(PTM=25, PROTEIN=25), 
+  delta=list(PTM=c(0, 1), PROTEIN=c(0, 1)), 
+  sRep=list(PTM=0.2, PROTEIN=0.2), 
+  sPeak=list(PTM=0.05, PROTEIN=0.05)
 )
 ```
 
-A list of two data frames named `PTM` and `PROTEIN` is returned by `PTMsimulateExperiment()`: 
+A list of two data frames named `PTM` and `PROTEIN` is returned by 
+`PTMsimulateExperiment()`: 
 
 ```{r data-structure}
 str(sim)
 ```
 
-The `PTM` data frame contains 6 columns representing the quantified `log2inty` of each `feature`, `site` and `protein`, in the corresponding `group` and `run`: 
+The `PTM` data frame contains 6 columns representing the quantified `log2inty` 
+of each `feature`, `site` and `protein`, in the corresponding `group` and 
+`run`: 
 
 ```{r data-ptm}
 sim[["PTM"]]
@@ -95,52 +125,80 @@ sim[["PROTEIN"]]
 
 ## Site-level representation
 
-A main distinction of the quantitative PTM analysis from general proteomics analyses is the focus on the PTM sites, where the basic analysis unit is a PTM site, rather than a protein. A site can be spanned by multiple peptides, and quantified with multiple spectral features. Transformation from peptide-level representation to site-level representation requires locating PTM sites on protein sequence, usually provided in a FASTA format. 
+A main distinction of the quantitative PTM analysis from general proteomics 
+analyses is the focus on the PTM sites, where the basic analysis unit is a PTM 
+site, rather than a protein. A site can be spanned by multiple peptides, and 
+quantified with multiple spectral features. Transformation from peptide-level 
+representation to site-level representation requires locating PTM sites on 
+protein sequence, usually provided in a FASTA format. 
 
 _MSstatsPTM_ provides several help functions to facilitate the transformation: 
 
-* `tidy_fasta()` reads and returns the sequence information in a tidy format.
+* `tidyFasta()` reads and returns the sequence information in a tidy format.
 
-* `PTMlocate()` annotates PTM sites with the associated peptides and protein sequences. 
+* `PTMlocate()` annotates PTM sites with the associated peptides and protein 
+sequences. 
 
 ### Working with FASTA files
 
-`tidy_fasta()` takes as input the path to a FASTA file (either a local path or an URL). For example, we can access to the information of alpha-synuclein (P37840) on [Uniprot](https://www.uniprot.org/uniprot/P37840) and extract the sequence information as follows:
+`tidyFasta()` takes as input the path to a FASTA file (either a local path or 
+an URL). For example, we can access to the information of alpha-synuclein 
+(P37840) on [Uniprot](https://www.uniprot.org/uniprot/P37840) and extract the 
+sequence information as follows:
 
 ```{r fasta, eval=FALSE}
-fas <- tidy_fasta("https://www.uniprot.org/uniprot/P37840.fasta")
+fas <- tidyFasta("https://www.uniprot.org/uniprot/P37840.fasta")
 ```
 
 # Normalization
 
-Normalization of log2-intensities can be performed by equalizing appropriate summary statistics (such as the median of the log2-intensities) across MS runs, or by using a reference derived from either spiked-in internal standard or other orthogonal evidence. The PTM data and the PROTEIN data are normalized separately, using `PTMnormalize()`.
+Normalization of log2-intensities can be performed by equalizing appropriate 
+summary statistics (such as the median of the log2-intensities) across MS runs, 
+or by using a reference derived from either spiked-in internal standard or 
+other orthogonal evidence. The PTM data and the PROTEIN data are normalized 
+separately, using `PTMnormalize()`.
 
 ## Normalization based on the summary statistics of each run
 
-Normalization often relies on the assumption about the distribution of log2-intensities for each MS run. For example, one common assumption is that the abundances of most PTM sites and proteins do not change across conditions. It is therefore reasonable to equalize measures of distribution location across MS runs. 
+Normalization often relies on the assumption about the distribution of 
+log2-intensities for each MS run. For example, one common assumption is that 
+the abundances of most PTM sites and proteins do not change across conditions. 
+It is therefore reasonable to equalize measures of distribution location across 
+MS runs. 
 
-The data can be normalized with `PTMnormalize()`. Different summary statistics can be defined through the `method` option, including the median of log2-intensities (`median`, default), the mean of log2-intensities (`mean`), and the log2 of intensity sum (`logsum`). 
+The data can be normalized with `PTMnormalize()`. Different summary statistics 
+can be defined through the `method` option, including the median of 
+log2-intensities (`median`, default), the mean of log2-intensities (`mean`), 
+and the log2 of intensity sum (`logsum`). 
 
 ```{r normalization, message=FALSE}
-normalized <- PTMnormalize(sim, method = "median")
+normalized <- PTMnormalize(sim, method="median")
 normalized
 ```
 
 ## Normalization with a reference
 
-The assumption made in the summary-based normalization may not be valid in all scenarios. When experimental design allows to derive a reference for the normalization (e.g., using internal standard), it can be useful to perform normalization using the reference. For example, the hypothetical reference below defines an adjustment of `c(2, -2, 0, 0)` for each run in the PTM data and `c(1.5, -1, 0, 0)` in the PROTEIN data. 
+The assumption made in the summary-based normalization may not be valid in all 
+scenarios. When experimental design allows to derive a reference for the 
+normalization (e.g., using internal standard), it can be useful to perform 
+normalization using the reference. For example, the hypothetical reference 
+below defines an adjustment of `c(2, -2, 0, 0)` for each run in the PTM data 
+and `c(1.5, -1, 0, 0)` in the PROTEIN data. 
 
 ```{r normalization-ref, message=FALSE}
 refs <- list(
-  PTM = data.frame(run = paste0("R_", 1:4), adjLog2inty = c(2, -2, 0, 0)), 
-  PROTEIN = data.frame(run = paste0("R_", 1:4), adjLog2inty = c(3, -1, 0, 0))
+  PTM=data.frame(run=paste0("R_", 1:4), adjLog2inty=c(2, -2, 0, 0)), 
+  PROTEIN=data.frame(run=paste0("R_", 1:4), adjLog2inty=c(3, -1, 0, 0))
 )
-PTMnormalize(sim, method = "ref", refs = refs)
+PTMnormalize(sim, method="ref", refs=refs)
 ```
 
 # Summarization
 
-_MSstatsPTM_ performs the statistical modeling with a split-plot approach, which summarizes the log2-intensities into one single value per site per run (in `PTM`) or one value per protein per run (in `PROTEIN`), and expresses the summarized values in consideration of experimental conditions and replicates. 
+_MSstatsPTM_ performs the statistical modeling with a split-plot approach, 
+which summarizes the log2-intensities into one single value per site per run 
+(in `PTM`) or one value per protein per run (in `PROTEIN`), and expresses the 
+summarized values in consideration of experimental conditions and replicates. 
 
 The summarization of log2-intensities can be performed using `PTMsummarize()`. 
 
@@ -161,7 +219,12 @@ There are 5 summarization options available with `PTMsummarize()`:
 
 # Estimation
 
-Statistical inference of the abundance of each site (in `PTM`) or protein (in `PROTEIN`) in each group is performed by applying `PTMestimate()`, which expresses the summarized log2-intensities using linear models and returns the parameters of the fitted models. The log2-abundance estimate and its standard error of each PTM site and protein in each group are returned by `PTMestimate()`. 
+Statistical inference of the abundance of each site (in `PTM`) or protein 
+(in `PROTEIN`) in each group is performed by applying `PTMestimate()`, which 
+expresses the summarized log2-intensities using linear models and returns the 
+parameters of the fitted models. The log2-abundance estimate and its standard 
+error of each PTM site and protein in each group are returned by 
+`PTMestimate()`. 
 
 ```{r estimation, message=FALSE}
 estimates <- PTMestimate(summarized)
@@ -170,26 +233,41 @@ estimates
 
 # Detection of changes in PTMs
 
-With the parameter estimates from the previous step, `PTMcompareMeans()` detects systematic changes in mean abundances of PTM sites between groups. 
+With the parameter estimates from the previous step, `PTMcompareMeans()` 
+detects systematic changes in mean abundances of PTM sites between groups. 
 
 ## Detection of changes in mean abundances of PTM sites
 
 ```{r}
-PTMcompareMeans(estimates, controls = "G_1", cases = "G_2")
+PTMcompareMeans(estimates, controls="G_1", cases="G_2")
 ```
 
-* The first argument to `PTMcompareMeans()` is the list of parameter estimates returned by `PTMestimate()`. 
+* The first argument to `PTMcompareMeans()` is the list of parameter estimates 
+returned by `PTMestimate()`. 
 
-* The second argument `controls` defines the names of control groups (can be more than one) in the comparison.
+* The second argument `controls` defines the names of control groups (can be 
+more than one) in the comparison.
 
 * The third argument `cases` defines the names of case groups in the comparison.
 
-`PTMcompareMeans()` returns a summary of the comparison, with names of proteins (`Protein`) and sites (`Site`), contrast in the comparison (`Label`), log2-fold change of the mean abundance (`log2FC`) and its standard error (`SE`), $t$-statistic (`Tvalue`), number of degrees of freedom (`DF`), and the resulting $p$-value (`pvalue`). 
+`PTMcompareMeans()` returns a summary of the comparison, with names of 
+proteins (`Protein`) and sites (`Site`), contrast in the comparison (`Label`), 
+log2-fold change of the mean abundance (`log2FC`) and its standard error 
+(`SE`), $t$-statistic (`Tvalue`), number of degrees of freedom (`DF`), and the 
+resulting $p$-value (`pvalue`). 
 
 ## Protein-level adjustment
 
-By default, `PTMcompareMeans()` performs the comparison without taking into account of changes in the underlying protein abundance. We can incorporate the adjustment with respect to protein abundance by setting `adjProtein = TRUE`: 
+By default, `PTMcompareMeans()` performs the comparison without taking into 
+account of changes in the underlying protein abundance. We can incorporate the 
+adjustment with respect to protein abundance by setting `adjProtein = TRUE`: 
 
 ```{r}
-PTMcompareMeans(estimates, controls = "G_1", cases = "G_2", adjProtein = TRUE)
+PTMcompareMeans(estimates, controls="G_1", cases="G_2", adjProtein=TRUE)
+```
+
+# Session information
+
+```{r session}
+sessionInfo()
 ```

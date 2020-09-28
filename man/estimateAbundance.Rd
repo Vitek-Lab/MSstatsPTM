@@ -4,16 +4,16 @@
 \alias{estimateAbundance}
 \title{Estimate log2-abundances of PTM sites or proteins}
 \usage{
-estimateAbundance(df, fac_batch = FALSE, per_protein = FALSE)
+estimateAbundance(df, fctBatch = FALSE, perProtein = FALSE)
 }
 \arguments{
 \item{df}{A data frame with columns of \code{protein}, \code{site},
 \code{group}, \code{run}, \code{log2inty}, and possibly, \code{batch}.}
 
-\item{fac_batch}{A logical. \code{TRUE} considers a fixed batch effect,
+\item{fctBatch}{A logical. \code{TRUE} considers a fixed batch effect,
 \code{FALSE} otherwise. Default is \code{FALSE}.}
 
-\item{per_protein}{A logical. \code{TRUE} ignores the site-level information
+\item{perProtein}{A logical. \code{TRUE} ignores the site-level information
 for PTM and considers protein as a whole, \code{FALSE} otherwise. Default
 is \code{FALSE}.}
 }
@@ -32,11 +32,13 @@ and returns the estimates of model parameters for all sites in all
 experimental conditions.
 }
 \examples{
-sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
-list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
-list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
+sim <- PTMsimulateExperiment(
+    nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+    list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+    list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+)
 s <- PTMsummarize(sim)
 estimateAbundance(s[["PTM"]])
-estimateAbundance(s[["PROTEIN"]], per_protein = TRUE)
+estimateAbundance(s[["PROTEIN"]], perProtein=TRUE)
 
 }

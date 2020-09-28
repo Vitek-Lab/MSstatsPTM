@@ -4,7 +4,7 @@
 \alias{PTMestimate}
 \title{Estimate log2-abundances of PTM sites and proteins}
 \usage{
-PTMestimate(data, fac_batch = FALSE)
+PTMestimate(data, fctBatch = FALSE)
 }
 \arguments{
 \item{data}{A list of two data frames named \code{PTM} and \code{PROTEIN}.
@@ -13,7 +13,7 @@ The \code{PTM} data frame includes columns of \code{protein}, \code{site},
 \code{PROTEIN} data frame includes all columns as in \code{PTM} except
 \code{site}.}
 
-\item{fac_batch}{A logical defining the handling of batch effect for all data
+\item{fctBatch}{A logical defining the handling of batch effect for all data
 or two logicals for the \code{PTM} and \code{PROTEIN} (if provided) data
 separately. \code{TRUE} considers a fixed batch effect, \code{FALSE}
 otherwise. Default is \code{FALSE}.}
@@ -34,9 +34,11 @@ conditions. If protein log2-intensities are availble, the same estimation
 procedure is applied to each protein as well.
 }
 \examples{
-sim <- PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 1, nFeature = 5,
-list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
-list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
+sim <- PTMsimulateExperiment(
+    nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+    list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+    list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+)
 s <- PTMsummarize(sim)
 PTMestimate(s)
 

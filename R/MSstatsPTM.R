@@ -3,7 +3,8 @@
 #' The MSstatsPTM package provides four main functions for quantitative analysis
 #' of PTMs
 #'
-#' Quantitative analyses of PTMs are supported by four main functions of _MSstatsPTM_:
+#' Quantitative analyses of PTMs are supported by four main functions of
+#' _MSstatsPTM_:
 #'
 #' @section Normalization:
 #' \code{PTMnormalize()} normalizes the quantified peak intensities to correct
@@ -29,7 +30,8 @@
 #' @importFrom rlang .data
 #' @importFrom tidyr nest unnest
 #' @importFrom tidyselect one_of
-#' @importFrom dplyr left_join inner_join semi_join bind_rows group_by ungroup summarise mutate count
+#' @importFrom dplyr left_join inner_join semi_join bind_rows group_by ungroup
+#' summarise mutate count
 #' @importFrom tibble tibble as_tibble
 NULL
 #> NULL

@@ -36,6 +36,6 @@ spectral features and PTM sites of one protein, in multiple MS runs and
 conditions.
 }
 \examples{
-simulateSites(nGroup = 2, nRep = 2, nSite = 2, nFeature = 5, 25, c(0, 1), 0.2, 0.05)
+simulateSites(nGroup=2, nRep=2, nSite=2, nFeature=5, 25, c(0, 1), 0.2, 0.05)
 
 }

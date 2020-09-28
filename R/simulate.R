@@ -24,32 +24,41 @@
 #'   \code{run}, \code{feature}, \code{log2inty}.
 #'
 #' @examples
-#' PTMsimulateExperiment(nGroup = 2, nRep = 2, nProtein = 1, nSite = 2, nFeature = 5,
-#' list(PTM = 25, PROTEIN = 25), list(PTM = c(0, 1), PROTEIN = c(0, 1)),
-#' list(PTM = 0.2, PROTEIN = 0.2), list(PTM = 0.05, PROTEIN = 0.05))
+#' PTMsimulateExperiment(
+#'     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
+#'     list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
+#'     list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+#' )
 #'
 #' @export
-PTMsimulateExperiment <- function(nGroup, nRep, nProtein, nSite, nFeature,
-                                  mu, delta, sRep, sPeak) {
+PTMsimulateExperiment <- function(nGroup, nRep, nProtein, nSite, nFeature, mu,
+    delta, sRep, sPeak) {
+
     # PTM data
     peaks <- vector("list", nProtein)
-    for (i in 1:nProtein) {
-        peaks[[i]] <- simulateSites(nGroup, nRep, nSite, nFeature,
-                                    mu$PTM, delta$PTM, sRep$PTM, sPeak$PTM)
+    for (i in seq_len(nProtein)) {
+        peaks[[i]] <- simulateSites(
+            nGroup, nRep, nSite, nFeature,
+            mu$PTM, delta$PTM, sRep$PTM, sPeak$PTM
+        )
     }
     sites <- bind_rows(peaks)
-    sites$protein <- rep(paste0("Protein_", 1:nProtein),
-                         each = nGroup * nRep * nSite * nFeature)
+    sites$protein <- rep(
+        paste0("Protein_", seq_len(nProtein)),
+        each = nGroup * nRep * nSite * nFeature
+    )
 
     # PROTEIN data
     peaks <- vector("list", nProtein)
-    for (i in 1:nProtein) {
-        peaks[[i]] <- simulatePeaks(nGroup, nRep, nFeature, mu$PROTEIN,
-                                    delta$PROTEIN, sRep$PROTEIN, sPeak$PROTEIN)
+    for (i in seq_len(nProtein)) {
+        peaks[[i]] <- simulatePeaks(
+            nGroup, nRep, nFeature,
+            mu$PROTEIN, delta$PROTEIN, sRep$PROTEIN, sPeak$PROTEIN)
     }
     prots <- bind_rows(peaks)
-    prots$protein <- rep(paste0("Protein_", 1:nProtein),
-                         each = nGroup * nRep * nFeature)
+    prots$protein <- rep(
+        paste0("Protein_", seq_len(nProtein)), each = nGroup * nRep * nFeature
+    )
 
     # Combine PTM and PROTEIN data
     cols <- c("protein", "site", "group", "run", "feature", "log2inty")
@@ -79,16 +88,22 @@ PTMsimulateExperiment <- function(nGroup, nRep, nProtein, nSite, nFeature,
 #'   \code{feature}, \code{log2inty}.
 #'
 #' @examples
-#' simulateSites(nGroup = 2, nRep = 2, nSite = 2, nFeature = 5, 25, c(0, 1), 0.2, 0.05)
+#' simulateSites(nGroup=2, nRep=2, nSite=2, nFeature=5, 25, c(0, 1), 0.2, 0.05)
 #'
 #' @export
-simulateSites <- function(nGroup, nRep, nSite, nFeature, mu, delta, sRep, sPeak) {
+simulateSites <- function(nGroup, nRep, nSite, nFeature, mu, delta, sRep,
+    sPeak) {
+
     peaks <- vector("list", nSite)
-    for (i in 1:nSite) {
-        peaks[[i]] <- simulatePeaks(nGroup, nRep, nFeature, mu, delta, sRep, sPeak)
+    for (i in seq_len(nSite)) {
+        peaks[[i]] <- simulatePeaks(
+            nGroup, nRep, nFeature, mu, delta, sRep, sPeak
+        )
     }
     sites <- bind_rows(peaks)
-    sites$site <- rep(paste0("S_", 1:nSite), each = nGroup * nRep * nFeature)
+    sites$site <- rep(
+        paste0("S_", seq_len(nSite)), each = nGroup * nRep * nFeature
+    )
     sites
 }
 
@@ -113,7 +128,7 @@ simulateSites <- function(nGroup, nRep, nSite, nFeature, mu, delta, sRep, sPeak)
 #'   and \code{log2inty}.
 #'
 #' @examples
-#' simulatePeaks(nGroup = 2, nRep = 3, nFeature = 5, 25, c(0, 1), 0.2, 0.05)
+#' simulatePeaks(nGroup=2, nRep=3, nFeature=5, 25, c(0, 1), 0.2, 0.05)
 #'
 #' @export
 simulatePeaks <- function(nGroup, nRep, nFeature, mu, delta, sRep, sPeak) {
@@ -122,8 +137,10 @@ simulatePeaks <- function(nGroup, nRep, nFeature, mu, delta, sRep, sPeak) {
     tibble(
         group = rep(summarized$group, each = nFeature),
         run = rep(summarized$run, each = nFeature),
-        feature = rep(paste0("F_", 1:nFeature), nGroup * nRep),
-        log2inty = unlist(Map(stats::rnorm, nFeature, summarized$log2inty, sPeak))
+        feature = rep(paste0("F_", seq_len(nFeature)), nGroup * nRep),
+        log2inty = unlist(Map(
+            stats::rnorm, nFeature, summarized$log2inty, sPeak
+        ))
     )
 }
 
@@ -142,18 +159,19 @@ simulatePeaks <- function(nGroup, nRep, nFeature, mu, delta, sRep, sPeak) {
 #'   log2-abundance of each group from the overall mean.
 #' @param sRep A numeric. Standard deviation of the log2-intensities.
 #'
-#' @return A tibble with columns of \code{group}, \code{run} and \code{log2inty}.
+#' @return A tibble with columns of \code{group}, \code{run} and
+#'   \code{log2inty}.
 #'
 #' @examples
-#' simulateSummarization(nGroup = 2, nRep = 3, 25, c(0, 1), 0.2)
+#' simulateSummarization(nGroup=2, nRep=3, 25, c(0, 1), 0.2)
 #'
 #' @export
 simulateSummarization <- function(nGroup, nRep, mu, delta, sRep) {
     all_mu <- rep(mu, nGroup) + delta
 
     tibble(
-        group = rep(paste0("G_", 1:nGroup), each = nRep),
-        run = paste0("R_", 1:(nGroup * nRep)),
+        group = rep(paste0("G_", seq_len(nGroup)), each = nRep),
+        run = paste0("R_", seq_len(nGroup * nRep)),
         log2inty = unlist(Map(stats::rnorm, nRep, all_mu, sRep))
     )
 }

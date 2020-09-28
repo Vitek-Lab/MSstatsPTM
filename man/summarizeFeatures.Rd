@@ -25,9 +25,9 @@ default.
 }
 \examples{
 df <- data.frame(
-  run = c("a", "a", "a", "b", "b"),
-  feature = c("F1", "F2", "F3", "F1", "F3"),
-  log2inty = rnorm(5))
-summarizeFeatures(df, method = "tmp")
+  run=c("a", "a", "a", "b", "b"),
+  feature=c("F1", "F2", "F3", "F1", "F3"),
+  log2inty=rnorm(5))
+summarizeFeatures(df, method="tmp")
 
 }

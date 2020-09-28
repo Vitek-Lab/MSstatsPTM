@@ -4,13 +4,13 @@
 \alias{fitLinearModel}
 \title{Fit linear model}
 \usage{
-fitLinearModel(df, fac_batch = FALSE)
+fitLinearModel(df, fctBatch = FALSE)
 }
 \arguments{
 \item{df}{A data frame with columns \code{log2inty}, \code{group}, and
 \code{batch} for one PTM site.}
 
-\item{fac_batch}{A logical. \code{TRUE} considers batch effect, \code{FALSE}
+\item{fctBatch}{A logical. \code{TRUE} considers batch effect, \code{FALSE}
 otherwise. Default is \code{FALSE}.}
 }
 \value{
@@ -22,15 +22,15 @@ as response, and \code{group} and possibly \code{batch} as fixed effects.
 }
 \examples{
 x1 <- data.frame(
-  batch = rep(c("1", "2"), each = 4),
-  group = rep(c("1", "2"), 4),
-  log2inty = rep(c(10, 12), 4) + rnorm(8)
+    batch=rep(c("1", "2"), each=4),
+    group=rep(c("1", "2"), 4),
+    log2inty=rep(c(10, 12), 4) + rnorm(8)
 )
-fitLinearModel(x1, fac_batch = TRUE)
+fitLinearModel(x1, fctBatch=TRUE)
 
 x2 <- data.frame(
-  group = rep(c("1", "2"), 3),
-  log2inty = rep(c(10, 12), 3) + rnorm(6)
+    group=rep(c("1", "2"), 3),
+    log2inty=rep(c(10, 12), 3) + rnorm(6)
 )
 fitLinearModel(x2)
 

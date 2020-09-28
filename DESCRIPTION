@@ -8,27 +8,16 @@ Description: MSstatsPTM provides general statistical methods for quantitative
     functions for summarization, estimation of PTM site abundance, and detection 
     of changes in PTMs across experimental conditions. 
 Authors@R: c(
-    person("Tsung-Heng", "Tsai", email = "tsai.tsungheng@gmail.com", role = c("aut", "cre")),
-    person("Olga", "Vitek", email = "o.vitek@northeastern.edu", role = "aut"))
+    person("Tsung-Heng", "Tsai", email="tsai.tsungheng@gmail.com", role=c("aut", "cre")),
+    person("Olga", "Vitek", email="o.vitek@northeastern.edu", role="aut"))
 Maintainer: Tsung-Heng Tsai <tsai.tsungheng@gmail.com>
 License: Artistic-2.0
-Depends: R (>= 3.6.0)
-Imports: 
-    broom,
-    dplyr,
-    rlang,
-    stats,
-    tibble,
-    tidyr,
-    tidyselect,
-    Biostrings
-Suggests: 
-    knitr,
-    rmarkdown,
-    testthat (>= 2.1.0),
-    BiocStyle
+Depends: R (>= 4.0)
+Imports: broom, dplyr, rlang, stats, tibble, tidyr, tidyselect, Biostrings
+Suggests: knitr, rmarkdown, testthat (>= 2.1.0), BiocStyle
 VignetteBuilder: knitr
-biocViews: ImmunoOncology, MassSpectrometry, Proteomics, Software, DifferentialExpression
+biocViews: MassSpectrometry, Proteomics, Software, DifferentialExpression
+BugReports: https://github.com/tsunghengtsai/MSstatsPTM
 Encoding: UTF-8
 LazyData: true
 ByteCompile: true
