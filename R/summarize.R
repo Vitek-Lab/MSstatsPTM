@@ -24,8 +24,10 @@
 #' @examples
 #' sim <- PTMsimulateExperiment(
 #'     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
-#'     list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
-#'     list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+#'     logAbundance=list(
+#'         PTM=list(mu=25, delta=c(0, 1), sRep=0.2, sPeak=0.05),
+#'         PROTEIN=list(mu=25, delta=c(0, 1), sRep=0.2, sPeak=0.05)
+#'     )
 #' )
 #' PTMsummarize(sim)
 #'
@@ -138,9 +140,10 @@ PTMsummarize <- function(data, method="tmp") {
 #'
 #' @examples
 #' df <- data.frame(
-#'   run=c("a", "a", "a", "b", "b"),
-#'   feature=c("F1", "F2", "F3", "F1", "F3"),
-#'   log2inty=rnorm(5))
+#'     run=c("a", "a", "a", "b", "b"),
+#'     feature=c("F1", "F2", "F3", "F1", "F3"),
+#'     log2inty=rnorm(5)
+#' )
 #' summarizeFeatures(df, method="tmp")
 #'
 #' @export

@@ -4,17 +4,7 @@
 \alias{PTMsimulateExperiment}
 \title{Simulate PTM quantification experiments}
 \usage{
-PTMsimulateExperiment(
-  nGroup,
-  nRep,
-  nProtein,
-  nSite,
-  nFeature,
-  mu,
-  delta,
-  sRep,
-  sPeak
-)
+PTMsimulateExperiment(nGroup, nRep, nProtein, nSite, nFeature, logAbundance)
 }
 \arguments{
 \item{nGroup}{An integer to specify the number of conditions.}
@@ -27,19 +17,13 @@ PTMsimulateExperiment(
 
 \item{nFeature}{An integer to specify the number of features per site.}
 
-\item{mu}{A list of two elements named \code{PTM} and \code{PROTEIN}. Each
-is a numeric representing the overall mean log2-intensity in the PTM or the
-PROTEIN data.}
-
-\item{delta}{A list of two elements named \code{PTM} and \code{PROTEIN}. Each
-specifies the deviation of the mean log2-abundance of each group from the
-overall mean in the PTM or the PROTEIN data.}
-
-\item{sRep}{A list of two elements named \code{PTM} and \code{PROTEIN}. Each
-is a numeric representing the standard deviation for run-to-run variation.}
-
-\item{sPeak}{A list of two elements named \code{PTM} and \code{PROTEIN}. Each
-is a numeric representing the standard deviation in peak log2-intensities.}
+\item{logAbundance}{A list of two lists named \code{PTM} and \code{PROTEIN}.
+Each contains four elements: \code{mu} (a numeric representing the overall
+mean log2-abundance), \code{delta} (a numeric vector for the deviation of
+the mean log2-abundance for each group from the overall mean), \code{sRep}
+(a numeric representing the standard deviation for run-to-run variation),
+and \code{sPeak} (a numeric representing the standard deviation in peak
+log2-intensities).}
 }
 \value{
 A tibble with columns of \code{protein}, \code{site}, \code{group},
@@ -53,8 +37,10 @@ corresponding proteins, in multiple MS runs and conditions.
 \examples{
 PTMsimulateExperiment(
     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
-    list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
-    list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+    logAbundance=list(
+        PTM=list(mu=25, delta=c(0, 1), sRep=0.2, sPeak=0.05),
+        PROTEIN=list(mu=25, delta=c(0, 1), sRep=0.2, sPeak=0.05)
+    )
 )
 
 }

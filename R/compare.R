@@ -19,8 +19,10 @@
 #' @examples
 #' sim <- PTMsimulateExperiment(
 #'     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
-#'     list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
-#'     list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+#'     logAbundance=list(
+#'         PTM=list(mu=25, delta=c(0, 1), sRep=0.2, sPeak=0.05),
+#'         PROTEIN=list(mu=25, delta=c(0, 1), sRep=0.2, sPeak=0.05)
+#'     )
 #' )
 #' summarized <- PTMsummarize(sim)
 #' estimates <- PTMestimate(summarized)
@@ -99,8 +101,10 @@ PTMcompareMeans <- function(data, controls, cases, adjProtein=FALSE) {
 #' @examples
 #' sim <- PTMsimulateExperiment(
 #'     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
-#'     list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
-#'     list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+#'     logAbundance=list(
+#'         PTM=list(mu=25, delta=c(0, 1), sRep=0.2, sPeak=0.05),
+#'         PROTEIN=list(mu=25, delta=c(0, 1), sRep=0.2, sPeak=0.05)
+#'     )
 #' )
 #' summarized <- PTMsummarize(sim)
 #' estimates <- PTMestimate(summarized)
@@ -243,8 +247,10 @@ extractMeanDiff <- function(data, controls, cases, perProtein=FALSE) {
 #' @examples
 #' sim <- PTMsimulateExperiment(
 #'     nGroup=2, nRep=2, nProtein=1, nSite=1, nFeature=5,
-#'     list(PTM=25, PROTEIN=25), list(PTM=c(0, 1), PROTEIN=c(0, 1)),
-#'     list(PTM=0.2, PROTEIN=0.2), list(PTM=0.05, PROTEIN=0.05)
+#'     logAbundance=list(
+#'         PTM=list(mu=25, delta=c(0, 1), sRep=0.2, sPeak=0.05),
+#'         PROTEIN=list(mu=25, delta=c(0, 1), sRep=0.2, sPeak=0.05)
+#'     )
 #' )
 #' summarized <- PTMsummarize(sim)
 #' estimates <- PTMestimate(summarized)
