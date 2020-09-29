@@ -10,7 +10,6 @@ Description: MSstatsPTM provides general statistical methods for quantitative
 Authors@R: c(
     person("Tsung-Heng", "Tsai", email="tsai.tsungheng@gmail.com", role=c("aut", "cre")),
     person("Olga", "Vitek", email="o.vitek@northeastern.edu", role="aut"))
-Maintainer: Tsung-Heng Tsai <tsai.tsungheng@gmail.com>
 License: Artistic-2.0
 Depends: R (>= 4.0)
 Imports: broom, dplyr, rlang, stats, tibble, tidyr, tidyselect, Biostrings
