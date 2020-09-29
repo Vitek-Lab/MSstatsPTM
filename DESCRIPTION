@@ -4,9 +4,12 @@ Title: Statistical Characterization of Post-translational Modifications
 Version: 0.99.0
 Date: 2020-09-28
 Description: MSstatsPTM provides general statistical methods for quantitative 
-    characterization of post-translational modifications (PTMs), including 
-    functions for summarization, estimation of PTM site abundance, and detection 
-    of changes in PTMs across experimental conditions. 
+    characterization of post-translational modifications (PTMs). Typically, the 
+    analysis involves the quantification of PTM sites (i.e., modified residues) 
+    and their corresponding proteins, as well as the integration of the 
+    quantification results. MSstatsPTM provides functions for summarization, 
+    estimation of PTM site abundance, and detection of changes in PTMs across 
+    experimental conditions. 
 Authors@R: c(
     person("Tsung-Heng", "Tsai", email="tsai.tsungheng@gmail.com", role=c("aut", "cre")),
     person("Olga", "Vitek", email="o.vitek@northeastern.edu", role="aut"))

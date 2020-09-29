@@ -81,8 +81,9 @@ tidyFasta <- function(path) {
 #' @export
 PTMlocate <- function(peptide, uniprot, fasta, modResidue, modSymbol,
     rmConfound=FALSE) {
-
-    good <- .locateCheck(peptide, uniprot, fasta, modResidue, modSymbol)
+    
+    if (!.locateCheck(peptide, uniprot, fasta, modResidue, modSymbol))
+        stop("Input checking fails!")
 
     peptide_seq <- tibble(uniprot_iso = uniprot, peptide = peptide)
     peptide_seq$is_mod <- grepl(modSymbol, peptide_seq$peptide)
