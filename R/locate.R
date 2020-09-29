@@ -87,19 +87,15 @@ PTMlocate <- function(peptide, uniprot, fasta, modResidue, modSymbol,
     peptide_seq <- tibble(uniprot_iso = uniprot, peptide = peptide)
     peptide_seq$is_mod <- grepl(modSymbol, peptide_seq$peptide)
     peptide_seq$peptide_unmod <- gsub(modSymbol, "", peptide_seq$peptide)
-
     # Locate modifiable sites
     col_seq <- c("uniprot_iso", "sequence")
     sub_fasta <- fasta[fasta$uniprot_iso %in% uniprot, col_seq]
     loc <- gregexpr(modResidue, sub_fasta$sequence, fixed = TRUE)
     sub_fasta$idx_site_full <- lapply(loc, .location_start)
-
     # Locate peptides (use extended AAs for specific matching when possible)
     peptide_fasta <- left_join(peptide_seq, sub_fasta)
-    loc <- Map(
-        function(p, s) gregexpr(p, s, fixed = TRUE)[[1]],
-        as.list(peptide_fasta$peptide_unmod), as.list(peptide_fasta$sequence)
-    )
+    loc <- Map(function(p, s) gregexpr(p, s, fixed = TRUE)[[1]],
+        as.list(peptide_fasta$peptide_unmod), as.list(peptide_fasta$sequence))
     n <- vapply(loc, .num_match, FUN.VALUE = integer(1))
     peptide_fasta <- peptide_fasta[n == 1L, ]
     loc <- loc[n == 1L]
@@ -108,9 +104,8 @@ PTMlocate <- function(peptide, uniprot, fasta, modResidue, modSymbol,
     # Pattern of modified sites
     mod_pattern <- paste0(modResidue, modSymbol)
     # Locate modifiable, modified sites (AA residues) associated with peptides
-    peptide_fasta$idx_site <- Map(
-        .covered_set, peptide_fasta$idx_site_full, peptide_fasta$idx_peptide
-    )
+    peptide_fasta$idx_site <- Map(.covered_set,
+        peptide_fasta$idx_site_full, peptide_fasta$idx_peptide)
     peptide_fasta$idx_mod <- Map(
         function(p, a) locateMod(p, a, residueSymbol = mod_pattern),
         as.list(peptide_fasta$peptide), as.list(peptide_fasta$aa_start)
@@ -123,41 +118,14 @@ PTMlocate <- function(peptide, uniprot, fasta, modResidue, modSymbol,
     peptide_fasta$len_site <- lapply(
         peptide_fasta$idx_site_full, function(x) nchar(x[length(x)])
     )
-    peptide_fasta$site <- Map(
-        annotSite,
-        peptide_fasta$idx_mod, peptide_fasta$mod_aa, peptide_fasta$len_site
-    )
+    peptide_fasta$site <- Map(annotSite,
+        peptide_fasta$idx_mod, peptide_fasta$mod_aa, peptide_fasta$len_site)
     peptide_fasta$site <- as.character(peptide_fasta$site)
-    col_fasta <- c(
-        "uniprot_iso", "peptide", "peptide_unmod", "is_mod",
-        "idx_site", "idx_mod", "site"
-    )
+    col_fasta <- c("uniprot_iso", "peptide", "peptide_unmod", "is_mod",
+        "idx_site", "idx_mod", "site")
     peptide_fasta <- peptide_fasta[, col_fasta]
 
-    # Handle confounded unmodified sites
-    col_res <- c("uniprot_iso", "peptide", "site")
-    if (rmConfound) {
-        by_prot <- group_by(peptide_fasta, .data$uniprot_iso)
-        by_prot <- mutate(
-            by_prot, idx_mod_full = list(unique(unlist(.data$idx_mod)))
-        )
-        by_prot <- ungroup(by_prot)
-        by_prot <- by_prot[!by_prot$is_mod, ]
-        cnfnd <- vector("logical", nrow(by_prot))
-        for (i in seq_along(cnfnd)) {
-            cnfnds <- by_prot$idx_site[[i]] %in% by_prot$idx_mod_full[[i]]
-            cnfnd[i] <- any(cnfnds)
-        }
-        s_unmod <- by_prot[!cnfnd, col_res]
-
-        n1 <- vapply(peptide_fasta$idx_mod, .length_one, FUN.VALUE = logical(1))
-        s_mod <- peptide_fasta[peptide_fasta$is_mod & n1, col_res]
-        res <- bind_rows(s_mod, s_unmod)
-    } else {
-        n1 <- vapply(peptide_fasta$idx_mod, .length_one, FUN.VALUE = logical(1))
-        res <- peptide_fasta[!peptide_fasta$is_mod | n1, col_res]
-    }
-    res
+    .rmConfounded(peptide_fasta, rmConfound)
 }
 
 #' @keywords internal
@@ -183,6 +151,34 @@ PTMlocate <- function(peptide, uniprot, fasta, modResidue, modSymbol,
     if (!all(c("uniprot_iso", "sequence") %in% names(fasta)))
         stop("Uniprot_iso or sequence is missing from FASTA data frame!")
     TRUE
+}
+
+#' @keywords internal
+.rmConfounded <- function(peptideFasta, rmConfound) {
+    # Handle confounded unmodified sites
+    col_res <- c("uniprot_iso", "peptide", "site")
+    if (rmConfound) {
+        by_prot <- group_by(peptideFasta, .data$uniprot_iso)
+        by_prot <- mutate(
+            by_prot, idx_mod_full = list(unique(unlist(.data$idx_mod)))
+        )
+        by_prot <- ungroup(by_prot)
+        by_prot <- by_prot[!by_prot$is_mod, ]
+        cnfnd <- vector("logical", nrow(by_prot))
+        for (i in seq_along(cnfnd)) {
+            cnfnds <- by_prot$idx_site[[i]] %in% by_prot$idx_mod_full[[i]]
+            cnfnd[i] <- any(cnfnds)
+        }
+        s_unmod <- by_prot[!cnfnd, col_res]
+
+        n1 <- vapply(peptideFasta$idx_mod, .length_one, FUN.VALUE = logical(1))
+        s_mod <- peptideFasta[peptideFasta$is_mod & n1, col_res]
+        res <- bind_rows(s_mod, s_unmod)
+    } else {
+        n1 <- vapply(peptideFasta$idx_mod, .length_one, FUN.VALUE = logical(1))
+        res <- peptideFasta[!peptideFasta$is_mod | n1, col_res]
+    }
+    res
 }
 
 #' @keywords internal
