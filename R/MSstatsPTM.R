@@ -1,38 +1,37 @@
-#' MSstatsPTM: A package for statistical characterization of PTMs
+#' MSstatsPTM: A package for detecting differencially abundant post
+#' translational modifications (PTM) in shotgun mass spectrometry-bsed proteomic
+#'  experiments.
 #'
-#' The MSstatsPTM package provides four main functions for quantitative analysis
-#' of PTMs
+#' A set of tools for detecting differentially abundant PTMs and proteins in
+#' shotgun mass spectrometry-based proteomic experiments. The package can handle
+#' a variety of acquisition types, including label free, DDA, DIA, and TMT. The 
+#' package includes tools to convert raw data from different spectral processing
+#' tools, summarize feature intensities, and fit a linear mixed effects model.
+#' Additionally the package includes functionality to plot a variety of data
+#' visualizations.
 #'
-#' Quantitative analyses of PTMs are supported by four main functions of
-#' _MSstatsPTM_:
+#' @section functions :
+#' \itemize{
+#'   \item \code{\link{MaxQtoMSstatsPTMFormat}} : Generates MSstatsPTM required
+#'   input format for TMT MaxQuant outputs.
+#'   \item \code{\link{ProgenesistoMSstatsPTMFormat}} : Generates MSstatsPTM 
+#'   required input format for non-TMT Proteoviz outputs.
+#'   \item \code{\link{dataSummarizationPTM}} : Summarizes PSM level 
+#'   quantification to peptide (modification) and protein level quantification.
+#'   For use in non-TMT analysis
+#'   \item \code{\link{dataSummarizationPTM_TMT}} : Summarizes PSM level 
+#'   quantification to peptide (modification) and protein level quantification.
+#'   For use in TMT analysis.
+#'   \item \code{\link{dataProcessPlotsPTM}} : Vizualization for explanatory
+#'   data analysis. Specifically gives ability to plot Profile and Quality 
+#'   Control plots.
+#'   \item \code{\link{groupComparisonPTM}} : Tests for significant changes in 
+#'   PTM and protein abundance across conditions. Adjusts PTM fold change for 
+#'   changes in protein abundance.
+#'   \item \code{\link{groupComparisonPlotsPTM}} : Visualization for model-based
+#'    analysis and summarization
+#' }
 #'
-#' @section Normalization:
-#' \code{PTMnormalize()} normalizes the quantified peak intensities to correct
-#' systematic variation across MS runs.
-#'
-#' @section Summarization:
-#' \code{PTMsummarize()} summarizes log2-intensities of spectral features
-#' (i.e., precursor ions in DDA, fragments in DIA, or transitions in SRM) into
-#' one value per PTM site per run or one value per protein per run.
-#'
-#' @section Estimation:
-#' \code{PTMestimate()} takes as input the summarized log2-intensities for
-#' each PTM site, performs statistical modeling for the log2-abundance of the
-#' site, and returns the estimates of model parameters for all PTM sites in all
-#' experimental conditions.
-#'
-#' @section Comparison:
-#' \code{PTMcompareMeans()} performs statistical testing for detecting changes
-#' in PTM mean abundances between conditions.
-#'
-#' @name MSstatsPTM
 #' @docType package
-#' @importFrom stats df.residual lm median medpolish p.adjust pt
-#' @importFrom rlang .data
-#' @importFrom tidyr nest unnest
-#' @importFrom tidyselect one_of
-#' @importFrom dplyr left_join inner_join semi_join bind_rows group_by ungroup
-#' summarise mutate count
-#' @importFrom tibble tibble as_tibble
+#' @name MSstatsPTM
 NULL
-#> NULL

@@ -1,32 +1,26 @@
 # MSstatsPTM
 
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/Vitek-Lab/MSstatsPTM.svg?branch=master)](https://travis-ci.org/Vitek-Lab/MSstatsPTM)
+[![Codecov test coverage](https://codecov.io/gh/Vitek-Lab/MSstatsPTM/branch/master/graph/badge.svg)](https://codecov.io/gh/Vitek-Lab/MSstatsPTM?branch=master)
+<!-- badges: end -->
+
+
 The goal of MSstatsPTM is to provide the implementation of general statistical methods for characterization of quantitative changes in global post-translational modification profiling experiments.
 
-## Installation
+## Installation 
 
-You can install the development version of MSstatsPTM from [GitHub](https://github.com/) with:
+This development version is only available on Github:
 
-``` r
-# install.packages("devtools")
-devtools::install_github("tsunghengtsai/MSstatsPTM")
+```
+devtools::install_github("Vitek-Lab/MSstatsPTM", build_vignettes = TRUE)
 ```
 
-## Functionality
+## Contributing
 
-Quantitative analyses of PTMs are supported by four main functions of MSstatsPTM.
+We welcome contributions from the community. For details on how to contribute to the
+development of MSstatsPTM, please refer to the [CONTRIBUTING](https://github.com/Vitek-Lab/MSstatsPTM/blob/master/.github/CONTRIBUTING.md) file.
 
-### Normalization
+## License
 
-`PTMnormalize()` normalizes the quantified peak intensities to correct systematic variation across MS runs.
-
-### Summarization
-
-`PTMsummarize()` summarizes log2-intensities of spectral features (i.e., precursor ions in DDA, fragments in DIA, or transitions in SRM) into one value per PTM site per run or one value per protein per run.
-
-### Estimation
-
-`PTMestimate()` takes as input the summarized log2-intensities for each PTM site, performs statistical modeling for the log2-abundance of the site, and returns the estimates of model parameters for all PTM sites in all experimental conditions.
-
-### Comparison
-
-`PTMcompareMeans()` performs statistical testing for detecting changes in PTM mean abundances between conditions.
+[Artistic-2.0](https://opensource.org/licenses/Artistic-2.0)
