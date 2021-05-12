@@ -43,13 +43,10 @@
 #'         data.tables with their corresponding model results.
 #'         
 #' @examples 
-#' head(raw.input$PTM)
-#' head(raw.input$PROTEIN)
 #' 
-#' quant.lf.msstatsptm <- dataSummarizationPTM(raw.input)
-#' 
-#' model.lf.msstatsptm <- groupComparisonPTM(quant.lf.msstatsptm, 
-#'                                      data.type = "LabelFree")
+#' model.lf.msstatsptm <- groupComparisonPTM(summary.data, 
+#'                                      data.type = "LabelFree",
+#'                                      verbose = FALSE)
 groupComparisonPTM <- function(data, data.type,
                                contrast.matrix = "pairwise",
                                moderated = FALSE, 
@@ -101,18 +98,18 @@ groupComparisonPTM <- function(data, data.type,
   if (contrast.matrix[1] == "pairwise" & data.type == 'LabelFree'){
     getOption(option_log)("INFO", "Building pairwise matrix.")
     labels <- unique(data.ptm$ProcessedData$GROUP)
-    contrast.matrix <- MSstatsdev::MSstatsContrastMatrix('pairwise', labels)
+    contrast.matrix <- MSstatsContrastMatrix('pairwise', labels)
   }
   
   ## PTM Modeling
   message("Starting PTM modeling...")
   if (data.type == 'TMT'){
     getOption(option_log)("INFO", "Starting TMT PTM Model")
-    ptm_model <- MSstatsTMTdev::groupComparisonTMT(data.ptm, contrast.matrix,
+    ptm_model <- groupComparisonTMT(data.ptm, contrast.matrix,
                                     moderated, adj.method)
   } else if (data.type == 'LabelFree') {
     getOption(option_log)("INFO", "Starting non-TMT PTM Model")
-    ptm_model_full <- MSstatsdev::groupComparison(contrast.matrix,
+    ptm_model_full <- groupComparison(contrast.matrix,
                                       data.ptm, TRUE, log_base, 
                                       use_log_file, append, verbose, 
                                       log_file_path = path)
@@ -127,11 +124,11 @@ groupComparisonPTM <- function(data, data.type,
     message("Starting Protein modeling...")
     if (data.type == 'TMT'){
       getOption(option_log)("INFO", "Starting TMT Protein Model")
-      protein_model <- MSstatsTMTdev::groupComparisonTMT(data.protein, contrast.matrix, 
+      protein_model <- groupComparisonTMT(data.protein, contrast.matrix, 
                                           moderated, adj.method)
     } else if (data.type == 'LabelFree') {
       getOption(option_log)("INFO", "Starting non-TMT Protein Model")
-      protein_model_full <- MSstatsdev::groupComparison(contrast.matrix, 
+      protein_model_full <- groupComparison(contrast.matrix, 
                                                         data.protein,
                                             TRUE, log_base, use_log_file, 
                                             append, verbose, 

@@ -165,7 +165,7 @@ dataSummarizationPTM <- function(
   message("Starting PTM summarization...")
   ## Run summarization function from MSstats
   getOption("MSstatsLog")("INFO", "Starting PTM summarization..")
-  ptm.summarized <- MSstatsdev::dataProcess(as.data.frame(PTM.dataset),
+  ptm.summarized <- dataProcess(as.data.frame(PTM.dataset),
                                 logTrans, normalization.PTM, nameStandards.PTM,
                                 featureSubset.PTM, 
                                 remove_uninformative_feature_outlier.PTM,
@@ -177,7 +177,7 @@ dataSummarizationPTM <- function(
   if (adj.protein) {
     message("Starting Protein summarization...")
     getOption("MSstatsLog")("INFO", "Starting Protein summarization..")
-    protein.summarized <- MSstatsdev::dataProcess(as.data.frame(protein.dataset),
+    protein.summarized <- dataProcess(as.data.frame(protein.dataset),
                                   logTrans, normalization, nameStandards,
                                   featureSubset, 
                                   remove_uninformative_feature_outlier,

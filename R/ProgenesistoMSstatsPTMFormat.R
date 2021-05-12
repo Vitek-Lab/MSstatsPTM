@@ -64,7 +64,7 @@ ProgenesistoMSstatsPTMFormat <- function(ptm_input,
     .progensis.add.sites(ptm_input, fasta_path, col_order)
   }
 
-  convert.ptm <- MSstatsdev::ProgenesistoMSstatsFormat(as.data.frame(ptm_input), annotation,
+  convert.ptm <- ProgenesistoMSstatsFormat(as.data.frame(ptm_input), annotation,
                                             useUniquePeptide,
                                             summaryforMultipleRows,
                                             fewMeasurements,
@@ -75,7 +75,7 @@ ProgenesistoMSstatsPTMFormat <- function(ptm_input,
 
     global_protein_input <- as.data.table(global_protein_input)
 
-    convert.prot <- MSstatsdev::ProgenesistoMSstatsFormat(global_protein_input, annotation,
+    convert.prot <- ProgenesistoMSstatsFormat(global_protein_input, annotation,
                                               useUniquePeptide,
                                               summaryforMultipleRows,
                                               fewMeasurements,

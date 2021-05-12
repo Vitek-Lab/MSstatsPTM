@@ -88,7 +88,8 @@ MaxQtoMSstatsPTMFormat <- function(sites.data,
     MSstatsPTMTMT.abun$PeptideSequence, MSstatsPTMTMT.abun$ProteinName, 
     sep = ':')
   
-  setDT(MSstatsPTMTMT.abun)[, PeptideSequence := tstrsplit(PeptideSequence, ":", keep = 1)]
+  setDT(MSstatsPTMTMT.abun)[, PeptideSequence := tstrsplit(PeptideSequence, ":",
+                                                           keep = 1)]
   
   MSstatsPTMformat <- list('PTM' = MSstatsPTMTMT.abun)
 

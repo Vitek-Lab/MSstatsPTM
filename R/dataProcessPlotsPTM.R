@@ -15,6 +15,7 @@
 #' @importFrom stringr str_match
 #' @importFrom data.table data.table as.data.table melt dcast `:=` setnames copy rbindlist
 #' @importFrom checkmate assertCharacter assertNumeric assertChoice
+#' @importFrom MSstats theme_msstats
 #' 
 #' @param data name of the list with PTM and (optionally) Protein data, which
 #' can be the output of the MSstatsPTM 
@@ -80,7 +81,6 @@
 #'                     type = 'PROFILEPLOT',
 #'                     which.Protein = "Q9UQ80_K376",
 #'                     address = FALSE)
-##TODO: add #' @importFrom MSstats theme_msstats
 dataProcessPlotsPTM <- function(data,
                                 type = 'PROFILEPLOT',
                                 ylimUp = FALSE,

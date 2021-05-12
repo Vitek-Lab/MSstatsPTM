@@ -316,7 +316,7 @@
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
-    MSstatsdev::theme_msstats(type = "PROFILEPLOT",x.axis.size, y.axis.size, legend.size,
+    theme_msstats(type = "PROFILEPLOT",x.axis.size, y.axis.size, legend.size,
                   text_angle = text.angle) +
     guides(color = guide_legend(title = paste("# peptide:", nlevels(
       sub$PEPTIDESEQUENCE)),
@@ -442,7 +442,7 @@
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
-    MSstatsdev::theme_msstats(type = "PROFILEPLOT",x.axis.size, y.axis.size, legend.size,
+    theme_msstats(type = "PROFILEPLOT",x.axis.size, y.axis.size, legend.size,
                   text_angle = text.angle) +
     guides(color = guide_legend(order = 1,
                                 title = NULL,
@@ -718,7 +718,7 @@
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
-    MSstatsdev::theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size, 13, 
+    theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size, 13, 
                   element_rect(fill = "gray95"),
                   element_text(colour = c("#00B0F6"), size = 14),
                   "none", text_angle = text.angle)
@@ -785,7 +785,7 @@
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
-    MSstatsdev::theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size, 13, 
+    theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size, 13, 
                   element_rect(fill = "gray95"),
                   element_text(colour = c("#00B0F6"), size = 14),
                   "none", text_angle = text.angle)
@@ -1130,7 +1130,7 @@
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
-    MSstatsdev::theme_msstats(type = "PROFILEPLOT",x.axis.size, y.axis.size, legend.size,
+    theme_msstats(type = "PROFILEPLOT",x.axis.size, y.axis.size, legend.size,
                   text_angle = text.angle) +
     guides(color = guide_legend(title = paste("# peptide:", nlevels(
       sub$PEPTIDE)),
@@ -1237,7 +1237,7 @@
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
-    MSstatsdev::theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size, legend.size,
+    theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size, legend.size,
                   text_angle = text.angle) +
     guides(color = guide_legend(order = 1,
                                 title = NULL,
@@ -1498,7 +1498,7 @@
               aes(x = RUN, y = ABUNDANCE - 1, label = Name),
               size = text.size,
               angle = 0,color = "black") +
-    MSstatsdev::theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size,
+    theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size,
                   13, 
                   element_rect(fill = "gray95"),
                   element_text(colour = c("#00B0F6"), size = 14),
@@ -1558,7 +1558,7 @@
               aes(x = RUN, y = ABUNDANCE, label = Name),
               size = text.size,
               color = "black") +
-    MSstatsdev::theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size,
+    theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size,
                   13, 
                   element_rect(fill = "gray95"),
                   element_text(colour = c("#00B0F6"), size = 14),
