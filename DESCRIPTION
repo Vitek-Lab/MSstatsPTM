@@ -2,7 +2,7 @@ Package: MSstatsPTM
 Type: Package
 Title: Statistical Characterization of Post-translational Modifications
 Version: 1.2.0
-Date: 2021-04-12
+Date: 2021-05-12
 Description: MSstatsPTM provides general statistical methods for quantitative 
     characterization of post-translational modifications (PTMs). Supports DDA, 
     DIA, and tandem mass tag (TMT) labeling. Typically, the 
@@ -12,8 +12,8 @@ Description: MSstatsPTM provides general statistical methods for quantitative
     estimation of PTM site abundance, and detection of changes in PTMs across 
     experimental conditions. 
 Authors@R: c(
-    person("Tsung-Heng", "Tsai", email="tsai.tsungheng@gmail.com", role=c("aut", "cre")),
-    person("Devon", "Kohler", email = "kohler.d@northeastern.edu", role = c("aut")),
+    person("Devon", "Kohler", email = "kohler.d@northeastern.edu", role = c("aut", "cre")),
+    person("Tsung-Heng", "Tsai", email="tsai.tsungheng@gmail.com", role=c("aut")),
             person("Ting", "Huang", email = "thuang0703@gmail.com", role=c("aut")),
             person("Mateusz", "Staniak", email = "mtst@mstaniak.pl", role = c("aut")),
           	person("Meena", "Choi", email = "mnchoi67@gmail.com", role="aut"),
