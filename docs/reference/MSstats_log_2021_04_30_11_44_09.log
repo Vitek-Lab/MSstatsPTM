@@ -1,0 +1,332 @@
+INFO  [2021-04-30 11:44:09] MSstats - dataProcess function
+INFO  [2021-04-30 11:44:09] Summary method: TMP
+INFO  [2021-04-30 11:44:09] cutOffCensored: minFeature
+INFO  [2021-04-30 11:44:09] censoredInt: NA
+INFO  [2021-04-30 11:44:09] ** Features with one or two measurements across runs are removed.
+INFO  [2021-04-30 11:44:09] ** Fractionation handled.
+INFO  [2021-04-30 11:44:09] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2021-04-30 11:44:09] 
+
+INFO  [2021-04-30 11:44:09] Logarithm transformation with base 2 is done - okay
+INFO  [2021-04-30 11:44:09] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, SUBJECT_ORIGINAL_NESTED, FEATURE, RUN) - okay.
+Normalization based on median: OK [2021-04-30 11:44:09] 
+INFO  [2021-04-30 11:44:09] ** Use all features that the dataset originally has.
+INFO  [2021-04-30 11:44:09] 
+# proteins: 125
+# peptides per protein: 1-5
+# features per peptide: 1-1
+INFO  [2021-04-30 11:44:09] Five or more proteins have only one feature: 
+ Q9UHD8_K028,
+Q9UHD8_K069,
+Q9UHD8_K141,
+Q9UHQ9_K046,
+Q9UHQ9_K062 ...
+INFO  [2021-04-30 11:44:09] 
+                    CCCP Combo Ctrl USP30_OE
+
+             # runs    4     4    4        4
+
+    # bioreplicates    2     2    2        2
+
+ # tech. replicates    2     2    2        2
+INFO  [2021-04-30 11:44:09] Five or more features are completely missing in at least one condition,
+ VYLK*GVHPK_2_NA_NA,
+ GVHPK*FPEGGK_2_NA_NA,
+ MSQYLDSLK*VGDVVEFR_3_NA_NA,
+ DWAYSK*GFVTADMIR_2_NA_NA,
+ DWAYSK*GFVTADMIR_3_NA_NA
+INFO  [2021-04-30 11:44:11]  == the summarization per subplot is done.
+INFO  [2021-04-30 11:44:11] MSstats - dataProcess function
+INFO  [2021-04-30 11:44:11] Summary method: TMP
+INFO  [2021-04-30 11:44:11] cutOffCensored: minFeature
+INFO  [2021-04-30 11:44:11] censoredInt: NA
+INFO  [2021-04-30 11:44:11] ** Features with one or two measurements across runs are removed.
+INFO  [2021-04-30 11:44:11] ** Fractionation handled.
+INFO  [2021-04-30 11:44:11] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2021-04-30 11:44:11] 
+
+INFO  [2021-04-30 11:44:11] Logarithm transformation with base 2 is done - okay
+INFO  [2021-04-30 11:44:11] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, SUBJECT_ORIGINAL_NESTED, FEATURE, RUN) - okay.
+Normalization based on median: OK [2021-04-30 11:44:11] 
+INFO  [2021-04-30 11:44:11] ** Use all features that the dataset originally has.
+INFO  [2021-04-30 11:44:11] 
+# proteins: 26
+# peptides per protein: 1-9
+# features per peptide: 1-1
+INFO  [2021-04-30 11:44:11] Five or more proteins have only one feature: 
+ Q9UHD8,
+Q9UHQ9,
+Q9UIF8,
+Q9UL25,
+Q9UNH7 ...
+INFO  [2021-04-30 11:44:11] 
+                    CCCP Combo Ctrl USP30_OE
+
+             # runs    4     4    4        4
+
+    # bioreplicates    2     2    2        2
+
+ # tech. replicates    2     2    2        2
+INFO  [2021-04-30 11:44:11] Five or more features are completely missing in at least one condition,
+ TVYSHLFDHVVNR_4_NA_NA,
+ TDQFPLFLIIMGK_2_NA_NA,
+ LMKMAR_2_NA_NA,
+ TVYSHLFDHVVNR_4_NA_NA,
+ TDQFPLFLIIMGK_2_NA_NA
+INFO  [2021-04-30 11:44:12]  == the summarization per subplot is done.
+INFO  [2021-04-30 11:44:12] MSstats - dataProcess function
+INFO  [2021-04-30 11:44:12] Summary method: TMP
+INFO  [2021-04-30 11:44:12] cutOffCensored: minFeature
+INFO  [2021-04-30 11:44:12] censoredInt: NA
+INFO  [2021-04-30 11:44:12] ** Features with one or two measurements across runs are removed.
+INFO  [2021-04-30 11:44:12] ** Fractionation handled.
+INFO  [2021-04-30 11:44:12] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2021-04-30 11:44:12] 
+
+INFO  [2021-04-30 11:44:12] Logarithm transformation with base 2 is done - okay
+INFO  [2021-04-30 11:44:12] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, SUBJECT_ORIGINAL_NESTED, FEATURE, RUN) - okay.
+Normalization based on median: OK [2021-04-30 11:44:12] 
+INFO  [2021-04-30 11:44:12] ** Use all features that the dataset originally has.
+INFO  [2021-04-30 11:44:12] 
+# proteins: 125
+# peptides per protein: 1-5
+# features per peptide: 1-1
+INFO  [2021-04-30 11:44:12] Five or more proteins have only one feature: 
+ Q9UHD8_K028,
+Q9UHD8_K069,
+Q9UHD8_K141,
+Q9UHQ9_K046,
+Q9UHQ9_K062 ...
+INFO  [2021-04-30 11:44:12] 
+                    CCCP Combo Ctrl USP30_OE
+
+             # runs    4     4    4        4
+
+    # bioreplicates    2     2    2        2
+
+ # tech. replicates    2     2    2        2
+INFO  [2021-04-30 11:44:12] Five or more features are completely missing in at least one condition,
+ VYLK*GVHPK_2_NA_NA,
+ GVHPK*FPEGGK_2_NA_NA,
+ MSQYLDSLK*VGDVVEFR_3_NA_NA,
+ DWAYSK*GFVTADMIR_2_NA_NA,
+ DWAYSK*GFVTADMIR_3_NA_NA
+INFO  [2021-04-30 11:44:13]  == the summarization per subplot is done.
+INFO  [2021-04-30 11:44:14] MSstats - dataProcess function
+INFO  [2021-04-30 11:44:14] Summary method: TMP
+INFO  [2021-04-30 11:44:14] cutOffCensored: minFeature
+INFO  [2021-04-30 11:44:14] censoredInt: NA
+INFO  [2021-04-30 11:44:14] ** Features with one or two measurements across runs are removed.
+INFO  [2021-04-30 11:44:14] ** Fractionation handled.
+INFO  [2021-04-30 11:44:14] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2021-04-30 11:44:14] 
+
+INFO  [2021-04-30 11:44:14] Logarithm transformation with base 2 is done - okay
+INFO  [2021-04-30 11:44:14] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, SUBJECT_ORIGINAL_NESTED, FEATURE, RUN) - okay.
+Normalization based on median: OK [2021-04-30 11:44:14] 
+INFO  [2021-04-30 11:44:14] ** Use all features that the dataset originally has.
+INFO  [2021-04-30 11:44:14] 
+# proteins: 26
+# peptides per protein: 1-9
+# features per peptide: 1-1
+INFO  [2021-04-30 11:44:14] Five or more proteins have only one feature: 
+ Q9UHD8,
+Q9UHQ9,
+Q9UIF8,
+Q9UL25,
+Q9UNH7 ...
+INFO  [2021-04-30 11:44:14] 
+                    CCCP Combo Ctrl USP30_OE
+
+             # runs    4     4    4        4
+
+    # bioreplicates    2     2    2        2
+
+ # tech. replicates    2     2    2        2
+INFO  [2021-04-30 11:44:14] Five or more features are completely missing in at least one condition,
+ TVYSHLFDHVVNR_4_NA_NA,
+ TDQFPLFLIIMGK_2_NA_NA,
+ LMKMAR_2_NA_NA,
+ TVYSHLFDHVVNR_4_NA_NA,
+ TDQFPLFLIIMGK_2_NA_NA
+INFO  [2021-04-30 11:44:14]  == the summarization per subplot is done.
+INFO  [2021-04-30 11:44:18] MSstats - dataProcess function
+INFO  [2021-04-30 11:44:18] Summary method: TMP
+INFO  [2021-04-30 11:44:18] cutOffCensored: minFeature
+INFO  [2021-04-30 11:44:18] censoredInt: NA
+INFO  [2021-04-30 11:44:18] ** Features with one or two measurements across runs are removed.
+INFO  [2021-04-30 11:44:18] ** Fractionation handled.
+INFO  [2021-04-30 11:44:18] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2021-04-30 11:44:18] 
+
+INFO  [2021-04-30 11:44:18] Logarithm transformation with base 2 is done - okay
+INFO  [2021-04-30 11:44:18] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, SUBJECT_ORIGINAL_NESTED, FEATURE, RUN) - okay.
+Normalization based on median: OK [2021-04-30 11:44:18] 
+INFO  [2021-04-30 11:44:18] ** Use all features that the dataset originally has.
+INFO  [2021-04-30 11:44:18] 
+# proteins: 125
+# peptides per protein: 1-5
+# features per peptide: 1-1
+INFO  [2021-04-30 11:44:18] Five or more proteins have only one feature: 
+ Q9UHD8_K028,
+Q9UHD8_K069,
+Q9UHD8_K141,
+Q9UHQ9_K046,
+Q9UHQ9_K062 ...
+INFO  [2021-04-30 11:44:18] 
+                    CCCP Combo Ctrl USP30_OE
+
+             # runs    4     4    4        4
+
+    # bioreplicates    2     2    2        2
+
+ # tech. replicates    2     2    2        2
+INFO  [2021-04-30 11:44:18] Five or more features are completely missing in at least one condition,
+ VYLK*GVHPK_2_NA_NA,
+ GVHPK*FPEGGK_2_NA_NA,
+ MSQYLDSLK*VGDVVEFR_3_NA_NA,
+ DWAYSK*GFVTADMIR_2_NA_NA,
+ DWAYSK*GFVTADMIR_3_NA_NA
+INFO  [2021-04-30 11:44:20]  == the summarization per subplot is done.
+INFO  [2021-04-30 11:44:20] MSstats - dataProcess function
+INFO  [2021-04-30 11:44:20] Summary method: TMP
+INFO  [2021-04-30 11:44:20] cutOffCensored: minFeature
+INFO  [2021-04-30 11:44:20] censoredInt: NA
+INFO  [2021-04-30 11:44:20] ** Features with one or two measurements across runs are removed.
+INFO  [2021-04-30 11:44:20] ** Fractionation handled.
+INFO  [2021-04-30 11:44:20] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2021-04-30 11:44:20] 
+
+INFO  [2021-04-30 11:44:20] Logarithm transformation with base 2 is done - okay
+INFO  [2021-04-30 11:44:20] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, SUBJECT_ORIGINAL_NESTED, FEATURE, RUN) - okay.
+Normalization based on median: OK [2021-04-30 11:44:20] 
+INFO  [2021-04-30 11:44:20] ** Use all features that the dataset originally has.
+INFO  [2021-04-30 11:44:20] 
+# proteins: 26
+# peptides per protein: 1-9
+# features per peptide: 1-1
+INFO  [2021-04-30 11:44:20] Five or more proteins have only one feature: 
+ Q9UHD8,
+Q9UHQ9,
+Q9UIF8,
+Q9UL25,
+Q9UNH7 ...
+INFO  [2021-04-30 11:44:20] 
+                    CCCP Combo Ctrl USP30_OE
+
+             # runs    4     4    4        4
+
+    # bioreplicates    2     2    2        2
+
+ # tech. replicates    2     2    2        2
+INFO  [2021-04-30 11:44:20] Five or more features are completely missing in at least one condition,
+ TVYSHLFDHVVNR_4_NA_NA,
+ TDQFPLFLIIMGK_2_NA_NA,
+ LMKMAR_2_NA_NA,
+ TVYSHLFDHVVNR_4_NA_NA,
+ TDQFPLFLIIMGK_2_NA_NA
+INFO  [2021-04-30 11:44:20]  == the summarization per subplot is done.
+INFO  [2021-04-30 11:44:20] MSstats - groupComparison function
+INFO  [2021-04-30 11:44:20] Time course design of experiment - okay
+INFO  [2021-04-30 11:44:20] labeled = FALSE
+INFO  [2021-04-30 11:44:20] scopeOfBioReplication = expanded
+INFO  [2021-04-30 11:44:20] ** Start to test and get inference in whole plot
+INFO  [2021-04-30 11:44:23] Comparisons for all proteins are done.- okay
+INFO  [2021-04-30 11:44:23] Group comparison is done. - okay
+INFO  [2021-04-30 11:44:23] MSstats - groupComparison function
+INFO  [2021-04-30 11:44:23] Time course design of experiment - okay
+INFO  [2021-04-30 11:44:23] labeled = FALSE
+INFO  [2021-04-30 11:44:23] scopeOfBioReplication = expanded
+INFO  [2021-04-30 11:44:23] ** Start to test and get inference in whole plot
+INFO  [2021-04-30 11:44:24] Comparisons for all proteins are done.- okay
+INFO  [2021-04-30 11:44:24] Group comparison is done. - okay
+INFO  [2021-04-30 11:44:35] MSstats - dataProcess function
+INFO  [2021-04-30 11:44:35] Summary method: TMP
+INFO  [2021-04-30 11:44:35] cutOffCensored: minFeature
+INFO  [2021-04-30 11:44:35] censoredInt: NA
+INFO  [2021-04-30 11:44:35] ** Features with one or two measurements across runs are removed.
+INFO  [2021-04-30 11:44:35] ** Fractionation handled.
+INFO  [2021-04-30 11:44:35] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2021-04-30 11:44:35] 
+
+INFO  [2021-04-30 11:44:35] Logarithm transformation with base 2 is done - okay
+INFO  [2021-04-30 11:44:35] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, SUBJECT_ORIGINAL_NESTED, FEATURE, RUN) - okay.
+Normalization based on median: OK [2021-04-30 11:44:35] 
+INFO  [2021-04-30 11:44:35] ** Use all features that the dataset originally has.
+INFO  [2021-04-30 11:44:35] 
+# proteins: 125
+# peptides per protein: 1-5
+# features per peptide: 1-1
+INFO  [2021-04-30 11:44:35] Five or more proteins have only one feature: 
+ Q9UHD8_K028,
+Q9UHD8_K069,
+Q9UHD8_K141,
+Q9UHQ9_K046,
+Q9UHQ9_K062 ...
+INFO  [2021-04-30 11:44:35] 
+                    CCCP Combo Ctrl USP30_OE
+
+             # runs    4     4    4        4
+
+    # bioreplicates    2     2    2        2
+
+ # tech. replicates    2     2    2        2
+INFO  [2021-04-30 11:44:35] Five or more features are completely missing in at least one condition,
+ VYLK*GVHPK_2_NA_NA,
+ GVHPK*FPEGGK_2_NA_NA,
+ MSQYLDSLK*VGDVVEFR_3_NA_NA,
+ DWAYSK*GFVTADMIR_2_NA_NA,
+ DWAYSK*GFVTADMIR_3_NA_NA
+INFO  [2021-04-30 11:44:36]  == the summarization per subplot is done.
+INFO  [2021-04-30 11:44:36] MSstats - dataProcess function
+INFO  [2021-04-30 11:44:36] Summary method: TMP
+INFO  [2021-04-30 11:44:36] cutOffCensored: minFeature
+INFO  [2021-04-30 11:44:36] censoredInt: NA
+INFO  [2021-04-30 11:44:36] ** Features with one or two measurements across runs are removed.
+INFO  [2021-04-30 11:44:36] ** Fractionation handled.
+INFO  [2021-04-30 11:44:36] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2021-04-30 11:44:36] 
+
+INFO  [2021-04-30 11:44:36] Logarithm transformation with base 2 is done - okay
+INFO  [2021-04-30 11:44:36] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, SUBJECT_ORIGINAL_NESTED, FEATURE, RUN) - okay.
+Normalization based on median: OK [2021-04-30 11:44:36] 
+INFO  [2021-04-30 11:44:36] ** Use all features that the dataset originally has.
+INFO  [2021-04-30 11:44:36] 
+# proteins: 26
+# peptides per protein: 1-9
+# features per peptide: 1-1
+INFO  [2021-04-30 11:44:36] Five or more proteins have only one feature: 
+ Q9UHD8,
+Q9UHQ9,
+Q9UIF8,
+Q9UL25,
+Q9UNH7 ...
+INFO  [2021-04-30 11:44:36] 
+                    CCCP Combo Ctrl USP30_OE
+
+             # runs    4     4    4        4
+
+    # bioreplicates    2     2    2        2
+
+ # tech. replicates    2     2    2        2
+INFO  [2021-04-30 11:44:36] Five or more features are completely missing in at least one condition,
+ TVYSHLFDHVVNR_4_NA_NA,
+ TDQFPLFLIIMGK_2_NA_NA,
+ LMKMAR_2_NA_NA,
+ TVYSHLFDHVVNR_4_NA_NA,
+ TDQFPLFLIIMGK_2_NA_NA
+INFO  [2021-04-30 11:44:37]  == the summarization per subplot is done.
+INFO  [2021-04-30 11:44:37] MSstats - groupComparison function
+INFO  [2021-04-30 11:44:37] Time course design of experiment - okay
+INFO  [2021-04-30 11:44:37] labeled = FALSE
+INFO  [2021-04-30 11:44:37] scopeOfBioReplication = expanded
+INFO  [2021-04-30 11:44:37] ** Start to test and get inference in whole plot
+INFO  [2021-04-30 11:44:39] Comparisons for all proteins are done.- okay
+INFO  [2021-04-30 11:44:39] Group comparison is done. - okay
+INFO  [2021-04-30 11:44:39] MSstats - groupComparison function
+INFO  [2021-04-30 11:44:39] Time course design of experiment - okay
+INFO  [2021-04-30 11:44:39] labeled = FALSE
+INFO  [2021-04-30 11:44:39] scopeOfBioReplication = expanded
+INFO  [2021-04-30 11:44:39] ** Start to test and get inference in whole plot
+INFO  [2021-04-30 11:44:40] Comparisons for all proteins are done.- okay
+INFO  [2021-04-30 11:44:40] Group comparison is done. - okay

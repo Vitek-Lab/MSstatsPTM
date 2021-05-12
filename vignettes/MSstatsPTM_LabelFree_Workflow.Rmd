@@ -1,0 +1,196 @@
+---
+title: "MSstatsPTM LabelFree Workflow"
+author: "Devon Kohler (<kohler.d@northeastern.edu>)"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{MSstatsPTM LabelFree Workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width=8, 
+  fig.height=8
+)
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(MSstatsPTM)
+```
+
+This Vignette provides an example workflow for how to use the package 
+MSstatsPTM for a labelfree dataset. It also provides examples and an 
+analysis of how adjusting for global protein levels allows for better 
+interpretations of PTM modeling results.
+
+## Installation
+
+To install this package, start R (version "4.0") and enter:
+
+``` {r, eval = FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("MSstatsPTM")
+```
+
+## 1. Workflow
+
+### 1.1 Raw Data Format
+
+**Note: We are actively developing dedicated converters for MSstatsPTM. If you 
+have data from a processing tool that does not have a dedicated converter in 
+MSstatsPTM please add a github issue 
+`https://github.com/Vitek-Lab/MSstatsPTM/issues` and we will add the 
+converter.**
+
+The first step is to load in the raw dataset for both the PTM and Protein 
+datasets. Each dataset can formatted using dedicated converters in `MSstatsPTM`,
+such as `ProgenesistoMSstatsPTMFormat`, or converters from base `MSstats` such
+as `SkylinetoMSstatsFormat`, `MaxQtoMSstatsFormat`, `ProgenesistoMSstatsFormat`, 
+ect. If using converters from `MSstats` note they will need to be run both on 
+the global protein and PTM datasets.
+
+Please note for the PTM dataset, both the protein and modification site (or 
+peptide), must be added into the `ProteinName` column. This allows for the 
+package to summarize to the peptide level, and avoid the off chance there are 
+matching peptides between proteins. For an example of how this can be done 
+please see the code below.
+
+#### 1.1.1 Raw Data Converter
+
+```{r raw_data_ptm, eval = FALSE}
+
+# Run MSstatsPTM converter with modified and unmodified datasets.
+raw.input <- ProgenesistoMSstatsPTMFormat(raw_ptm_df, annotation, 
+                                          raw_protein_df, fasta_path)
+```
+
+The output of the converter is a list with two formatted data.tables. One each 
+for the PTM and Protein datasets.
+
+Given there is not a dedicated MSstatsPTM converter for the processing tool, 
+base MSstats converters can be used as follows. Please note ProteinName column.
+
+```{r raw_data, eval = FALSE}
+# Add site into ProteinName column
+raw_ptm_df$ProteinName <- paste(raw_ptm_df$ProteinName,
+                                raw_ptm_df$Site, sep = "_")
+
+# Run MSstats Converters
+PTM.data <- ProgenesistoMSstatsFormat(raw_ptm_df, annotation)
+PROTEIN.data <- ProgenesistoMSstatsFormat(raw_protein_df, annotation)
+
+# Combine into one list
+raw.input <- list(PTM = PTM.data,
+                  PROTEIN = PROTEIN.data)
+```
+
+Both of these conversion methods will output the same results.
+
+``` {r}
+head(raw.input$PTM)
+head(raw.input$PROTEIN)
+```
+
+### 1.2 Summarization - dataSummarizationPTM
+
+After loading in the input data, the next step is to use the 
+dataSummarizationPTM function This provides the summarized dataset needed to 
+model the protein/PTM abundance. The function will summarize the 
+Protein dataset up to the protein level and will summarize the PTM dataset up to
+the peptide level. There are multiple options for normalization and missing 
+value imputation. These options should be reviewed in the package documentation.
+
+```{r summarize, message=FALSE, warning=FALSE}
+
+MSstatsPTM.summary <- dataSummarizationPTM(raw.input, verbose = FALSE)
+
+head(MSstatsPTM.summary$PTM$ProteinLevelData)
+head(MSstatsPTM.summary$PROTEIN$ProteinLevelData)
+```
+
+The summarize function returns a list with PTM and Protein summarization 
+information. Each PTM and Protein include a list of data.tables: `ProcessedData`
+is a data.table of reformatted input of dataSummarizationPTM, `RunlevelData` is 
+the run level summarization data.
+
+### 1.2.1 QCPlot
+
+Once summarized, MSstatsPTM provides multiple plots to analyze the experiment. 
+Here we show the quality control boxplot. The first plot shows the modified data
+and the second plot shows the global protein dataset.
+
+```{r qcplot, message=FALSE, warning=FALSE}
+dataProcessPlotsPTM(MSstatsPTM.summary,
+                    type = 'QCPLOT',
+                    which.PTM = "allonly",
+                    address = FALSE)
+```
+
+### 1.2.2 Profile Plot
+
+Here we show a profile plot. Again the top plot shows the modified peptide, and 
+the bottom shows the overall protein.
+
+```{r profileplot, message=FALSE, warning=FALSE}
+dataProcessPlotsPTM(MSstatsPTM.summary,
+                    type = 'PROFILEPLOT',
+                    which.PTM = "Q9UQ80_K376",
+                    address = FALSE)
+```
+
+### 1.3 Modeling - groupComparisonPTM
+
+After summarization, the summarized datasets can be modeled using the 
+groupComparisonPTM function. This function will model the PTM and Protein 
+summarized datasets, and then adjust the PTM model for changes in overall 
+protein abundance. The output of the function is a list containing these three 
+models named: `PTM.Model`, `PROTEIN.Model`, `ADJUSTED.Model`.
+
+```{r model, message=FALSE, warning=FALSE}
+
+# Specify contrast matrix
+comparison <- matrix(c(-1,0,1,0),nrow=1)
+row.names(comparison) <- "CCCP-Ctrl"
+colnames(comparison) <- c("CCCP", "Combo", "Ctrl", "USP30_OE")
+
+MSstatsPTM.model <- groupComparisonPTM(MSstatsPTM.summary, 
+                                       data.type = "LabelFree",
+                                       contrast.matrix = comparison,
+                                       verbose = FALSE)
+head(MSstatsPTM.model$PTM.Model)
+head(MSstatsPTM.model$PROTEIN.Model)
+head(MSstatsPTM.model$ADJUSTED.Model)
+```
+
+### 1.3.1 Volcano Plot
+
+The models from the `groupComparisonPTM` function can be used in the model 
+visualization function, `groupComparisonPlotsPTM`. Here we show Volcano Plots 
+for the models.
+
+``` {r volcano, message=FALSE, warning=FALSE}
+groupComparisonPlotsPTM(data = MSstatsPTM.model,
+                        type = "VolcanoPlot",
+                        FCcutoff= 2,
+                        logBase.pvalue = 2,
+                        address=FALSE)
+```
+
+
+### 1.3.2 Heatmap Plot
+
+Here we show a Heatmap for the models.
+
+``` {r heatmap, message=FALSE, warning=FALSE}
+groupComparisonPlotsPTM(data = MSstatsPTM.model,
+                        type = "Heatmap",
+                        which.PTM = 1:30,
+                        address=FALSE)
+```
+
