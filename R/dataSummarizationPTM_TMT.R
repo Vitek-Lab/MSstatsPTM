@@ -117,7 +117,7 @@ dataSummarizationPTM_TMT <- function(
   
   ## Run summarization function from MSstatsTMT
   getOption("MSstatsTMTLog")("INFO", "Starting PTM summarization..")
-  ptm.summarized <- MSstatsTMTdev::proteinSummarization(PTM.dataset,
+  ptm.summarized <- proteinSummarization(PTM.dataset,
                                          method, global_norm.PTM, 
                                          reference_norm.PTM,
                                          remove_norm_channel,
@@ -129,7 +129,7 @@ dataSummarizationPTM_TMT <- function(
   
   if (adj.protein) {
     getOption("MSstatsTMTLog")("INFO", "Starting Protein summarization..")
-    protein.summarized <- MSstatsTMTdev::proteinSummarization(protein.dataset,
+    protein.summarized <- proteinSummarization(protein.dataset,
                                                method, global_norm, 
                                                reference_norm,
                                                remove_norm_channel,

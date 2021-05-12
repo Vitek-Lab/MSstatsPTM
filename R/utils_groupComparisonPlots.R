@@ -298,7 +298,7 @@
         limits = limits) + labs(
         title = paste0(model, " - Page #", as.character(j)), y = model, 
         x = "Comparison") +
-      MSstatsdev::theme_msstats(type = "COMPARISONPLOT", x.axis.size, y.axis.size, 13, 
+      theme_msstats(type = "COMPARISONPLOT", x.axis.size, y.axis.size, 13, 
                     element_rect(fill = "gray95"),
                     element_text(colour = c("#00B0F6"), size = 14),
                     "bottom", text_angle = text.angle)
@@ -589,7 +589,7 @@
     }
     
     pfinal <- pfinal +
-      MSstatsdev::theme_msstats(type = "VOLCANO", x.axis.size, y.axis.size, legend.size, 
+      theme_msstats(type = "VOLCANO", x.axis.size, y.axis.size, legend.size, 
                     element_rect(fill = "gray95"),
                     element_text(colour = c("#00B0F6"), size = 14),
                     "bottom", text_angle = text.angle, 

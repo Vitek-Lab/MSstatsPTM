@@ -16,6 +16,7 @@
 #' @importFrom data.table data.table as.data.table 
 #' @importFrom ggrepel geom_text_repel
 #' @importFrom checkmate assertNumeric assertChoice assertLogical
+#' @importFrom MSstats theme_msstats
 #' 
 #' @param data name of the list with models, which can be the output of the 
 #' MSstatsPTM \code{\link[MSstatsPTM]{groupComparisonPTM}} function
@@ -89,7 +90,6 @@
 #'                         FCcutoff= 2,
 #'                         logBase.pvalue = 2,
 #'                         address=FALSE)
-## TODO: Add #' @importFrom MSstats theme_msstats
 groupComparisonPlotsPTM <- function(data = data,
                                     type,
                                     sig=0.05,

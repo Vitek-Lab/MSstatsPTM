@@ -68,11 +68,8 @@ change in protein abundance without modification.
 MSstatsContrastMatrix
 }
 \examples{
-head(raw.input$PTM)
-head(raw.input$PROTEIN)
 
-quant.lf.msstatsptm <- dataSummarizationPTM(raw.input)
-
-model.lf.msstatsptm <- groupComparisonPTM(quant.lf.msstatsptm, 
-                                     data.type = "LabelFree")
+model.lf.msstatsptm <- groupComparisonPTM(summary.data, 
+                                     data.type = "LabelFree",
+                                     verbose = FALSE)
 }
