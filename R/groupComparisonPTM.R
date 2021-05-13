@@ -107,6 +107,8 @@ groupComparisonPTM <- function(data, data.type,
     getOption(option_log)("INFO", "Starting TMT PTM Model")
     ptm_model <- groupComparisonTMT(data.ptm, contrast.matrix,
                                     moderated, adj.method)
+    ptm_model <- ptm_model$ComparisonResult
+    
   } else if (data.type == 'LabelFree') {
     getOption(option_log)("INFO", "Starting non-TMT PTM Model")
     ptm_model_full <- groupComparison(contrast.matrix,
@@ -126,6 +128,7 @@ groupComparisonPTM <- function(data, data.type,
       getOption(option_log)("INFO", "Starting TMT Protein Model")
       protein_model <- groupComparisonTMT(data.protein, contrast.matrix, 
                                           moderated, adj.method)
+      protein_model <- protein_model$ComparisonResult
     } else if (data.type == 'LabelFree') {
       getOption(option_log)("INFO", "Starting non-TMT Protein Model")
       protein_model_full <- groupComparison(contrast.matrix, 
