@@ -58,7 +58,6 @@ groupComparisonPTM <- function(data, data.type,
                                log_file_path = NULL,
                                base = "MSstatsPTM_log_") {
   
-  ## TODO: Add logging to msstats/tmt functions
   ## Start log  
   if (is.null(log_file_path) & use_log_file == TRUE){
     time_now <- Sys.time()

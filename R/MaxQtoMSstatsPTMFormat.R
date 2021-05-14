@@ -4,7 +4,7 @@
 #' format needed for MSstatsPTM. Requires only the modified file from MaxQ (for 
 #' example Phospho(STY)Sites) and an annotation file for PTM data. To adjust 
 #' modified peptides for changes in global protein level, unmodified TMT 
-#' experiemntal data must also be returned.
+#' experimental data must also be returned.
 #'
 #' @export
 #' @importFrom stringr str_extract regex str_replace fixed str_split

@@ -65,6 +65,14 @@ please see the code below.
 
 ```{r raw_data_ptm, eval = FALSE}
 
+annotation <- data.frame('Condition' = c('Control', 'Control', 'Control',
+                                         'Treatment', 'Treatment', 'Treatment'),
+                         'BioReplicate' = c(1,2,3,4,5,6),
+                         'Run' = c('prot_run_1', 'prot_run_2', 'prot_run_3',
+                                   'phos_run_1', 'phos_run_2', 'phos_run_3'),
+                         'Type' = c("Protein", "Protein", "Protein", "PTM", 
+                                    "PTM", "PTM"))
+
 # Run MSstatsPTM converter with modified and unmodified datasets.
 raw.input <- ProgenesistoMSstatsPTMFormat(raw_ptm_df, annotation, 
                                           raw_protein_df, fasta_path)
@@ -73,8 +81,9 @@ raw.input <- ProgenesistoMSstatsPTMFormat(raw_ptm_df, annotation,
 The output of the converter is a list with two formatted data.tables. One each 
 for the PTM and Protein datasets.
 
-Given there is not a dedicated MSstatsPTM converter for the processing tool, 
-base MSstats converters can be used as follows. Please note ProteinName column.
+If there is not a dedicated MSstatsPTM converter for a processing tool, 
+base MSstats converters can be used as follows. Please note ProteinName column 
+must be a combination of the Protein Name and sitename.
 
 ```{r raw_data, eval = FALSE}
 # Add site into ProteinName column
@@ -100,7 +109,7 @@ head(raw.input$PROTEIN)
 ### 1.2 Summarization - dataSummarizationPTM
 
 After loading in the input data, the next step is to use the 
-dataSummarizationPTM function This provides the summarized dataset needed to 
+dataSummarizationPTM function. This provides the summarized dataset needed to 
 model the protein/PTM abundance. The function will summarize the 
 Protein dataset up to the protein level and will summarize the PTM dataset up to
 the peptide level. There are multiple options for normalization and missing 
@@ -115,8 +124,8 @@ head(MSstatsPTM.summary$PROTEIN$ProteinLevelData)
 ```
 
 The summarize function returns a list with PTM and Protein summarization 
-information. Each PTM and Protein include a list of data.tables: `ProcessedData`
-is a data.table of reformatted input of dataSummarizationPTM, `RunlevelData` is 
+information. Each PTM and Protein include a list of data.tables: `FeatureLevelData`
+is a data.table of reformatted input of dataSummarizationPTM, `ProteinLevelData` is 
 the run level summarization data.
 
 ### 1.2.1 QCPlot

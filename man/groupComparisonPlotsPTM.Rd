@@ -125,12 +125,8 @@ proteins and their significance for each model.
 between conditions and peptides/proteins
 }
 \examples{
-head(raw.input$PTM)
-head(raw.input$PROTEIN)
 
-quant.lf.msstatsptm <- dataSummarizationPTM(raw.input)
-
-model.lf.msstatsptm <- groupComparisonPTM(quant.lf.msstatsptm, 
+model.lf.msstatsptm <- groupComparisonPTM(summary.data, 
                                      data.type = "LabelFree")
 groupComparisonPlotsPTM(data = model.lf.msstatsptm,
                         type = "VolcanoPlot",
