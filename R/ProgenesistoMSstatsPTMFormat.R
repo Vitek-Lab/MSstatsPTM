@@ -1,7 +1,7 @@
 #' Converts non-TMT Progenesis output into the format needed for MSstatsPTM
 #'
 #' @export
-#' @importFrom MSstatsdev ProgenesistoMSstatsFormat
+#' @importFrom MSstats ProgenesistoMSstatsFormat
 #' @importFrom data.table as.data.table
 #'
 #' @param ptm_input name of Progenesis output with modified peptides, which is
@@ -80,7 +80,7 @@ ProgenesistoMSstatsPTMFormat <- function(ptm_input,
     .progensis.add.sites(ptm_input, fasta_path, col_order)
   }
 
-  convert.ptm <- MSstatsdev::ProgenesistoMSstatsFormat(ptm_input, ptm_annot,
+  convert.ptm <- ProgenesistoMSstatsFormat(ptm_input, ptm_annot,
                                             useUniquePeptide,
                                             summaryforMultipleRows,
                                             removeFewMeasurements,
@@ -91,7 +91,7 @@ ProgenesistoMSstatsPTMFormat <- function(ptm_input,
 
     global_protein_input <- as.data.table(global_protein_input)
 
-    convert.prot <- MSstatsdev::ProgenesistoMSstatsFormat(global_protein_input, 
+    convert.prot <- ProgenesistoMSstatsFormat(global_protein_input, 
                                               protein_annot,
                                               useUniquePeptide,
                                               summaryforMultipleRows,

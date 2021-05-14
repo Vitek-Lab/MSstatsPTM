@@ -7,7 +7,7 @@
 #' MSstatsContrastMatrix
 #' @export
 #' @importFrom data.table data.table as.data.table `:=`
-#' @importFrom MSstatsdev groupComparison 
+#' @importFrom MSstats groupComparison 
 #' @importFrom MSstatsTMT groupComparisonTMT
 #' @importFrom MSstatsConvert MSstatsLogsSettings MSstatsSaveSessionInfo
 #' @importFrom stats p.adjust xtabs

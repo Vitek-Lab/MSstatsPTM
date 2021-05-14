@@ -16,7 +16,7 @@
 #' @importFrom data.table data.table as.data.table 
 #' @importFrom ggrepel geom_text_repel
 #' @importFrom checkmate assertNumeric assertChoice assertLogical
-#' @importFrom MSstatsdev theme_msstats
+#' @importFrom MSstats theme_msstats
 #' 
 #' @param data name of the list with models, which can be the output of the 
 #' MSstatsPTM \code{\link[MSstatsPTM]{groupComparisonPTM}} function

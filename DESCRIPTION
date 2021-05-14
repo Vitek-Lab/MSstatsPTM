@@ -21,7 +21,7 @@ Authors@R: c(
 License: Artistic-2.0
 Depends: R (>= 4.0)
 Imports: dplyr, gridExtra, stringr, stats, ggplot2, 
-            grDevices, MSstatsTMT, MSstatsConvert, MSstatsdev,
+            grDevices, MSstatsTMT, MSstatsConvert, MSstats,
             data.table, Rcpp, Biostrings, checkmate, ggrepel
 Suggests:     BiocStyle,
     knitr,

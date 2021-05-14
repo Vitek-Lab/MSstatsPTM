@@ -15,7 +15,7 @@
 #' @importFrom stringr str_match
 #' @importFrom data.table data.table as.data.table melt dcast `:=` setnames copy rbindlist
 #' @importFrom checkmate assertCharacter assertNumeric assertChoice
-#' @importFrom MSstatsdev theme_msstats
+#' @importFrom MSstats theme_msstats
 #' 
 #' @param data name of the list with PTM and (optionally) Protein data, which
 #' can be the output of the MSstatsPTM 
