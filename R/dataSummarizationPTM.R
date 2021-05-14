@@ -6,7 +6,7 @@
 #' normalization on peptide level data and normalizes between runs.
 #'
 #' @export
-#' @importFrom MSstats dataProcess
+#' @importFrom MSstatsdev dataProcess
 #' @importFrom MSstatsConvert MSstatsLogsSettings MSstatsSaveSessionInfo
 #' @importFrom data.table as.data.table is.data.table
 #' 

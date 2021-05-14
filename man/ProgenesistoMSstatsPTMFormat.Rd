@@ -57,6 +57,10 @@ used. If "Single", only peptides with one modification will be
 used. Otherwise "Total" includes peptides with more than one modification.
 Selecting "Total" may confound the effect of different modifications.}
 }
+\value{
+a list of two data.tables named 'PTM' and 'PROTEIN' in the format
+required by MSstatsPTM.
+}
 \description{
 Converts non-TMT Progenesis output into the format needed for MSstatsPTM
 }

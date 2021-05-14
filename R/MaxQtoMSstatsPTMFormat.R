@@ -36,6 +36,8 @@
 #' protein name. Same options as above.
 #' @param removeMpeptides If Oxidation (M) modifications should be removed. 
 #' Default is TRUE.
+#' @return a list of two data.tables named 'PTM' and 'PROTEIN' in the format 
+#' required by MSstatsPTM.
 #' @examples
 #' 
 #' head(raw.input.tmt$PTM)

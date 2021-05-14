@@ -1,7 +1,7 @@
 #' Converts non-TMT Progenesis output into the format needed for MSstatsPTM
 #'
 #' @export
-#' @importFrom MSstats ProgenesistoMSstatsFormat
+#' @importFrom MSstatsdev ProgenesistoMSstatsFormat
 #' @importFrom data.table as.data.table
 #'
 #' @param ptm_input name of Progenesis output with modified peptides, which is
@@ -33,6 +33,8 @@
 #' used. If "Single", only peptides with one modification will be 
 #' used. Otherwise "Total" includes peptides with more than one modification.
 #' Selecting "Total" may confound the effect of different modifications.
+#' @return a list of two data.tables named 'PTM' and 'PROTEIN' in the format 
+#' required by MSstatsPTM.
 #' @examples
 #' 
 #' # Example annotation file
