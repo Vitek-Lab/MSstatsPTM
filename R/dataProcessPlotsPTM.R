@@ -65,19 +65,15 @@
 #' If address=FALSE, plot will be not saved as pdf file but showed in window.
 #' @return plot or pdf
 #' @examples
-#' head(raw.input$PTM)
-#' head(raw.input$PROTEIN)
-#' 
-#' quant.lf.msstatsptm <- dataSummarizationPTM(raw.input)
 #' 
 #' # QCPlot
-#' dataProcessPlotsPTM(quant.lf.msstatsptm,
+#' dataProcessPlotsPTM(summary.data,
 #'                     type = 'QCPLOT',
 #'                     which.Protein = "allonly",
 #'                     address = FALSE)
 #'                     
 #' #ProfilePlot
-#' dataProcessPlotsPTM(quant.lf.msstatsptm,
+#' dataProcessPlotsPTM(summary.data,
 #'                     type = 'PROFILEPLOT',
 #'                     which.Protein = "Q9UQ80_K376",
 #'                     address = FALSE)
@@ -103,7 +99,6 @@ dataProcessPlotsPTM <- function(data,
                                 address = "") {
   
   type <- toupper(type)
-  ## TODO: Add logging
   label <- .check.dataProcess.plotting.data(data, type, ylimUp, ylimDown, 
                                             x.axis.size,
                                 y.axis.size, text.size, text.angle, legend.size,

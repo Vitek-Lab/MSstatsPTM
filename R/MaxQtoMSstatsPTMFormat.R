@@ -4,7 +4,7 @@
 #' format needed for MSstatsPTM. Requires only the modified file from MaxQ (for 
 #' example Phospho(STY)Sites) and an annotation file for PTM data. To adjust 
 #' modified peptides for changes in global protein level, unmodified TMT 
-#' experiemntal data must also be returned.
+#' experimental data must also be returned.
 #'
 #' @export
 #' @importFrom stringr str_extract regex str_replace fixed str_split
@@ -36,6 +36,8 @@
 #' protein name. Same options as above.
 #' @param removeMpeptides If Oxidation (M) modifications should be removed. 
 #' Default is TRUE.
+#' @return a list of two data.tables named 'PTM' and 'PROTEIN' in the format 
+#' required by MSstatsPTM.
 #' @examples
 #' 
 #' head(raw.input.tmt$PTM)

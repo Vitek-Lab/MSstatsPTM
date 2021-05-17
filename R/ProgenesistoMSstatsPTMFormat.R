@@ -8,8 +8,10 @@
 #' wide-format. 'Accession', Sequence', 'Modification', 'Charge' and one column
 #' for each run are required
 #' @param annotation name of 'annotation.txt' or 'annotation.csv' data which
-#' includes Condition, BioReplicate, Run information. It will be matched with
-#' the column name of input for MS runs.
+#' includes Condition, BioReplicate, Run, and Type (PTM or Protein) 
+#' information. It will be matched with the column name of input for MS runs. 
+#' Please note PTM and global Protein run names are often different, which is 
+#' why an additional Type column indicating Protein or PTM is required.
 #' @param global_protein_input name of Progenesis output with unmodified
 #' peptides, which is wide-format. 'Accession', Sequence', 'Modification',
 #' 'Charge' and one column for each run are required
@@ -20,8 +22,8 @@
 #' @param summaryforMultipleRows max(default) or sum - when there are multiple
 #' measurements for certain feature and certain run, use highest or sum of
 #' multiple intensities.
-#' @param fewMeasurements 'remove'(default) will remove the features that have 1
-#'  or 2 measurements across runs.
+#' @param removeFewMeasurements TRUE (default) will remove the features that 
+#' have 1 or 2 measurements across runs.
 #' @param removeOxidationMpeptides TRUE will remove the modified peptides
 #' including 'Oxidation (M)' sequence. FALSE is default.
 #' @param removeProtein_with1Peptide TRUE will remove the proteins which have
@@ -31,8 +33,20 @@
 #' used. If "Single", only peptides with one modification will be 
 #' used. Otherwise "Total" includes peptides with more than one modification.
 #' Selecting "Total" may confound the effect of different modifications.
+#' @return a list of two data.tables named 'PTM' and 'PROTEIN' in the format 
+#' required by MSstatsPTM.
 #' @examples
 #' 
+#' # Example annotation file
+#' annotation <- data.frame('Condition' = c('Control', 'Control', 'Control',
+#'                          'Treatment', 'Treatment', 'Treatment'),
+#'                          'BioReplicate' = c(1,2,3,4,5,6),
+#'                          'Run' = c('prot_run_1', 'prot_run_2', 'prot_run_3',
+#'                                   'phos_run_1', 'phos_run_2', 'phos_run_3'),
+#'                          'Type' = c("Protein", "Protein", "Protein", "PTM", 
+#'                                     "PTM", "PTM"))
+#'                                     
+#' # The output should be in the following format.
 #' head(raw.input$PTM)
 #' head(raw.input$PROTEIN)
 #' 
@@ -42,17 +56,19 @@ ProgenesistoMSstatsPTMFormat <- function(ptm_input,
                                          fasta_path = FALSE,
                                          useUniquePeptide=TRUE,
                                          summaryforMultipleRows=max, 
-                                         fewMeasurements="remove",
+                                         removeFewMeasurements=TRUE,
                                          removeOxidationMpeptides=FALSE,
                                          removeProtein_with1Peptide=FALSE,
                                          mod.num = 'Single'){
 
-  ## TODO: Add logging
-  ## TODO: Add checks
-
   ptm_input <- as.data.table(ptm_input)
+  annotation <- as.data.table(annotation)
   col_order <- colnames(ptm_input)
   ptm_input$id <- 1:nrow(ptm_input)
+  
+  annotation <- as.data.table(annotation)
+  ptm_annot <- annotation[Type == "PTM"]
+  protein_annot <- annotation[Type == "Protein"]
   
   X.10 = X.9 = X.8 = NULL
   
@@ -64,21 +80,22 @@ ProgenesistoMSstatsPTMFormat <- function(ptm_input,
     .progensis.add.sites(ptm_input, fasta_path, col_order)
   }
 
-  convert.ptm <- ProgenesistoMSstatsFormat(as.data.frame(ptm_input), annotation,
+  convert.ptm <- ProgenesistoMSstatsFormat(ptm_input, ptm_annot,
                                             useUniquePeptide,
                                             summaryforMultipleRows,
-                                            fewMeasurements,
+                                            removeFewMeasurements,
                                             removeOxidationMpeptides,
                                             removeProtein_with1Peptide)
-
-  if (global_protein_input != FALSE){
+  
+  if (global_protein_input[[1]][1] != FALSE){
 
     global_protein_input <- as.data.table(global_protein_input)
 
-    convert.prot <- ProgenesistoMSstatsFormat(global_protein_input, annotation,
+    convert.prot <- ProgenesistoMSstatsFormat(global_protein_input, 
+                                              protein_annot,
                                               useUniquePeptide,
                                               summaryforMultipleRows,
-                                              fewMeasurements,
+                                              removeFewMeasurements,
                                               removeOxidationMpeptides,
                                               removeProtein_with1Peptide)
     MSstatsPTM.data <- list("PTM" = convert.ptm,

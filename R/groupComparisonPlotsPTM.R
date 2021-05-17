@@ -78,12 +78,8 @@
 #' address=FALSE, plot will be not saved as pdf file but showed in window
 #' @return plot or pdf
 #' @examples 
-#' head(raw.input$PTM)
-#' head(raw.input$PROTEIN)
 #' 
-#' quant.lf.msstatsptm <- dataSummarizationPTM(raw.input)
-#' 
-#' model.lf.msstatsptm <- groupComparisonPTM(quant.lf.msstatsptm, 
+#' model.lf.msstatsptm <- groupComparisonPTM(summary.data, 
 #'                                      data.type = "LabelFree")
 #' groupComparisonPlotsPTM(data = model.lf.msstatsptm,
 #'                         type = "VolcanoPlot",
@@ -113,7 +109,6 @@ groupComparisonPlotsPTM <- function(data = data,
                                     which.PTM = "all",
                                     address="") {
   
-  ## TODO: Add logging
   .check.plotting.data(data, type, sig, FCcutoff, logBase.pvalue, ylimUp,
                        ylimDown, xlimUp, x.axis.size, y.axis.size, dot.size,
                        text.size, text.angle, legend.size, ProteinName,

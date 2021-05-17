@@ -75,19 +75,19 @@
 #' in these two data.tables are listed below. The variables are as follows:
 #' \itemize{
 #'   \item FeatureLevelData : \itemize{
-#'     \item PROTEIN : MS run ID
-#'     \item PEPTIDE : Protein ID with modification site mapped in. Ex.
+#'     \item PROTEIN : Protein ID with modification site mapped in. Ex.
 #'     Protein_1002_S836
-#'     \item TRANSITION: Protein-level summarized abundance
-#'     \item FEATURE : Labeling information (126, ... 131)
-#'     \item LABEL : Condition (ex. Healthy, Cancer, Time0)
-#'     \item GROUP : Unique ID for biological subject.
+#'     \item PEPTIDE : Full peptide with charge
+#'     \item TRANSITION: Charge
+#'     \item FEATURE : Combination of Protien, Peptide, and Transition Columns
+#'     \item LABEL : 
+#'     \item GROUP : Condition (ex. Healthy, Cancer, Time0)
 #'     \item RUN : Unique ID for technical replicate of one TMT
 #'     mixture.
-#'     \item SUBJECT : Unique ID for TMT mixture.
-#'     \item FRACTION : Unique ID for TMT mixture.
-#'     \item originalRUN : Unique ID for TMT mixture.
-#'     \item censored : Unique ID for TMT mixture.
+#'     \item SUBJECT : Unique ID for biological subject.
+#'     \item FRACTION : Unique Fraction ID
+#'     \item originalRUN : Run name
+#'     \item censored : 
 #'     \item INTENSITY : Unique ID for TMT mixture.
 #'     \item ABUNDANCE : Unique ID for TMT mixture.
 #'     \item newABUNDANCE : Unique ID for TMT mixture.

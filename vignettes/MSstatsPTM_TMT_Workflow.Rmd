@@ -48,9 +48,9 @@ converter.**
 
 The first step is to load in the raw dataset for both the PTM and Protein 
 datasets. Each dataset can formatted using dedicated converters in `MSstatsPTM`,
-such as `MaxQtoMSstatsPTMFormat`, or converters from base `MSstats` such
+such as `MaxQtoMSstatsPTMFormat`, or converters from base `MSstatsTMT` such
 as `PDtoMSstatsTMTFormat`, `MaxQtoMSstatsTMTFormat`,
-`SpectroMinetoMSstatsTMTFormat`, ect. If using converters from `MSstats` note 
+`SpectroMinetoMSstatsTMTFormat`, ect. If using converters from `MSstatsTMT` note 
 they will need to be run both on the global protein and PTM datasets.
 
 Please note for the PTM dataset, both the protein and modification site (or 
@@ -63,14 +63,16 @@ please see the code below.
 
 ```{r raw_data_ptm, eval = FALSE}
 # Run MSstatsPTM converter with modified and unmodified datasets.
-raw.input <- MaxQtoMSstatsPTMFormat(raw_ptm_df, raw_protein_df)
+raw.input <- MaxQtoMSstatsPTMFormat(raw_ptm_df, annotation, evidence_file, 
+                                    proteinGroupsfile)
 ```
 
 The output of the converter is a list with two formatted data.tables. One each 
 for the PTM and Protein datasets.
 
 Given there is not a dedicated MSstatsPTM converter for the processing tool, 
-base MSstats converters can be used as follows. Please note ProteinName column.
+base MSstats converters can be used as follows. Please note ProteinName column 
+must be a combination of the Protein Name and sitename.
 
 ```{r raw_data, eval = FALSE}
 # Add site into ProteinName column

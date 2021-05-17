@@ -11,7 +11,7 @@ ProgenesistoMSstatsPTMFormat(
   fasta_path = FALSE,
   useUniquePeptide = TRUE,
   summaryforMultipleRows = max,
-  fewMeasurements = "remove",
+  removeFewMeasurements = TRUE,
   removeOxidationMpeptides = FALSE,
   removeProtein_with1Peptide = FALSE,
   mod.num = "Single"
@@ -23,8 +23,10 @@ wide-format. 'Accession', Sequence', 'Modification', 'Charge' and one column
 for each run are required}
 
 \item{annotation}{name of 'annotation.txt' or 'annotation.csv' data which
-includes Condition, BioReplicate, Run information. It will be matched with
-the column name of input for MS runs.}
+includes Condition, BioReplicate, Run, and Type (PTM or Protein)
+information. It will be matched with the column name of input for MS runs.
+Please note PTM and global Protein run names are often different, which is
+why an additional Type column indicating Protein or PTM is required.}
 
 \item{global_protein_input}{name of Progenesis output with unmodified
 peptides, which is wide-format. 'Accession', Sequence', 'Modification',
@@ -40,8 +42,8 @@ more than one proteins. We assume to use unique peptide for each protein.}
 measurements for certain feature and certain run, use highest or sum of
 multiple intensities.}
 
-\item{fewMeasurements}{'remove'(default) will remove the features that have 1
-or 2 measurements across runs.}
+\item{removeFewMeasurements}{TRUE (default) will remove the features that
+have 1 or 2 measurements across runs.}
 
 \item{removeOxidationMpeptides}{TRUE will remove the modified peptides
 including 'Oxidation (M)' sequence. FALSE is default.}
@@ -55,11 +57,25 @@ used. If "Single", only peptides with one modification will be
 used. Otherwise "Total" includes peptides with more than one modification.
 Selecting "Total" may confound the effect of different modifications.}
 }
+\value{
+a list of two data.tables named 'PTM' and 'PROTEIN' in the format
+required by MSstatsPTM.
+}
 \description{
 Converts non-TMT Progenesis output into the format needed for MSstatsPTM
 }
 \examples{
 
+# Example annotation file
+annotation <- data.frame('Condition' = c('Control', 'Control', 'Control',
+                         'Treatment', 'Treatment', 'Treatment'),
+                         'BioReplicate' = c(1,2,3,4,5,6),
+                         'Run' = c('prot_run_1', 'prot_run_2', 'prot_run_3',
+                                  'phos_run_1', 'phos_run_2', 'phos_run_3'),
+                         'Type' = c("Protein", "Protein", "Protein", "PTM", 
+                                    "PTM", "PTM"))
+                                    
+# The output should be in the following format.
 head(raw.input$PTM)
 head(raw.input$PROTEIN)
 

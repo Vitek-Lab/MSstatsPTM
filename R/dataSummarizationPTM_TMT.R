@@ -59,7 +59,7 @@
 #' quant.tmt.msstatsptm <- dataSummarizationPTM_TMT(raw.input.tmt,
 #'                                                  method = "msstats", 
 #'                                                  verbose = FALSE)
-#' head(quant.tmt.msstatsptm$PTM)
+#' head(quant.tmt.msstatsptm$PTM$ProteinLevelData)
 dataSummarizationPTM_TMT <- function(
   data,
   method = "msstats",

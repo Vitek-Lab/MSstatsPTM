@@ -28,7 +28,7 @@ For use in non-TMT analysis
 \item \code{\link{dataSummarizationPTM_TMT}} : Summarizes PSM level
 quantification to peptide (modification) and protein level quantification.
 For use in TMT analysis.
-\item \code{\link{dataProcessPlotsPTM}} : Vizualization for explanatory
+\item \code{\link{dataProcessPlotsPTM}} : Visualization for explanatory
 data analysis. Specifically gives ability to plot Profile and Quality
 Control plots.
 \item \code{\link{groupComparisonPTM}} : Tests for significant changes in

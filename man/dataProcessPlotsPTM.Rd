@@ -107,19 +107,15 @@ potential sources of variation for each protein;
 systematic bias between MS runs.
 }
 \examples{
-head(raw.input$PTM)
-head(raw.input$PROTEIN)
-
-quant.lf.msstatsptm <- dataSummarizationPTM(raw.input)
 
 # QCPlot
-dataProcessPlotsPTM(quant.lf.msstatsptm,
+dataProcessPlotsPTM(summary.data,
                     type = 'QCPLOT',
                     which.Protein = "allonly",
                     address = FALSE)
                     
 #ProfilePlot
-dataProcessPlotsPTM(quant.lf.msstatsptm,
+dataProcessPlotsPTM(summary.data,
                     type = 'PROFILEPLOT',
                     which.Protein = "Q9UQ80_K376",
                     address = FALSE)

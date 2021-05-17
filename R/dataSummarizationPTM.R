@@ -94,7 +94,7 @@
 #' head(raw.input$PROTEIN)
 #' 
 #' quant.lf.msstatsptm <- dataSummarizationPTM(raw.input, verbose = FALSE)
-#' head(quant.lf.msstatsptm$PTM$ProcessedData)
+#' head(quant.lf.msstatsptm$PTM$ProteinLevelData)
 dataSummarizationPTM <- function(
   data,
   logTrans = 2, 

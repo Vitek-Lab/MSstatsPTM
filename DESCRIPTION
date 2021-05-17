@@ -1,7 +1,7 @@
 Package: MSstatsPTM
 Type: Package
 Title: Statistical Characterization of Post-translational Modifications
-Version: 1.2.0
+Version: 1.1.0
 Date: 2021-05-12
 Description: MSstatsPTM provides general statistical methods for quantitative 
     characterization of post-translational modifications (PTMs). Supports DDA, 
@@ -21,7 +21,7 @@ Authors@R: c(
 License: Artistic-2.0
 Depends: R (>= 4.0)
 Imports: dplyr, gridExtra, stringr, stats, ggplot2, 
-            grDevices, MSstatsTMT, MSstats, MSstatsConvert,
+            grDevices, MSstatsTMT, MSstatsConvert, MSstats,
             data.table, Rcpp, Biostrings, checkmate, ggrepel
 Suggests:     BiocStyle,
     knitr,
