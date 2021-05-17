@@ -7,7 +7,7 @@
 #' MSstatsContrastMatrix
 #' @export
 #' @importFrom data.table data.table as.data.table `:=`
-#' @importFrom MSstats groupComparison 
+#' @importFrom MSstats groupComparison MSstatsContrastMatrix
 #' @importFrom MSstatsTMT groupComparisonTMT
 #' @importFrom MSstatsConvert MSstatsLogsSettings MSstatsSaveSessionInfo
 #' @importFrom stats p.adjust xtabs
@@ -96,7 +96,7 @@ groupComparisonPTM <- function(data, data.type,
   ## Create pairwise matrix for label free
   if (contrast.matrix[1] == "pairwise" & data.type == 'LabelFree'){
     getOption(option_log)("INFO", "Building pairwise matrix.")
-    labels <- unique(data.ptm$ProcessedData$GROUP)
+    labels <- unique(data.ptm$ProteinLevelData$GROUP)
     contrast.matrix <- MSstatsContrastMatrix('pairwise', labels)
   }
   
