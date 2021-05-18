@@ -111,12 +111,12 @@ systematic bias between MS runs.
 # QCPlot
 dataProcessPlotsPTM(summary.data,
                     type = 'QCPLOT',
-                    which.Protein = "allonly",
+                    which.PTM = "allonly",
                     address = FALSE)
                     
 #ProfilePlot
 dataProcessPlotsPTM(summary.data,
                     type = 'PROFILEPLOT',
-                    which.Protein = "Q9UQ80_K376",
+                    which.PTM = "Q9UQ80_K376",
                     address = FALSE)
 }

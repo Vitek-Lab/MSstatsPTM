@@ -74,7 +74,8 @@
 #' which have more than 50% missing values. FALSE is default.
 #' @param maxQuantileforCensored Maximum quantile for deciding censored missing 
 #' values. default is 0.999
-#' @param fix_missing Default is Null.
+#' @param fix_missing Default is Null. Optional, same as the 'fix_missing' 
+#' parameter in MSstatsConvert::MSstatsBalancedDesign function
 #' @param use_log_file logical. If TRUE, information about data processing
 #' will be saved to a file.
 #' @param append logical. If TRUE, information about data processing will be 

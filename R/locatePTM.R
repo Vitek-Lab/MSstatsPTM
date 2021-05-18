@@ -83,7 +83,6 @@ tidyFasta <- function(path) {
 locatePTM <- function(peptide, uniprot, fasta, modResidue, modSymbol,
                       rmConfound=FALSE) {
   
-  ..col_seq = ..col_fasta = NULL
   if (!.locateCheck(peptide, uniprot, fasta, modResidue, modSymbol))
     stop("Input checking fails!")
   
@@ -168,7 +167,6 @@ locatePTM <- function(peptide, uniprot, fasta, modResidue, modSymbol,
 .rmConfounded <- function(peptideFasta, rmConfound) {
   # Handle confounded unmodified sites
   col_res <- c("uniprot_iso", "peptide", "site")
-  ..col_res = NULL
   if (rmConfound) {
     by_prot <- group_by(peptideFasta, .data$uniprot_iso)
     by_prot <- mutate(
