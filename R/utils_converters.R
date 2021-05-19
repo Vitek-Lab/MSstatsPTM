@@ -313,3 +313,19 @@ get_sites <- function(str_idx, pep_idx, pep) {
   } else {mod_site <- NA}
   return(mod_site)
 }
+
+#' Helper function for spectronaut site identification
+#' combine with prot one at some point
+#' @noRd
+spectro_get_sites <- function(str_idx, pep_idx, pep) {
+  
+  mod_site <- ""
+  for (i in seq(length(str_idx))){
+    site <- substr(pep, as.numeric(str_idx[[i]])-i, as.numeric(str_idx[[i]])-i)
+    temp <- paste0(site, as.character(pep_idx[i]), "_")
+    mod_site <- paste0(mod_site, temp)
+  }
+  mod_site <- substr(mod_site,1,nchar(mod_site)-1)
+  
+  return(mod_site)
+}
