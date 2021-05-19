@@ -58,6 +58,8 @@ fragment and charge. FALSE is default.}
 uniquely identified. IE if the protein column contains multiple proteins
 seperated by ";". TRUE is default}
 
+\item{modificationLabel}{String of modification name. Default is 'Phospho'.}
+
 \item{removeiRT}{TRUE will remove proteins that contain iRT. True is default}
 
 \item{summaryforMultipleRows}{max(default) or sum - when there are multiple
@@ -66,9 +68,6 @@ multiple intensities.}
 
 \item{which.Conditions}{list of conditions to format into MSstatsPTM format.
 If "all" all conditions will be used. Default is "all".}
-
-\item{removeModifications}{TRUE will remove peptide that contain a
-modification. Modification must be indicated by "[". TRUE is default}
 }
 \description{
 Takes as as input both raw PTM and global protein outputs from Spectronaut.
