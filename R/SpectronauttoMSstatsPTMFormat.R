@@ -32,8 +32,7 @@
 #' @param removeNonUniqueProteins TRUE will remove proteins that were not
 #' uniquely identified. IE if the protein column contains multiple proteins
 #' seperated by ";". TRUE is default
-#' @param removeModifications TRUE will remove peptide that contain a
-#' modification. Modification must be indicated by "\[". TRUE is default
+#' @param modificationLabel String of modification name. Default is 'Phospho'. 
 #' @param removeiRT TRUE will remove proteins that contain iRT. True is default
 #' @param summaryforMultipleRows max(default) or sum - when there are multiple
 #' measurements for certain feature and certain run, use highest or sum of
