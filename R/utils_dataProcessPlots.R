@@ -1110,7 +1110,7 @@
   ## 1st plot for Protein plot
   protein_temp <- ggplot(data=sub) + facet_grid(~LABEL) +
     geom_point(aes_string(x='RUN', y='ABUNDANCE', 
-                          color='FEATURE', linetype='FEATURE', group = 'group_aes'), #
+                          color='FEATURE', group = 'group_aes'), #
                size=dot.size.profile, na.rm=TRUE) +
     geom_line(aes_string(x='RUN', y='ABUNDANCE', 
                          color='FEATURE', linetype='FEATURE', group = 'group_aes'), #
@@ -1216,7 +1216,7 @@
   ## Draw summarized ptm plot
   ptempall <- ggplot(data=final) +
     geom_point(aes_string(x='RUN', y='ABUNDANCE', 
-                          color='analysis', linetype='FEATURE', 
+                          color='analysis',
                           group = 'group_aes'), size = dot.size.profile, na.rm=TRUE) +
     geom_line(aes_string(x='RUN', y='ABUNDANCE', 
                          color='analysis', linetype='FEATURE', 
