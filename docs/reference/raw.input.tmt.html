@@ -75,7 +75,7 @@ PROTEIN. In each data.table the variables are as follows:" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">MSstatsPTM</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
       </span>
     </div>
 
@@ -167,12 +167,12 @@ with same <code>Mixture' value. \item Run : MS run ID. \item Channel : Labeling 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>raw.input.tmt</span><span class='op'>$</span><span class='va'>PTM</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;       ProteinName PeptideSequence Charge           PSM Mixture TechRepMixture
-#&gt; 1 Protein_12_S703     Peptide_491      3 Peptide_491_3       1              1
-#&gt; 2 Protein_12_S703     Peptide_491      3 Peptide_491_3       1              1
-#&gt; 3 Protein_12_S703     Peptide_491      3 Peptide_491_3       1              1
-#&gt; 4 Protein_12_S703     Peptide_491      3 Peptide_491_3       1              1
-#&gt; 5 Protein_12_S703     Peptide_491      3 Peptide_491_3       1              1
-#&gt; 6 Protein_12_S703     Peptide_491      3 Peptide_491_3       1              1
+#&gt; 1 Protein_12_S703      Peptide491      3 Peptide_491_3       1              1
+#&gt; 2 Protein_12_S703      Peptide491      3 Peptide_491_3       1              1
+#&gt; 3 Protein_12_S703      Peptide491      3 Peptide_491_3       1              1
+#&gt; 4 Protein_12_S703      Peptide491      3 Peptide_491_3       1              1
+#&gt; 5 Protein_12_S703      Peptide491      3 Peptide_491_3       1              1
+#&gt; 6 Protein_12_S703      Peptide491      3 Peptide_491_3       1              1
 #&gt;   Run Channel   Condition  BioReplicate Intensity
 #&gt; 1 1_1    128N Condition_2 Condition_2_1   48030.0
 #&gt; 2 1_1    129C Condition_4 Condition_4_2  100224.4
@@ -181,12 +181,12 @@ with same <code>Mixture' value. \item Run : MS run ID. \item Channel : Labeling 
 #&gt; 5 1_1    128C Condition_6 Condition_6_1   77497.9
 #&gt; 6 1_1    126C Condition_4 Condition_4_1   81559.7</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>raw.input.tmt</span><span class='op'>$</span><span class='va'>PROTEIN</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;   ProteinName PeptideSequence Charge             PSM Mixture TechRepMixture Run
-#&gt; 1  Protein_12    Peptide_9121      3  Peptide_9121_3       1              1 1_1
-#&gt; 2  Protein_12   Peptide_27963      5 Peptide_27963_5       1              1 1_1
-#&gt; 3  Protein_12   Peptide_28482      4 Peptide_28482_4       1              1 1_1
-#&gt; 4  Protein_12   Peptide_10940      2 Peptide_10940_2       2              1 2_1
-#&gt; 5  Protein_12    Peptide_4900      2  Peptide_4900_2       2              1 2_1
-#&gt; 6  Protein_12    Peptide_4900      3  Peptide_4900_3       2              1 2_1
+#&gt; 1  Protein_12     Peptide9121      3  Peptide_9121_3       1              1 1_1
+#&gt; 2  Protein_12    Peptide27963      5 Peptide_27963_5       1              1 1_1
+#&gt; 3  Protein_12    Peptide28482      4 Peptide_28482_4       1              1 1_1
+#&gt; 4  Protein_12    Peptide10940      2 Peptide_10940_2       2              1 2_1
+#&gt; 5  Protein_12     Peptide4900      2  Peptide_4900_2       2              1 2_1
+#&gt; 6  Protein_12     Peptide4900      3  Peptide_4900_3       2              1 2_1
 #&gt;   Channel   Condition  BioReplicate  Intensity
 #&gt; 1    126C Condition_4 Condition_4_1 10996116.9
 #&gt; 2    127C Condition_5 Condition_5_1    56965.1

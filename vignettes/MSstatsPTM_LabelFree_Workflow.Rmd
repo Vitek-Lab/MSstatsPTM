@@ -147,9 +147,10 @@ Here we show a profile plot. Again the top plot shows the modified peptide, and
 the bottom shows the overall protein.
 
 ```{r profileplot, message=FALSE, warning=FALSE}
+
 dataProcessPlotsPTM(MSstatsPTM.summary,
-                    type = 'PROFILEPLOT',
-                    which.PTM = "Q9UQ80_K376",
+                    type = 'ProfilePlot',
+                    which.Protein = "Q9Y6C9",
                     address = FALSE)
 ```
 

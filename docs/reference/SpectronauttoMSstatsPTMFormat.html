@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Annotate modified sites with associated peptides — locatePTM • MSstatsPTM</title>
+<title>Converts raw PTM MS data from Spectronautt into the format needed for
+MSstatsPTM. — SpectronauttoMSstatsPTMFormat • MSstatsPTM</title>
 
 
 <!-- jquery -->
@@ -39,8 +40,9 @@
 
 
 
-<meta property="og:title" content="Annotate modified sites with associated peptides — locatePTM" />
-<meta property="og:description" content="PTMlocate annotates modified sites with associated peptides." />
+<meta property="og:title" content="Converts raw PTM MS data from Spectronautt into the format needed for
+MSstatsPTM. — SpectronauttoMSstatsPTMFormat" />
+<meta property="og:description" content="Takes as as input both raw PTM and global protein outputs from Spectronaut." />
 
 
 
@@ -123,59 +125,119 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Annotate modified sites with associated peptides</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Vitek-Lab/MSstatsPTM/blob/master/R/locatePTM.R'><code>R/locatePTM.R</code></a></small>
-    <div class="hidden name"><code>locatePTM.Rd</code></div>
+    <h1>Converts raw PTM MS data from Spectronautt into the format needed for
+MSstatsPTM.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Vitek-Lab/MSstatsPTM/blob/master/R/SpectronauttoMSstatsPTMFormat.R'><code>R/SpectronauttoMSstatsPTMFormat.R</code></a></small>
+    <div class="hidden name"><code>SpectronauttoMSstatsPTMFormat.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>PTMlocate</code> annotates modified sites with associated peptides.</p>
+    <p>Takes as as input both raw PTM and global protein outputs from Spectronaut.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>locatePTM</span><span class='op'>(</span><span class='va'>peptide</span>, <span class='va'>uniprot</span>, <span class='va'>fasta</span>, <span class='va'>modResidue</span>, <span class='va'>modSymbol</span>, rmConfound <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>SpectronauttoMSstatsPTMFormat</span><span class='op'>(</span>
+  <span class='va'>PTM.data</span>,
+  <span class='va'>fasta</span>,
+  Protein.data <span class='op'>=</span> <span class='cn'>NULL</span>,
+  annotation <span class='op'>=</span> <span class='cn'>NULL</span>,
+  intensity <span class='op'>=</span> <span class='st'>"PeakArea"</span>,
+  filter_with_Qvalue <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  qvalue_cutoff <span class='op'>=</span> <span class='fl'>0.01</span>,
+  useUniquePeptide <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  removeFewMeasurements <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  removeProtein_with1Feature <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  removeNonUniqueProteins <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  modificationLabel <span class='op'>=</span> <span class='st'>"Phospho"</span>,
+  removeiRT <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  summaryforMultipleRows <span class='op'>=</span> <span class='va'>max</span>,
+  which.Conditions <span class='op'>=</span> <span class='st'>"all"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>peptide</th>
-      <td><p>A string vector of peptide sequences. The peptide sequence
-does not include its preceding and following AAs.</p></td>
-    </tr>
-    <tr>
-      <th>uniprot</th>
-      <td><p>A string vector of Uniprot identifiers of the peptides'
-originating proteins. UniProtKB entry isoform sequence is used.</p></td>
+      <th>PTM.data</th>
+      <td><p>name of PTM Spectronaut output, which is long-format.</p></td>
     </tr>
     <tr>
       <th>fasta</th>
-      <td><p>A data.table with FASTA information. Output of <code>tidyFasta</code>.</p></td>
+      <td><p>A string of path to a FASTA file, used to match PTM peptides.</p></td>
     </tr>
     <tr>
-      <th>modResidue</th>
-      <td><p>A string. Modifiable amino acid residues.</p></td>
+      <th>Protein.data</th>
+      <td><p>name of Global Protein Spectronaut output, which is long-format.</p></td>
     </tr>
     <tr>
-      <th>modSymbol</th>
-      <td><p>A string. Symbol of a modified site.</p></td>
+      <th>annotation</th>
+      <td><p>name of 'annotation.txt' data which includes Condition,
+BioReplicate, Run. If annotation is already complete in Spectronaut, use
+annotation=NULL (default). It will use the annotation information from input.</p></td>
     </tr>
     <tr>
-      <th>rmConfound</th>
-      <td><p>A logical. <code>TRUE</code> removes confounded
-unmodified sites, <code>FALSE</code> otherwise. Default is <code>FALSE</code>.</p></td>
+      <th>intensity</th>
+      <td><p>'PeakArea'(default) uses not normalized peak area.
+'NormalizedPeakArea' uses peak area normalized by Spectronaut</p></td>
+    </tr>
+    <tr>
+      <th>filter_with_Qvalue</th>
+      <td><p>TRUE(default) will filter out the intensities that
+have greater than qvalue_cutoff in EG.Qvalue column. Those intensities will
+be replaced with zero and will be considered as censored missing values for
+imputation purpose.</p></td>
+    </tr>
+    <tr>
+      <th>qvalue_cutoff</th>
+      <td><p>Cutoff for EG.Qvalue. default is 0.01.</p></td>
+    </tr>
+    <tr>
+      <th>useUniquePeptide</th>
+      <td><p>TRUE(default) removes peptides that are assigned for
+more than one proteins. We assume to use unique peptide for each protein.</p></td>
+    </tr>
+    <tr>
+      <th>removeFewMeasurements</th>
+      <td><p>TRUE (default) will remove the features that
+have 1 or 2 measurements across runs.</p></td>
+    </tr>
+    <tr>
+      <th>removeProtein_with1Feature</th>
+      <td><p>TRUE will remove the proteins which have
+only 1 feature, which is the combination of peptide, precursor charge,
+fragment and charge. FALSE is default.</p></td>
+    </tr>
+    <tr>
+      <th>removeNonUniqueProteins</th>
+      <td><p>TRUE will remove proteins that were not
+uniquely identified. IE if the protein column contains multiple proteins
+seperated by ";". TRUE is default</p></td>
+    </tr>
+    <tr>
+      <th>modificationLabel</th>
+      <td><p>String of modification name. Default is 'Phospho'.</p></td>
+    </tr>
+    <tr>
+      <th>removeiRT</th>
+      <td><p>TRUE will remove proteins that contain iRT. True is default</p></td>
+    </tr>
+    <tr>
+      <th>summaryforMultipleRows</th>
+      <td><p>max(default) or sum - when there are multiple
+measurements for certain feature and certain run, use highest or sum of
+multiple intensities.</p></td>
+    </tr>
+    <tr>
+      <th>which.Conditions</th>
+      <td><p>list of conditions to format into MSstatsPTM format.
+If "all" all conditions will be used. Default is "all".</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A data frame with three columns: <code>uniprot_iso</code>, <code>peptide</code>,
-<code>site</code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>fasta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='tidyFasta.html'>tidyFasta</a></span><span class='op'>(</span><span class='st'>"https://www.uniprot.org/uniprot/O13297.fasta"</span><span class='op'>)</span>
-<span class='fu'>locatePTM</span><span class='op'>(</span><span class='st'>"DRVSYIHNDSC*TR"</span>, <span class='st'>"O13297"</span>, <span class='va'>fasta</span>, <span class='st'>"C"</span>, <span class='st'>"\\*"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;    uniprot_iso        peptide site
-#&gt; 1:      O13297 DRVSYIHNDSC*TR C467</div><div class='input'>
+    <pre class="examples"><div class='input'><span class='co'># Output datasets of Spectronaut</span>
+<span class='co'>## TODO: Add examples</span>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
