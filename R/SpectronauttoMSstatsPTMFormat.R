@@ -39,9 +39,13 @@
 #' multiple intensities.
 #' @param which.Conditions list of conditions to format into MSstatsPTM format.
 #' If "all" all conditions will be used. Default is "all".
+#' @return a list of two data.tables named 'PTM' and 'PROTEIN' in the format 
+#' required by MSstatsPTM.
 #' @examples
-#' # Output datasets of Spectronaut
-#' ## TODO: Add examples
+#' 
+#' # The output should be in the following format.
+#' head(raw.input$PTM)
+#' head(raw.input$PROTEIN)
 #'
 SpectronauttoMSstatsPTMFormat <- function(PTM.data,
                                           fasta,
@@ -61,11 +65,6 @@ SpectronauttoMSstatsPTMFormat <- function(PTM.data,
   
   ## TODO: Add logging
   ## Check variable input
-  ## TODO: Rebuild this function for PTM
-  # .checkSpectronautConverterParams(intensity, filter_with_Qvalue,
-  #                                  qvalue_cutoff, useUniquePeptide,
-  #                                  removeProtein_with1Feature,
-  #                                  summaryforMultipleRows)
   
   ## Ensure format of input data
   PTM.data <- as.data.table(PTM.data)
@@ -74,32 +73,31 @@ SpectronauttoMSstatsPTMFormat <- function(PTM.data,
   }
   
   ## Check and filter for available conditions
-  ## TODO: Update this to PTM
-  # if (which.Conditions != 'all') {
-  #   
-  #   LiP_conditions <- unique(LiP.data$R.Condition)
-  #   if (!is.null(Trp.data)){
-  #     TrP_conditions <- unique(Trp.data$R.Condition)
-  #   } else {
-  #     TrP_conditions <- LiP_conditions
-  #   }
-  #   if((length(setdiff(LiP_conditions, which.Conditions)
-  #   ) == length(LiP_conditions)) |
-  #   (length(setdiff(TrP_conditions, which.Conditions)
-  #   ) == length(TrP_conditions))){
-  #     msg = (paste("None of the conditions specified in which.Conditions are",
-  #                  "available in one or both of LiP/TrP datasets. Please",
-  #                  "ensure the conditions listed in which.Conditions appear",
-  #                  "in the input datasets"))
-  #     stop(msg)
-  #   }
-  #   
-  #   LiP.data <- LiP.data[(R.Condition %in% which.Conditions)]
-  #   if (!is.null(Trp.data)){
-  #     Trp.data <- Trp.data[(R.Condition %in% which.Conditions)]
-  #   }
-  #   
-  # }
+  if (which.Conditions != 'all') {
+
+    PTM_conditions <- unique(PTM.data$R.Condition)
+    if (!is.null(Protein.data)){
+      Protein_conditions <- unique(Protein.data$R.Condition)
+    } else {
+      Protein_conditions <- PTM_conditions
+    }
+    if((length(setdiff(PTM_conditions, which.Conditions)
+    ) == length(PTM_conditions)) |
+    (length(setdiff(Protein_conditions, which.Conditions)
+    ) == length(Protein_conditions))){
+      msg = (paste("None of the conditions specified in which.Conditions are",
+                   "available in one or both of LiP/TrP datasets. Please",
+                   "ensure the conditions listed in which.Conditions appear",
+                   "in the input datasets"))
+      stop(msg)
+    }
+
+    PTM_conditions <- PTM_conditions[(R.Condition %in% which.Conditions)]
+    if (!is.null(Protein_conditions)){
+      Protein_conditions <- Protein_conditions[
+        (R.Condition %in% which.Conditions)]
+    }
+  }
   
   ## MSstats process
   df.ptm <- SpectronauttoMSstatsFormat(PTM.data, annotation, intensity,
@@ -123,10 +121,9 @@ SpectronauttoMSstatsPTMFormat <- function(PTM.data,
     df.ptm <- df.ptm[!grepl(";", df.ptm$ProteinName),]
   }
   
-  ## TODO: Is iRT in PTM data?  
-  # if (removeiRT){
-  #   df.ptm <- df.ptm[!grepl("iRT", df.ptm$ProteinName),]
-  # }
+  if (removeiRT){
+    df.ptm <- df.ptm[!grepl("iRT", df.ptm$ProteinName),]
+  }
   
   ## Format peptide data for locate peptide function
   df.ptm$PeptideSequence <- gsub("_", "", df.ptm$PeptideSequence)
@@ -143,7 +140,9 @@ SpectronauttoMSstatsPTMFormat <- function(PTM.data,
   locate_mod_df <- locate_mod_df[grepl("\\*", locate_mod_df$PeptideSequence),]
   
   ## Load and format FASTA file
-  #fasta <- tidyFasta(fasta)
+  if (identical(typeof(fasta), "character")){
+    fasta <- tidyFasta(fasta)
+  }
   formated_fasta <- as.data.table(fasta)
   
   min_len_peptide <- 6

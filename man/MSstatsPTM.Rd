@@ -22,6 +22,8 @@ visualizations.
 input format for TMT MaxQuant outputs.
 \item \code{\link{ProgenesistoMSstatsPTMFormat}} : Generates MSstatsPTM
 required input format for non-TMT Proteoviz outputs.
+\item \code{\link{SpectronauttoMSstatsPTMFormat}} : Generates MSstatsPTM
+required input format for non-TMT Spectronaut outputs.
 \item \code{\link{dataSummarizationPTM}} : Summarizes PSM level
 quantification to peptide (modification) and protein level quantification.
 For use in non-TMT analysis

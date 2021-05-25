@@ -69,11 +69,17 @@ multiple intensities.}
 \item{which.Conditions}{list of conditions to format into MSstatsPTM format.
 If "all" all conditions will be used. Default is "all".}
 }
+\value{
+a list of two data.tables named 'PTM' and 'PROTEIN' in the format
+required by MSstatsPTM.
+}
 \description{
 Takes as as input both raw PTM and global protein outputs from Spectronaut.
 }
 \examples{
-# Output datasets of Spectronaut
-## TODO: Add examples
+
+# The output should be in the following format.
+head(raw.input$PTM)
+head(raw.input$PROTEIN)
 
 }
