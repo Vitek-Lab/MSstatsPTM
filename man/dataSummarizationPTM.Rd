@@ -117,7 +117,8 @@ assigned by cutoffCensored.}
 \item{remove50missing}{only for summaryMethod="TMP". TRUE removes the runs
 which have more than 50\% missing values. FALSE is default.}
 
-\item{fix_missing}{Default is Null.}
+\item{fix_missing}{Default is Null. Optional, same as the 'fix_missing'
+parameter in MSstatsConvert::MSstatsBalancedDesign function}
 
 \item{maxQuantileforCensored}{Maximum quantile for deciding censored missing
 values. default is 0.999}

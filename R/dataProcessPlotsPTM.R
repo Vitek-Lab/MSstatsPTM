@@ -110,12 +110,21 @@ dataProcessPlotsPTM <- function(data,
   
   ## Filter for all PTMs in one protein
   if (!is.null(which.Protein)){
+    
     data.table.list[[1]] <- data.table.list[[1]][PROTEINNAME %in% which.Protein]
     data.table.list[[2]] <- data.table.list[[2]][
       GLOBALPROTEIN %in% which.Protein]
     data.table.list[[3]] <- data.table.list[[3]][PROTEINNAME %in% which.Protein]
     data.table.list[[4]] <- data.table.list[[4]][
       GLOBALPROTEIN %in% which.Protein]
+    
+    if (sum(nrow(data.table.list[[1]]), nrow(data.table.list[[2]]), 
+           nrow(data.table.list[[3]]), nrow(data.table.list[[4]])) == 0){
+      msg = paste0("The protein ", which.Protein, " specified in Which.Protein",
+                   " is not in the global protein run. Please specify ",
+                   "individual peptides only for this Protein.")
+      stop(msg)
+    }
   }
   
   ## Profile plot ##
@@ -125,12 +134,14 @@ dataProcessPlotsPTM <- function(data,
       .profile.tmt(data.table.list, type, ylimUp, ylimDown, 
                    x.axis.size, y.axis.size,text.size,text.angle, 
                    legend.size, dot.size.profile, ncol.guide, width, 
-                   height, which.PTM, originalPlot, summaryPlot, address)
+                   height, which.PTM, originalPlot, summaryPlot, 
+                   address)
     } else if (label == 'LabelFree'){
       .profile.lf(data.table.list, type, ylimUp, ylimDown, 
                   x.axis.size, y.axis.size,text.size,text.angle, 
                   legend.size, dot.size.profile, ncol.guide, width, 
-                        height, which.PTM, originalPlot, summaryPlot, address)
+                  height, which.PTM, originalPlot, 
+                  summaryPlot, address)
     }
   }
 

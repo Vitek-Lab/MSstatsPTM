@@ -5,20 +5,21 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Post Translational Modification (PTM) Significance Analysis in shotgun 
-        mass spectrometry-based proteomic experiments • MSstatsPTM</title>
+<title>Statistical Characterization of Post-translational Modifications • MSstatsPTM</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Post Translational Modification (PTM) Significance Analysis in shotgun 
-        mass spectrometry-based proteomic experiments">
-<meta property="og:description" content="Tools for Post Translational Modification (PTM) and protein 
-              significance analysis. Supports DDA, DIA, and tandem mass tag 
-              (TMT) labeling. Provides functions for summarization, estimation 
-              of PTM site abundance, and detection of changes in PTMs across 
-              conditions. ">
+<script src="pkgdown.js"></script><meta property="og:title" content="Statistical Characterization of Post-translational Modifications">
+<meta property="og:description" content="MSstatsPTM provides general statistical methods for quantitative 
+    characterization of post-translational modifications (PTMs). Supports DDA, 
+    DIA, and tandem mass tag (TMT) labeling. Typically, the 
+    analysis involves the quantification of PTM sites (i.e., modified residues) 
+    and their corresponding proteins, as well as the integration of the 
+    quantification results. MSstatsPTM provides functions for summarization, 
+    estimation of PTM site abundance, and detection of changes in PTMs across 
+    experimental conditions. ">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -37,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">MSstatsPTM</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.2</span>
       </span>
     </div>
 
@@ -92,12 +93,12 @@
 <a href="#msstatsptm" class="anchor"></a>MSstatsPTM</h1></div>
 <!-- badges: start -->
 
-<p>MSstatsPTM is an R-based package for detecting differencially abundant post translational modifications (PTM) in shotgun mass spectrometry-bsed proteomic experiments. The package can handle a diverse range of acquisition types, including Label Free, DDA, DIA, and TMT.</p>
+<p>The goal of MSstatsPTM is to provide the implementation of general statistical methods for characterization of quantitative changes in global post-translational modification profiling experiments.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>This development version is only available on Github:</p>
-<pre><code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("Vitek-Lab/MSstatsPTM", build_vignettes = TRUE)</a></code></pre>
+<pre><code>devtools::install_github("Vitek-Lab/MSstatsPTM", build_vignettes = TRUE)</code></pre>
 </div>
 <div id="contributing" class="section level2">
 <h2 class="hasAnchor">
@@ -127,7 +128,8 @@
 <div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/Artistic-2.0">Artistic-2.0</a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://www.r-project.org/Licenses/Artistic-2.0">Artistic-2.0</a></small></li>
 </ul>
 </div>
 <div class="developers">
