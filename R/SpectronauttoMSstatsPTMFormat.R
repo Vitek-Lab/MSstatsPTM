@@ -167,11 +167,19 @@ SpectronauttoMSstatsPTMFormat <- function(PTM.data,
                         df.fasta.ptm$join_PeptideSequence)
   
   df.fasta.ptm$Site <- peptide_mod
-
+  
+  df.fasta.join <- unique(df.fasta.ptm[, c("ProteinName", "PeptideSequence", 
+                                           "Site")])
+  
+  if (!removeNonUniqueProteins){
+    add_non_unique <- unique(locate_mod_df[grepl(";", locate_mod_df$ProteinName), 
+                                    c("ProteinName", "PeptideSequence")])
+    add_non_unique$Site <- add_non_unique$PeptideSequence
+    df.fasta.join <- rbindlist(list(df.fasta.join, add_non_unique))
+  }
+  
   #Data formatting for MSstatsLiP analysis
-  MSstats_PTM <- merge(df.ptm, unique(df.fasta.ptm[, c("ProteinName", 
-                                                "PeptideSequence", 
-                                                "Site")]),
+  MSstats_PTM <- merge(df.ptm, df.fasta.join,
                        by = c("ProteinName", "PeptideSequence"))
   MSstats_PTM$ProteinName <- paste(MSstats_PTM$ProteinName,
                                    MSstats_PTM$Site, sep = '_')
