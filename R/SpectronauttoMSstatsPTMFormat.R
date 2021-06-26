@@ -160,18 +160,26 @@ SpectronauttoMSstatsPTMFormat <- function(PTM.data,
   mod_loc <- sapply(df.fasta.ptm$PeptideSequence, 
                     function(x) {gregexpr("\\*", x)})
   
-  mod_index <- sapply(seq_along(mod_loc), function(i){mod_loc[i] <- list(
-      as.integer(unlist(mod_loc[i])) + start[i][[1]][1])})
+  # mod_index <- sapply(seq_along(mod_loc), function(i){mod_loc[i] <- list(
+  #     as.integer(unlist(mod_loc[i])) + start[i][[1]][1])})
   
-  peptide_mod <- mapply(spectro_get_sites, mod_loc, mod_index,
+  peptide_mod <- mapply(spectro_get_sites, mod_loc, start,
                         df.fasta.ptm$join_PeptideSequence)
   
   df.fasta.ptm$Site <- peptide_mod
-
+  
+  df.fasta.join <- unique(df.fasta.ptm[, c("ProteinName", "PeptideSequence", 
+                                           "Site")])
+  
+  if (!removeNonUniqueProteins){
+    add_non_unique <- unique(locate_mod_df[grepl(";", locate_mod_df$ProteinName), 
+                                    c("ProteinName", "PeptideSequence")])
+    add_non_unique$Site <- add_non_unique$PeptideSequence
+    df.fasta.join <- rbindlist(list(df.fasta.join, add_non_unique))
+  }
+  
   #Data formatting for MSstatsLiP analysis
-  MSstats_PTM <- merge(df.ptm, unique(df.fasta.ptm[, c("ProteinName", 
-                                                "PeptideSequence", 
-                                                "Site")]),
+  MSstats_PTM <- merge(df.ptm, df.fasta.join,
                        by = c("ProteinName", "PeptideSequence"))
   MSstats_PTM$ProteinName <- paste(MSstats_PTM$ProteinName,
                                    MSstats_PTM$Site, sep = '_')
