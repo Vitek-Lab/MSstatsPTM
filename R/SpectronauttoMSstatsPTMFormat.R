@@ -160,10 +160,10 @@ SpectronauttoMSstatsPTMFormat <- function(PTM.data,
   mod_loc <- sapply(df.fasta.ptm$PeptideSequence, 
                     function(x) {gregexpr("\\*", x)})
   
-  mod_index <- sapply(seq_along(mod_loc), function(i){mod_loc[i] <- list(
-      as.integer(unlist(mod_loc[i])) + start[i][[1]][1])})
+  # mod_index <- sapply(seq_along(mod_loc), function(i){mod_loc[i] <- list(
+  #     as.integer(unlist(mod_loc[i])) + start[i][[1]][1])})
   
-  peptide_mod <- mapply(spectro_get_sites, mod_loc, mod_index,
+  peptide_mod <- mapply(spectro_get_sites, mod_loc, start,
                         df.fasta.ptm$join_PeptideSequence)
   
   df.fasta.ptm$Site <- peptide_mod
