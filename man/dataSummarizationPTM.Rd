@@ -16,7 +16,7 @@ dataSummarizationPTM(
   remove_uninformative_feature_outlier = FALSE,
   remove_uninformative_feature_outlier.PTM = FALSE,
   min_feature_count = 2,
-  min_feature_count.PTM = 2,
+  min_feature_count.PTM = 1,
   n_top_feature = 3,
   n_top_feature.PTM = 3,
   summaryMethod = "TMP",
@@ -84,7 +84,8 @@ same as above.}
 Defines a minimum number of informative features a protein needs to be considered
 in the feature selection algorithm.}
 
-\item{min_feature_count.PTM}{For PTM dataset only. Options the same as above.}
+\item{min_feature_count.PTM}{For PTM dataset only. Options the same as above.
+Default is 1 due to low average feature count for PTMs.}
 
 \item{n_top_feature}{For protein dataset only. The number of top features for
 featureSubset='topN'. Default is 3, which means to use top 3 features.}
