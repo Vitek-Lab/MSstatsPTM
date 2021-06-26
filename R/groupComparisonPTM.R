@@ -104,8 +104,11 @@ groupComparisonPTM <- function(data, data.type,
   message("Starting PTM modeling...")
   if (data.type == 'TMT'){
     getOption(option_log)("INFO", "Starting TMT PTM Model")
-    ptm_model <- groupComparisonTMT(data.ptm, contrast.matrix,
-                                    moderated, adj.method)
+    ptm_model <- groupComparisonTMT(data.ptm, contrast.matrix = contrast.matrix,
+                                    moderated = moderated, 
+                                    adj.method = adj.method,
+                                    use_log_file = use_log_file,append = append,
+                                    verbose = verbose, log_file_path = path)
     ptm_model <- ptm_model$ComparisonResult
     
   } else if (data.type == 'LabelFree') {
@@ -125,13 +128,19 @@ groupComparisonPTM <- function(data, data.type,
     message("Starting Protein modeling...")
     if (data.type == 'TMT'){
       getOption(option_log)("INFO", "Starting TMT Protein Model")
-      protein_model <- groupComparisonTMT(data.protein, contrast.matrix, 
-                                          moderated, adj.method)
+      protein_model <- groupComparisonTMT(data.protein, 
+                                          contrast.matrix = contrast.matrix,
+                                          moderated = moderated, 
+                                          adj.method = adj.method,
+                                          use_log_file = use_log_file,
+                                          append = append,
+                                          verbose = verbose, 
+                                          log_file_path = path)
       protein_model <- protein_model$ComparisonResult
     } else if (data.type == 'LabelFree') {
       getOption(option_log)("INFO", "Starting non-TMT Protein Model")
       protein_model_full <- groupComparison(contrast.matrix, 
-                                                        data.protein,
+                                            data.protein,
                                             TRUE, log_base, use_log_file, 
                                             append, verbose, 
                                             log_file_path = path)
