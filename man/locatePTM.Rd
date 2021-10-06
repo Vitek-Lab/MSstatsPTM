@@ -30,7 +30,7 @@ A data frame with three columns: \code{uniprot_iso}, \code{peptide},
 \code{PTMlocate} annotates modified sites with associated peptides.
 }
 \examples{
-fasta <- tidyFasta("https://www.uniprot.org/uniprot/O13297.fasta")
+fasta <- tidyFasta(system.file("extdata", "O13297.fasta", package="MSstatsPTM"))
 locatePTM("DRVSYIHNDSC*TR", "O13297", fasta, "C", "\\\\*")
 
 }
