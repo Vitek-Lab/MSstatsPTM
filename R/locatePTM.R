@@ -9,7 +9,7 @@
 #'   \code{uniprot_ac}, \code{uniprot_iso}, \code{entry_name}.
 #'
 #' @examples
-#' tidyFasta("https://www.uniprot.org/uniprot/O13297.fasta")
+#' tidyFasta(system.file("extdata", "O13297.fasta", package="MSstatsPTM"))
 #'
 #' @export
 #' @importFrom Biostrings readAAStringSet
@@ -76,7 +76,7 @@ tidyFasta <- function(path) {
 #'   \code{site}.
 #'
 #' @examples
-#' fasta <- tidyFasta("https://www.uniprot.org/uniprot/O13297.fasta")
+#' fasta <- tidyFasta(system.file("extdata", "O13297.fasta", package="MSstatsPTM"))
 #' locatePTM("DRVSYIHNDSC*TR", "O13297", fasta, "C", "\\*")
 #'
 #' @export
