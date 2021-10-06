@@ -18,6 +18,6 @@ A data.table with columns named \code{header}, \code{sequence},
 step in identifying modification sites.
 }
 \examples{
-tidyFasta("https://www.uniprot.org/uniprot/O13297.fasta")
+tidyFasta(system.file("extdata", "O13297.fasta", package="MSstatsPTM"))
 
 }
