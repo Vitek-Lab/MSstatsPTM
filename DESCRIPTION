@@ -23,18 +23,17 @@ Depends: R (>= 4.0)
 Imports: dplyr, gridExtra, stringr, stats, ggplot2, 
             grDevices, MSstatsTMT, MSstatsConvert, MSstats,
             data.table, Rcpp, Biostrings, checkmate, ggrepel
-Suggests:     BiocStyle,
+Suggests: BiocStyle,
     knitr,
     rmarkdown,
     tinytest,
     covr
 LazyData: true
 LinkingTo: Rcpp
-LazyData: true
 VignetteBuilder: knitr
 biocViews: ImmunoOncology, MassSpectrometry, Proteomics, Software, DifferentialExpression, 
            OneChannel, TwoChannel, Normalization, QualityControl
 BugReports: https://github.com/Vitek-Lab/MSstatsPTM/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

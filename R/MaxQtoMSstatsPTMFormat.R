@@ -8,7 +8,7 @@
 #'
 #' @export
 #' @importFrom stringr str_extract regex str_replace fixed str_split
-#' @importFrom data.table melt as.data.table `:=` `%like%` setcolorder setDT
+#' @importFrom data.table melt as.data.table `:=` `%like%` setcolorder setDT tstrsplit setcolorder
 #' @importFrom MSstatsTMT MaxQtoMSstatsTMTFormat
 #' @importFrom checkmate assertChoice assertLogical
 #' 
@@ -66,23 +66,34 @@ MaxQtoMSstatsPTMFormat <- function(sites.data,
   clean.prot <- .check.global.protein(evidence, proteinGroups)
 
   ## Format annotation for PTM
+  setcolorder(annot, c("Run", "Channel", "Condition", "Mixture", 
+                       "TechRepMixture", "Fraction", "BioReplicate"))
   annot.ptm <- copy(annot)
   annot.ptm <- annot.ptm[, "Fraction" := NULL]
   annot.ptm <- annot.ptm[, "Run" :=NULL]
   annot.ptm <- unique(annot.ptm)
-  annot.ptm$Replicate <- paste0("Reporter.intensity.corrected.",
-                            gsub('channel.', '', annot.ptm$Channel),
-                            ".",
-                            gsub('mixture', 'TMT', annot.ptm$Mixture),
-                            keyword)
+  if (keyword == "Plex"){
+    annot.ptm$Replicate <- paste0("Reporter.intensity.corrected.",
+                              gsub('channel.', '', annot.ptm$Channel),
+                              ".",
+                              paste0('Plex', annot.ptm$Mixture))
+  } else {
+    annot.ptm$Replicate <- paste0("Reporter.intensity.corrected.",
+                                  gsub('channel.', '', annot.ptm$Channel),
+                                  ".",
+                                  gsub('mixture', 'TMT', annot.ptm$Mixture),
+                                  keyword)
+  }
+  
   
 
-  MSstatsPTMTMT.abun = .convert.ptm.data(pho.data,
+  MSstatsPTMTMT.abun <- .convert.ptm.data(pho.data,
                                          annot.ptm,
                                          mod.num,
                                          keyword,
                                          which.proteinid.ptm,
                                          removeMpeptides)
+  
   ## MaxQ phospho file has duplicate peptides per site 
   ## (if site has equal probability)
   ## Add protein into site to create unique identifier
@@ -107,7 +118,7 @@ MaxQtoMSstatsPTMFormat <- function(sites.data,
                                        annotation = annot,
                                       which.proteinid = which.proteinid.protein)
 
-    MSstatsPTMformat = list('PTM' = MSstatsPTMTMT.abun, 
+    MSstatsPTMformat <- list('PTM' = MSstatsPTMTMT.abun, 
                             "PROTEIN" = MSstatsTMT.abun)
 
   }
