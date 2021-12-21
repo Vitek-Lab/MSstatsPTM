@@ -6,11 +6,13 @@
 \usage{
 MaxQtoMSstatsPTMFormat(
   sites.data,
-  annotation,
+  annotation.ptm,
   evidence = NULL,
   proteinGroups = NULL,
+  annotation.prot = NULL,
   mod.num = "Single",
-  keyword = "phos",
+  TMT.keyword = "TMT",
+  ptm.keyword = "phos",
   which.proteinid.ptm = "Protein",
   which.proteinid.protein = "Leading.razor.protein",
   removeMpeptides = FALSE
@@ -20,8 +22,9 @@ MaxQtoMSstatsPTMFormat(
 \item{sites.data}{modified peptide output from MaxQuant. For example, a
 phosphorylation experiment would require the Phospho(STY)Sites.txt file}
 
-\item{annotation}{data frame which contains column Run, Fraction,
-TechRepMixture, Mixture, Channel, BioReplicate, Condition.}
+\item{annotation.ptm}{data frame annotation file for the ptm level data.
+Contains column Run, Fraction, TechRepMixture, Mixture, Channel,
+BioReplicate, Condition.}
 
 \item{evidence}{for global protein dataset. name of 'evidence.txt' data,
 which includes feature-level data.}
@@ -29,14 +32,31 @@ which includes feature-level data.}
 \item{proteinGroups}{for global protein dataset, name of 'proteinGroups.txt'
 data.}
 
+\item{annotation.prot}{data frame annotation file for the protein level data.
+Contains column Run, Fraction, TechRepMixture, Mixture, Channel,
+BioReplicate, Condition.}
+
 \item{mod.num}{For modified peptide dataset. The number modifications per
 peptide to be used. If "Single", only peptides with one modification will be
 used. Otherwise "Total" can be selected which does not cap the number of
 modifications per peptide. "Single" is the default. Selecting "Total" may
 confound the effect of different modifications.}
 
-\item{keyword}{the sub-name of columns in the sites.data file. For
-phosphorylation data, this value should be "phos". The default is "phos".}
+\item{TMT.keyword}{the sub-name of columns in sites.data file. Default is
+\code{TMT}. This corresponds to the columns in the format
+\code{Reporter.intensity.corrected.1.TMT1phos___1}. Specifically, this parameter
+indicates the first section of the string \code{TMT1phos} (Before the mixture
+number). If \code{TMT} is present in the string, set this value to \code{TMT}. Else if
+\code{TMT} is not there (ie string is in the format \verb{1phos}) leave this parameter
+as an empty string ('').}
+
+\item{ptm.keyword}{the sub-name of columns in the sites.data file. Default is
+\code{phos}. This corresponds to the columns in the format
+\code{Reporter.intensity.corrected.1.TMT1phos___1}. Specifically, this parameter
+indicates the second section of the string \code{TMT1phos} (After the mixture
+number). If the string is present, set this parameter. Else if this part of
+the string is empty (ie string is in the format \code{TMT1}) leave this parameter
+as an empty string ('').}
 
 \item{which.proteinid.ptm}{For PTM dataset, which column to use for protein
 name. Use 'Proteins'(default) column for protein name. 'Leading.proteins' or
