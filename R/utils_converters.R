@@ -110,9 +110,17 @@
   
   
   ## extract required columns --------------------------------------------------
-  required_data_columns <- colnames(data)[
+  if (keyword == ""){
+    required_data_columns <- colnames(data)[
+      grepl("Reporter.intensity.corrected.", colnames(data)) &
+        lengths(regmatches(colnames(data), gregexpr("\\.", colnames(data)))
+                ) >= 4
+      & grepl(pho_pep, colnames(data))]
+  } else {
+    required_data_columns <- colnames(data)[
     grepl("Reporter.intensity.corrected.", colnames(data)) &
       grepl(keyword, colnames(data)) & grepl(pho_pep, colnames(data))]
+  }
   
   data <- data[, c(which.pro, "Positions.within.proteins", "Amino.acid",
                    "Phospho..STY..Probabilities","Position.in.peptide",

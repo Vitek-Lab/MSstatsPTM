@@ -81,11 +81,11 @@ dataSummarizationPTM_TMT <- function(
   ## Start log  
   if (is.null(log_file_path) & use_log_file == TRUE){
     time_now <- Sys.time()
-    path <- paste0("MSstatsPTM_log_", gsub("[ :\\-]", "_", time_now), 
+    path <- paste0("MSstatsPTM_log_", gsub("[ :\\-]", "_", time_now),
                   ".log")
     file.create(path)
   } else {path <- log_file_path}
-  
+
   MSstatsLogsSettings(use_log_file, append,
                       verbose, log_file_path = path,
                       base = "MSstatsPTM_log_", pkg_name = "MSstatsTMT")
@@ -93,7 +93,7 @@ dataSummarizationPTM_TMT <- function(
   getOption("MSstatsTMTLog")("INFO", "Starting parameter and data checks..")
   
   .checkDataProcessParams.TMT(method, global_norm, global_norm.PTM,
-                          reference_norm, reference_norm.PTM, 
+                          reference_norm, reference_norm.PTM,
                           remove_norm_channel, remove_empty_channel,
                           MBimpute, maxQuantileforCensored)
 
@@ -112,7 +112,7 @@ dataSummarizationPTM_TMT <- function(
   ## Determine if protein level should also be summarized
   if (adj.protein) {
     getOption("MSstatsTMTLog")("INFO", "Protein dataset was included.")
-    protein.dataset <- as.data.table(protein.dataset)
+    protein.dataset <- as.data.frame(protein.dataset)
   }
   
   ## Run summarization function from MSstatsTMT

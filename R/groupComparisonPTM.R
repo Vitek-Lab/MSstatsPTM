@@ -104,13 +104,13 @@ groupComparisonPTM <- function(data, data.type,
   message("Starting PTM modeling...")
   if (data.type == 'TMT'){
     getOption(option_log)("INFO", "Starting TMT PTM Model")
-    ptm_model <- groupComparisonTMT(data.ptm, contrast.matrix = contrast.matrix,
+    ptm_model_full <- groupComparisonTMT(data.ptm, contrast.matrix = contrast.matrix,
                                     moderated = moderated, 
                                     adj.method = adj.method,
                                     use_log_file = use_log_file,append = append,
                                     verbose = verbose, log_file_path = path)
-    ptm_model <- ptm_model$ComparisonResult
-    
+    ptm_model <- ptm_model_full$ComparisonResult
+    ptm_model_site_sep <- ptm_model_full$ComparisonResult
   } else if (data.type == 'LabelFree') {
     getOption(option_log)("INFO", "Starting non-TMT PTM Model")
     ptm_model_full <- groupComparison(contrast.matrix,
@@ -118,6 +118,7 @@ groupComparisonPTM <- function(data, data.type,
                                       use_log_file, append, verbose, 
                                       log_file_path = path)
     ptm_model <- ptm_model_full$ComparisonResult
+    ptm_model_site_sep <- ptm_model_full$ComparisonResult
   }
   
   models <- list('PTM.Model' = ptm_model)
@@ -152,7 +153,7 @@ groupComparisonPTM <- function(data, data.type,
     
     message("Starting adjustment...")
     getOption(option_log)("INFO", "Starting Protein Adjustment")
-    ptm_model_site_sep <- ptm_model
+    ptm_model_site_sep <- copy(ptm_model)
     
     ## extract global protein name
     ptm_model_site_sep <- .extractProtein(ptm_model_site_sep, protein_model)
