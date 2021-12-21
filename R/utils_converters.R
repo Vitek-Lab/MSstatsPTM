@@ -9,19 +9,19 @@
   ## Remove Contaminant --------------------------------------------------------
   if (is.element("Contaminant", colnames(pho.data))) {
     pho.data <- pho.data["Contaminant" == "", "Contaminant":=NA]
-    pho.data <- pho.data[Contaminant != "+"]
+    pho.data <- pho.data["Contaminant" != "+"]
   }
   
   if (is.element("Potential.contaminant", colnames(pho.data))) {
     pho.data <- pho.data["Potential.contaminant" == "", 
                          "Potential.contaminant" :=NA]
-    pho.data <- pho.data[Potential.contaminant !="+"]
+    pho.data <- pho.data["Potential.contaminant" != "+"]
   }
   
   ## Remove Reverse ------------------------------------------------------------
   if (is.element("Reverse", colnames(pho.data))) {
     pho.data <- pho.data["Reverse" == "", "Reverse" := NA]
-    pho.data <- pho.data[Reverse != "+"]
+    pho.data <- pho.data["Reverse" != "+"]
   }
   
   message('** + Contaminant, + Reverse, + Only.identified.by.site, PTMs are removed.')
@@ -110,9 +110,17 @@
   
   
   ## extract required columns --------------------------------------------------
-  required_data_columns <- colnames(data)[
+  if (keyword == ""){
+    required_data_columns <- colnames(data)[
+      grepl("Reporter.intensity.corrected.", colnames(data)) &
+        lengths(regmatches(colnames(data), gregexpr("\\.", colnames(data)))
+                ) >= 4
+      & grepl(pho_pep, colnames(data))]
+  } else {
+    required_data_columns <- colnames(data)[
     grepl("Reporter.intensity.corrected.", colnames(data)) &
       grepl(keyword, colnames(data)) & grepl(pho_pep, colnames(data))]
+  }
   
   data <- data[, c(which.pro, "Positions.within.proteins", "Amino.acid",
                    "Phospho..STY..Probabilities","Position.in.peptide",
@@ -183,7 +191,7 @@
     }
 
   } else{
-  pho.new <- data[, c(required_data_columns, 'fea'), with=FALSE]
+    pho.new <- data[, c(required_data_columns, 'fea'), with=FALSE]
   }
   
   ## Assign the column names ---------------------------------------------------

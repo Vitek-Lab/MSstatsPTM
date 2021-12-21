@@ -8,7 +8,7 @@
                                                  available_proteins,
                                                  decreasing = TRUE)]
   available_ptms <- unique(as.character(ptm_model$Protein))
-  
+  available_proteins <- available_proteins[!grepl(";", available_proteins)]
   ## Set site
   ptm_model$Site <- ptm_model$Protein
   ## Call Rcpp function

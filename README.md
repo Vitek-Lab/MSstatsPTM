@@ -10,7 +10,16 @@ The goal of MSstatsPTM is to provide the implementation of general statistical m
 
 ## Installation 
 
-This development version is only available on Github:
+The most recent version of the package is available on Bioconductor:
+
+```
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("MSstatsPTM")
+```
+
+Optionally, the package can be installed directly from Github:
 
 ```
 devtools::install_github("Vitek-Lab/MSstatsPTM", build_vignettes = TRUE)
