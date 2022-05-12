@@ -88,8 +88,8 @@ MaxQtoMSstatsPTMFormat <- function(sites.data,
   setcolorder(annot.ptm, c("Run", "Channel", "Condition", "Mixture", 
                        "TechRepMixture", "Fraction", "BioReplicate"))
   #annot.ptm <- copy(annot)
-  annot.ptm <- annot.ptm[, "Fraction" := NULL]
-  annot.ptm <- annot.ptm[, "Run" :=NULL]
+  annot.ptm <- annot.ptm[, "Fraction" := NULL] ## TODO: should this be removed?
+  annot.ptm <- annot.ptm[, "Run" :=NULL] ## We recreate this column to match with PTM data
   annot.ptm <- unique(annot.ptm)
   annot.ptm$Replicate <- paste0("Reporter.intensity.corrected.",
                                 gsub('channel.', '', annot.ptm$Channel), 

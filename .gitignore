@@ -4,6 +4,7 @@ MSstatsPTM.Rproj
 .RData
 .Ruserdata
 .DS_Store
+*.log
 
 R/zzz.R
 inst/doc

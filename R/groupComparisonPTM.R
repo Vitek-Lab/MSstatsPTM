@@ -158,6 +158,7 @@ groupComparisonPTM <- function(data, data.type,
     ## extract global protein name
     ptm_model_site_sep <- .extractProtein(ptm_model_site_sep, protein_model)
     getOption(option_log)("INFO", "Rcpp function extracted protein info")
+    
     ## adjustProteinLevel function can only compare one label at a time
     comparisons <- unique(ptm_model_site_sep[, Label])
     

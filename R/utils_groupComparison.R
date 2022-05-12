@@ -11,6 +11,10 @@
   available_proteins <- available_proteins[!grepl(";", available_proteins)]
   ## Set site
   ptm_model$Site <- ptm_model$Protein
+  
+  ## Ensure vectors passed to Rcpp are characters
+  available_ptms = as.character(available_ptms)
+  available_proteins = as.character(available_proteins)
   ## Call Rcpp function
   ptm_proteins <- extract_protein_name(available_ptms,
                                        available_proteins)
@@ -48,7 +52,7 @@
   names(diff_ref)[names(diff_ref) == "log2FC"] <- "log2FC_ref"
   names(diff_ref)[names(diff_ref) == "SE"] <- "SE_ref"
   names(diff_ref)[names(diff_ref) == "DF"] <- "DF_ref"
-  joined <- merge(diff_site, diff_ref, by = c("Protein", "Label"))
+  joined <- merge(diff_site, diff_ref, by = c("Protein", "Label"), all.x=TRUE)
   
   missing_ctrl <- joined[joined$log2FC == Inf, ]  # PTM missing in control
   missing_case <- joined[joined$log2FC == -Inf, ] # PTM missing in case
