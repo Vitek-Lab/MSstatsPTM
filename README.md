@@ -6,7 +6,7 @@
 <!-- badges: end -->
 
 
-The goal of MSstatsPTM is to provide the implementation of general statistical methods for characterization of quantitative changes in global post-translational modification profiling experiments.
+MSstatsPTM provides general statistical methods for quantitative characterization of post-translational modifications (PTMs). Supports DDA, DIA, and tandem mass tag (TMT) labeling. Typically, the analysis involves the quantification of PTM sites (i.e., modified residues) and their corresponding proteins, as well as the integration of the quantification results. MSstatsPTM provides functions for summarization, estimation of PTM site abundance, and detection of changes in PTMs across experimental conditions. 
 
 ## Installation 
 
