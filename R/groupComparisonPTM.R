@@ -199,7 +199,7 @@ groupComparisonPTM = function(data, data.type,
                     'ImputationPercentage', 'temp_check'):=NULL]
     
     adjusted_models = rbindlist(list(adjusted_models, missing_rows))
-    
+    adjusted_models = adjusted_models[!is.na(adjusted_models$Protein)]
     
     getOption(option_log)("INFO", "Adjustment complete, returning models.")
     models = list('PTM.Model'=ptm_model, 'PROTEIN.Model'=protein_model,
