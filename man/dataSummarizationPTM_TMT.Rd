@@ -93,7 +93,7 @@ normalization on peptide level data and normalizes between runs.
 head(raw.input.tmt$PTM)
 head(raw.input.tmt$PROTEIN)
 
-quant.tmt.msstatsptm <- dataSummarizationPTM_TMT(raw.input.tmt,
+quant.tmt.msstatsptm = dataSummarizationPTM_TMT(raw.input.tmt,
                                                  method = "msstats", 
                                                  verbose = FALSE)
 head(quant.tmt.msstatsptm$PTM$ProteinLevelData)

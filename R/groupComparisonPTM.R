@@ -44,10 +44,10 @@
 #'         
 #' @examples 
 #' 
-#' model.lf.msstatsptm <- groupComparisonPTM(summary.data, 
+#' model.lf.msstatsptm = groupComparisonPTM(summary.data, 
 #'                                      data.type = "LabelFree",
 #'                                      verbose = FALSE)
-groupComparisonPTM <- function(data, data.type,
+groupComparisonPTM = function(data, data.type,
                                contrast.matrix = "pairwise",
                                moderated = FALSE, 
                                adj.method = "BH",
@@ -60,18 +60,18 @@ groupComparisonPTM <- function(data, data.type,
   
   ## Start log  
   if (is.null(log_file_path) & use_log_file == TRUE){
-    time_now <- Sys.time()
-    path <- paste0(base, gsub("[ :\\-]", "_", time_now), 
+    time_now = Sys.time()
+    path = paste0(base, gsub("[ :\\-]", "_", time_now), 
                   ".log")
     file.create(path)
-  } else {path <- log_file_path}
+  } else {path = log_file_path}
   
   if (data.type == 'TMT'){
-    pkg <- "MSstatsTMT"
-    option_log <- "MSstatsTMTLog"
+    pkg = "MSstatsTMT"
+    option_log = "MSstatsTMTLog"
   } else {
-    pkg <- "MSstats"
-    option_log <- "MSstatsLog"
+    pkg = "MSstats"
+    option_log = "MSstatsLog"
   }
   
   MSstatsLogsSettings(use_log_file, append,
@@ -82,46 +82,48 @@ groupComparisonPTM <- function(data, data.type,
   
   Label = Site = NULL
   
-  data.ptm <- data[["PTM"]]
-  data.protein <- data[["PROTEIN"]]
+  data.ptm = data[["PTM"]]
+  data.protein = data[["PROTEIN"]]
   
   ## Check for missing variables in PTM
   ## Determine if PTM should be adjusted for protein level.
   if (!is.null(data.protein)){
-    adj.protein <- TRUE
+    adj.protein = TRUE
   } else{
-    adj.protein <- FALSE
+    adj.protein = FALSE
   }
   
   ## Create pairwise matrix for label free
   if (contrast.matrix[1] == "pairwise" & data.type == 'LabelFree'){
     getOption(option_log)("INFO", "Building pairwise matrix.")
-    labels <- unique(data.ptm$ProteinLevelData$GROUP)
-    contrast.matrix <- MSstatsContrastMatrix('pairwise', labels)
+    labels = unique(data.ptm$ProteinLevelData$GROUP)
+    contrast.matrix = MSstatsContrastMatrix('pairwise', labels)
   }
   
   ## PTM Modeling
   message("Starting PTM modeling...")
   if (data.type == 'TMT'){
     getOption(option_log)("INFO", "Starting TMT PTM Model")
-    ptm_model_full <- groupComparisonTMT(data.ptm, contrast.matrix = contrast.matrix,
+    ptm_model_full = groupComparisonTMT(data.ptm, contrast.matrix = contrast.matrix,
                                     moderated = moderated, 
                                     adj.method = adj.method,
                                     use_log_file = use_log_file,append = append,
                                     verbose = verbose, log_file_path = path)
-    ptm_model <- ptm_model_full$ComparisonResult
-    ptm_model_site_sep <- ptm_model_full$ComparisonResult
+    ptm_model = ptm_model_full$ComparisonResult
+    ptm_model_site_sep = ptm_model_full$ComparisonResult
   } else if (data.type == 'LabelFree') {
     getOption(option_log)("INFO", "Starting non-TMT PTM Model")
-    ptm_model_full <- groupComparison(contrast.matrix,
+    ptm_model_full = groupComparison(contrast.matrix,
                                       data.ptm, TRUE, log_base, 
                                       use_log_file, append, verbose, 
                                       log_file_path = path)
-    ptm_model <- ptm_model_full$ComparisonResult
-    ptm_model_site_sep <- ptm_model_full$ComparisonResult
+    ptm_model = ptm_model_full$ComparisonResult
+    ptm_model_site_sep = ptm_model_full$ComparisonResult
+    
+    ptm_model_details = ptm_model_full$FittedModel
   }
   
-  models <- list('PTM.Model' = ptm_model)
+  models = list('PTM.Model'=ptm_model, 'Model.Details'=ptm_model_details)
   
   if (adj.protein) {
     
@@ -129,7 +131,7 @@ groupComparisonPTM <- function(data, data.type,
     message("Starting Protein modeling...")
     if (data.type == 'TMT'){
       getOption(option_log)("INFO", "Starting TMT Protein Model")
-      protein_model <- groupComparisonTMT(data.protein, 
+      protein_model = groupComparisonTMT(data.protein, 
                                           contrast.matrix = contrast.matrix,
                                           moderated = moderated, 
                                           adj.method = adj.method,
@@ -137,50 +139,73 @@ groupComparisonPTM <- function(data, data.type,
                                           append = append,
                                           verbose = verbose, 
                                           log_file_path = path)
-      protein_model <- protein_model$ComparisonResult
+      protein_model = protein_model$ComparisonResult
     } else if (data.type == 'LabelFree') {
       getOption(option_log)("INFO", "Starting non-TMT Protein Model")
-      protein_model_full <- groupComparison(contrast.matrix, 
+      protein_model_full = groupComparison(contrast.matrix, 
                                             data.protein,
                                             TRUE, log_base, use_log_file, 
                                             append, verbose, 
                                             log_file_path = path)
-      protein_model <- protein_model_full$ComparisonResult
+      protein_model = protein_model_full$ComparisonResult
+      
+      protein_model_details = protein_model_full$FittedModel
     }
     
-    ptm_model <- as.data.table(ptm_model)
-    protein_model <- as.data.table(protein_model)
+    ptm_model = as.data.table(ptm_model)
+    protein_model = as.data.table(protein_model)
     
     message("Starting adjustment...")
     getOption(option_log)("INFO", "Starting Protein Adjustment")
-    ptm_model_site_sep <- copy(ptm_model)
+    ptm_model_site_sep = copy(ptm_model)
     
     ## extract global protein name
-    ptm_model_site_sep <- .extractProtein(ptm_model_site_sep, protein_model)
+    ptm_model_site_sep = .extractProtein(ptm_model_site_sep, protein_model)
     getOption(option_log)("INFO", "Rcpp function extracted protein info")
     
     ## adjustProteinLevel function can only compare one label at a time
-    comparisons <- unique(ptm_model_site_sep[, Label])
+    comparisons = unique(ptm_model_site_sep[, Label])
     
-    adjusted_model_list <- list()
+    adjusted_model_list = list()
     for (i in seq_len(length(comparisons))) {
       getOption(option_log)("INFO", paste0("Adjusting for Comparison - ", 
                                              as.character(i)))
-      temp_adjusted_model <- .applyPtmAdjustment(comparisons[[i]],
+      temp_adjusted_model = .applyPtmAdjustment(comparisons[[i]],
                                                    ptm_model_site_sep,
                                                    protein_model)
-      adjusted_model_list[[i]] <- temp_adjusted_model
+      adjusted_model_list[[i]] = temp_adjusted_model
     }
     
-    adjusted_models <- rbindlist(adjusted_model_list)
+    adjusted_models = rbindlist(adjusted_model_list)
     
-    adjusted_models$GlobalProtein <- adjusted_models$Protein
-    adjusted_models$Protein <- adjusted_models$Site
+    adjusted_models$GlobalProtein = adjusted_models$Protein
+    adjusted_models$Protein = adjusted_models$Site
     adjusted_models[, Site := NULL]
     
+    ## Add unadjustable ptms into final dataframe
+    adjusted_models$temp_check = paste(adjusted_models$Protein, 
+                                       adjusted_models$Label, sep = "_")
+    ptm_model$temp_check = paste(ptm_model$Protein, 
+                                 ptm_model$Label, sep = "_")
+    missing_ptms = setdiff(ptm_model$temp_check, adjusted_models$temp_check)
+    
+    adjusted_models$Adjusted = TRUE
+    adjusted_models$temp_check = NULL
+    
+    missing_rows = ptm_model[ptm_model$temp_check %in% missing_ptms]
+    missing_rows$GlobalProtein = "missing"
+    missing_rows$Adjusted = FALSE
+    missing_rows[, c('issue', 'MissingPercentage', 
+                    'ImputationPercentage', 'temp_check'):=NULL]
+    
+    adjusted_models = rbindlist(list(adjusted_models, missing_rows))
+    
+    
     getOption(option_log)("INFO", "Adjustment complete, returning models.")
-    models <- list('PTM.Model' = ptm_model, 'PROTEIN.Model' = protein_model,
-                   'ADJUSTED.Model' = adjusted_models)
+    models = list('PTM.Model'=ptm_model, 'PROTEIN.Model'=protein_model,
+                  'ADJUSTED.Model'=adjusted_models, 
+                  'Model.Details'=list('PTM'=ptm_model_details,
+                                       'PROTEIN'=protein_model_details))
   }
 
   return(models)

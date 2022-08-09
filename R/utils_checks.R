@@ -1,6 +1,6 @@
 #' Check validity of parameters to MaxQ Converter function
 #' @noRd
-.checkMaxQconverterParams <- function(mod.num = 'Total',
+.checkMaxQconverterParams = function(mod.num = 'Total',
                                      keyword = "phos",
                                      which.proteinid.ptm = "Protein",
                                      which.proteinid.protein = "Leading.razor.protein",
@@ -29,7 +29,7 @@
 
 #' Function to check for global protein data
 #' @noRd
-.check.global.protein <- function(evidence = NULL, 
+.check.global.protein = function(evidence = NULL, 
                                   proteinGroups = NULL){
   
   if ((is.null(evidence) & !is.null(proteinGroups))|
@@ -51,10 +51,10 @@
 
 #' Check PTM and protein datasets
 #' @noRd
-.summarizeCheck <- function(data, type) {
+.summarizeCheck = function(data, type) {
   # Check the PTM data
   if (is.null(data[["PTM"]])) {
-    msg <- paste('PTM peak list is missing. Input data must be of type list with',
+    msg = paste('PTM peak list is missing. Input data must be of type list with',
                   'an element named \"PTM\" - stop')
     # getOption("MSstatsLog")("ERROR", msg)
     stop(msg)
@@ -62,13 +62,13 @@
   ##TODO: Add a check to make sure Site was added into protein name?
   if (type == 'LF') {
     
-    LF.cols <- c("BioReplicate", "Condition", "FragmentIon", "Intensity", 
+    LF.cols = c("BioReplicate", "Condition", "FragmentIon", "Intensity", 
                  "IsotopeLabelType", "PeptideSequence", "PrecursorCharge",
                  "ProductCharge", "ProteinName", "Run")
-    provided_cols <- intersect(LF.cols, colnames(data[["PTM"]]))
+    provided_cols = intersect(LF.cols, colnames(data[["PTM"]]))
     
     if (length(provided_cols) < 10){
-      msg <- paste("Missing columns in the PTM input:",
+      msg = paste("Missing columns in the PTM input:",
                    paste(setdiff(LF.cols, colnames(data[["PTM"]])), 
                          collapse = " "))
       #getOption("MSstatsLog")("ERROR", msg)
@@ -77,16 +77,16 @@
   } else if (type == 'TMT'){
     ## Add peptide sequence if not available
     if (!'PeptideSequence' %in% colnames(data)){
-      data[["PTM"]]$PeptideSequence <- data[["PTM"]]$ProteinName
+      data[["PTM"]]$PeptideSequence = data[["PTM"]]$ProteinName
     }
     
-    tmt.columns <- c('ProteinName', 'PeptideSequence', 'Charge', 'PSM', 
+    tmt.columns = c('ProteinName', 'PeptideSequence', 'Charge', 'PSM', 
                      'Mixture', 'TechRepMixture', 'Run', 'Channel', 'Condition',
                      'BioReplicate', 'Intensity')
-    provided_cols <- intersect(tmt.columns, colnames(data[["PTM"]]))
+    provided_cols = intersect(tmt.columns, colnames(data[["PTM"]]))
     
     if (length(provided_cols) < 11){
-      msg <- paste("Missing columns in the PTM input:",
+      msg = paste("Missing columns in the PTM input:",
                    paste(setdiff(tmt.columns, colnames(data[["PTM"]])),
                          collapse = " "))
       #getOption("MSstatsLog")("ERROR", msg)
@@ -95,32 +95,32 @@
   }
   # Check the PROTEIN data
   if (is.null(data[["PROTEIN"]])) {
-    adjust.protein <- FALSE
+    adjust.protein = FALSE
   } else {
-    adjust.protein <- TRUE
+    adjust.protein = TRUE
     
     ## Check Protein data.table columns
     if (type == 'LF') {
-      LF.cols <- c("BioReplicate", "Condition", "FragmentIon", "Intensity", 
+      LF.cols = c("BioReplicate", "Condition", "FragmentIon", "Intensity", 
                    "IsotopeLabelType", "PeptideSequence", "PrecursorCharge",
                    "ProductCharge", "ProteinName", "Run")
-      provided_cols <- intersect(LF.cols, colnames(data[["PROTEIN"]]))
+      provided_cols = intersect(LF.cols, colnames(data[["PROTEIN"]]))
       
       if (length(provided_cols) < 10){
-        msg <- paste("Missing columns in the PROTEIN input:",
+        msg = paste("Missing columns in the PROTEIN input:",
                      paste(setdiff(LF.cols, colnames(data[["PROTEIN"]])), 
                            collapse = " "))
         #getOption("MSstatsLog")("ERROR", msg)
         stop(msg)
       }
     } else if (type == 'TMT'){
-      tmt.columns <- c('ProteinName', 'PeptideSequence', 'Charge', 'PSM', 
+      tmt.columns = c('ProteinName', 'PeptideSequence', 'Charge', 'PSM', 
                        'Mixture', 'TechRepMixture', 'Run', 'Channel', 
                        'Condition', 'BioReplicate', 'Intensity')
-      provided_cols <- intersect(tmt.columns, colnames(data[["PROTEIN"]]))
+      provided_cols = intersect(tmt.columns, colnames(data[["PROTEIN"]]))
       
       if (length(provided_cols) < 11){
-        msg <- paste("Missing columns in the PROTEIN input:",
+        msg = paste("Missing columns in the PROTEIN input:",
                      paste(setdiff(tmt.columns, colnames(data[["PROTEIN"]])),
                            collapse = " "))
         #getOption("MSstatsLog")("ERROR", msg)
@@ -147,7 +147,7 @@
 #' @param imputation list with elements: cutoff, symbol.
 #' @param n_clusters integer
 #' @noRd
-.checkDataProcessParams <- function(log_base, normalization_method,
+.checkDataProcessParams = function(log_base, normalization_method,
                                    normalization_method.PTM,
                                    standards_names, standards_names.PTM, 
                                    address,
@@ -208,7 +208,7 @@
 #' @param MBimpute logical: only for method "msstats"
 #' @param maxQuantileforCensored: Null or double
 #' @noRd
-.checkDataProcessParams.TMT <- function(method, global_norm, global_norm.PTM,
+.checkDataProcessParams.TMT = function(method, global_norm, global_norm.PTM,
                             reference_norm, reference_norm.PTM, 
                             remove_norm_channel, remove_empty_channel,
                             MBimpute, maxQuantileforCensored) {
@@ -226,7 +226,7 @@
   checkmate::assertLogical(MBimpute, .var.name = "MBimpute")
   
   if(!(is.double(maxQuantileforCensored)|is.null(maxQuantileforCensored))){
-    msg <- "maxQuantileforCensored must be either NULL or double - stop"
+    msg = "maxQuantileforCensored must be either NULL or double - stop"
     stop(msg)
   }
 }

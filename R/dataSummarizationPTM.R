@@ -95,9 +95,9 @@
 #' head(raw.input$PTM)
 #' head(raw.input$PROTEIN)
 #' 
-#' quant.lf.msstatsptm <- dataSummarizationPTM(raw.input, verbose = FALSE)
+#' quant.lf.msstatsptm = dataSummarizationPTM(raw.input, verbose = FALSE)
 #' head(quant.lf.msstatsptm$PTM$ProteinLevelData)
-dataSummarizationPTM <- function(
+dataSummarizationPTM = function(
   data,
   logTrans = 2, 
   normalization = "equalizeMedians", 
@@ -128,11 +128,11 @@ dataSummarizationPTM <- function(
 
   ## Start log  
   if (is.null(log_file_path) & use_log_file == TRUE){
-    time_now <- Sys.time()
-    path <- paste0(base, gsub("[ :\\-]", "_", time_now), 
+    time_now = Sys.time()
+    path = paste0(base, gsub("[ :\\-]", "_", time_now), 
                   ".log")
     file.create(path)
-  } else {path <- log_file_path}
+  } else {path = log_file_path}
   
   MSstatsLogsSettings(use_log_file, append,
                       verbose, log_file_path = path)
@@ -154,20 +154,20 @@ dataSummarizationPTM <- function(
                           list(symbol = censoredInt,
                                MB = MBimpute))
   
-  adj.protein <- FALSE
+  adj.protein = FALSE
 
-  PTM.dataset <- data[["PTM"]]
-  protein.dataset <- data[["PROTEIN"]]
+  PTM.dataset = data[["PTM"]]
+  protein.dataset = data[["PROTEIN"]]
   
   # Check PTM and PROTEIN data for correct format
-  adj.protein <- .summarizeCheck(data, 'LF')
+  adj.protein = .summarizeCheck(data, 'LF')
   
   getOption("MSstatsLog")("INFO", "Parameter and data checks complete.")
   
   message("Starting PTM summarization...")
   ## Run summarization function from MSstats
   getOption("MSstatsLog")("INFO", "Starting PTM summarization..")
-  ptm.summarized <- dataProcess(as.data.frame(PTM.dataset),
+  ptm.summarized = dataProcess(as.data.frame(PTM.dataset),
                                 logTrans, normalization.PTM, nameStandards.PTM,
                                 featureSubset.PTM, 
                                 remove_uninformative_feature_outlier.PTM,
@@ -179,7 +179,7 @@ dataSummarizationPTM <- function(
   if (adj.protein) {
     message("Starting Protein summarization...")
     getOption("MSstatsLog")("INFO", "Starting Protein summarization..")
-    protein.summarized <- dataProcess(as.data.frame(protein.dataset),
+    protein.summarized = dataProcess(as.data.frame(protein.dataset),
                                   logTrans, normalization, nameStandards,
                                   featureSubset, 
                                   remove_uninformative_feature_outlier,
@@ -192,9 +192,9 @@ dataSummarizationPTM <- function(
 
   ## Compile and return summarized results
   getOption("MSstatsLog")("INFO", "Summarization complete. Returning output")
-  msstatsptm.summarized <- list("PTM" = ptm.summarized)
+  msstatsptm.summarized = list("PTM" = ptm.summarized)
   if (adj.protein) {
-    msstatsptm.summarized <- c(msstatsptm.summarized,
+    msstatsptm.summarized = c(msstatsptm.summarized,
                                "PROTEIN" = list(protein.summarized))
   }
 

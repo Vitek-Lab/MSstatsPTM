@@ -69,7 +69,7 @@ MSstatsContrastMatrix
 }
 \examples{
 
-model.lf.msstatsptm <- groupComparisonPTM(summary.data, 
+model.lf.msstatsptm = groupComparisonPTM(summary.data, 
                                      data.type = "LabelFree",
                                      verbose = FALSE)
 }

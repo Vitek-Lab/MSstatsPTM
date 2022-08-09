@@ -1,6 +1,6 @@
 #' Check input data and parameters
 #' @noRd
-.check.plotting.data <- function(data, type, sig, FCcutoff, logBase.pvalue, 
+.check.plotting.data = function(data, type, sig, FCcutoff, logBase.pvalue, 
                                  ylimUp, ylimDown, xlimUp, x.axis.size, 
                                  y.axis.size, dot.size, text.size, text.angle, 
                                  legend.size, ProteinName,colorkey, numProtein, 
@@ -42,28 +42,28 @@
   assertNumeric(height, .var.name = ("height"))
   
   ## Check data columns
-  min.cols <- c("Protein", "Label", "log2FC", "SE", "DF", "pvalue","adj.pvalue")
+  min.cols = c("Protein", "Label", "log2FC", "SE", "DF", "pvalue","adj.pvalue")
   
   if (!is.null(data[["PTM.Model"]])){
-    missing <- setdiff(min.cols, colnames(data[["PTM.Model"]]))
+    missing = setdiff(min.cols, colnames(data[["PTM.Model"]]))
     if (length(missing) > 0){
-      msg <- paste("Missing columns in the PTM input:",
+      msg = paste("Missing columns in the PTM input:",
                   paste(missing, collapse = " "))
       stop(msg)
     }
   }
   if (!is.null(data[["PROTEIN.Model"]])){
-    missing <- setdiff(min.cols, colnames(data[["PROTEIN.Model"]]))
+    missing = setdiff(min.cols, colnames(data[["PROTEIN.Model"]]))
     if (length(missing) > 0){
-      msg <- paste("Missing columns in the Protein input:",
+      msg = paste("Missing columns in the Protein input:",
                    paste(missing, collapse = " "))
       stop(msg)
     }
   }
   if (!is.null(data[["ADJUSTED.Model"]])){
-    missing <- setdiff(min.cols, colnames(data[["ADJUSTED.Model"]]))
+    missing = setdiff(min.cols, colnames(data[["ADJUSTED.Model"]]))
     if (length(missing) > 0){
-      msg <- paste("Missing columns in the Adjusted PTM input:",
+      msg = paste("Missing columns in the Adjusted PTM input:",
                    paste(missing, collapse = " "))
       stop(msg)
     }
@@ -73,35 +73,35 @@
 
 #' Format models into plotting format
 #' @noRd
-.format.model.plots <- function(data, which.Comparison, which.Protein){
+.format.model.plots = function(data, which.Comparison, which.Protein){
   
-  ptm.model <- data[['PTM.Model']]
-  ptm.model <- as.data.table(ptm.model)
-  protein.model <- data[['PROTEIN.Model']]
-  protein.model <- as.data.table(protein.model)
-  adjusted.model <- data[['ADJUSTED.Model']]
-  adjusted.model <- as.data.table(adjusted.model)
+  ptm.model = data[['PTM.Model']]
+  ptm.model = as.data.table(ptm.model)
+  protein.model = data[['PROTEIN.Model']]
+  protein.model = as.data.table(protein.model)
+  adjusted.model = data[['ADJUSTED.Model']]
+  adjusted.model = as.data.table(adjusted.model)
   
-  ptm.model$Protein <- factor(ptm.model$Protein)
-  ptm.model$Label <- factor(ptm.model$Label)
+  ptm.model$Protein = factor(ptm.model$Protein)
+  ptm.model$Label = factor(ptm.model$Label)
   
   if (nrow(protein.model) > 0){
-    protein.model$Protein <- factor(protein.model$Protein)
-    protein.model$Label <- factor(protein.model$Label)
-    adjusted.model$Protein <- factor(adjusted.model$Protein)
-    adjusted.model$Label <- factor(adjusted.model$Label)
+    protein.model$Protein = factor(protein.model$Protein)
+    protein.model$Label = factor(protein.model$Label)
+    adjusted.model$Protein = factor(adjusted.model$Protein)
+    adjusted.model$Label = factor(adjusted.model$Label)
   }
   
   if (which.Comparison[[1]] != "all") {
     ## check which.comparison is name of comparison
     if (is.character(which.Comparison)) {
       
-      temp.name <- which.Comparison
+      temp.name = which.Comparison
       ## message if name of comparison is wrong.
       if (length(setdiff(temp.name, unique(ptm.model$Label))) > 0) {
         
         ## TODO: Logging        
-        # processout <- rbind(processout, 
+        # processout = rbind(processout, 
         #                     paste0("Please check labels of comparions. ", 
         #                            "Result does not have this comparison. - ", 
         #                            toString(temp.name)))
@@ -115,7 +115,7 @@
     ## check which.comparison is order number of comparison
     if (is.numeric(which.Comparison)) {
       
-      temp.name <- levels(ptm.model$Label)[which.Comparison]
+      temp.name = levels(ptm.model$Label)[which.Comparison]
       
       ## message if name of comparison is wrong.
       if (length(levels(ptm.model$Label))<max(which.Comparison)) {
@@ -126,11 +126,11 @@
     }  
     
     ## use only assigned comparisons
-    ptm.model <- ptm.model[which(ptm.model$Label %in% temp.name), ]
+    ptm.model = ptm.model[which(ptm.model$Label %in% temp.name), ]
     if (nrow(protein.model) > 0){
-      protein.model <- protein.model[which(
+      protein.model = protein.model[which(
         protein.model$Label %in% temp.name), ]
-      adjusted.model <- adjusted.model[which(
+      adjusted.model = adjusted.model[which(
         adjusted.model$Label %in% temp.name),]
     }
 
@@ -140,12 +140,12 @@
     ## check which.comparison is name of comparison
     if (is.character(which.Protein)) {
       
-      temp.name <- which.Protein
+      temp.name = which.Protein
       ## message if name of comparison is wrong.
       if (length(setdiff(temp.name, unique(ptm.model$Protein))) > 0) {
         
         ## TODO: Logging        
-        # processout <- rbind(processout, 
+        # processout = rbind(processout, 
         #                     paste0("Please check labels of comparions. ", 
         #                            "Result does not have this comparison. - ", 
         #                            toString(temp.name)))
@@ -159,7 +159,7 @@
     ## check which.comparison is order number of comparison
     if (is.numeric(which.Protein)) {
       
-      temp.name <- levels(ptm.model$Protein)[which.Protein]
+      temp.name = levels(ptm.model$Protein)[which.Protein]
       
       ## message if name of comparison is wrong.
       if (length(levels(ptm.model$Protein)) < max(which.Protein)) {
@@ -170,23 +170,23 @@
     }
     
     ## use only assigned comparisons
-    ptm.model <- ptm.model[which(ptm.model$Protein %in% temp.name), ]
+    ptm.model = ptm.model[which(ptm.model$Protein %in% temp.name), ]
     if (nrow(protein.model) > 0){
-      adjusted.model <- adjusted.model[
+      adjusted.model = adjusted.model[
         which(adjusted.model$Protein %in% temp.name), ]
-      protein.model <- protein.model[which(protein.model$Protein %in% unique(
+      protein.model = protein.model[which(protein.model$Protein %in% unique(
         adjusted.model$GlobalProtein)), ]
     }
   }
   
-  ptm.model$Protein <- factor(ptm.model$Protein)
-  ptm.model$Label <- factor(ptm.model$Label)
+  ptm.model$Protein = factor(ptm.model$Protein)
+  ptm.model$Label = factor(ptm.model$Label)
   
   if (nrow(protein.model) > 0){
-    protein.model$Protein <- factor(protein.model$Protein)
-    protein.model$Label <- factor(protein.model$Label)
-    adjusted.model$Protein <- factor(adjusted.model$Protein)
-    adjusted.model$Label <- factor(adjusted.model$Label)
+    protein.model$Protein = factor(protein.model$Protein)
+    protein.model$Label = factor(protein.model$Label)
+    adjusted.model$Protein = factor(adjusted.model$Protein)
+    adjusted.model$Label = factor(adjusted.model$Label)
   }
   
   return(list('PTM.Model' = ptm.model, 'PROTEIN.Model' = protein.model, 
@@ -195,21 +195,21 @@
 
 #' Wrapper for plotting heatmap for every model provided
 #' @noRd
-.plotHeatmap <- function(data, sig, FCcutoff, logBase.pvalue, ylimUp, ylimDown, 
+.plotHeatmap = function(data, sig, FCcutoff, logBase.pvalue, ylimUp, ylimDown, 
                      text.angle, x.axis.size, y.axis.size, dot.size, colorkey, 
                      numProtein, width, height, address){
   ## If there are the file with the same name, 
   ## add next numbering at the end of file name
   if (address != FALSE) {
-    allfiles <- list.files()
+    allfiles = list.files()
     
-    num <- 0
-    filenaming <- paste0(address, "Heatmap")
-    finalfile <- paste0(address, "Heatmap.pdf")
+    num = 0
+    filenaming = paste0(address, "Heatmap")
+    finalfile = paste0(address, "Heatmap.pdf")
     
     while (is.element(finalfile, allfiles)) {
-      num <- num + 1
-      finalfile <- paste0(paste(filenaming, num, sep="-"), ".pdf")
+      num = num + 1
+      finalfile = paste0(paste(filenaming, num, sep="-"), ".pdf")
     }	
     
     pdf(finalfile, width=width, height=height)
@@ -238,20 +238,20 @@
 
 #' Plots individual model heatmap
 #' @noRd
-.plot.model.heatmap <- function(data, sig, FCcutoff, logBase.pvalue, ylimUp,
+.plot.model.heatmap = function(data, sig, FCcutoff, logBase.pvalue, ylimUp,
                                  ylimDown, x.axis.size, y.axis.size, text.angle,
                                  colorkey, numProtein, model){
   
   Label = Protein = sign_adj_pval = NULL
   
   if (logBase.pvalue == 2) {
-    y.limUp <- 30
+    y.limUp = 30
   } else if (logBase.pvalue == 10) {
-    y.limUp <- 10
+    y.limUp = 10
   }
   
   if (is.numeric(ylimUp)) {
-    y.limUp <- ylimUp 
+    y.limUp = ylimUp 
   }
   
   
@@ -259,40 +259,40 @@
   if (is.numeric(FCcutoff)) {
     if (colnames(data)[3] == "log2FC") {
       data$adj.pvalue[data[, 3] < log2(FCcutoff) & data[, 3] > (
-        -log2(FCcutoff))] <- 1
+        -log2(FCcutoff))] = 1
     }
     if (colnames(data)[3] == "log10FC") {
       data$adj.pvalue[data[, 3] < log10(FCcutoff) & data[, 3] > (
-        -log10(FCcutoff))] <- 1
+        -log10(FCcutoff))] = 1
     }
   }
 
   ## based on p-value
   if (logBase.pvalue == 2) {
-      temp <-  -log2(data$adj.pvalue) * sign(data[, 3])
+      temp =  -log2(data$adj.pvalue) * sign(data[, 3])
   } else if (logBase.pvalue == 10) {
-      temp <-  -log10(data$adj.pvalue) * sign(data[, 3])
+      temp =  -log10(data$adj.pvalue) * sign(data[, 3])
   }
   
-  data$sign_adj_pval <- temp
-  obj <- data[, c("Protein", "Label", "sign_adj_pval")]
+  data$sign_adj_pval = temp
+  obj = data[, c("Protein", "Label", "sign_adj_pval")]
   
   ## maximum number of proteins per heatmap
-  unique_prot <- unique(obj$Protein)
-  totalpro <- length(unique_prot)
-  numheatmap <- totalpro %/% numProtein + 1
+  unique_prot = unique(obj$Protein)
+  totalpro = length(unique_prot)
+  numheatmap = totalpro %/% numProtein + 1
   
   ## draw heatmap
   ## loop for numProtein
   for (j in seq_len(numheatmap)) {
     
-    plot_prot <- unique_prot[((j - 1) * numProtein + 1):(j * numProtein)]
-    temp_obj <- obj[obj$Protein %in% plot_prot]
+    plot_prot = unique_prot[((j - 1) * numProtein + 1):(j * numProtein)]
+    temp_obj = obj[obj$Protein %in% plot_prot]
     
-    limits <- c(-1,1)*max(abs(temp_obj$sign_adj_pval[
+    limits = c(-1,1)*max(abs(temp_obj$sign_adj_pval[
       is.finite(temp_obj$sign_adj_pval)]))
     
-    temp_heatmap <- ggplot(temp_obj, aes(Label, Protein, fill = sign_adj_pval)
+    temp_heatmap = ggplot(temp_obj, aes(Label, Protein, fill = sign_adj_pval)
                            ) + geom_tile() + scale_fill_distiller(
         palette = "RdBu", name = "(sign) Adj pvalue", 
         limits = limits) + labs(
@@ -308,22 +308,22 @@
 
 #' Wrapper for plotting volcano plot for every model provided
 #' @noRd
-.plotVolcano <- function(data, sig, FCcutoff, logBase.pvalue, ylimUp, ylimDown, 
+.plotVolcano = function(data, sig, FCcutoff, logBase.pvalue, ylimUp, ylimDown, 
                      xlimUp, x.axis.size, y.axis.size, dot.size, text.size, 
                      legend.size, ProteinName, colorkey, numProtein,
                      width, height, address, plot_name_list){
   ## If there are the file with the same name
   ## add next numbering at the end of file name
   if (address != FALSE) {
-    allfiles <- list.files()
+    allfiles = list.files()
     
-    num <- 0
-    filenaming <- paste0(address, "VolcanoPlot")
-    finalfile <- paste0(address, "VolcanoPlot.pdf")
+    num = 0
+    filenaming = paste0(address, "VolcanoPlot")
+    finalfile = paste0(address, "VolcanoPlot.pdf")
     
     while (is.element(finalfile, allfiles)) {
-      num <- num + 1
-      finalfile <- paste0(paste(filenaming, num, sep="-"), ".pdf")
+      num = num + 1
+      finalfile = paste0(paste(filenaming, num, sep="-"), ".pdf")
     }	
     
     pdf(finalfile, width=width, height=height)
@@ -352,127 +352,127 @@
 
 #' Plots individual model volcano plot
 #' @noRd
-.plot.model.volcano <- function(data, sig, FCcutoff, logBase.pvalue, ylimUp,
+.plot.model.volcano = function(data, sig, FCcutoff, logBase.pvalue, ylimUp,
                                 ylimDown, xlimUp, x.axis.size, y.axis.size, 
                                 dot.size, text.size, legend.size, ProteinName,
                                 model){
   log2FC = Protein = NULL
   
   if (logBase.pvalue == 2) {
-    y.limUp  <- 30
+    y.limUp  = 30
   } else if (logBase.pvalue == 10) {
-    y.limUp  <- 10
+    y.limUp  = 10
   }
   
   if (is.numeric(ylimUp)) {
-    y.limUp <- ylimUp 
+    y.limUp = ylimUp 
   }
   
   ## remove the result, NA and Inf
-  data <- data[!is.na(data$adj.pvalue), ]
-  data <- data[is.finite(data$log2FC)]
+  data = data[!is.na(data$adj.pvalue), ]
+  data = data[is.finite(data$log2FC)]
   
   ## group for coloring dots
   if (!FCcutoff) {  
-    data[data$adj.pvalue >= sig, "colgroup"] <- "black"
-    data[which(data$adj.pvalue < sig & data[, 3] > 0), "colgroup"] <- "red"
-    data[which(data$adj.pvalue < sig & data[, 3] < 0), "colgroup"] <- "blue" 
+    data[data$adj.pvalue >= sig, "colgroup"] = "black"
+    data[which(data$adj.pvalue < sig & data[, 3] > 0), "colgroup"] = "red"
+    data[which(data$adj.pvalue < sig & data[, 3] < 0), "colgroup"] = "blue" 
   }
   
   if (is.numeric(FCcutoff)) {
-    data$colgroup <- "black"
+    data$colgroup = "black"
     
     if (colnames(data)[3] == "log2FC") {
       data[which(data$adj.pvalue < sig & data[, 3] > log2(FCcutoff)), 
-           "colgroup"] <- "red"
+           "colgroup"] = "red"
       data[which(data$adj.pvalue < sig & data[, 3] < (-log2(FCcutoff))), 
-           "colgroup"] <- "blue"
+           "colgroup"] = "blue"
     }
     
     if (colnames(data)[3] == "log10FC") {
-      data <- data[is.finite(data$log10FC)]
+      data = data[is.finite(data$log10FC)]
       data[which(data$adj.pvalue < sig & data[, 3] > log10(FCcutoff)), 
-           "colgroup"] <- "red"
+           "colgroup"] = "red"
       data[which(data$adj.pvalue < sig & data[, 3] < (-log10(FCcutoff))), 
-           "colgroup"] <- "blue"
+           "colgroup"] = "blue"
     }
   }
   
-  data$colgroup <- factor(data$colgroup, levels=c("black", "blue", "red"))
+  data$colgroup = factor(data$colgroup, levels=c("black", "blue", "red"))
   
   ## for multiple volcano plots, 
   for (i in seq_len(nlevels(data$Label))) {
     
-    sub <- data[data$Label == levels(data$Label)[i], ]
+    sub = data[data$Label == levels(data$Label)[i], ]
     
     if (logBase.pvalue == 2) {
-      sub$adj.pvalue[sub$adj.pvalue < 2^(-y.limUp)] <- 2^(-y.limUp)
+      sub$adj.pvalue[sub$adj.pvalue < 2^(-y.limUp)] = 2^(-y.limUp)
     } else if (logBase.pvalue == 10) {
-      sub$adj.pvalue[sub$adj.pvalue < 10^(-y.limUp)] <- 10^(-y.limUp)
+      sub$adj.pvalue[sub$adj.pvalue < 10^(-y.limUp)] = 10^(-y.limUp)
     }
     
-    sub <- as.data.table(sub)
+    sub = as.data.table(sub)
     
     if (logBase.pvalue == 2) {
-      y.limup <- ceiling(max(-log2(sub[!is.na(sub$adj.pvalue), "adj.pvalue"])))
+      y.limup = ceiling(max(-log2(sub[!is.na(sub$adj.pvalue), "adj.pvalue"])))
       if (y.limup < (-log2(sig))) {
-        y.limup <- (-log2(sig) + 1) ## for too small y.lim
+        y.limup = (-log2(sig) + 1) ## for too small y.lim
       }
     } else if (logBase.pvalue == 10) {
-      y.limup <- ceiling(max(-log10(sub[!is.na(sub$adj.pvalue), "adj.pvalue"])))
+      y.limup = ceiling(max(-log10(sub[!is.na(sub$adj.pvalue), "adj.pvalue"])))
       if (y.limup < (-log10(sig))) {
-        y.limup <- (-log10(sig) + 1) ## for too small y.lim
+        y.limup = (-log10(sig) + 1) ## for too small y.lim
       }
     }
     
     ## ylimDown
-    y.limdown <- 0 ## default is zero
+    y.limdown = 0 ## default is zero
     if (is.numeric(ylimDown)) {
-      y.limdown <- ylimDown
+      y.limdown = ylimDown
     }
     
     ## x.lim
-    x.lim <- ceiling(max(abs(sub[is.finite(log2FC), log2FC])))
+    x.lim = ceiling(max(abs(sub[is.finite(log2FC), log2FC])))
     
     if (x.lim < 3) {
-      x.lim <- 3
+      x.lim = 3
     }
     if (is.numeric(xlimUp)) {
-      x.lim <- xlimUp
+      x.lim = xlimUp
     }
     ## for assigning x in ggplot2
-    subtemp <- sub
-    colnames(subtemp)[3] <- "logFC"
+    subtemp = sub
+    colnames(subtemp)[3] = "logFC"
     
     if (logBase.pvalue == 2) {
-      subtemp$logadjp <- (-log2(subtemp$adj.pvalue))
+      subtemp$logadjp = (-log2(subtemp$adj.pvalue))
     } else if (logBase.pvalue == 10) {
-      subtemp$logadjp <- (-log10(subtemp$adj.pvalue))
+      subtemp$logadjp = (-log10(subtemp$adj.pvalue))
     }
     
     ## for x limit for inf or -inf
-    subtemp$newlogFC <- subtemp$logFC
+    subtemp$newlogFC = subtemp$logFC
     subtemp[!is.na(subtemp$issue) &
               subtemp$issue == "oneConditionMissing" & 
-              subtemp$logFC == Inf, "newlogFC"] <- (x.lim - 0.2)
+              subtemp$logFC == Inf, "newlogFC"] = (x.lim - 0.2)
     subtemp[!is.na(subtemp$issue) & 
               subtemp$issue == "oneConditionMissing" & 
-              subtemp$logFC == (-Inf), "newlogFC"] <- (x.lim - 0.2) * (-1)
+              subtemp$logFC == (-Inf), "newlogFC"] = (x.lim - 0.2) * (-1)
     
     ## add (*) in Protein name for Inf or -Inf
-    subtemp$Protein <- as.character(subtemp$Protein)
+    subtemp$Protein = as.character(subtemp$Protein)
     subtemp[!is.na(subtemp$issue) & 
-              subtemp$issue == "oneConditionMissing", "Protein"] <- 
+              subtemp$issue == "oneConditionMissing", "Protein"] = 
       paste0("*", subtemp[!is.na(subtemp$issue) & 
                             subtemp$issue == "oneConditionMissing", "Protein"])
     
     if (logBase.pvalue == 2) {
-      log_title <- 'Log2'
+      log_title = 'Log2'
     } else if (logBase.pvalue == 10) {
-      log_title <- 'Log10'
+      log_title = 'Log10'
     }
     
-    ptemp <- ggplot(aes_string(x='logFC', y='logadjp',
+    ptemp = ggplot(aes_string(x='logFC', y='logadjp',
                                color='colgroup',
                                label='Protein'),
                     data=subtemp) +
@@ -495,7 +495,7 @@
         message(paste0("The volcano plot for ", unique(subtemp$Label), 
       " does not show the protein names because none of them are significant."))
       } else {
-        ptemp <- ptemp +
+        ptemp = ptemp +
           geom_text_repel(data=subtemp[subtemp$colgroup != "black", ],
                           aes(label=Protein),
                           size=text.size,
@@ -505,23 +505,23 @@
     
     ## For legend of linetype for cutoffs
     ## first assign line type
-    ltypes <- c("type1"="twodash", "type2"="dotted")
+    ltypes = c("type1"="twodash", "type2"="dotted")
     
     ## cutoff lines, FDR only
     if (!FCcutoff) {
       if (logBase.pvalue == 2){
-        sigcut <- data.table("Protein"='sigline', 
+        sigcut = data.table("Protein"='sigline', 
                              "logFC"=seq(-x.lim, x.lim, length.out=20),
                              "logadjp"=(-log2(sig)),
                              "line"='twodash')
       } else if (logBase.pvalue == 10) {
-        sigcut <- data.table("Protein"='sigline', 
+        sigcut = data.table("Protein"='sigline', 
                              "logFC"=seq(-x.lim, x.lim, length.out=20),
                              "logadjp"=(-log10(sig)),
                              "line"='twodash')
       }
       
-      pfinal <- ptemp +
+      pfinal = ptemp +
         geom_line(data=sigcut,
                   aes_string(x='logFC', y='logadjp', linetype='line'),
                   colour="darkgrey",
@@ -536,35 +536,35 @@
     if (is.numeric(FCcutoff)) {
       if (logBase.pvalue == 2) {
         ## three different lines
-        sigcut <- data.table("Protein"='sigline', 
+        sigcut = data.table("Protein"='sigline', 
                              "logFC"=seq(-x.lim, x.lim, length.out=10), 
                              "logadjp"=(-log2(sig)),
                              "line"='twodash')
-        FCcutpos <- data.table("Protein"='sigline', 
+        FCcutpos = data.table("Protein"='sigline', 
                                "logFC"=log2(FCcutoff), 
                                "logadjp"=seq(y.limdown, y.limup, length.out=10), 
                                "line"='dotted')
-        FCcutneg <- data.table("Protein"='sigline', 
+        FCcutneg = data.table("Protein"='sigline', 
                                "logFC"=(-log2(FCcutoff)), 
                                "logadjp"=seq(y.limdown, y.limup, length.out=10), 
                                "line"='dotted')
       } else if (logBase.pvalue == 10) {
         ## three different lines
-        sigcut <- data.table("Protein"='sigline', 
+        sigcut = data.table("Protein"='sigline', 
                              "logFC"=seq(-x.lim, x.lim, length.out=10), 
                              "logadjp"=(-log10(sig)),
                              "line"='twodash')
-        FCcutpos <- data.table("Protein"='sigline', 
+        FCcutpos = data.table("Protein"='sigline', 
                                "logFC"=log10(FCcutoff), 
                                "logadjp"=seq(y.limdown, y.limup, length.out=10), 
                                "line"='dotted')
-        FCcutneg <- data.table("Protein"='sigline', 
+        FCcutneg = data.table("Protein"='sigline', 
                                "logFC"=(-log10(FCcutoff)), 
                                "logadjp"=seq(y.limdown, y.limup, length.out=10), 
                                "line"='dotted')
       }
       ## three lines, with order color first and then assign linetype manual
-      pfinal <- ptemp +
+      pfinal = ptemp +
         geom_line(data=sigcut, 
                   aes_string(x='logFC', y='logadjp', linetype='line'),
                   colour="darkgrey",
@@ -588,7 +588,7 @@
                linetype=guide_legend())
     }
     
-    pfinal <- pfinal +
+    pfinal = pfinal +
       theme_msstats(type = "VOLCANO", x.axis.size, y.axis.size, legend.size, 
                     element_rect(fill = "gray95"),
                     element_text(colour = c("#00B0F6"), size = 14),

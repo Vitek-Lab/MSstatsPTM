@@ -38,7 +38,7 @@
 #' @examples
 #' 
 #' # Example annotation file
-#' annotation <- data.frame('Condition' = c('Control', 'Control', 'Control',
+#' annotation = data.frame('Condition' = c('Control', 'Control', 'Control',
 #'                          'Treatment', 'Treatment', 'Treatment'),
 #'                          'BioReplicate' = c(1,2,3,4,5,6),
 #'                          'Run' = c('prot_run_1', 'prot_run_2', 'prot_run_3',
@@ -50,7 +50,7 @@
 #' head(raw.input$PTM)
 #' head(raw.input$PROTEIN)
 #' 
-ProgenesistoMSstatsPTMFormat <- function(ptm_input,
+ProgenesistoMSstatsPTMFormat = function(ptm_input,
                                          annotation,
                                          global_protein_input = FALSE,
                                          fasta_path = FALSE,
@@ -61,26 +61,26 @@ ProgenesistoMSstatsPTMFormat <- function(ptm_input,
                                          removeProtein_with1Peptide=FALSE,
                                          mod.num = 'Single'){
 
-  ptm_input <- as.data.table(ptm_input)
-  annotation <- as.data.table(annotation)
-  col_order <- colnames(ptm_input)
-  ptm_input$id <- 1:nrow(ptm_input)
+  ptm_input = as.data.table(ptm_input)
+  annotation = as.data.table(annotation)
+  col_order = colnames(ptm_input)
+  ptm_input$id = 1:nrow(ptm_input)
   
-  annotation <- as.data.table(annotation)
-  ptm_annot <- annotation[Type == "PTM"]
-  protein_annot <- annotation[Type == "Protein"]
+  annotation = as.data.table(annotation)
+  ptm_annot = annotation[Type == "PTM"]
+  protein_annot = annotation[Type == "Protein"]
   
   X.10 = X.9 = X.8 = NULL
   
   ## Format PTM data
   if (fasta_path == FALSE) {
     ptm_input[,X.10 := paste(X.10, X.8, X.9, sep = "_")]
-    ptm_input[2, "X.10"] <- "Accession"
+    ptm_input[2, "X.10"] = "Accession"
   } else {
     .progensis.add.sites(ptm_input, fasta_path, col_order)
   }
 
-  convert.ptm <- ProgenesistoMSstatsFormat(ptm_input, ptm_annot,
+  convert.ptm = ProgenesistoMSstatsFormat(ptm_input, ptm_annot,
                                             useUniquePeptide,
                                             summaryforMultipleRows,
                                             removeFewMeasurements,
@@ -89,19 +89,19 @@ ProgenesistoMSstatsPTMFormat <- function(ptm_input,
   
   if (global_protein_input[[1]][1] != FALSE){
 
-    global_protein_input <- as.data.table(global_protein_input)
+    global_protein_input = as.data.table(global_protein_input)
 
-    convert.prot <- ProgenesistoMSstatsFormat(global_protein_input, 
+    convert.prot = ProgenesistoMSstatsFormat(global_protein_input, 
                                               protein_annot,
                                               useUniquePeptide,
                                               summaryforMultipleRows,
                                               removeFewMeasurements,
                                               removeOxidationMpeptides,
                                               removeProtein_with1Peptide)
-    MSstatsPTM.data <- list("PTM" = convert.ptm,
+    MSstatsPTM.data = list("PTM" = convert.ptm,
                             "PROTEIN" = convert.prot)
   } else {
-    MSstatsPTM.data <- list("PTM" = convert.ptm,
+    MSstatsPTM.data = list("PTM" = convert.ptm,
                             "PROTEIN" = NULL)
   }
   

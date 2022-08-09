@@ -56,11 +56,11 @@
 #' head(raw.input.tmt$PTM)
 #' head(raw.input.tmt$PROTEIN)
 #' 
-#' quant.tmt.msstatsptm <- dataSummarizationPTM_TMT(raw.input.tmt,
+#' quant.tmt.msstatsptm = dataSummarizationPTM_TMT(raw.input.tmt,
 #'                                                  method = "msstats", 
 #'                                                  verbose = FALSE)
 #' head(quant.tmt.msstatsptm$PTM$ProteinLevelData)
-dataSummarizationPTM_TMT <- function(
+dataSummarizationPTM_TMT = function(
   data,
   method = "msstats",
   global_norm = TRUE,
@@ -80,11 +80,11 @@ dataSummarizationPTM_TMT <- function(
   
   ## Start log  
   if (is.null(log_file_path) & use_log_file == TRUE){
-    time_now <- Sys.time()
-    path <- paste0("MSstatsPTM_log_", gsub("[ :\\-]", "_", time_now),
+    time_now = Sys.time()
+    path = paste0("MSstatsPTM_log_", gsub("[ :\\-]", "_", time_now),
                   ".log")
     file.create(path)
-  } else {path <- log_file_path}
+  } else {path = log_file_path}
 
   MSstatsLogsSettings(use_log_file, append,
                       verbose, log_file_path = path,
@@ -97,27 +97,27 @@ dataSummarizationPTM_TMT <- function(
                           remove_norm_channel, remove_empty_channel,
                           MBimpute, maxQuantileforCensored)
 
-  adj.protein <- FALSE
+  adj.protein = FALSE
   
-  PTM.dataset <- data[["PTM"]]
+  PTM.dataset = data[["PTM"]]
   
-  protein.dataset <- data[["PROTEIN"]]
+  protein.dataset = data[["PROTEIN"]]
   
   # Check PTM and PROTEIN data for correct format
-  adj.protein <- .summarizeCheck(data, 'TMT')
-  PTM.dataset <- as.data.table(PTM.dataset)
+  adj.protein = .summarizeCheck(data, 'TMT')
+  PTM.dataset = as.data.table(PTM.dataset)
   
   getOption("MSstatsTMTLog")("INFO", "Parameter and data checks complete.")
   
   ## Determine if protein level should also be summarized
   if (adj.protein) {
     getOption("MSstatsTMTLog")("INFO", "Protein dataset was included.")
-    protein.dataset <- as.data.frame(protein.dataset)
+    protein.dataset = as.data.frame(protein.dataset)
   }
   
   ## Run summarization function from MSstatsTMT
   getOption("MSstatsTMTLog")("INFO", "Starting PTM summarization..")
-  ptm.summarized <- proteinSummarization(PTM.dataset,
+  ptm.summarized = proteinSummarization(PTM.dataset,
                                          method, global_norm.PTM, 
                                          reference_norm.PTM,
                                          remove_norm_channel,
@@ -129,7 +129,7 @@ dataSummarizationPTM_TMT <- function(
   
   if (adj.protein) {
     getOption("MSstatsTMTLog")("INFO", "Starting Protein summarization..")
-    protein.summarized <- proteinSummarization(protein.dataset,
+    protein.summarized = proteinSummarization(protein.dataset,
                                                method, global_norm, 
                                                reference_norm,
                                                remove_norm_channel,
@@ -142,9 +142,9 @@ dataSummarizationPTM_TMT <- function(
   
   ## Compile and return summarized results
   getOption("MSstatsTMTLog")("INFO", "Summarization complete. Returning output")
-  msstatsptm.summarized <- list("PTM" = ptm.summarized)
+  msstatsptm.summarized = list("PTM" = ptm.summarized)
   if (adj.protein) {
-    msstatsptm.summarized <- c(msstatsptm.summarized,
+    msstatsptm.summarized = c(msstatsptm.summarized,
                                "PROTEIN" = list(protein.summarized))
   }
   

@@ -59,7 +59,7 @@
 #' head(raw.input.tmt$PTM)
 #' head(raw.input.tmt$PROTEIN)
 #' 
-MaxQtoMSstatsPTMFormat <- function(sites.data,
+MaxQtoMSstatsPTMFormat = function(sites.data,
                                    annotation.ptm,
                                    evidence = NULL,
                                    proteinGroups = NULL,
@@ -78,20 +78,20 @@ MaxQtoMSstatsPTMFormat <- function(sites.data,
                             which.proteinid.protein,
                             removeMpeptides)
   
-  pho.data <- as.data.table(sites.data)
-  annot.ptm <- as.data.table(annotation.ptm)
-  annot <- as.data.table(annotation.prot)
+  pho.data = as.data.table(sites.data)
+  annot.ptm = as.data.table(annotation.ptm)
+  annot = as.data.table(annotation.prot)
   
-  clean.prot <- .check.global.protein(evidence, proteinGroups)
+  clean.prot = .check.global.protein(evidence, proteinGroups)
 
   ## Format annotation for PTM
   setcolorder(annot.ptm, c("Run", "Channel", "Condition", "Mixture", 
                        "TechRepMixture", "Fraction", "BioReplicate"))
-  #annot.ptm <- copy(annot)
-  annot.ptm <- annot.ptm[, "Fraction" := NULL] ## TODO: should this be removed?
-  annot.ptm <- annot.ptm[, "Run" :=NULL] ## We recreate this column to match with PTM data
-  annot.ptm <- unique(annot.ptm)
-  annot.ptm$Replicate <- paste0("Reporter.intensity.corrected.",
+  #annot.ptm = copy(annot)
+  annot.ptm = annot.ptm[, "Fraction" := NULL] ## TODO: should this be removed?
+  annot.ptm = annot.ptm[, "Run" :=NULL] ## We recreate this column to match with PTM data
+  annot.ptm = unique(annot.ptm)
+  annot.ptm$Replicate = paste0("Reporter.intensity.corrected.",
                                 gsub('channel.', '', annot.ptm$Channel), 
                                 ".", TMT.keyword, 
                                 gsub("mixture", "", annot.ptm$Mixture), 
@@ -99,12 +99,12 @@ MaxQtoMSstatsPTMFormat <- function(sites.data,
                                 
     
   # if (keyword == "Plex"){
-  #   annot.ptm$Replicate <- paste0("Reporter.intensity.corrected.",
+  #   annot.ptm$Replicate = paste0("Reporter.intensity.corrected.",
   #                             gsub('channel.', '', annot.ptm$Channel),
   #                             ".",
   #                             paste0('Plex', annot.ptm$Mixture))
   # } else {
-  #   annot.ptm$Replicate <- paste0("Reporter.intensity.corrected.",
+  #   annot.ptm$Replicate = paste0("Reporter.intensity.corrected.",
   #                                 gsub('channel.', '', annot.ptm$Channel),
   #                                 ".",
   #                                 gsub('mixture', 'TMT', annot.ptm$Mixture),
@@ -113,7 +113,7 @@ MaxQtoMSstatsPTMFormat <- function(sites.data,
   
   
 
-  MSstatsPTMTMT.abun <- .convert.ptm.data(pho.data,
+  MSstatsPTMTMT.abun = .convert.ptm.data(pho.data,
                                           annot.ptm,
                                           mod.num,
                                           ptm.keyword,
@@ -123,28 +123,28 @@ MaxQtoMSstatsPTMFormat <- function(sites.data,
   ## MaxQ phospho file has duplicate peptides per site 
   ## (if site has equal probability)
   ## Add protein into site to create unique identifier
-  MSstatsPTMTMT.abun$PeptideSequence <- paste(
+  MSstatsPTMTMT.abun$PeptideSequence = paste(
     MSstatsPTMTMT.abun$PeptideSequence, MSstatsPTMTMT.abun$ProteinName, 
     sep = ':')
   
   setDT(MSstatsPTMTMT.abun)[, PeptideSequence := tstrsplit(PeptideSequence, ":",
                                                            keep = 1)]
   
-  MSstatsPTMformat <- list('PTM' = MSstatsPTMTMT.abun)
+  MSstatsPTMformat = list('PTM' = MSstatsPTMTMT.abun)
 
   if (clean.prot == TRUE){
 
     ## Clean raw data
-    #evidence <- as.data.table(evidence)
-    evidence <- evidence[!grepl("phos", evidence$Raw.file),]
-    #proteinGroups <- as.data.table(proteinGroups)
+    #evidence = as.data.table(evidence)
+    evidence = evidence[!grepl("phos", evidence$Raw.file),]
+    #proteinGroups = as.data.table(proteinGroups)
     
-    MSstatsTMT.abun <- MaxQtoMSstatsTMTFormat(evidence = evidence,
+    MSstatsTMT.abun = MaxQtoMSstatsTMTFormat(evidence = evidence,
                                        proteinGroups = proteinGroups,
                                        annotation = annot,
                                       which.proteinid = which.proteinid.protein)
 
-    MSstatsPTMformat <- list('PTM' = MSstatsPTMTMT.abun, 
+    MSstatsPTMformat = list('PTM' = MSstatsPTMTMT.abun, 
                             "PROTEIN" = MSstatsTMT.abun)
 
   }
