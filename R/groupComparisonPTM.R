@@ -104,13 +104,17 @@ groupComparisonPTM = function(data, data.type,
   message("Starting PTM modeling...")
   if (data.type == 'TMT'){
     getOption(option_log)("INFO", "Starting TMT PTM Model")
-    ptm_model_full = groupComparisonTMT(data.ptm, contrast.matrix = contrast.matrix,
-                                    moderated = moderated, 
-                                    adj.method = adj.method,
-                                    use_log_file = use_log_file,append = append,
-                                    verbose = verbose, log_file_path = path)
+    ptm_model_full = groupComparisonTMT(data.ptm, 
+                                        contrast.matrix = contrast.matrix,
+                                        moderated = moderated, 
+                                        adj.method = adj.method,
+                                        save_fitted_models = TRUE,
+                                        use_log_file = use_log_file, 
+                                        append = append, verbose = verbose, 
+                                        log_file_path = path)
     ptm_model = ptm_model_full$ComparisonResult
     ptm_model_site_sep = ptm_model_full$ComparisonResult
+    ptm_model_details = ptm_model_full$FittedModel
   } else if (data.type == 'LabelFree') {
     getOption(option_log)("INFO", "Starting non-TMT PTM Model")
     ptm_model_full = groupComparison(contrast.matrix,
@@ -119,7 +123,6 @@ groupComparisonPTM = function(data, data.type,
                                       log_file_path = path)
     ptm_model = ptm_model_full$ComparisonResult
     ptm_model_site_sep = ptm_model_full$ComparisonResult
-    
     ptm_model_details = ptm_model_full$FittedModel
   }
   
@@ -131,15 +134,17 @@ groupComparisonPTM = function(data, data.type,
     message("Starting Protein modeling...")
     if (data.type == 'TMT'){
       getOption(option_log)("INFO", "Starting TMT Protein Model")
-      protein_model = groupComparisonTMT(data.protein, 
+      protein_model_full = groupComparisonTMT(data.protein, 
                                           contrast.matrix = contrast.matrix,
                                           moderated = moderated, 
                                           adj.method = adj.method,
+                                          save_fitted_models = TRUE,
                                           use_log_file = use_log_file,
                                           append = append,
                                           verbose = verbose, 
                                           log_file_path = path)
-      protein_model = protein_model$ComparisonResult
+      protein_model = protein_model_full$ComparisonResult
+      protein_model_details = protein_model_full$FittedModel
     } else if (data.type == 'LabelFree') {
       getOption(option_log)("INFO", "Starting non-TMT Protein Model")
       protein_model_full = groupComparison(contrast.matrix, 
@@ -148,7 +153,6 @@ groupComparisonPTM = function(data, data.type,
                                             append, verbose, 
                                             log_file_path = path)
       protein_model = protein_model_full$ComparisonResult
-      
       protein_model_details = protein_model_full$FittedModel
     }
     
@@ -197,8 +201,11 @@ groupComparisonPTM = function(data, data.type,
     missing_rows$Adjusted = FALSE
     missing_rows[, c('issue', 'MissingPercentage', 
                     'ImputationPercentage', 'temp_check'):=NULL]
-    
-    adjusted_models = rbindlist(list(adjusted_models, missing_rows))
+    if (data.type == 'TMT'){
+      missing_rows$Tvalue = missing_rows$log2FC / missing_rows$SE
+    }
+    adjusted_models = rbindlist(list(adjusted_models, missing_rows), 
+                                use.names=TRUE)
     adjusted_models = adjusted_models[!is.na(adjusted_models$Protein)]
     
     getOption(option_log)("INFO", "Adjustment complete, returning models.")
