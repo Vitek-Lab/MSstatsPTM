@@ -118,7 +118,8 @@ value imputation. These options should be reviewed in the package documentation.
 
 ```{r summarize, message=FALSE, warning=FALSE}
 
-MSstatsPTM.summary = dataSummarizationPTM(raw.input, verbose = FALSE)
+MSstatsPTM.summary = dataSummarizationPTM(raw.input, verbose = FALSE, 
+                                          use_log_file = FALSE, append = FALSE)
 
 head(MSstatsPTM.summary$PTM$ProteinLevelData)
 head(MSstatsPTM.summary$PROTEIN$ProteinLevelData)
@@ -171,9 +172,10 @@ row.names(comparison) = "CCCP-Ctrl"
 colnames(comparison) = c("CCCP", "Combo", "Ctrl", "USP30_OE")
 
 MSstatsPTM.model = groupComparisonPTM(MSstatsPTM.summary, 
-                                       data.type = "LabelFree",
-                                       contrast.matrix = comparison,
-                                       verbose = FALSE)
+                                      data.type = "LabelFree",
+                                      contrast.matrix = comparison,
+                                      use_log_file = FALSE, append = FALSE,
+                                      verbose = FALSE)
 head(MSstatsPTM.model$PTM.Model)
 head(MSstatsPTM.model$PROTEIN.Model)
 head(MSstatsPTM.model$ADJUSTED.Model)

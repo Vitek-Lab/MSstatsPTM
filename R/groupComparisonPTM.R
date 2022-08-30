@@ -194,6 +194,7 @@ groupComparisonPTM = function(data, data.type,
     missing_ptms = setdiff(ptm_model$temp_check, adjusted_models$temp_check)
     
     adjusted_models$Adjusted = TRUE
+    ptm_model$temp_check = NULL
     adjusted_models$temp_check = NULL
     
     missing_rows = ptm_model[ptm_model$temp_check %in% missing_ptms]

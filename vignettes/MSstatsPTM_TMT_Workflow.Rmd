@@ -106,7 +106,9 @@ value imputation. These options should be reviewed in the package documentation.
 
 ```{r summarize, echo=FALSE, message=FALSE, warning=FALSE}
 
-MSstatsPTM.summary <- dataSummarizationPTM_TMT(raw.input.tmt, verbose = FALSE)
+MSstatsPTM.summary <- dataSummarizationPTM_TMT(raw.input.tmt, 
+                                               use_log_file = FALSE, 
+                                               append = FALSE, verbose = FALSE)
 ```
 
 ```{r show_summ}
@@ -169,7 +171,8 @@ colnames(comparison) <- c('Condition_1','Condition_2','Condition_3',
                           'Condition_4','Condition_5','Condition_6')
 MSstatsPTM.model <- groupComparisonPTM(MSstatsPTM.summary,
                                        data.type = "TMT",
-                                       contrast.matrix = comparison)
+                                       contrast.matrix = comparison,
+                                       use_log_file = FALSE, append = FALSE)
 head(MSstatsPTM.model$PTM.Model)
 head(MSstatsPTM.model$PROTEIN.Model)
 head(MSstatsPTM.model$ADJUSTED.Model)

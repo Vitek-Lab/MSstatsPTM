@@ -19,6 +19,17 @@
 #' @param power a pre-specified statistical power which defined as the probability 
 #' of detecting a true fold change. TRUE represent you require to calculate the power 
 #' for this category, else you should input the average of power you expect. Default is 0.9
+#' @param use_log_file logical. If TRUE, information about data processing
+#' will be saved to a file.
+#' @param append logical. If TRUE, information about data processing will be 
+#' added to an existing log file.
+#' @param verbose logical. If TRUE, information about data processing will be 
+#' printed to the console.
+#' @param log_file_path character. Path to a file to which information about 
+#' data processing will be saved. 
+#' If not provided, such a file will be created automatically.
+#' If `append = TRUE`, has to be a valid path to a file.
+#' @param base start of the file name.
 #' 
 #' @details The function fits the model and uses variance components to calculate 
 #' sample size. The underlying model fitting with intensity-based linear model with 
@@ -40,10 +51,10 @@
 #'                                      verbose = FALSE)
 #'                                      
 #' #(1) Minimal number of biological replicates per condition
-#' designSampleSize(data=model.lf.msstatsptm, numSample=TRUE,
+#' designSampleSizePTM(data=model.lf.msstatsptm, numSample=TRUE,
 #'                  desiredFC=c(2.0,2.75), FDR=0.05, power=0.8)
 #' #(2) Power calculation
-#' designSampleSize(data=model.lf.msstatsptm, numSample=5,
+#' designSampleSizePTM(data=model.lf.msstatsptm, numSample=5,
 #'                  desiredFC=c(2.0,2.75), FDR=0.05, power=TRUE)                                  
 #' 
 #' 

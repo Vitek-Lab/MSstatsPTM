@@ -2,7 +2,7 @@ Package: MSstatsPTM
 Type: Package
 Title: Statistical Characterization of Post-translational Modifications
 Version: 1.5.1
-Date: 2022-08-09
+Date: 2022-08-30
 Description: MSstatsPTM provides general statistical methods for quantitative 
     characterization of post-translational modifications (PTMs). Supports DDA, 
     DIA, SRM, and tandem mass tag (TMT) labeling. Typically, the 
@@ -23,11 +23,7 @@ Depends: R (>= 4.0)
 Imports: dplyr, gridExtra, stringr, stats, ggplot2, 
             grDevices, MSstatsTMT, MSstatsConvert, MSstats,
             data.table, Rcpp, Biostrings, checkmate, ggrepel
-Suggests: BiocStyle,
-    knitr,
-    rmarkdown,
-    tinytest,
-    covr
+Suggests: knitr, rmarkdown, tinytest, covr
 LazyData: true
 LinkingTo: Rcpp
 VignetteBuilder: knitr
