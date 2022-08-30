@@ -1,7 +1,7 @@
 Package: MSstatsPTM
 Type: Package
 Title: Statistical Characterization of Post-translational Modifications
-Version: 1.5.1
+Version: 1.5.3
 Date: 2022-08-30
 Description: MSstatsPTM provides general statistical methods for quantitative 
     characterization of post-translational modifications (PTMs). Supports DDA, 
