@@ -1,11 +1,11 @@
 Package: MSstatsPTM
 Type: Package
 Title: Statistical Characterization of Post-translational Modifications
-Version: 1.5.2
-Date: 2021-11-08
+Version: 1.5.3
+Date: 2022-08-30
 Description: MSstatsPTM provides general statistical methods for quantitative 
     characterization of post-translational modifications (PTMs). Supports DDA, 
-    DIA, and tandem mass tag (TMT) labeling. Typically, the 
+    DIA, SRM, and tandem mass tag (TMT) labeling. Typically, the 
     analysis involves the quantification of PTM sites (i.e., modified residues) 
     and their corresponding proteins, as well as the integration of the 
     quantification results. MSstatsPTM provides functions for summarization, 
@@ -23,11 +23,7 @@ Depends: R (>= 4.0)
 Imports: dplyr, gridExtra, stringr, stats, ggplot2, 
             grDevices, MSstatsTMT, MSstatsConvert, MSstats,
             data.table, Rcpp, Biostrings, checkmate, ggrepel
-Suggests: BiocStyle,
-    knitr,
-    rmarkdown,
-    tinytest,
-    covr
+Suggests: knitr, rmarkdown, tinytest, covr
 LazyData: true
 LinkingTo: Rcpp
 VignetteBuilder: knitr
@@ -36,4 +32,4 @@ biocViews: ImmunoOncology, MassSpectrometry, Proteomics, Software, DifferentialE
 BugReports: https://github.com/Vitek-Lab/MSstatsPTM/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1

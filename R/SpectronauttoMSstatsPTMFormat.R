@@ -47,7 +47,7 @@
 #' head(raw.input$PTM)
 #' head(raw.input$PROTEIN)
 #'
-SpectronauttoMSstatsPTMFormat <- function(PTM.data,
+SpectronauttoMSstatsPTMFormat = function(PTM.data,
                                           fasta,
                                           Protein.data = NULL,
                                           annotation = NULL,
@@ -67,19 +67,19 @@ SpectronauttoMSstatsPTMFormat <- function(PTM.data,
   ## Check variable input
   
   ## Ensure format of input data
-  PTM.data <- as.data.table(PTM.data)
+  PTM.data = as.data.table(PTM.data)
   if (!is.null(Protein.data)){
-    Protein.data <- as.data.table(Protein.data)
+    Protein.data = as.data.table(Protein.data)
   }
   
   ## Check and filter for available conditions
   if (which.Conditions != 'all') {
 
-    PTM_conditions <- unique(PTM.data$R.Condition)
+    PTM_conditions = unique(PTM.data$R.Condition)
     if (!is.null(Protein.data)){
-      Protein_conditions <- unique(Protein.data$R.Condition)
+      Protein_conditions = unique(Protein.data$R.Condition)
     } else {
-      Protein_conditions <- PTM_conditions
+      Protein_conditions = PTM_conditions
     }
     if((length(setdiff(PTM_conditions, which.Conditions)
     ) == length(PTM_conditions)) |
@@ -92,119 +92,119 @@ SpectronauttoMSstatsPTMFormat <- function(PTM.data,
       stop(msg)
     }
 
-    PTM_conditions <- PTM_conditions[(R.Condition %in% which.Conditions)]
+    PTM_conditions = PTM_conditions[(R.Condition %in% which.Conditions)]
     if (!is.null(Protein_conditions)){
-      Protein_conditions <- Protein_conditions[
+      Protein_conditions = Protein_conditions[
         (R.Condition %in% which.Conditions)]
     }
   }
   
   ## MSstats process
-  df.ptm <- SpectronauttoMSstatsFormat(PTM.data, annotation, intensity,
+  df.ptm = SpectronauttoMSstatsFormat(PTM.data, annotation, intensity,
                                        filter_with_Qvalue, qvalue_cutoff,
                                        useUniquePeptide, removeFewMeasurements,
                                        removeProtein_with1Feature,
                                        summaryforMultipleRows)
-  df.ptm <- as.data.table(as.matrix(df.ptm))
+  df.ptm = as.data.table(as.matrix(df.ptm))
   if (!is.null(Protein.data)){
-    df.protein <- SpectronauttoMSstatsFormat(as.data.frame(Protein.data), 
+    df.protein = SpectronauttoMSstatsFormat(as.data.frame(Protein.data), 
                                          annotation, intensity,
                                          filter_with_Qvalue, qvalue_cutoff,
                                          useUniquePeptide, removeFewMeasurements,
                                          removeProtein_with1Feature,
                                          summaryforMultipleRows)
-    df.protein <- as.data.table(as.matrix(df.protein))
+    df.protein = as.data.table(as.matrix(df.protein))
   }
   
   ## Remove non-unique proteins and modified peptides if requested
   if (removeNonUniqueProteins){
-    df.ptm <- df.ptm[!grepl(";", df.ptm$ProteinName),]
+    df.ptm = df.ptm[!grepl(";", df.ptm$ProteinName),]
   }
   
   if (removeiRT){
-    df.ptm <- df.ptm[!grepl("iRT", df.ptm$ProteinName),]
+    df.ptm = df.ptm[!grepl("iRT", df.ptm$ProteinName),]
   }
   
   ## Format peptide data for locate peptide function
-  df.ptm$PeptideSequence <- gsub("_", "", df.ptm$PeptideSequence)
-  df.ptm$PeptideSequence <- gsub(paste0("\\[", modificationLabel, "\\]"),
+  df.ptm$PeptideSequence = gsub("_", "", df.ptm$PeptideSequence)
+  df.ptm$PeptideSequence = gsub(paste0("\\[", modificationLabel, "\\]"),
                                  "*", df.ptm$PeptideSequence)
   
   ## Remove modifications not in modificationLabel
-  df.ptm <- df.ptm[!grepl("\\[", df.ptm$PeptideSequence),]
-  df.ptm$join_PeptideSequence <- gsub("\\*", "", df.ptm$PeptideSequence)
+  df.ptm = df.ptm[!grepl("\\[", df.ptm$PeptideSequence),]
+  df.ptm$join_PeptideSequence = gsub("\\*", "", df.ptm$PeptideSequence)
   
-  locate_mod_df <- unique(df.ptm[, c("ProteinName", "PeptideSequence", 
+  locate_mod_df = unique(df.ptm[, c("ProteinName", "PeptideSequence", 
                                      "join_PeptideSequence")])
   
-  locate_mod_df <- locate_mod_df[grepl("\\*", locate_mod_df$PeptideSequence),]
+  locate_mod_df = locate_mod_df[grepl("\\*", locate_mod_df$PeptideSequence),]
   
   ## Load and format FASTA file
   if (identical(typeof(fasta), "character")){
-    fasta <- tidyFasta(fasta)
+    fasta = tidyFasta(fasta)
   }
-  formated_fasta <- as.data.table(fasta)
+  formated_fasta = as.data.table(fasta)
   
-  min_len_peptide <- 6
-  df.fasta.ptm <- merge(locate_mod_df, 
+  min_len_peptide = 6
+  df.fasta.ptm = merge(locate_mod_df, 
                         formated_fasta[, c("uniprot_iso", "sequence")], 
                         by.x = "ProteinName", by.y = "uniprot_iso")
   
-  df.fasta.ptm <- df.fasta.ptm[
+  df.fasta.ptm = df.fasta.ptm[
     which(nchar(df.fasta.ptm$join_PeptideSequence) > min_len_peptide & str_count(
       df.fasta.ptm$sequence, df.fasta.ptm$join_PeptideSequence) == 1),]
   
-  start <- sapply(seq_len(nrow(df.fasta.ptm)),
+  start = sapply(seq_len(nrow(df.fasta.ptm)),
                   function(i) gregexpr(df.fasta.ptm$PeptideSequence[i], 
                                        df.fasta.ptm$sequence[i])[[1]])
-  mod_loc <- sapply(df.fasta.ptm$PeptideSequence, 
+  mod_loc = sapply(df.fasta.ptm$PeptideSequence, 
                     function(x) {gregexpr("\\*", x)})
   
-  # mod_index <- sapply(seq_along(mod_loc), function(i){mod_loc[i] <- list(
+  # mod_index = sapply(seq_along(mod_loc), function(i){mod_loc[i] = list(
   #     as.integer(unlist(mod_loc[i])) + start[i][[1]][1])})
   
-  peptide_mod <- mapply(spectro_get_sites, mod_loc, start,
+  peptide_mod = mapply(spectro_get_sites, mod_loc, start,
                         df.fasta.ptm$join_PeptideSequence)
   
-  df.fasta.ptm$Site <- peptide_mod
+  df.fasta.ptm$Site = peptide_mod
   
-  df.fasta.join <- unique(df.fasta.ptm[, c("ProteinName", "PeptideSequence", 
+  df.fasta.join = unique(df.fasta.ptm[, c("ProteinName", "PeptideSequence", 
                                            "Site")])
   
   if (!removeNonUniqueProteins){
-    add_non_unique <- unique(locate_mod_df[grepl(";", locate_mod_df$ProteinName), 
+    add_non_unique = unique(locate_mod_df[grepl(";", locate_mod_df$ProteinName), 
                                     c("ProteinName", "PeptideSequence")])
-    add_non_unique$Site <- add_non_unique$PeptideSequence
-    df.fasta.join <- rbindlist(list(df.fasta.join, add_non_unique))
+    add_non_unique$Site = add_non_unique$PeptideSequence
+    df.fasta.join = rbindlist(list(df.fasta.join, add_non_unique))
   }
   
   #Data formatting for MSstatsLiP analysis
-  MSstats_PTM <- merge(df.ptm, df.fasta.join,
+  MSstats_PTM = merge(df.ptm, df.fasta.join,
                        by = c("ProteinName", "PeptideSequence"))
-  MSstats_PTM$ProteinName <- paste(MSstats_PTM$ProteinName,
+  MSstats_PTM$ProteinName = paste(MSstats_PTM$ProteinName,
                                    MSstats_PTM$Site, sep = '_')
   
-  MSstats_PTM$Intensity <- ifelse(MSstats_PTM$Intensity <= 1, NA, 
+  MSstats_PTM$Intensity = ifelse(MSstats_PTM$Intensity <= 1, NA, 
                                   MSstats_PTM$Intensity)
   MSstats_PTM[, join_PeptideSequence := NULL]
   
   if (!is.null(Protein.data)) {
     if (removeNonUniqueProteins){
-      df.protein <- df.protein[!grepl(";", df.protein$ProteinName),]
+      df.protein = df.protein[!grepl(";", df.protein$ProteinName),]
     }
-    # df.protein$PeptideSequence <- str_extract(df.protein$PeptideSequence,
+    # df.protein$PeptideSequence = str_extract(df.protein$PeptideSequence,
     #                                       "([ACDEFGHIKLMNPQRSTVWY]+)")
-    df.protein <- df.protein[nchar(PeptideSequence) > min_len_peptide]
+    df.protein = df.protein[nchar(PeptideSequence) > min_len_peptide]
     # 
-    # df.protein$Intensity <- ifelse(df.protein$Intensity <= 1, NA, 
+    # df.protein$Intensity = ifelse(df.protein$Intensity <= 1, NA, 
     #                                df.protein$Intensity)
     
-    MSstats_Protein <- df.protein
+    MSstats_Protein = df.protein
   } else {
-    MSstats_Protein <- NULL
+    MSstats_Protein = NULL
   }
   
-  PTMExpt <- list(
+  PTMExpt = list(
     PTM = MSstats_PTM,
     PROTEIN = MSstats_Protein
   )

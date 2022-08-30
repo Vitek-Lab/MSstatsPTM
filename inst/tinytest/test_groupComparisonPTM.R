@@ -20,21 +20,17 @@ expect_inherits(group.comp$PTM.Model, "data.table")
 expect_inherits(group.comp$PROTEIN.Model, "data.table")
 expect_inherits(group.comp$ADJUSTED.Model, "data.table")
 
-expect_equal(colnames(group.comp$PTM.Model), c("Protein", "Label", "log2FC", 
-                                               "SE", "Tvalue", "DF", "pvalue",
-                                               "adj.pvalue", "issue", 
-                                               "MissingPercentage", 
-                                               "ImputationPercentage"))
-expect_equal(colnames(group.comp$PROTEIN.Model), c("Protein", "Label", "log2FC", 
-                                               "SE", "Tvalue", "DF", "pvalue",
-                                               "adj.pvalue", "issue", 
-                                               "MissingPercentage", 
-                                               "ImputationPercentage"))
-expect_equal(colnames(group.comp$ADJUSTED.Model), c("Protein", "Label", 
-                                                    "log2FC", "SE", "Tvalue", 
-                                                    "DF", "pvalue", 
-                                                    "adj.pvalue", 
-                                                    "GlobalProtein"))
+expect_equal(colnames(group.comp$PTM.Model), 
+             c("Protein", "Label", "log2FC", "SE", "Tvalue", "DF", "pvalue",
+               "adj.pvalue", "issue", "MissingPercentage", 
+               "ImputationPercentage"))
+expect_equal(colnames(group.comp$PROTEIN.Model), 
+             c("Protein", "Label", "log2FC", "SE", "Tvalue", "DF", "pvalue",
+               "adj.pvalue", "issue", "MissingPercentage", 
+               "ImputationPercentage"))
+expect_equal(colnames(group.comp$ADJUSTED.Model), 
+             c("Protein", "Label", "log2FC", "SE", "Tvalue", "DF", "pvalue", 
+               "adj.pvalue", "GlobalProtein", "Adjusted"))
 
 ## Test expected output - TMT
 group.comp.tmt <- MSstatsPTM::groupComparisonPTM(summary.data.tmt, 
@@ -44,15 +40,12 @@ expect_inherits(group.comp.tmt$PTM.Model, "data.table")
 expect_inherits(group.comp.tmt$PROTEIN.Model, "data.table")
 expect_inherits(group.comp.tmt$ADJUSTED.Model, "data.table")
 
-expect_equal(colnames(group.comp.tmt$PTM.Model), c("Protein", "Label", "log2FC", 
-                                                   "SE", "DF", "pvalue",
-                                                   "adj.pvalue", "issue"))
-expect_equal(colnames(group.comp.tmt$PROTEIN.Model), c("Protein", "Label", 
-                                                       "log2FC", "SE", "DF", 
-                                                       "pvalue", "adj.pvalue", 
-                                                       "issue"))
-expect_equal(colnames(group.comp$ADJUSTED.Model), c("Protein", "Label", 
-                                                    "log2FC", "SE", "Tvalue", 
-                                                    "DF", "pvalue", 
-                                                    "adj.pvalue", 
-                                                    "GlobalProtein"))
+expect_equal(colnames(group.comp.tmt$PTM.Model), 
+             c("Protein", "Label", "log2FC", "SE", "DF", "pvalue", 
+               "adj.pvalue", "issue"))
+expect_equal(colnames(group.comp.tmt$PROTEIN.Model), 
+             c("Protein", "Label", "log2FC", "SE", "DF", "pvalue", 
+               "adj.pvalue", "issue"))
+expect_equal(colnames(group.comp$ADJUSTED.Model), 
+             c("Protein", "Label", "log2FC", "SE", "Tvalue", "DF", "pvalue", 
+               "adj.pvalue", "GlobalProtein", "Adjusted"))

@@ -67,7 +67,7 @@ Converts non-TMT Progenesis output into the format needed for MSstatsPTM
 \examples{
 
 # Example annotation file
-annotation <- data.frame('Condition' = c('Control', 'Control', 'Control',
+annotation = data.frame('Condition' = c('Control', 'Control', 'Control',
                          'Treatment', 'Treatment', 'Treatment'),
                          'BioReplicate' = c(1,2,3,4,5,6),
                          'Run' = c('prot_run_1', 'prot_run_2', 'prot_run_3',

@@ -18,12 +18,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, message=FALSE, warning=FALSE}
-library(MSstatsPTM)
-```
-
 This Vignette provides an example workflow for how to use the package 
-MSstatsPTM for a labelfree dataset. It also provides examples and an 
+`MSstatsPTM` for a labelfree dataset. It also provides examples and an 
 analysis of how adjusting for global protein levels allows for better 
 interpretations of PTM modeling results.
 
@@ -38,11 +34,16 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("MSstatsPTM")
 ```
 
+```{r, message=FALSE, warning=FALSE}
+library(MSstatsPTM)
+library(MSstats)
+```
+
 ## 1. Workflow
 
 ### 1.1 Raw Data Format
 
-**Note: We are actively developing dedicated converters for MSstatsPTM. If you 
+**Note: We are actively developing dedicated converters for `MSstatsPTM`. If you 
 have data from a processing tool that does not have a dedicated converter in 
 MSstatsPTM please add a github issue 
 `https://github.com/Vitek-Lab/MSstatsPTM/issues` and we will add the 
@@ -65,7 +66,7 @@ please see the code below.
 
 ```{r raw_data_ptm, eval = FALSE}
 
-annotation <- data.frame('Condition' = c('Control', 'Control', 'Control',
+annotation = data.frame('Condition' = c('Control', 'Control', 'Control',
                                          'Treatment', 'Treatment', 'Treatment'),
                          'BioReplicate' = c(1,2,3,4,5,6),
                          'Run' = c('prot_run_1', 'prot_run_2', 'prot_run_3',
@@ -74,7 +75,7 @@ annotation <- data.frame('Condition' = c('Control', 'Control', 'Control',
                                     "PTM", "PTM"))
 
 # Run MSstatsPTM converter with modified and unmodified datasets.
-raw.input <- ProgenesistoMSstatsPTMFormat(raw_ptm_df, annotation, 
+raw.input = ProgenesistoMSstatsPTMFormat(raw_ptm_df, annotation, 
                                           raw_protein_df, fasta_path)
 ```
 
@@ -87,15 +88,15 @@ must be a combination of the Protein Name and sitename.
 
 ```{r raw_data, eval = FALSE}
 # Add site into ProteinName column
-raw_ptm_df$ProteinName <- paste(raw_ptm_df$ProteinName,
+raw_ptm_df$ProteinName = paste(raw_ptm_df$ProteinName,
                                 raw_ptm_df$Site, sep = "_")
 
 # Run MSstats Converters
-PTM.data <- ProgenesistoMSstatsFormat(raw_ptm_df, annotation)
-PROTEIN.data <- ProgenesistoMSstatsFormat(raw_protein_df, annotation)
+PTM.data = MSstats::ProgenesistoMSstatsFormat(raw_ptm_df, annotation)
+PROTEIN.data = MSstats::ProgenesistoMSstatsFormat(raw_protein_df, annotation)
 
 # Combine into one list
-raw.input <- list(PTM = PTM.data,
+raw.input = list(PTM = PTM.data,
                   PROTEIN = PROTEIN.data)
 ```
 
@@ -106,10 +107,10 @@ head(raw.input$PTM)
 head(raw.input$PROTEIN)
 ```
 
-### 1.2 Summarization - dataSummarizationPTM
+### 1.2 Summarization - `dataSummarizationPTM`
 
 After loading in the input data, the next step is to use the 
-dataSummarizationPTM function. This provides the summarized dataset needed to 
+`dataSummarizationPTM` function. This provides the summarized dataset needed to 
 model the protein/PTM abundance. The function will summarize the 
 Protein dataset up to the protein level and will summarize the PTM dataset up to
 the peptide level. There are multiple options for normalization and missing 
@@ -117,7 +118,8 @@ value imputation. These options should be reviewed in the package documentation.
 
 ```{r summarize, message=FALSE, warning=FALSE}
 
-MSstatsPTM.summary <- dataSummarizationPTM(raw.input, verbose = FALSE)
+MSstatsPTM.summary = dataSummarizationPTM(raw.input, verbose = FALSE, 
+                                          use_log_file = FALSE, append = FALSE)
 
 head(MSstatsPTM.summary$PTM$ProteinLevelData)
 head(MSstatsPTM.summary$PROTEIN$ProteinLevelData)
@@ -154,10 +156,10 @@ dataProcessPlotsPTM(MSstatsPTM.summary,
                     address = FALSE)
 ```
 
-### 1.3 Modeling - groupComparisonPTM
+### 1.3 Modeling - `groupComparisonPTM`
 
 After summarization, the summarized datasets can be modeled using the 
-groupComparisonPTM function. This function will model the PTM and Protein 
+`groupComparisonPTM` function. This function will model the PTM and Protein 
 summarized datasets, and then adjust the PTM model for changes in overall 
 protein abundance. The output of the function is a list containing these three 
 models named: `PTM.Model`, `PROTEIN.Model`, `ADJUSTED.Model`.
@@ -165,14 +167,15 @@ models named: `PTM.Model`, `PROTEIN.Model`, `ADJUSTED.Model`.
 ```{r model, message=FALSE, warning=FALSE}
 
 # Specify contrast matrix
-comparison <- matrix(c(-1,0,1,0),nrow=1)
-row.names(comparison) <- "CCCP-Ctrl"
-colnames(comparison) <- c("CCCP", "Combo", "Ctrl", "USP30_OE")
+comparison = matrix(c(-1,0,1,0),nrow=1)
+row.names(comparison) = "CCCP-Ctrl"
+colnames(comparison) = c("CCCP", "Combo", "Ctrl", "USP30_OE")
 
-MSstatsPTM.model <- groupComparisonPTM(MSstatsPTM.summary, 
-                                       data.type = "LabelFree",
-                                       contrast.matrix = comparison,
-                                       verbose = FALSE)
+MSstatsPTM.model = groupComparisonPTM(MSstatsPTM.summary, 
+                                      data.type = "LabelFree",
+                                      contrast.matrix = comparison,
+                                      use_log_file = FALSE, append = FALSE,
+                                      verbose = FALSE)
 head(MSstatsPTM.model$PTM.Model)
 head(MSstatsPTM.model$PROTEIN.Model)
 head(MSstatsPTM.model$ADJUSTED.Model)
@@ -204,3 +207,27 @@ groupComparisonPlotsPTM(data = MSstatsPTM.model,
                         address=FALSE)
 ```
 
+### 1.4 Sample Size Calculation - `designSampleSizePTM`
+
+Finally, sample size calculation can be performed using the output of the model 
+and the `designSampleSizePTM`
+
+```{r sample_size, message=FALSE, warning=FALSE}
+
+# Specify contrast matrix
+sample_size = designSampleSizePTM(MSstatsPTM.model, c(2.0, 2.75), FDR = 0.05, 
+                                  numSample = TRUE, power = 0.8)
+
+head(sample_size)
+```
+
+### 1.4.1 Sample Size Plot
+
+The output of the sample size function can be plotted using the `MSstats` 
+`designSampleSizePlots` function.
+
+```{r sample_size_plot, message=FALSE, warning=FALSE}
+
+MSstats::designSampleSizePlots(sample_size)
+
+```

@@ -79,14 +79,14 @@
 #' @return plot or pdf
 #' @examples 
 #' 
-#' model.lf.msstatsptm <- groupComparisonPTM(summary.data, 
+#' model.lf.msstatsptm = groupComparisonPTM(summary.data, 
 #'                                      data.type = "LabelFree")
 #' groupComparisonPlotsPTM(data = model.lf.msstatsptm,
 #'                         type = "VolcanoPlot",
 #'                         FCcutoff= 2,
 #'                         logBase.pvalue = 2,
 #'                         address=FALSE)
-groupComparisonPlotsPTM <- function(data = data,
+groupComparisonPlotsPTM = function(data = data,
                                     type,
                                     sig=0.05,
                                     FCcutoff=FALSE,
@@ -115,8 +115,8 @@ groupComparisonPlotsPTM <- function(data = data,
                        colorkey, numProtein, width, height, which.Comparison, 
                        which.PTM, address)
   
-  data <- .format.model.plots(data, which.Comparison, which.PTM)
-  type <- toupper(type)
+  data = .format.model.plots(data, which.Comparison, which.PTM)
+  type = toupper(type)
   
   plot_name_list = c("Unadjusted Peptides", "Global Protein", 
                      "Adjusted Peptide")

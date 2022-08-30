@@ -126,7 +126,7 @@ between conditions and peptides/proteins
 }
 \examples{
 
-model.lf.msstatsptm <- groupComparisonPTM(summary.data, 
+model.lf.msstatsptm = groupComparisonPTM(summary.data, 
                                      data.type = "LabelFree")
 groupComparisonPlotsPTM(data = model.lf.msstatsptm,
                         type = "VolcanoPlot",

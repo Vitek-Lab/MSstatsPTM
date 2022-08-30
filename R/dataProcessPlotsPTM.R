@@ -77,7 +77,7 @@
 #'                     type = 'PROFILEPLOT',
 #'                     which.PTM = "Q9UQ80_K376",
 #'                     address = FALSE)
-dataProcessPlotsPTM <- function(data,
+dataProcessPlotsPTM = function(data,
                                 type = 'PROFILEPLOT',
                                 ylimUp = FALSE,
                                 ylimDown = FALSE,
@@ -98,24 +98,24 @@ dataProcessPlotsPTM <- function(data,
                                 summaryPlot = TRUE,
                                 address = "") {
   
-  type <- toupper(type)
-  label <- .check.dataProcess.plotting.data(data, type, ylimUp, ylimDown, 
+  type = toupper(type)
+  label = .check.dataProcess.plotting.data(data, type, ylimUp, ylimDown, 
                                             x.axis.size,
                                 y.axis.size, text.size, text.angle, legend.size,
                                 dot.size.profile, ncol.guide, width, height,
                                 ptm.title, protein.title, which.PTM, 
                                 originalPlot, summaryPlot, address)
   
-  data.table.list <- .format.data.process.plots(data, label)
+  data.table.list = .format.data.process.plots(data, label)
   
   ## Filter for all PTMs in one protein
   if (!is.null(which.Protein)){
     
-    data.table.list[[1]] <- data.table.list[[1]][PROTEINNAME %in% which.Protein]
-    data.table.list[[2]] <- data.table.list[[2]][
+    data.table.list[[1]] = data.table.list[[1]][PROTEINNAME %in% which.Protein]
+    data.table.list[[2]] = data.table.list[[2]][
       GLOBALPROTEIN %in% which.Protein]
-    data.table.list[[3]] <- data.table.list[[3]][PROTEINNAME %in% which.Protein]
-    data.table.list[[4]] <- data.table.list[[4]][
+    data.table.list[[3]] = data.table.list[[3]][PROTEINNAME %in% which.Protein]
+    data.table.list[[4]] = data.table.list[[4]][
       GLOBALPROTEIN %in% which.Protein]
     
     if (sum(nrow(data.table.list[[1]]), nrow(data.table.list[[2]]), 
