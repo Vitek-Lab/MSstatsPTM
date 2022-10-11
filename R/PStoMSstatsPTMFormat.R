@@ -9,9 +9,27 @@
 #' (optional)
 #' @param annotation name of annotation file which includes Raw.file, Condition,
 #' BioReplicate, Run for unmodified protein output.
-#' @param use_unmod_peptides
+#' @param use_unmod_peptides Boolean if the unmodified peptides in the input 
+#' file should be used to construct the unmodified protein output. Only used if
+#' `input_protein` is not provided. Default is `FALSE`
+#' @param target_modification Character name of modification of interest. To 
+#' use all mod types, leave as `NULL`. Default is `NULL`.
+#' @param remove_oxidation_peptides Boolean if Oxidation (M) modifications 
+#' should be removed. Default is `FALSE`
+#' @param remove_multi_mod_types Used if `target_modification` is not `NULL`. 
+#' `TRUE` will remove peptides with multiple types of modifications 
+#' (ie acetylation and phosphorylation). `FALSE` will keep these peptides and 
+#' summarize them seperately.
+#' @param use_log_file logical. If TRUE, information about data processing will 
+#' be saved to a file.
+#' @param append logical. If TRUE, information about data processing will be 
+#' added to an existing log file.
+#' @param verbose logical. If TRUE, information about data processing wil be 
+#' printed to the console.
+#' @param log_file_path character. Path to a file to which information about 
+#' data processing will be saved. If not provided, such a file will be created 
+#' automatically. If 'append = TRUE', has to be a valid path to a file.
 #' @importFrom data.table as.data.table melt
-#' @importFrom dataframe as.data.frame
 #' @return list of data.table
 #' @export 
 #' 
