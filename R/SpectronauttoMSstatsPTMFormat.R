@@ -32,7 +32,10 @@
 #' @param removeNonUniqueProteins TRUE will remove proteins that were not
 #' uniquely identified. IE if the protein column contains multiple proteins
 #' seperated by ";". TRUE is default
-#' @param modificationLabel String of modification name. Default is 'Phospho'. 
+#' @param modificationLabel String of modification name in `EG.ModifiedSequence`
+#' column. Default is 'Phospho'. Note label could also include amino acids in 
+#' abbreviations, for example 'Phospho (STY)'. If special characters are in the 
+#' name, you must add // to the label, ex. 'Phospho \\(STY\\)'.
 #' @param removeiRT TRUE will remove proteins that contain iRT. True is default
 #' @param summaryforMultipleRows max(default) or sum - when there are multiple
 #' measurements for certain feature and certain run, use highest or sum of
@@ -178,7 +181,7 @@ SpectronauttoMSstatsPTMFormat = function(PTM.data,
     df.fasta.join = rbindlist(list(df.fasta.join, add_non_unique))
   }
   
-  #Data formatting for MSstatsLiP analysis
+  #Data formatting for MSstatsPTM analysis
   MSstats_PTM = merge(df.ptm, df.fasta.join,
                        by = c("ProteinName", "PeptideSequence"))
   MSstats_PTM$ProteinName = paste(MSstats_PTM$ProteinName,
@@ -187,6 +190,12 @@ SpectronauttoMSstatsPTMFormat = function(PTM.data,
   MSstats_PTM$Intensity = ifelse(MSstats_PTM$Intensity <= 1, NA, 
                                   MSstats_PTM$Intensity)
   MSstats_PTM[, join_PeptideSequence := NULL]
+  
+  ## Check if ptm data is empty (indication that mod name is wrong)
+  if (nrow(MSstats_PTM) == 0){
+    stop("The PTM data.table is empty. Please check that the modificationLabel \
+         parameter is set correctly")
+  }
   
   if (!is.null(Protein.data)) {
     if (removeNonUniqueProteins){
