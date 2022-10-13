@@ -30,6 +30,7 @@
 #' data processing will be saved. If not provided, such a file will be created 
 #' automatically. If 'append = TRUE', has to be a valid path to a file.
 #' @importFrom data.table as.data.table melt
+#' @importFrom MSstatsConvert MSstatsBalancedDesign
 #' @return list of data.table
 #' @export 
 #' 
@@ -89,17 +90,24 @@ PStoMSstatsPTMFormat = function(
   feature_cols = c("ProteinName", "PeptideSequence", "FragmentIon", 
                    "ProductCharge", "PrecursorCharge", "IsotopeLabelType",
                    "BioReplicate", "Condition", "Run" )
-  input = input[, list(Intensity = max(Intensity, na.rm = TRUE)), 
+  
+  input = MSstatsBalancedDesign(input, c('PeptideSequence', 'ProductCharge'))
+  
+  input = as.data.table(input)[, list(Intensity = max(Intensity, na.rm = TRUE)), 
                 by = feature_cols]
   
   if (!is.null(input_prot)){
     input_prot[, c("Raw.File", "Mod", "End", "Start"):=NULL]
-    input_prot = input_prot[, list(Intensity = max(Intensity, 
-                                                          na.rm = TRUE)), 
-                            by = feature_cols]
+    input_prot = MSstatsBalancedDesign(input_prot, 
+                                       c('PeptideSequence', 'ProductCharge'))
+    input_prot = as.data.table(input_prot)[, list(Intensity = max(Intensity, 
+                                                   na.rm = TRUE)), 
+                                           by = feature_cols]
+    
     input_prot = as.data.frame(input_prot)
     
   }
+  
   
   return(list("PTM" = as.data.frame(input),
               "PROTEIN" = input_prot))
