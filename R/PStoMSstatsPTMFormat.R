@@ -151,6 +151,13 @@ add_missing_cols = function(input){
 #' @noRd
 #' @keywords internal
 add_mod = function(input){
+  
+  ## Fix start column for pep with periods at beginning
+  input$start_fix = lapply(input$Peptide, function(x){
+    as.integer(unlist(gregexpr("\\.", substr(x, start=1, stop=2))) == -1)})
+  
+  input$Start = input$Start + unlist(input$start_fix)
+  
   ## Replace mod locations with *
   input$PeptideSequence = lapply(input$PeptideSequence, 
                                  function(x){gsub("[0-9.()]", "", x)})
