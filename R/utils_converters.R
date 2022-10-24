@@ -338,3 +338,194 @@ spectro_get_sites = function(str_idx, start, pep) {
   
   return(mod_site)
 }
+
+
+#' Locate modification site number and amino acid
+#' 
+#' @param data `data.table` of enriched experimental run. Must include 
+#' `ProteinName`, `PeptideSequence`, `PeptideModifiedSequence`, and (optionally)
+#' `Start` columns.
+#' @param fasta_file File path to FASTA file that matches with proteins in 
+#' `data`. Can be either string or `data.table` processed with `tidyFasta()` 
+#' function. Default to NULL if peptide number included in `data`.
+#' @param mod_id String that indicates what amino acid was modified in 
+#' `PeptideSequence`.
+#' @param mod_id_is_numeric Boolean indicating if mod id is numeric. If TRUE, 
+#' `mod_id` will be ignored. Default is FALSE.
+#' @param terminus_included Boolean indicating if the `PeptideSequence` includes
+#' the terminus amino acid.
+#' @param terminus_id String that indicates what the terminus amino acid is. 
+#' Default is '.'.
+#' 
+#' @importFrom data.table as.data.table
+#' 
+#' @return `data.table` with site location added into `Protein` column.
+#' @export 
+#' 
+#' @examples
+#' ##TODO
+#' 
+MSstatsPTMSiteLocator = function(data, fasta_file=NULL, mod_id="\\*", 
+                                 mod_id_is_numeric=FALSE, 
+                                 terminus_included=FALSE, terminus_id="\\."){
+  
+  ## Check if peptide number included in data
+  if ("Start" %in% colnames(data)){
+    id_data = data[,c("ProteinName", "PeptideSequence", 
+                      "PeptideModifiedSequence", "Start")]
+  } else {
+    if (is.null(fasta_file)){
+      stop("FASTA file not provided and `Start` column missing from data. \
+           MSstatsPTMSiteLocator requires one of these to be provided to \
+           identify modification site number.")
+    }
+    
+    id_data = data[,c("ProteinName", "PeptideSequence", 
+                      "PeptideModifiedSequence")]
+    id_data = .joinFasta(id_data, fasta_file)
+  }
+  
+  if (terminus_included){
+    id_data = .fixTerminus(id_data, terminus_id)
+  }
+  
+  id_data = .locateSites(id_data, mod_id, mod_id_is_numeric)
+  id_data = id_data[!duplicated(id_data),]
+  
+  data = merge(data, id_data, by=c("ProteinName", "PeptideSequence", 
+                                   "PeptideModifiedSequence"), all.x=TRUE)
+  
+  data$ProteinName = data$ProteinName_mod
+  data=as.data.table(data)
+  
+  if ("Start.y" %in% colnames(data)){
+    data$Start = data$Start.y
+  }
+  remove = intersect(c("PeptideModifiedSequence_adj", "ProteinName_mod", 
+                       "start_fix", "Start.x", "Start.y"),
+                     colnames(data))
+  data[, (remove):=NULL]
+  return(data)
+}
+  
+#' Add FASTA data into dataframe
+#' @param data data.table
+#' @param fasta_file string or data.table
+#' @return data.table
+#' @keywords internal
+.joinFasta = function(data, fasta_file){
+  
+  ## Load FASTA if not already loaded
+  if (is.character(fasta_file)){
+    fasta_file = tidyFasta(fasta_file)
+  }
+  
+  ## Join data and FASTA
+  data = merge(data, fasta_file, by.x="ProteinName", 
+                  by.y="header", all.x=TRUE)
+  
+  ## Locate peptide sequence start
+  data$Start = mapply(function(x,y){unlist(gregexpr(pattern=x, y))}, 
+                      data$PeptideSequence, data$sequence)
+  
+  data = data[,c("ProteinName", "PeptideSequence", 
+                       "PeptideModifiedSequence", "Start")]
+  
+  return(data)
+}
+#' Add site location and aa
+#' @param data data.table
+#' @param fasta_file string or data.table
+#' @return data.table
+#' @keywords internal
+.fixTerminus = function(data, terminus_id){
+  
+  ## Terminus makes start location off
+  data$start_fix = lapply(data$PeptideSequence, function(x){
+    as.integer(unlist(gregexpr(terminus_id, 
+                               substr(x, start=1, stop=2))) == 2)})
+  data$start_fix = unlist(data$start_fix)
+  data$Start = data$Start - unlist(data$start_fix)
+  
+  return(data)
+}
+
+#' Add site location and aa
+#' @param data data.table
+#' @param mod_id string
+#' @return data.table
+#' @keywords internal
+.locateSites = function(data, mod_id, mod_id_is_numeric){
+  
+  data$PeptideModifiedSequence_adj = data$PeptideModifiedSequence
+  
+  if (mod_id_is_numeric){
+    mod_id="\\*"
+    ## Replace mod locations with *
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
+                                           function(x){gsub("[0-9.()]", "", x)})
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
+                                           function(x){gsub("\\[", "", x)})
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
+                                              function(x){gsub("\\]", "", x)})
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
+                                              function(x){gsub("\\+", 
+                                                               mod_id, x)})
+    ## Fix instances of double mod aa (caused by Acetylation)
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
+                                           function(x){
+                                             gsub("\\*\\*", mod_id, x)})
+  }
+  
+  ## Locate number and aa  
+  string_num = lapply(data$PeptideModifiedSequence_adj, 
+                      function(x){unlist(gregexpr(mod_id, x))})
+  
+  string_num = lapply(string_num, function(x){x - 1:length(x)})
+  site_num = mapply(function(x,y){x + y - 1}, string_num, data$Start)
+  
+  site_aa = lapply(data$PeptideModifiedSequence_adj, function(x){
+    unlist(lapply(unlist(gregexpr(mod_id, x)) - 1, 
+                  function(y){substr(x, y, y)}))})
+  
+  ## Combine number and aa
+  full_site = lapply(mapply(function(x,y){paste(x, y, sep="")}, 
+                            site_aa, site_num),
+                     function(z){paste(z, collapse='_')})
+  data$ProteinName_mod = paste(data$ProteinName, full_site, sep="_")
+  
+  ## Ensure columns are not lists
+  data$PeptideSequence = unlist(data$PeptideSequence)
+  data$PeptideModifiedSequence_adj = unlist(data$PeptideModifiedSequence_adj)
+  data$ProteinName_mod = unlist(data$ProteinName_mod)
+  
+  return(data)
+}
+
+#' Pivot Peak Studio data into long format
+#' @noRd
+#' @keywords internal
+.pivotPS = function(input){
+  
+  columns = colnames(input)
+  len_cols = length(columns)
+  end_runs = which(grepl("os", columns))[[1]] - 1
+  keep_cols = c(3, 4, len_cols, len_cols-1, len_cols-2, 11:end_runs)
+  
+  
+  filter_input = input[, ..keep_cols]
+  
+  
+  pivot_input = melt(filter_input, 
+                     measure.vars = 6:length(colnames(filter_input)), 
+                     variable.name = "Raw.File", value.name = "Intensity")
+  colnames(pivot_input) = c("ProteinName", "PeptideSequence", 
+                            "Mod", "End", "Start", "Raw.File", "Intensity")
+  
+  pivot_input$FragmentIon <- NA
+  pivot_input$ProductCharge <- NA
+  pivot_input$PrecursorCharge <- NA
+  pivot_input$IsotopeLabelType <- 'L'
+  
+  return(pivot_input)
+}
