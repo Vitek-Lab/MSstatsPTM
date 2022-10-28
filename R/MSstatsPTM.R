@@ -18,6 +18,10 @@
 #'   required input format for non-TMT Proteoviz outputs.
 #'   \item \code{\link{SpectronauttoMSstatsPTMFormat}} : Generates MSstatsPTM 
 #'   required input format for non-TMT Spectronaut outputs.
+#'   \item \code{\link{SkylinetoMSstatsPTMFormat}} : (Beta Version) Generates 
+#'   MSstatsPTM required input format for non-TMT Skyline outputs.
+#'   \item \code{\link{PStoMSstatsPTMFormat}} : (Beta Version) Generates 
+#'   MSstatsPTM required input format for non-TMT PEAKS outputs.
 #'   \item \code{\link{dataSummarizationPTM}} : Summarizes PSM level 
 #'   quantification to peptide (modification) and protein level quantification.
 #'   For use in non-TMT analysis
