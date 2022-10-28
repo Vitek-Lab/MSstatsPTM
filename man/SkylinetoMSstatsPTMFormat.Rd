@@ -53,6 +53,12 @@ for imputation purpose.}
 
 \item{qvalue_cutoff}{Cutoff for DetectionQValue. default is 0.01.}
 
+\item{use_unique_peptide}{TRUE (default) removes peptides that are assigned
+for more than one proteins. We assume to use unique peptide for each protein.}
+
+\item{remove_few_measurements}{TRUE will remove the features that
+have 1 or 2 measurements across runs. FALSE is default.}
+
 \item{remove_oxidation_peptides}{TRUE will remove the peptides including
 'oxidation (M)' in modification. FALSE is default.}
 
@@ -72,9 +78,6 @@ printed to the console.}
 \item{log_file_path}{character. Path to a file to which information about
 data processing will be saved. If not provided, such a file will be created
 automatically. If 'append = TRUE', has to be a valid path to a file.}
-
-\item{removeFewMeasurements}{TRUE will remove the features that
-have 1 or 2 measurements across runs. FALSE is default.}
 }
 \value{
 \code{list} of \code{data.table}
@@ -83,5 +86,7 @@ have 1 or 2 measurements across runs. FALSE is default.}
 Currently only supports label-free quantification.
 }
 \examples{
-#TODO: Add examples
+# The output should be in the following format.
+head(raw.input$PTM)
+head(raw.input$PROTEIN)
 }

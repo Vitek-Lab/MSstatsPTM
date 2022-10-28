@@ -25,8 +25,8 @@ function. Default to NULL if peptide number included in \code{data}.}
 \item{mod_id}{String that indicates what amino acid was modified in
 \code{PeptideSequence}.}
 
-\item{mod_id_is_numeric}{Boolean indicating if mod id is numeric. Usually in
-the form of '\link{+80}'. If TRUE, \code{mod_id} will be ignored. Default is FALSE.}
+\item{mod_id_is_numeric}{Boolean indicating if mod id is numeric. If TRUE,
+\code{mod_id} will be ignored. Default is FALSE.}
 
 \item{terminus_included}{Boolean indicating if the \code{PeptideSequence} includes
 the terminus amino acid.}

@@ -74,5 +74,7 @@ automatically. If 'append = TRUE', has to be a valid path to a file.}
 Currently only supports label-free quantification.
 }
 \examples{
-#TODO: Add examples
+# The output should be in the following format.
+head(raw.input$PTM)
+head(raw.input$PROTEIN)
 }
