@@ -4,10 +4,11 @@
 \title{MSstatsPTM News}
 \encoding{UTF-8}
 
-\section{Changes in version 1.8.0 (2021-08-30)}{\itemize{
+\section{Changes in version 2.0.0 (2021-10-31)}{\itemize{
   \item Added unadjustable PTMs into `ADJUSTED.Model` data.table result
-  \item Added column named `Adjusted` in the `ADJUSTED.Model` data.table to distinguish between adjusted and unadjusted PTMs
-  \item Added sample size calculation functionality through the `designSampleSizePTM` function.
+  \item New column named `Adjusted` in the `ADJUSTED.Model` data.table to distinguish between adjusted and unadjusted PTMs
+  \item Sample size calculation functionality through the `designSampleSizePTM` function.
+  \item New converters for PEAKs and Skyline
 }}
 
 \section{Changes in version 1.1.2 (2021-05-12)}{\itemize{
