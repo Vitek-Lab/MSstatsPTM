@@ -4,7 +4,7 @@
 #' 
 #' @param input name of Peaks Studio PTM output
 #' @param annotation name of annotation file which includes Raw.file, Condition,
-#' BioReplicate, Run. For example annoation see example below.
+#' BioReplicate, Run. For example annotation see example below.
 #' @param input_protein name of Peaks Studio unmodified protein output 
 #' (optional)
 #' @param annotation_protein name of annotation file which includes Raw.file, 
@@ -734,3 +734,77 @@ ProgenesistoMSstatsPTMFormat = function(ptm_input,
   return(MSstatsPTM.data)
   
 }
+
+
+#' Convert Spectronaut output into MSstatsPTM format
+#' 
+#' Currently only supports label-free quantification.
+#' 
+#' @param input name of Spectronaut PTM output, which is long-format. 
+#' ProteinName, PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge, 
+#' IsotopeLabelType, Condition, BioReplicate, Run, Intensity, 
+#' F.ExcludedFromQuantification are required. Rows with 
+#' F.ExcludedFromQuantification=True will be removed.
+#' @param annotation name of 'annotation.txt' data which includes Condition, 
+#' BioReplicate, Run. If annotation is already complete in Spectronaut, 
+#' use annotation=NULL (default). It will use the annotation information from 
+#' input.
+#' @param protein_input name of Spectronaut global protein output, which is 
+#' as in the same format as `input` parameter. 
+#' @param protein_annotation name of annotation file for global protein data, in
+#' the same format as above.
+#' @param intensity 'PeakArea'(default) uses not normalized peak area. 
+#' 'NormalizedPeakArea' uses peak area normalized by Spectronaut. Default is 
+#' NULL
+#' @param filter_with_Qvalue TRUE(default) will filter out the intensities that 
+#' have greater than qvalue_cutoff in EG.Qvalue column. Those intensities will 
+#' be replaced with zero and will be considered as censored missing values for 
+#' imputation purpose.
+#' @param qvalue_cutoff Cutoff for EG.Qvalue. Default is 0.01.
+#' @param useUniquePeptide TRUE (default) removes peptides that are assigned for
+#'  more than one proteins. We assume to use unique peptide for each protein.
+#' @param removeFewMeasurements TRUE (default) will remove the features that 
+#' have 1 or 2 measurements across runs.
+#' @param removeProtein_with1Feature TRUE will remove the proteins which have 
+#' only 1 feature, which is the combination of peptide, precursor charge, 
+#' fragment and charge. FALSE is default.
+#' @param summaryforMultipleRows max(default) or sum - when there are multiple 
+#' measurements for certain feature and certain run, use highest or sum of 
+#' multiple intensities.
+#' @param use_log_file logical. If TRUE, information about data processing will 
+#' be saved to a file.
+#' @param append logical. If TRUE, information about data processing will be 
+#' added to an existing log file.
+#' @param verbose logical. If TRUE, information about data processing wil be 
+#' printed to the console.
+#' @param log_file_path character. Path to a file to which information about 
+#' data processing will be saved. If not provided, such a file will be created 
+#' automatically. If 'append = TRUE', has to be a valid path to a file.
+#' @return a list of two data.tables named 'PTM' and 'PROTEIN' in the format 
+#' required by MSstatsPTM.
+#' @examples
+#' # The output should be in the following format.
+SpectronauttoMSstatsPTMFormat = function(
+    input,
+    annotation = NULL,
+    protein_input = NULL,
+    protein_annotation = NULL,
+    intensity = "PeakArea",
+    filter_with_Qvalue = TRUE,
+    qvalue_cutoff = 0.01,
+    useUniquePeptide = TRUE,
+    removeFewMeasurements = TRUE,
+    removeProtein_with1Feature = FALSE,
+    summaryforMultipleRows = max,
+    use_log_file = TRUE,
+    append = FALSE,
+    verbose = TRUE,
+    log_file_path = NULL){
+  
+  input = MSstatsPTMSiteLocator(input, fasta_file=fasta, mod_id_is_numeric=TRUE, 
+                                terminus_included=FALSE)
+  
+  
+  
+}
+
