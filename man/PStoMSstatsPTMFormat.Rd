@@ -24,7 +24,7 @@ PStoMSstatsPTMFormat(
 \item{input}{name of Peaks Studio PTM output}
 
 \item{annotation}{name of annotation file which includes Raw.file, Condition,
-BioReplicate, Run. For example annoation see example below.}
+BioReplicate, Run. For example annotation see example below.}
 
 \item{input_protein}{name of Peaks Studio unmodified protein output
 (optional)}

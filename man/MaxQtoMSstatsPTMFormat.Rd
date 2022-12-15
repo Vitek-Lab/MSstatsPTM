@@ -5,32 +5,46 @@
 \title{Convert output of TMT labeled MaxQuant experiment into MSstatsPTM format}
 \usage{
 MaxQtoMSstatsPTMFormat(
-  sites.data,
-  annotation.ptm,
   evidence = NULL,
   proteinGroups = NULL,
-  annotation.prot = NULL,
-  mod.num = "Single",
-  TMT.keyword = "TMT",
-  ptm.keyword = "phos",
-  which.proteinid.ptm = "Protein",
-  which.proteinid.protein = "Leading.razor.protein",
-  removeMpeptides = FALSE
+  annotation_ptm = NULL,
+  fasta_path = NULL,
+  fasta_protein_name = "uniprot_ac",
+  mod_id = "\\\\(Phospho \\\\(STY\\\\)\\\\)",
+  sites_data = NULL,
+  evidence_prot = NULL,
+  proteinGroups_prot = NULL,
+  annotation_prot = NULL,
+  extract_unmod_from_ptm_data = FALSE,
+  labeling_type = "LF",
+  mod_num = "Single",
+  TMT_keyword = "TMT",
+  ptm_keyword = "phos",
+  which_proteinid_ptm = "Proteins",
+  which_proteinid_protein = "Proteins",
+  removeMpeptides = FALSE,
+  use_log_file = TRUE,
+  append = FALSE,
+  verbose = TRUE,
+  log_file_path = NULL
 )
 }
 \arguments{
+\item{evidence}{for global protein dataset. name of 'evidence.txt' data,
+which includes feature-level data.}
+
+\item{proteinGroups}{for global protein dataset, name of 'proteinGroups.txt'
+data.}
+
+\item{removeMpeptides}{If Oxidation (M) modifications should be removed.
+Default is TRUE.}
+
 \item{sites.data}{modified peptide output from MaxQuant. For example, a
 phosphorylation experiment would require the Phospho(STY)Sites.txt file}
 
 \item{annotation.ptm}{data frame annotation file for the ptm level data.
 Contains column Run, Fraction, TechRepMixture, Mixture, Channel,
 BioReplicate, Condition.}
-
-\item{evidence}{for global protein dataset. name of 'evidence.txt' data,
-which includes feature-level data.}
-
-\item{proteinGroups}{for global protein dataset, name of 'proteinGroups.txt'
-data.}
 
 \item{annotation.prot}{data frame annotation file for the protein level data.
 Contains column Run, Fraction, TechRepMixture, Mixture, Channel,
@@ -66,9 +80,6 @@ shared peptides.}
 
 \item{which.proteinid.protein}{For Protein dataset, which column to use for
 protein name. Same options as above.}
-
-\item{removeMpeptides}{If Oxidation (M) modifications should be removed.
-Default is TRUE.}
 }
 \value{
 a list of two data.tables named 'PTM' and 'PROTEIN' in the format

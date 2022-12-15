@@ -6,7 +6,12 @@
 \usage{
 MSstatsPTMSiteLocator(
   data,
+  protein_name_col = "ProteinName",
+  unmod_pep_col = "PeptideSequence",
+  mod_pep_col = "PeptideModifiedSequence",
+  clean_mod = FALSE,
   fasta_file = NULL,
+  fasta_protein_name = "header",
   mod_id = "\\\\*",
   mod_id_is_numeric = FALSE,
   terminus_included = FALSE,

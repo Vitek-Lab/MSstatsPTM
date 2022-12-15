@@ -4,7 +4,7 @@
 \alias{.fixTerminus}
 \title{Add site location and aa}
 \usage{
-.fixTerminus(data, terminus_id)
+.fixTerminus(data, terminus_id, unmod_pep_col)
 }
 \arguments{
 \item{data}{data.table}
