@@ -78,5 +78,4 @@ annotation = data.frame('Condition' = c('Control', 'Control', 'Control',
 # The output should be in the following format.
 head(raw.input$PTM)
 head(raw.input$PROTEIN)
-
 }

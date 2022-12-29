@@ -4,7 +4,14 @@
 \alias{.joinFasta}
 \title{Add FASTA data into dataframe}
 \usage{
-.joinFasta(data, fasta_file)
+.joinFasta(
+  data,
+  fasta_file,
+  fasta_protein_name,
+  protein_name_col,
+  unmod_pep_col,
+  mod_pep_col
+)
 }
 \arguments{
 \item{data}{data.table}

@@ -193,18 +193,21 @@ groupComparisonPTM = function(data, data.type,
                                  ptm_model$Label, sep = "_")
     missing_ptms = setdiff(ptm_model$temp_check, adjusted_models$temp_check)
     
-    adjusted_models$Adjusted = TRUE
-    ptm_model$temp_check = NULL
-    adjusted_models$temp_check = NULL
-    
     missing_rows = ptm_model[ptm_model$temp_check %in% missing_ptms]
     missing_rows$GlobalProtein = "missing"
     missing_rows$Adjusted = FALSE
     missing_rows[, c('issue', 'MissingPercentage', 
-                    'ImputationPercentage', 'temp_check'):=NULL]
+                     'ImputationPercentage', 'temp_check'):=NULL]
+    
+    adjusted_models$Adjusted = TRUE
+    
     if (data.type == 'TMT'){
       missing_rows$Tvalue = missing_rows$log2FC / missing_rows$SE
     }
+    
+    ptm_model$temp_check = NULL
+    adjusted_models$temp_check = NULL
+    
     adjusted_models = rbindlist(list(adjusted_models, missing_rows), 
                                 use.names=TRUE)
     adjusted_models = adjusted_models[!is.na(adjusted_models$Protein)]

@@ -1,0 +1,13 @@
+citEntry(entry	= 'Article',
+         title	= 'MSstatsPTM: Statistical relative quantification of 
+         post-translational modifications in bottom-up mass spectrometry-based 
+         proteomics',
+         author = c(
+           person('Devon', 'Kohler', email='kohler.d@northeastern.edu',
+                  role = c('aut', 'cre'))
+         ),
+         journal='Molecular and Cellular Proteomics',
+         volume='100477',
+         year = '2022',
+         textVersion = 'D. Kohler, T.H. Tsai, E. Verschueren, T. Huang, T. Hinkle, L. Phu, M. Choi, O. Vitek, MSstatsPTM: Statistical relative quantification of post-translational modifications in bottom-up mass spectrometry-based proteomics, Molecular and Cellular Proteomics. 100477, 2022.'
+)
