@@ -6,16 +6,15 @@
 \usage{
 MaxQtoMSstatsPTMFormat(
   evidence = NULL,
-  proteinGroups = NULL,
   annotation_ptm = NULL,
   fasta_path = NULL,
   fasta_protein_name = "uniprot_ac",
   mod_id = "\\\\(Phospho \\\\(STY\\\\)\\\\)",
   sites_data = NULL,
   evidence_prot = NULL,
-  proteinGroups_prot = NULL,
+  proteinGroups = NULL,
   annotation_prot = NULL,
-  extract_unmod_from_ptm_data = FALSE,
+  use_unmod_peptides = FALSE,
   labeling_type = "LF",
   mod_num = "Single",
   TMT_keyword = "TMT",
@@ -23,6 +22,8 @@ MaxQtoMSstatsPTMFormat(
   which_proteinid_ptm = "Proteins",
   which_proteinid_protein = "Proteins",
   removeMpeptides = FALSE,
+  removeOxidationMpeptides = FALSE,
+  removeProtein_with1Peptide = FALSE,
   use_log_file = TRUE,
   append = FALSE,
   verbose = TRUE,
@@ -30,41 +31,60 @@ MaxQtoMSstatsPTMFormat(
 )
 }
 \arguments{
-\item{evidence}{for global protein dataset. name of 'evidence.txt' data,
-which includes feature-level data.}
+\item{evidence}{name of 'evidence.txt' data, which includes feature-level
+data for enriched (PTM) data.}
 
-\item{proteinGroups}{for global protein dataset, name of 'proteinGroups.txt'
-data.}
-
-\item{removeMpeptides}{If Oxidation (M) modifications should be removed.
-Default is TRUE.}
-
-\item{sites.data}{modified peptide output from MaxQuant. For example, a
-phosphorylation experiment would require the Phospho(STY)Sites.txt file}
-
-\item{annotation.ptm}{data frame annotation file for the ptm level data.
+\item{annotation_ptm}{data frame annotation file for the ptm level data.
 Contains column Run, Fraction, TechRepMixture, Mixture, Channel,
 BioReplicate, Condition.}
 
-\item{annotation.prot}{data frame annotation file for the protein level data.
+\item{fasta_path}{A string of path to a FASTA file, used to match PTM peptides.}
+
+\item{fasta_protein_name}{Name of fasta column that matches with protein name
+in evidence file. Default is \code{uniprot_ac}.}
+
+\item{mod_id}{Character that indicates the modification of interest. Default
+is \verb{\\\\(Phospho\\\\)}. Note \verb{\\\\} must be included before special characters.}
+
+\item{sites_data}{(Not recommended. Only used if evidence file not provided.
+Only works for TMT labeled data) Modified peptide output from MaxQuant. For
+example, a phosphorylation experiment would require the Phospho(STY)Sites.txt
+file}
+
+\item{evidence_prot}{name of 'evidence.txt' data, which includes
+feature-level data for global profiling (unmodified) data.}
+
+\item{proteinGroups}{name of 'proteinGroups.txt' data. It needs to matching
+protein group ID in \code{evidence_prot}.}
+
+\item{annotation_prot}{data frame annotation file for the protein level data.
 Contains column Run, Fraction, TechRepMixture, Mixture, Channel,
 BioReplicate, Condition.}
 
-\item{mod.num}{For modified peptide dataset. The number modifications per
-peptide to be used. If "Single", only peptides with one modification will be
-used. Otherwise "Total" can be selected which does not cap the number of
-modifications per peptide. "Single" is the default. Selecting "Total" may
-confound the effect of different modifications.}
+\item{use_unmod_peptides}{Boolean if the unmodified peptides in the input
+file should be used to construct the unmodified protein output. Only used if
+\code{input_protein} is not provided. Default is \code{FALSE}.}
 
-\item{TMT.keyword}{the sub-name of columns in sites.data file. Default is
-\code{TMT}. This corresponds to the columns in the format
-\code{Reporter.intensity.corrected.1.TMT1phos___1}. Specifically, this parameter
-indicates the first section of the string \code{TMT1phos} (Before the mixture
-number). If \code{TMT} is present in the string, set this value to \code{TMT}. Else if
-\code{TMT} is not there (ie string is in the format \verb{1phos}) leave this parameter
-as an empty string ('').}
+\item{labeling_type}{Either \code{TMT} or \code{LF} (Label-Free) depending on
+experimental design. Default is \code{LF}.}
 
-\item{ptm.keyword}{the sub-name of columns in the sites.data file. Default is
+\item{mod_num}{(Only if \code{sites.data} is used) For modified peptide dataset.
+The number modifications per peptide to be used. If "Single", only peptides
+with one modification will be used. Otherwise "Total" can be selected which
+does not cap the number of modifications per peptide. "Single" is the
+default. Selecting "Total" may confound the effect of different
+modifications.}
+
+\item{TMT_keyword}{(Only if \code{sites.data} is used) the sub-name of columns
+in sites.data file. Default is \code{TMT}. This corresponds to the columns in the
+format \code{Reporter.intensity.corrected.1.TMT1phos___1}. Specifically, this
+parameter indicates the first section of the string \code{TMT1phos} (Before the
+mixture number). If \code{TMT} is present in the string, set this value to \code{TMT}.
+Else if \code{TMT} is not there (ie string is in the format \verb{1phos}) leave this
+parameter as an empty string ('').}
+
+\item{ptm_keyword}{(Only if \code{sites.data} is used) the sub-name of columns in
+the sites.data file. Default is
 \code{phos}. This corresponds to the columns in the format
 \code{Reporter.intensity.corrected.1.TMT1phos___1}. Specifically, this parameter
 indicates the second section of the string \code{TMT1phos} (After the mixture
@@ -72,14 +92,36 @@ number). If the string is present, set this parameter. Else if this part of
 the string is empty (ie string is in the format \code{TMT1}) leave this parameter
 as an empty string ('').}
 
-\item{which.proteinid.ptm}{For PTM dataset, which column to use for protein
+\item{which_proteinid_ptm}{For PTM dataset, which column to use for protein
 name. Use 'Proteins'(default) column for protein name. 'Leading.proteins' or
 'Leading.razor.protein' or 'Gene.names' can be used instead to get the
 protein ID with single protein. However, those can potentially have the
 shared peptides.}
 
-\item{which.proteinid.protein}{For Protein dataset, which column to use for
+\item{which_proteinid_protein}{For Protein dataset, which column to use for
 protein name. Same options as above.}
+
+\item{removeMpeptides}{If Oxidation (M) modifications should be removed.
+Default is TRUE.}
+
+\item{removeOxidationMpeptides}{TRUE will remove the peptides including
+'oxidation (M)' in modification. FALSE is default.}
+
+\item{removeProtein_with1Peptide}{TRUE will remove the proteins which have
+only 1 peptide and charge. FALSE is default.}
+
+\item{use_log_file}{logical. If TRUE, information about data processing will
+be saved to a file.}
+
+\item{append}{logical. If TRUE, information about data processing will be
+added to an existing log file.}
+
+\item{verbose}{logical. If TRUE, information about data processing wil be
+printed to the console.}
+
+\item{log_file_path}{character. Path to a file to which information about
+data processing will be saved. If not provided, such a file will be created
+automatically. If 'append = TRUE', has to be a valid path to a file.}
 }
 \value{
 a list of two data.tables named 'PTM' and 'PROTEIN' in the format
@@ -93,8 +135,6 @@ modified peptides for changes in global protein level, unmodified TMT
 experimental data must also be returned.
 }
 \examples{
-
 head(raw.input.tmt$PTM)
 head(raw.input.tmt$PROTEIN)
-
 }

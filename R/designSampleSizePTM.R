@@ -154,6 +154,7 @@ designSampleSizePTM = function(
 #' Power calculation for PTM experiment
 #' @inheritParams designSampleSizePTM
 #' @importFrom stats qnorm
+#' @return `float` of power
 #' @keywords internal
 .calculatePowerPTM = function(desiredFC, FDR, delta, ptm_median_sigma_error, 
                            protein_median_sigma_error, ptm_median_sigma_subject,
@@ -178,6 +179,7 @@ designSampleSizePTM = function(
 #' @inheritParams designSampleSizePTM
 #' @inheritParams .calculatePowerPTM
 #' @importFrom stats qnorm
+#' @return `int` of samples
 #' @keywords internal
 .getNumSamplePTM = function(desiredFC, power, alpha, delta, 
                             ptm_median_sigma_error, protein_median_sigma_error, 

@@ -41,7 +41,7 @@ BioReplicate, Run for unmodified protein output. This can be the same as
 
 \item{use_unmod_peptides}{Boolean if the unmodified peptides in the input
 file should be used to construct the unmodified protein output. Only used if
-\code{input_protein} is not provided. Default is \code{FALSE}}
+\code{input_protein} is not provided. Default is \code{FALSE}.}
 
 \item{removeiRT}{TRUE (default) will remove the proteins or peptides which
 are labeld 'iRT' in 'StandardType' column. FALSE will keep them.}

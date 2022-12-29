@@ -7,12 +7,10 @@
 PDtoMSstatsPTMFormat(
   input,
   annotation,
-  fasta_path = NULL,
   protein_input = NULL,
   protein_annotation = NULL,
-  fasta_protein_name = NULL,
   mod_id = "\\\\(Phospho\\\\)",
-  extract_unmod_from_ptm_data = FALSE,
+  use_unmod_peptides = FALSE,
   useNumProteinsColumn = FALSE,
   useUniquePeptide = TRUE,
   summaryforMultipleRows = max,
@@ -32,19 +30,21 @@ PDtoMSstatsPTMFormat(
 \item{input}{PD report corresponding with enriched experimental data.}
 
 \item{annotation}{name of 'annotation.txt' or 'annotation.csv' data which
-includes Condition, BioReplicate, Run information. 'Run' will be matched with 'Spectrum.File'.}
+includes Condition, BioReplicate, Run information. 'Run' will be matched
+with 'Spectrum.File'.}
 
-\item{fasta_path}{A string of path to a FASTA file, used to match PTM peptides.}
+\item{protein_input}{PD report corresponding with unmodified experimental
+data.}
 
-\item{protein_input}{PD report corresponding with unmodified experimental data.}
+\item{protein_annotation}{Same format as \code{annotation} corresponding to
+unmodified data.}
 
-\item{protein_annotation}{Same format as \code{annotation} corresponding to unmodified data.}
+\item{mod_id}{Character that indicates the modification of interest. Default
+is \verb{\\\\(Phospho\\\\)}. Note \verb{\\\\} must be included before special characters.}
 
-\item{fasta_protein_name}{todo}
-
-\item{mod_id}{todo}
-
-\item{extract_unmod_from_ptm_data}{todo}
+\item{use_unmod_peptides}{If \code{protein_input} is not provided,
+unmodified peptides can be extracted from \code{input} to be used in place of a
+global profiling run. Default is \code{FALSE}.}
 
 \item{useNumProteinsColumn}{TRUE removes peptides which have more than 1 in
 Proteins column of PD output.}
@@ -94,5 +94,7 @@ automatically. If 'append = TRUE', has to be a valid path to a file.}
 Import Proteome Discoverer files, identify modification site location.
 }
 \examples{
-# TODO: add examples
+# The output should be in the following format.
+head(raw.input$PTM)
+head(raw.input$PROTEIN)
 }

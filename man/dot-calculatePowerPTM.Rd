@@ -26,6 +26,9 @@ false positive rate. Default is 0.05}
 TRUE represents you require to calculate the sample size for this category,
 else you should input the exact number of biological replicates.}
 }
+\value{
+\code{float} of power
+}
 \description{
 Power calculation for PTM experiment
 }

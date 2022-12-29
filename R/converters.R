@@ -4,13 +4,17 @@
 #' 
 #' @param input PD report corresponding with enriched experimental data.
 #' @param annotation name of 'annotation.txt' or 'annotation.csv' data which 
-#' includes Condition, BioReplicate, Run information. 'Run' will be matched with 'Spectrum.File'.
-#' @param fasta_path A string of path to a FASTA file, used to match PTM peptides.
-#' @param protein_input PD report corresponding with unmodified experimental data.
-#' @param protein_annotation Same format as `annotation` corresponding to unmodified data.
-#' @param fasta_protein_name todo
-#' @param mod_id todo
-#' @param extract_unmod_from_ptm_data todo
+#' includes Condition, BioReplicate, Run information. 'Run' will be matched 
+#' with 'Spectrum.File'.
+#' @param protein_input PD report corresponding with unmodified experimental 
+#' data.
+#' @param protein_annotation Same format as `annotation` corresponding to 
+#' unmodified data.
+#' @param mod_id Character that indicates the modification of interest. Default 
+#' is `\\(Phospho\\)`. Note `\\` must be included before special characters.
+#' @param use_unmod_peptides If `protein_input` is not provided, 
+#' unmodified peptides can be extracted from `input` to be used in place of a 
+#' global profiling run. Default is `FALSE`.
 #' @param useNumProteinsColumn TRUE removes peptides which have more than 1 in 
 #' Proteins column of PD output.
 #' @param useUniquePeptide TRUE (default) removes peptides that are assigned 
@@ -47,15 +51,15 @@
 #' @export 
 #' 
 #' @examples
-#' # TODO: add examples
+#' # The output should be in the following format.
+#' head(raw.input$PTM)
+#' head(raw.input$PROTEIN)
 PDtoMSstatsPTMFormat = function(input,
                                 annotation,
-                                fasta_path=NULL,
                                 protein_input=NULL,
                                 protein_annotation=NULL,
-                                fasta_protein_name=NULL,
                                 mod_id="\\(Phospho\\)",
-                                extract_unmod_from_ptm_data=FALSE,
+                                use_unmod_peptides=FALSE,
                                 useNumProteinsColumn = FALSE,
                                 useUniquePeptide = TRUE,
                                 summaryforMultipleRows = max,
@@ -71,9 +75,13 @@ PDtoMSstatsPTMFormat = function(input,
                                 log_file_path = NULL){
   
   
-  ##TODO: add checks
+  ##TODO: add more checks
+  if (!is.null(protein_input) & use_unmod_peptides == TRUE){
+    stop("Either pass protein_input data or set use_unmod_peptides = TRUE, not both")
+  }
   
-  input$mods = extract_pd_mods(input$Modifications, mod_id)
+  ## Pull modifications from input and add into protein name
+  input$mods = .extract_pd_mods(input$Modifications, mod_id)
   input[,which.proteinid] = paste(input[,which.proteinid], input[,"mods"], 
                                   sep="_")
   
@@ -103,25 +111,23 @@ PDtoMSstatsPTMFormat = function(input,
                                       verbose, log_file_path)
     
     if ("PeptideModifiedSequence" %in% colnames(protein_input)){
-      setnames(protein_input, c("PeptideModifiedSequence"), c("PeptideSequence"))
+      setnames(protein_input, c("PeptideModifiedSequence"), 
+               c("PeptideSequence"))
     }
     
     msstats_input = list(PTM = ptm_input, PROTEIN = protein_input)
   }
   
-  if (extract_unmod_from_ptm_data){
+  if (use_unmod_peptides){
     protein_input = ptm_input[!grepl(mod_id, ptm_input$PeptideSequence),]
     ptm_input = ptm_input[grepl(mod_id, ptm_input$PeptideSequence),]
     
     msstats_input = list(PTM = ptm_input, PROTEIN = protein_input)
   }
   
-
-  
   return(msstats_input)
   
 }
-
 
 #' Convert Peaks Studio output into MSstatsPTM format
 #' 
@@ -160,8 +166,10 @@ PDtoMSstatsPTMFormat = function(input,
 #' @param log_file_path character. Path to a file to which information about 
 #' data processing will be saved. If not provided, such a file will be created 
 #' automatically. If 'append = TRUE', has to be a valid path to a file.
+#' 
 #' @importFrom data.table as.data.table melt
 #' @importFrom MSstatsConvert MSstatsBalancedDesign
+#' 
 #' @return `list` of `data.table`
 #' @export 
 #' 
@@ -170,26 +178,33 @@ PDtoMSstatsPTMFormat = function(input,
 #' head(raw.input$PTM)
 #' head(raw.input$PROTEIN)
 PStoMSstatsPTMFormat = function(
-    input, annotation, input_protein = NULL, annotation_protein = NULL,
-    use_unmod_peptides = FALSE, target_modification = NULL, 
-    remove_oxidation_peptides = FALSE, remove_multi_mod_types = FALSE,
-    summaryforMultipleRows = max, use_log_file = TRUE, append = FALSE, 
-    verbose = TRUE, log_file_path = NULL
+    input, 
+    annotation, 
+    input_protein = NULL, 
+    annotation_protein = NULL,
+    use_unmod_peptides = FALSE, 
+    target_modification = NULL, 
+    remove_oxidation_peptides = FALSE, 
+    remove_multi_mod_types = FALSE,
+    summaryforMultipleRows = max, 
+    use_log_file = TRUE, 
+    append = FALSE, 
+    verbose = TRUE, 
+    log_file_path = NULL
 ){
   
   input = as.data.table(input)
-  input_prot = NULL
-  message("Pivoting input data..")
-  input = .pivotPS(input)
-  message("Merging with annotation..")
-  input = merge(input, annotation, all.x = TRUE, by = "Raw.File")
-  
   if (!is.null(input_protein)){
-    message("Converting unmodified protein data..")
-    ## TODO: Add unmod protein converter
-    stop("Converter currently does not support seperate unmodified protein run.\
-         Please contact package maintainer for more information.")
+    input_protein = as.data.table(input_protein)
   }
+  
+  if (!"Source.File" %in% colnames(input)){
+    message("Pivoting input data..")
+    input = .pivotPS(input)
+  }
+  
+  message("Merging with annotation..")
+  input = merge(input, annotation, all.x = TRUE, by = "Source.File")
   
   ## Filter for required modifications
   message("Filtering modifications based on function arguements..")
@@ -232,20 +247,20 @@ PStoMSstatsPTMFormat = function(
   input = as.data.table(input)[, list(
     Intensity = summaryforMultipleRows(Intensity, na.rm = TRUE)), 
     by = feature_cols]
-  
-  if (!is.null(input_prot)){
-    input_prot[, c("Raw.File", "Mod", "End", "Start"):=NULL]
-    input_prot = MSstatsBalancedDesign(input_prot, 
+
+  if (!is.null(input_protein)){
+    input_protein[, c("Raw.File", "Mod", "End", "Start"):=NULL]
+    input_protein = MSstatsBalancedDesign(input_protein, 
                                        c('PeptideSequence', 'ProductCharge'))
-    input_prot = as.data.table(input_prot)[, list(
+    input_protein = as.data.table(input_protein)[, list(
       Intensity = summaryforMultipleRows(Intensity, na.rm = TRUE)), 
       by = feature_cols]
     
-    input_prot = as.data.frame(input_prot)
+    input_protein = as.data.frame(input_protein)
   }
   
   return(list("PTM" = as.data.frame(input),
-              "PROTEIN" = input_prot))
+              "PROTEIN" = input_protein))
 }
 
 #' Convert Skyline output into MSstatsPTM format
@@ -263,7 +278,7 @@ PStoMSstatsPTMFormat = function(
 #' `annotation`.
 #' @param use_unmod_peptides Boolean if the unmodified peptides in the input 
 #' file should be used to construct the unmodified protein output. Only used if
-#' `input_protein` is not provided. Default is `FALSE`
+#' `input_protein` is not provided. Default is `FALSE`.
 #' @param removeiRT TRUE (default) will remove the proteins or peptides which 
 #' are labeld 'iRT' in 'StandardType' column. FALSE will keep them.
 #' @param filter_with_Qvalue TRUE(default) will filter out the intensities that 
@@ -292,7 +307,6 @@ PStoMSstatsPTMFormat = function(
 #' 
 #' @importFrom data.table as.data.table setnames
 #' @importFrom MSstats SkylinetoMSstatsFormat
-#' 
 #' 
 #' @return `list` of `data.table`
 #' @export
@@ -386,64 +400,92 @@ SkylinetoMSstatsPTMFormat = function(input,
 #' @importFrom MSstats MaxQtoMSstatsFormat
 #' @importFrom checkmate assertChoice assertLogical
 #' 
-#' @param sites.data modified peptide output from MaxQuant. For example, a
-#' phosphorylation experiment would require the Phospho(STY)Sites.txt file
-#' @param annotation.ptm data frame annotation file for the ptm level data.
+#' @param evidence name of 'evidence.txt' data, which includes feature-level 
+#' data for enriched (PTM) data.
+#' @param annotation_ptm data frame annotation file for the ptm level data.
 #' Contains column Run, Fraction, TechRepMixture, Mixture, Channel, 
 #' BioReplicate, Condition.
-#' @param evidence for global protein dataset. name of 'evidence.txt' data, 
-#' which includes feature-level data.
-#' @param proteinGroups for global protein dataset, name of 'proteinGroups.txt' 
-#' data.
-#' @param annotation.prot data frame annotation file for the protein level data.
+#' @param fasta_path A string of path to a FASTA file, used to match PTM peptides.
+#' @param fasta_protein_name Name of fasta column that matches with protein name
+#' in evidence file. Default is `uniprot_ac`.
+#' @param mod_id Character that indicates the modification of interest. Default 
+#' is `\\(Phospho\\)`. Note `\\` must be included before special characters.
+#' @param sites_data (Not recommended. Only used if evidence file not provided. 
+#' Only works for TMT labeled data) Modified peptide output from MaxQuant. For 
+#' example, a phosphorylation experiment would require the Phospho(STY)Sites.txt
+#' file
+#' @param evidence_prot name of 'evidence.txt' data, which includes 
+#' feature-level data for global profiling (unmodified) data.
+#' @param proteinGroups name of 'proteinGroups.txt' data. It needs to matching 
+#' protein group ID in `evidence_prot`.
+#' @param annotation_prot data frame annotation file for the protein level data.
 #' Contains column Run, Fraction, TechRepMixture, Mixture, Channel, 
 #' BioReplicate, Condition.
-#' @param mod.num For modified peptide dataset. The number modifications per 
-#' peptide to be used. If "Single", only peptides with one modification will be 
-#' used. Otherwise "Total" can be selected which does not cap the number of 
-#' modifications per peptide. "Single" is the default. Selecting "Total" may 
-#' confound the effect of different modifications.
-#' @param TMT.keyword the sub-name of columns in sites.data file. Default is 
-#' `TMT`. This corresponds to the columns in the format 
-#' `Reporter.intensity.corrected.1.TMT1phos___1`. Specifically, this parameter 
-#' indicates the first section of the string `TMT1phos` (Before the mixture 
-#' number). If `TMT` is present in the string, set this value to `TMT`. Else if 
-#' `TMT` is not there (ie string is in the format `1phos`) leave this parameter 
-#' as an empty string ('').
-#' @param ptm.keyword the sub-name of columns in the sites.data file. Default is 
+#' @param use_unmod_peptides Boolean if the unmodified peptides in the input 
+#' file should be used to construct the unmodified protein output. Only used if
+#' `input_protein` is not provided. Default is `FALSE`.
+#' @param labeling_type Either `TMT` or `LF` (Label-Free) depending on 
+#' experimental design. Default is `LF`.
+#' @param mod_num (Only if `sites.data` is used) For modified peptide dataset. 
+#' The number modifications per peptide to be used. If "Single", only peptides 
+#' with one modification will be used. Otherwise "Total" can be selected which 
+#' does not cap the number of modifications per peptide. "Single" is the 
+#' default. Selecting "Total" may confound the effect of different 
+#' modifications.
+#' @param TMT_keyword (Only if `sites.data` is used) the sub-name of columns 
+#' in sites.data file. Default is `TMT`. This corresponds to the columns in the 
+#' format `Reporter.intensity.corrected.1.TMT1phos___1`. Specifically, this 
+#' parameter indicates the first section of the string `TMT1phos` (Before the 
+#' mixture number). If `TMT` is present in the string, set this value to `TMT`. 
+#' Else if `TMT` is not there (ie string is in the format `1phos`) leave this 
+#' parameter as an empty string ('').
+#' @param ptm_keyword (Only if `sites.data` is used) the sub-name of columns in 
+#' the sites.data file. Default is 
 #' `phos`. This corresponds to the columns in the format 
 #' `Reporter.intensity.corrected.1.TMT1phos___1`. Specifically, this parameter 
 #' indicates the second section of the string `TMT1phos` (After the mixture 
 #' number). If the string is present, set this parameter. Else if this part of 
 #' the string is empty (ie string is in the format `TMT1`) leave this parameter 
 #' as an empty string ('').
-#' @param which.proteinid.ptm For PTM dataset, which column to use for protein 
+#' @param which_proteinid_ptm For PTM dataset, which column to use for protein 
 #' name. Use 'Proteins'(default) column for protein name. 'Leading.proteins' or 
 #' 'Leading.razor.protein' or 'Gene.names' can be used instead to get the 
 #' protein ID with single protein. However, those can potentially have the 
 #' shared peptides.
-#' @param which.proteinid.protein For Protein dataset, which column to use for 
+#' @param which_proteinid_protein For Protein dataset, which column to use for 
 #' protein name. Same options as above.
 #' @param removeMpeptides If Oxidation (M) modifications should be removed. 
 #' Default is TRUE.
+#' @param removeOxidationMpeptides TRUE will remove the peptides including 
+#' 'oxidation (M)' in modification. FALSE is default.
+#' @param removeProtein_with1Peptide TRUE will remove the proteins which have 
+#' only 1 peptide and charge. FALSE is default.
+#' @param use_log_file logical. If TRUE, information about data processing will 
+#' be saved to a file.
+#' @param append logical. If TRUE, information about data processing will be 
+#' added to an existing log file.
+#' @param verbose logical. If TRUE, information about data processing wil be 
+#' printed to the console.
+#' @param log_file_path character. Path to a file to which information about 
+#' data processing will be saved. If not provided, such a file will be created 
+#' automatically. If 'append = TRUE', has to be a valid path to a file.
+#' 
 #' @return a list of two data.tables named 'PTM' and 'PROTEIN' in the format 
 #' required by MSstatsPTM.
-#' @examples
 #' 
+#' @examples
 #' head(raw.input.tmt$PTM)
 #' head(raw.input.tmt$PROTEIN)
-#' 
 MaxQtoMSstatsPTMFormat = function(evidence=NULL,
-                                  proteinGroups=NULL,
                                   annotation_ptm=NULL,
                                   fasta_path=NULL,
                                   fasta_protein_name="uniprot_ac",
                                   mod_id="\\(Phospho \\(STY\\)\\)",
                                   sites_data=NULL,
                                   evidence_prot = NULL,
-                                  proteinGroups_prot = NULL,
+                                  proteinGroups = NULL,
                                   annotation_prot = NULL,
-                                  extract_unmod_from_ptm_data=FALSE,
+                                  use_unmod_peptides=FALSE,
                                   labeling_type = "LF",
                                   mod_num = 'Single',
                                   TMT_keyword = "TMT",
@@ -451,6 +493,8 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
                                   which_proteinid_ptm = "Proteins",
                                   which_proteinid_protein = "Proteins",
                                   removeMpeptides = FALSE,
+                                  removeOxidationMpeptides = FALSE,
+                                  removeProtein_with1Peptide = FALSE,
                                   use_log_file = TRUE,
                                   append = FALSE,
                                   verbose = TRUE,
@@ -469,9 +513,6 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
   
   if (is.null(sites_data)){
     evidence = as.data.frame(evidence)
-    if (!is.null(proteinGroups)){
-      proteinGroups = as.data.frame(proteinGroups)
-    }
   } else {
     pho.data = as.data.frame(sites_data)
   }
@@ -485,47 +526,46 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
     if(labeling_type == "TMT"){
       
       evidence_sites = MSstatsPTMSiteLocator(evidence, 
-                                        protein_name_col= which_proteinid_ptm,
+                                        protein_name_col = which_proteinid_ptm,
                                         unmod_pep_col = "Sequence",
                                         mod_pep_col = "Modified.sequence",
-                                        fasta_file=fasta_path,
-                                        fasta_protein_name="uniprot_ac", 
+                                        fasta_file = fasta_path,
+                                        fasta_protein_name = "uniprot_ac", 
                                         mod_id=mod_id, 
-                                        mod_id_is_numeric=FALSE, 
-                                        terminus_included=FALSE)
+                                        mod_id_is_numeric = FALSE, 
+                                        terminus_included = FALSE)
       
-      MSstatsPTMTMT.abun = MaxQtoMSstatsTMTFormat(evidence_sites,
-                             proteinGroups,
-                             annotation_ptm,
-                             which.proteinid=which_proteinid_ptm,
-                             use_log_file=use_log_file,
-                             append=append,
-                             verbose=verbose,
-                             log_file_path=log_file_path)
+      msstatsptm_input = MaxQtoMSstatsTMTFormatHelper(evidence_sites,
+                       annotation_ptm,
+                       which.proteinid = which_proteinid_ptm,
+                       rmPSM_withfewMea_withinRun = removeProtein_with1Peptide,
+                       use_log_file=use_log_file,
+                       append=append,
+                       verbose=verbose,
+                       log_file_path=log_file_path)
       
     } else if (labeling_type == "LF"){
       
       evidence_sites = MSstatsPTMSiteLocator(evidence, 
-                                             protein_name_col= which_proteinid_ptm,
-                                             unmod_pep_col = "Sequence",
-                                             mod_pep_col = "Modified.sequence",
-                                             fasta_file=fasta_path,
-                                             fasta_protein_name="uniprot_ac", 
-                                             mod_id=mod_id, 
-                                             mod_id_is_numeric=FALSE, 
-                                             terminus_included=FALSE)
+                                         protein_name_col= which_proteinid_ptm,
+                                         unmod_pep_col = "Sequence",
+                                         mod_pep_col = "Modified.sequence",
+                                         fasta_file=fasta_path,
+                                         fasta_protein_name="uniprot_ac", 
+                                         mod_id=mod_id, 
+                                         mod_id_is_numeric=FALSE, 
+                                         terminus_included=FALSE)
       
-      # matching_table = unique(evidence_sites[, c("Proteins", "ProteinNameUnmod")])
-      # proteinGroups
-      
-      MSstatsPTMTMT.abun = MaxQtoMSstatsFormat(evidence_sites,
-                                               annotation_ptm,
-                                               proteinGroups,
-                                               proteinID=which_proteinid_ptm,
-                                               use_log_file=use_log_file,
-                                               append=append,
-                                               verbose=verbose,
-                                               log_file_path=log_file_path)
+      msstatsptm_input = MaxQtoMSstatsFormatHelper(evidence_sites,
+                       annotation_ptm,
+                       proteinID=which_proteinid_ptm,
+                       removeMpeptides = removeMpeptides,
+                       removeOxidationMpeptides = removeOxidationMpeptides,
+                       removeProtein_with1Peptide = removeProtein_with1Peptide,
+                       use_log_file=use_log_file,
+                       append=append,
+                       verbose=verbose,
+                       log_file_path=log_file_path)
 
     
     }
@@ -542,7 +582,7 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
                                  gsub("mixture", "", annot.ptm$Mixture), 
                                  ptm.keyword)
     
-    MSstatsPTMTMT.abun = .convert.ptm.data(pho.data,
+    msstatsptm_input = .convert.ptm.data(pho.data,
                                            annot.ptm,
                                            mod.num,
                                            ptm.keyword,
@@ -552,15 +592,15 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
     ## MaxQ phospho file has duplicate peptides per site 
     ## (if site has equal probability)
     ## Add protein into site to create unique identifier
-    MSstatsPTMTMT.abun$PeptideSequence = paste(
-      MSstatsPTMTMT.abun$PeptideSequence, MSstatsPTMTMT.abun$ProteinName, 
+    msstatsptm_input$PeptideSequence = paste(
+      msstatsptm_input$PeptideSequence, msstatsptm_input$ProteinName, 
       sep = ':')
     
-    setDT(MSstatsPTMTMT.abun)[, PeptideSequence := tstrsplit(PeptideSequence, ":",
+    setDT(msstatsptm_input)[, PeptideSequence := tstrsplit(PeptideSequence, ":",
                                                              keep = 1)]
   }
   
-  MSstatsPTMformat = list('PTM' = MSstatsPTMTMT.abun)
+  MSstatsPTMformat = list('PTM' = msstatsptm_input)
   
   if (!is.null(evidence_prot)){
     annot = as.data.table(annotation.prot)
@@ -571,28 +611,28 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
     #proteinGroups = as.data.table(proteinGroups)
     
     if(labeling_type == "TMT"){
-      MSstatsTMT.abun = MaxQtoMSstatsTMTFormat(evidence = evidence_prot,
+      msstats.abun = MaxQtoMSstatsTMTFormat(evidence = evidence_prot,
                                             proteinGroups = proteinGroups_prot,
                                             annotation = annotation_prot,
                                       which.proteinid = which_proteinid_protein)
     } else if (labeling_type == "LF"){
-      MSstatsTMT.abun = MaxQtoMSstatsFormat(evidence = evidence_prot,
+      msstats.abun = MaxQtoMSstatsFormat(evidence = evidence_prot,
                                             proteinGroups = proteinGroups_prot,
                                             annotation = annotation_prot,
                                       which.proteinid = which_proteinid_protein)
     }
     
     MSstatsPTMformat = list('PTM' = MSstatsPTMTMT.abun, 
-                            "PROTEIN" = MSstatsTMT.abun)
+                            "PROTEIN" = msstats.abun)
     
   }
   
-  if (extract_unmod_from_ptm_data){
-    MSstatsTMT.abun = MSstatsPTMTMT.abun[!grepl(mod_id, MSstatsPTMTMT.abun$PeptideSequence),]
-    MSstatsPTMTMT.abun = MSstatsPTMTMT.abun[grepl(mod_id, MSstatsPTMTMT.abun$PeptideSequence),]
+  if (use_unmod_peptides){
+    msstats.abun = msstatsptm_input[!grepl(mod_id, msstatsptm_input$PeptideSequence),]
+    msstatsptm_input = msstatsptm_input[grepl(mod_id, msstatsptm_input$PeptideSequence),]
     
-    MSstatsPTMformat = list(PTM = MSstatsPTMTMT.abun, 
-                            PROTEIN = MSstatsTMT.abun)
+    MSstatsPTMformat = list(PTM = msstatsptm_input, 
+                            PROTEIN = msstats.abun)
   }
   
   return(MSstatsPTMformat)
@@ -649,7 +689,6 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
 #' # The output should be in the following format.
 #' head(raw.input$PTM)
 #' head(raw.input$PROTEIN)
-#' 
 ProgenesistoMSstatsPTMFormat = function(ptm_input,
                                         annotation,
                                         global_protein_input = FALSE,
@@ -729,9 +768,16 @@ ProgenesistoMSstatsPTMFormat = function(ptm_input,
 #' as in the same format as `input` parameter. 
 #' @param protein_annotation name of annotation file for global protein data, in
 #' the same format as above.
+#' @param use_unmod_peptides If `protein_input` is not provided, 
+#' unmodified peptides can be extracted from `input` to be used in place of a 
+#' global profiling run. Default is `FALSE`.
 #' @param intensity 'PeakArea'(default) uses not normalized peak area. 
 #' 'NormalizedPeakArea' uses peak area normalized by Spectronaut. Default is 
 #' NULL
+#' @param mod_id Character that indicates the modification of interest. Default 
+#' is `\\(Phospho\\)`. Note `\\` must be included before special characters.
+#' @param fasta_protein_name Name of fasta column that matches with protein name
+#' in evidence file. Default is `uniprot_iso`.
 #' @param filter_with_Qvalue TRUE(default) will filter out the intensities that 
 #' have greater than qvalue_cutoff in EG.Qvalue column. Those intensities will 
 #' be replaced with zero and will be considered as censored missing values for 
@@ -770,7 +816,7 @@ SpectronauttoMSstatsPTMFormat = function(
     fasta_path = NULL,
     protein_input = NULL,
     protein_annotation = NULL,
-    extract_unmod_from_ptm_data=FALSE,
+    use_unmod_peptides=FALSE,
     intensity = "PeakArea",
     mod_id="\\[Phospho \\(STY\\)\\]",
     fasta_protein_name="uniprot_iso",
@@ -789,10 +835,10 @@ SpectronauttoMSstatsPTMFormat = function(
   
   ## Needed if input only call PSM
   if (!"EG.ModifiedSequence" %in% colnames(input)){
-    input$PeptideSequence = MSstatsPTMRemoveMods(input$EG.PrecursorId)
+    input$PeptideSequence = .MSstatsPTMRemoveMods(input$EG.PrecursorId)
     mod_col = "EG.PrecursorId"
   } else {
-    input$PeptideSequence = MSstatsPTMRemoveMods(input$EG.ModifiedSequence)
+    input$PeptideSequence = .MSstatsPTMRemoveMods(input$EG.ModifiedSequence)
     mod_col = "EG.ModifiedSequence"
   }
   
@@ -827,7 +873,7 @@ SpectronauttoMSstatsPTMFormat = function(
     msstats_input = list(PTM = ptm_input, PROTEIN = protein_input)
   }
   
-  if (extract_unmod_from_ptm_data){
+  if (use_unmod_peptides){
     protein_input = ptm_input[!grepl(mod_id, ptm_input$PeptideSequence),]
     ptm_input = ptm_input[grepl(mod_id, ptm_input$PeptideSequence),]
     

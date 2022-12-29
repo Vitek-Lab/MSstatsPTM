@@ -10,7 +10,7 @@ SpectronauttoMSstatsPTMFormat(
   fasta_path = NULL,
   protein_input = NULL,
   protein_annotation = NULL,
-  extract_unmod_from_ptm_data = FALSE,
+  use_unmod_peptides = FALSE,
   intensity = "PeakArea",
   mod_id = "\\\\[Phospho \\\\(STY\\\\)\\\\]",
   fasta_protein_name = "uniprot_iso",
@@ -47,9 +47,19 @@ as in the same format as \code{input} parameter.}
 \item{protein_annotation}{name of annotation file for global protein data, in
 the same format as above.}
 
+\item{use_unmod_peptides}{If \code{protein_input} is not provided,
+unmodified peptides can be extracted from \code{input} to be used in place of a
+global profiling run. Default is \code{FALSE}.}
+
 \item{intensity}{'PeakArea'(default) uses not normalized peak area.
 'NormalizedPeakArea' uses peak area normalized by Spectronaut. Default is
 NULL}
+
+\item{mod_id}{Character that indicates the modification of interest. Default
+is \verb{\\\\(Phospho\\\\)}. Note \verb{\\\\} must be included before special characters.}
+
+\item{fasta_protein_name}{Name of fasta column that matches with protein name
+in evidence file. Default is \code{uniprot_iso}.}
 
 \item{filter_with_Qvalue}{TRUE(default) will filter out the intensities that
 have greater than qvalue_cutoff in EG.Qvalue column. Those intensities will

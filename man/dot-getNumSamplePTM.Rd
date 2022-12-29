@@ -23,6 +23,9 @@ and upper values of the desired fold change.}
 of detecting a true fold change. TRUE represent you require to calculate the power
 for this category, else you should input the average of power you expect. Default is 0.9}
 }
+\value{
+\code{int} of samples
+}
 \description{
 Get sample size for PTM experiment
 }
