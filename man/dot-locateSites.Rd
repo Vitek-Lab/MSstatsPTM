@@ -4,7 +4,14 @@
 \alias{.locateSites}
 \title{Add site location and aa}
 \usage{
-.locateSites(data, mod_id, mod_id_is_numeric)
+.locateSites(
+  data,
+  mod_id,
+  mod_id_is_numeric,
+  protein_name_col,
+  unmod_pep_col,
+  mod_pep_col
+)
 }
 \arguments{
 \item{data}{data.table}

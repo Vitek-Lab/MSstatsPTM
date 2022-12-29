@@ -2,49 +2,73 @@
 % Please edit documentation in R/converters.R
 \name{SpectronauttoMSstatsPTMFormat}
 \alias{SpectronauttoMSstatsPTMFormat}
-\title{Converts raw PTM MS data from Spectronautt into the format needed for
-MSstatsPTM.}
+\title{Convert Spectronaut output into MSstatsPTM format}
 \usage{
 SpectronauttoMSstatsPTMFormat(
-  PTM.data,
-  fasta,
-  Protein.data = NULL,
+  input,
   annotation = NULL,
+  fasta_path = NULL,
+  protein_input = NULL,
+  protein_annotation = NULL,
+  use_unmod_peptides = FALSE,
   intensity = "PeakArea",
+  mod_id = "\\\\[Phospho \\\\(STY\\\\)\\\\]",
+  fasta_protein_name = "uniprot_iso",
   filter_with_Qvalue = TRUE,
   qvalue_cutoff = 0.01,
   useUniquePeptide = TRUE,
   removeFewMeasurements = TRUE,
   removeProtein_with1Feature = FALSE,
-  removeNonUniqueProteins = TRUE,
-  modificationLabel = "Phospho",
-  removeiRT = TRUE,
   summaryforMultipleRows = max,
-  which.Conditions = "all"
+  use_log_file = TRUE,
+  append = FALSE,
+  verbose = TRUE,
+  log_file_path = NULL
 )
 }
 \arguments{
-\item{PTM.data}{name of PTM Spectronaut output, which is long-format.}
-
-\item{fasta}{A string of path to a FASTA file, used to match PTM peptides.}
-
-\item{Protein.data}{name of Global Protein Spectronaut output, which is long-format.}
+\item{input}{name of Spectronaut PTM output, which is long-format.
+ProteinName, PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge,
+IsotopeLabelType, Condition, BioReplicate, Run, Intensity,
+F.ExcludedFromQuantification are required. Rows with
+F.ExcludedFromQuantification=True will be removed.}
 
 \item{annotation}{name of 'annotation.txt' data which includes Condition,
-BioReplicate, Run. If annotation is already complete in Spectronaut, use
-annotation=NULL (default). It will use the annotation information from input.}
+BioReplicate, Run. If annotation is already complete in Spectronaut,
+use annotation=NULL (default). It will use the annotation information from
+input.}
+
+\item{fasta_path}{string containing path to the corresponding fasta file for
+the modified peptide dataset.}
+
+\item{protein_input}{name of Spectronaut global protein output, which is
+as in the same format as \code{input} parameter.}
+
+\item{protein_annotation}{name of annotation file for global protein data, in
+the same format as above.}
+
+\item{use_unmod_peptides}{If \code{protein_input} is not provided,
+unmodified peptides can be extracted from \code{input} to be used in place of a
+global profiling run. Default is \code{FALSE}.}
 
 \item{intensity}{'PeakArea'(default) uses not normalized peak area.
-'NormalizedPeakArea' uses peak area normalized by Spectronaut}
+'NormalizedPeakArea' uses peak area normalized by Spectronaut. Default is
+NULL}
+
+\item{mod_id}{Character that indicates the modification of interest. Default
+is \verb{\\\\(Phospho\\\\)}. Note \verb{\\\\} must be included before special characters.}
+
+\item{fasta_protein_name}{Name of fasta column that matches with protein name
+in evidence file. Default is \code{uniprot_iso}.}
 
 \item{filter_with_Qvalue}{TRUE(default) will filter out the intensities that
 have greater than qvalue_cutoff in EG.Qvalue column. Those intensities will
 be replaced with zero and will be considered as censored missing values for
 imputation purpose.}
 
-\item{qvalue_cutoff}{Cutoff for EG.Qvalue. default is 0.01.}
+\item{qvalue_cutoff}{Cutoff for EG.Qvalue. Default is 0.01.}
 
-\item{useUniquePeptide}{TRUE(default) removes peptides that are assigned for
+\item{useUniquePeptide}{TRUE (default) removes peptides that are assigned for
 more than one proteins. We assume to use unique peptide for each protein.}
 
 \item{removeFewMeasurements}{TRUE (default) will remove the features that
@@ -54,35 +78,32 @@ have 1 or 2 measurements across runs.}
 only 1 feature, which is the combination of peptide, precursor charge,
 fragment and charge. FALSE is default.}
 
-\item{removeNonUniqueProteins}{TRUE will remove proteins that were not
-uniquely identified. IE if the protein column contains multiple proteins
-seperated by ";". TRUE is default}
-
-\item{modificationLabel}{String of modification name in \code{EG.ModifiedSequence}
-column. Default is 'Phospho'. Note label could also include amino acids in
-abbreviations, for example 'Phospho (STY)'. If special characters are in the
-name, you must add // to the label, ex. 'Phospho \\(STY\\)'.}
-
-\item{removeiRT}{TRUE will remove proteins that contain iRT. True is default}
-
 \item{summaryforMultipleRows}{max(default) or sum - when there are multiple
 measurements for certain feature and certain run, use highest or sum of
 multiple intensities.}
 
-\item{which.Conditions}{list of conditions to format into MSstatsPTM format.
-If "all" all conditions will be used. Default is "all".}
+\item{use_log_file}{logical. If TRUE, information about data processing will
+be saved to a file.}
+
+\item{append}{logical. If TRUE, information about data processing will be
+added to an existing log file.}
+
+\item{verbose}{logical. If TRUE, information about data processing wil be
+printed to the console.}
+
+\item{log_file_path}{character. Path to a file to which information about
+data processing will be saved. If not provided, such a file will be created
+automatically. If 'append = TRUE', has to be a valid path to a file.}
 }
 \value{
 a list of two data.tables named 'PTM' and 'PROTEIN' in the format
 required by MSstatsPTM.
 }
 \description{
-Takes as as input both raw PTM and global protein outputs from Spectronaut.
+Currently only supports label-free quantification.
 }
 \examples{
-
 # The output should be in the following format.
 head(raw.input$PTM)
 head(raw.input$PROTEIN)
-
 }

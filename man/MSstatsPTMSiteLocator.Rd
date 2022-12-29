@@ -6,7 +6,12 @@
 \usage{
 MSstatsPTMSiteLocator(
   data,
+  protein_name_col = "ProteinName",
+  unmod_pep_col = "PeptideSequence",
+  mod_pep_col = "PeptideModifiedSequence",
+  clean_mod = FALSE,
   fasta_file = NULL,
+  fasta_protein_name = "header",
   mod_id = "\\\\*",
   mod_id_is_numeric = FALSE,
   terminus_included = FALSE,
@@ -18,9 +23,24 @@ MSstatsPTMSiteLocator(
 \code{ProteinName}, \code{PeptideSequence}, \code{PeptideModifiedSequence}, and (optionally)
 \code{Start} columns.}
 
+\item{protein_name_col}{Name of column indicating protein. Default is
+\code{ProteinName}.}
+
+\item{unmod_pep_col}{Name of column indicating unmodified peptide sequence. Default
+is \code{PeptideSequence}.}
+
+\item{mod_pep_col}{Name of column indicating modified peptide sequence. Default
+is \code{PeptideModifiedSequence}.}
+
+\item{clean_mod}{Remove special characters and numbers around modification
+name. Default is \code{FALSE}}
+
 \item{fasta_file}{File path to FASTA file that matches with proteins in
 \code{data}. Can be either string or \code{data.table} processed with \code{tidyFasta()}
 function. Default to NULL if peptide number included in \code{data}.}
+
+\item{fasta_protein_name}{Name of fasta file column that matches with
+\code{protein_name_col}. Default is \code{header}.}
 
 \item{mod_id}{String that indicates what amino acid was modified in
 \code{PeptideSequence}.}
