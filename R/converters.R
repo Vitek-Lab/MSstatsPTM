@@ -28,11 +28,11 @@
 #' 'oxidation (M)' in modification. FALSE is default.
 #' @param removeProtein_with1Peptide TRUE will remove the proteins which have 
 #' only 1 peptide and charge. FALSE is default.
-#' @param which.quantification Use 'Precursor.Area'(default) column for 
+#' @param which_quantification Use 'Precursor.Area'(default) column for 
 #' quantified intensities. 'Intensity' or 'Area' can be used instead.
-#' @param which.proteinid Use 'Protein.Accessions'(default) column for protein 
+#' @param which_proteinid Use 'Protein.Accessions'(default) column for protein 
 #' name. 'Master.Protein.Accessions' can be used instead.
-#' @param which.sequence Use 'Sequence'(default) column for peptide sequence. 
+#' @param which_sequence Use 'Sequence'(default) column for peptide sequence. 
 #' 'Annotated.Sequence' can be used instead.
 #' @param use_log_file logical. If TRUE, information about data processing will 
 #' be saved to a file.
@@ -66,14 +66,15 @@ PDtoMSstatsPTMFormat = function(input,
                                 removeFewMeasurements = TRUE,
                                 removeOxidationMpeptides = FALSE,
                                 removeProtein_with1Peptide = FALSE,
-                                which.quantification = "Precursor.Area",
-                                which.proteinid = "Protein.Group.Accessions",
-                                which.sequence = "Sequence",
+                                which_quantification = "Precursor.Area",
+                                which_proteinid = "Protein.Group.Accessions",
+                                which_sequence = "Sequence",
                                 use_log_file = TRUE,
                                 append = FALSE,
                                 verbose = TRUE,
                                 log_file_path = NULL){
   
+  input = as.data.table(input)
   
   ##TODO: add more checks
   if (!is.null(protein_input) & use_unmod_peptides == TRUE){
@@ -82,15 +83,16 @@ PDtoMSstatsPTMFormat = function(input,
   
   ## Pull modifications from input and add into protein name
   input$mods = .extract_pd_mods(input$Modifications, mod_id)
-  input[,which.proteinid] = paste(input[,which.proteinid], input[,"mods"], 
+  input[,which_proteinid] = paste(input[, which_proteinid, with=FALSE][[1]], 
+                                  input[,"mods"][[1]], 
                                   sep="_")
   
   ptm_input = PDtoMSstatsFormat(input, annotation, useNumProteinsColumn,
                                 useUniquePeptide, summaryforMultipleRows,
                                 removeFewMeasurements, removeOxidationMpeptides,
                                 removeProtein_with1Peptide, 
-                                which.quantification, which.proteinid, 
-                                which.sequence, use_log_file, append, verbose,
+                                which_quantification, which_proteinid, 
+                                which_sequence, use_log_file, append, verbose,
                                 log_file_path)
   
   if ("PeptideModifiedSequence" %in% colnames(ptm_input)){
@@ -106,8 +108,8 @@ PDtoMSstatsPTMFormat = function(input,
                                       removeFewMeasurements, 
                                       removeOxidationMpeptides,
                                       removeProtein_with1Peptide, 
-                                      which.quantification, which.proteinid, 
-                                      which.sequence, use_log_file, append, 
+                                      which_quantification, which_proteinid, 
+                                      which_sequence, use_log_file, append, 
                                       verbose, log_file_path)
     
     if ("PeptideModifiedSequence" %in% colnames(protein_input)){
@@ -512,12 +514,12 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
   #                           removeMpeptides)
   
   if (is.null(sites_data)){
-    evidence = as.data.frame(evidence)
+    evidence = as.data.table(evidence)
   } else {
-    pho.data = as.data.frame(sites_data)
+    pho.data = as.data.table(sites_data)
   }
   
-  annot.ptm = as.data.frame(annotation_ptm)
+  annot.ptm = as.data.table(annotation_ptm)
   
   # clean.prot = .check.global.protein(evidence, proteinGroups)
   
@@ -832,7 +834,7 @@ SpectronauttoMSstatsPTMFormat = function(
     log_file_path = NULL){
   
   ## TODO: Add checks on input and params
-  
+  input = as.data.table(input)
   ## Needed if input only call PSM
   if (!"EG.ModifiedSequence" %in% colnames(input)){
     input$PeptideSequence = .MSstatsPTMRemoveMods(input$EG.PrecursorId)
