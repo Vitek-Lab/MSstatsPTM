@@ -398,7 +398,7 @@ MSstatsPTMSiteLocator = function(data,
            identify modification site number.")
     }
     
-    id_data = data[,c(protein_name_col, unmod_pep_col, mod_pep_col)]
+    id_data = data[,c(protein_name_col, unmod_pep_col, mod_pep_col), with=FALSE]
     id_data = .joinFasta(id_data, fasta_file, fasta_protein_name,
                          protein_name_col, unmod_pep_col, mod_pep_col)
   }
@@ -419,7 +419,7 @@ MSstatsPTMSiteLocator = function(data,
   data = merge(data, id_data, by=c(protein_name_col, unmod_pep_col, 
                                    mod_pep_col))
   
-  data[, "ProteinNameUnmod"] = data[, protein_name_col]
+  data[, "ProteinNameUnmod"] = data[, protein_name_col, with=FALSE]
   data[, protein_name_col] = data$ProteinName_mod
   data=as.data.table(data)
   
@@ -450,8 +450,9 @@ MSstatsPTMSiteLocator = function(data,
   data = merge(data, fasta_file, by.x=protein_name_col, 
                   by.y=fasta_protein_name, all.x=TRUE)
 
-  missing_prot = unique(data[is.na(data$sequence),protein_name_col])
-  if (length(missing_prot) > 0){
+  missing_prot = unique(data[is.na(data$sequence), 
+                             protein_name_col, with=FALSE])
+  if (nrow(missing_prot) > 0){
     print(paste0("FASTA file missing ", as.character(length(missing_prot)),
                  " Proteins. These will be removed. This may be due to non-unique identifications."))
   }
@@ -460,10 +461,12 @@ MSstatsPTMSiteLocator = function(data,
               
   ## Locate peptide sequence start
   data$Start = mapply(function(x,y){unlist(gregexpr(pattern=x, y))[[1]]}, 
-                      data[,unmod_pep_col], data$sequence)
+                      data[, unmod_pep_col, with=FALSE][[1]], 
+                      data[, "sequence"][[1]])
   data$Start = unlist(data$Start)
   
-  data = data[,c(protein_name_col, unmod_pep_col, mod_pep_col, "Start")]
+  data = data[, c(protein_name_col, unmod_pep_col, mod_pep_col, "Start"), 
+              with=FALSE]
   
   return(data)
 }
@@ -492,7 +495,7 @@ MSstatsPTMSiteLocator = function(data,
 .locateSites = function(data, mod_id, mod_id_is_numeric,
                         protein_name_col, unmod_pep_col, mod_pep_col){
   
-  data[,"PeptideModifiedSequence_adj"] = data[,mod_pep_col]
+  data[, "PeptideModifiedSequence_adj"] = data[,mod_pep_col, with=FALSE]
   
   if (mod_id_is_numeric){
     mod_id="\\*"
@@ -510,10 +513,11 @@ MSstatsPTMSiteLocator = function(data,
     data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
                                            function(x){
                                              gsub("\\*\\*", mod_id, x)})
+    data$PeptideModifiedSequence_adj = unlist(data$PeptideModifiedSequence_adj)
   }
   
-  unmod_data = data[!grepl(mod_id, data[,"PeptideModifiedSequence_adj"]), ]
-  mod_data = data[grepl(mod_id, data[,"PeptideModifiedSequence_adj"]),]
+  unmod_data = data[!grepl(mod_id, data[,"PeptideModifiedSequence_adj"][[1]]), ]
+  mod_data = data[grepl(mod_id, data[,"PeptideModifiedSequence_adj"][[1]]),]
   
   ## Locate number and aa  
   string_num = lapply(mod_data$PeptideModifiedSequence_adj, 
@@ -530,14 +534,16 @@ MSstatsPTMSiteLocator = function(data,
   full_site = lapply(mapply(function(x,y){paste(x, y, sep="")}, 
                             site_aa, site_num),
                      function(z){paste(z, collapse='_')})
-  mod_data$ProteinName_mod = paste(mod_data[,protein_name_col], full_site, sep="_")
+  mod_data$ProteinName_mod = paste(mod_data[, protein_name_col, with=FALSE][[1]], 
+                                   full_site, sep="_")
   
   ## Ensure columns are not lists
-  mod_data[,unmod_pep_col] = unlist(mod_data[,unmod_pep_col])
-  mod_data$PeptideModifiedSequence_adj = unlist(mod_data$PeptideModifiedSequence_adj)
+  mod_data[,unmod_pep_col] = mod_data[, unmod_pep_col, with=FALSE][[1]]
+  mod_data$PeptideModifiedSequence_adj = unlist(
+    mod_data$PeptideModifiedSequence_adj)
   mod_data$ProteinName_mod = unlist(mod_data$ProteinName_mod)
   
-  unmod_data$ProteinName_mod = unmod_data[,protein_name_col]
+  unmod_data$ProteinName_mod = unmod_data[, protein_name_col, with=FALSE][[1]]
   data = rbindlist(list(mod_data, unmod_data))
   
   return(data)
