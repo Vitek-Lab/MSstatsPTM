@@ -17,9 +17,9 @@ PDtoMSstatsPTMFormat(
   removeFewMeasurements = TRUE,
   removeOxidationMpeptides = FALSE,
   removeProtein_with1Peptide = FALSE,
-  which.quantification = "Precursor.Area",
-  which.proteinid = "Protein.Group.Accessions",
-  which.sequence = "Sequence",
+  which_quantification = "Precursor.Area",
+  which_proteinid = "Protein.Group.Accessions",
+  which_sequence = "Sequence",
   use_log_file = TRUE,
   append = FALSE,
   verbose = TRUE,
@@ -65,13 +65,13 @@ have 1 or 2 measurements across runs.}
 \item{removeProtein_with1Peptide}{TRUE will remove the proteins which have
 only 1 peptide and charge. FALSE is default.}
 
-\item{which.quantification}{Use 'Precursor.Area'(default) column for
+\item{which_quantification}{Use 'Precursor.Area'(default) column for
 quantified intensities. 'Intensity' or 'Area' can be used instead.}
 
-\item{which.proteinid}{Use 'Protein.Accessions'(default) column for protein
+\item{which_proteinid}{Use 'Protein.Accessions'(default) column for protein
 name. 'Master.Protein.Accessions' can be used instead.}
 
-\item{which.sequence}{Use 'Sequence'(default) column for peptide sequence.
+\item{which_sequence}{Use 'Sequence'(default) column for peptide sequence.
 'Annotated.Sequence' can be used instead.}
 
 \item{use_log_file}{logical. If TRUE, information about data processing will
