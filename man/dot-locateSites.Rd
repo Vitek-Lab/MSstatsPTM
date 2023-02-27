@@ -7,10 +7,10 @@
 .locateSites(
   data,
   mod_id,
-  mod_id_is_numeric,
   protein_name_col,
   unmod_pep_col,
-  mod_pep_col
+  mod_pep_col,
+  mod_id_is_numeric
 )
 }
 \arguments{

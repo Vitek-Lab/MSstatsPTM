@@ -129,10 +129,10 @@ required by MSstatsPTM.
 }
 \description{
 Takes as input TMT experiments from MaxQ and converts the data into the
-format needed for MSstatsPTM. Requires only the modified file from MaxQ (for
-example Phospho(STY)Sites) and an annotation file for PTM data. To adjust
-modified peptides for changes in global protein level, unmodified TMT
-experimental data must also be returned.
+format needed for MSstatsPTM. Requires modified file from MaxQ (evidence)
+and an annotation file for PTM data. To adjust modified peptides for changes
+in global protein level, unmodified TMT experimental data must also be
+returned.
 }
 \examples{
 head(raw.input.tmt$PTM)

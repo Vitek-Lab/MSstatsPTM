@@ -13,9 +13,12 @@ MSstatsPTMSiteLocator(
   fasta_file = NULL,
   fasta_protein_name = "header",
   mod_id = "\\\\*",
-  mod_id_is_numeric = FALSE,
+  localization_scores = FALSE,
+  localization_cutoff = 0.75,
+  remove_unlocalized_peptides = TRUE,
   terminus_included = FALSE,
-  terminus_id = "\\\\."
+  terminus_id = "\\\\.",
+  mod_id_is_numeric = FALSE
 )
 }
 \arguments{
@@ -45,14 +48,27 @@ function. Default to NULL if peptide number included in \code{data}.}
 \item{mod_id}{String that indicates what amino acid was modified in
 \code{PeptideSequence}.}
 
-\item{mod_id_is_numeric}{Boolean indicating if mod id is numeric. If TRUE,
-\code{mod_id} will be ignored. Default is FALSE.}
+\item{localization_scores}{Boolean indicating if mod id is a localization
+score. If TRUE, \code{mod_id} will be ignored and localization cutoff will be
+used to determine sites. Default is FALSE.}
+
+\item{localization_cutoff}{Default is .75. Localization probabilities below
+cutoffs will be removed. \code{localization_scores} must be TRUE.}
+
+\item{remove_unlocalized_peptides}{Default is TRUE. If \code{localization_scores}
+is TRUE and probabilities are below \code{localization_cutoff}, the modification
+site will not be able to be determined. These unlocalized peptides can be
+kept or removed. If FALSE the unlocalized peptides will still be used in
+modeling the sites that could be localized.}
 
 \item{terminus_included}{Boolean indicating if the \code{PeptideSequence} includes
 the terminus amino acid.}
 
 \item{terminus_id}{String that indicates what the terminus amino acid is.
 Default is '.'.}
+
+\item{mod_id_is_numeric}{Boolean indicating if modification identifier is
+a number instead of a character (i.e. +80 vs *).}
 }
 \value{
 \code{data.table} with site location added into \code{Protein} column.
