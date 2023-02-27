@@ -360,12 +360,22 @@ spectro_get_sites = function(str_idx, start, pep) {
 #' `protein_name_col`. Default is `header`.
 #' @param mod_id String that indicates what amino acid was modified in 
 #' `PeptideSequence`.
-#' @param mod_id_is_numeric Boolean indicating if mod id is numeric. If TRUE, 
-#' `mod_id` will be ignored. Default is FALSE.
+#' @param localization_scores Boolean indicating if mod id is a localization 
+#' score. If TRUE, `mod_id` will be ignored and localization cutoff will be 
+#' used to determine sites. Default is FALSE.
+#' @param localization_cutoff Default is .75. Localization probabilities below 
+#' cutoffs will be removed. `localization_scores` must be TRUE.
+#' @param remove_unlocalized_peptides Default is TRUE. If `localization_scores`
+#' is TRUE and probabilities are below `localization_cutoff`, the modification 
+#' site will not be able to be determined. These unlocalized peptides can be 
+#' kept or removed. If FALSE the unlocalized peptides will still be used in 
+#' modeling the sites that could be localized.
 #' @param terminus_included Boolean indicating if the `PeptideSequence` includes
 #' the terminus amino acid.
 #' @param terminus_id String that indicates what the terminus amino acid is. 
 #' Default is '.'.
+#' @param mod_id_is_numeric Boolean indicating if modification identifier is 
+#' a number instead of a character (i.e. +80 vs *).
 #' 
 #' @importFrom data.table as.data.table
 #' 
@@ -383,14 +393,17 @@ MSstatsPTMSiteLocator = function(data,
                                  fasta_file=NULL, 
                                  fasta_protein_name="header",
                                  mod_id="\\*", 
-                                 mod_id_is_numeric=FALSE, 
+                                 localization_scores=FALSE,
+                                 localization_cutoff=.75,
+                                 remove_unlocalized_peptides=TRUE,
                                  terminus_included=FALSE, 
-                                 terminus_id="\\."){
+                                 terminus_id="\\.",
+                                 mod_id_is_numeric=FALSE){
   
   ## Check if peptide number included in data
   if ("Start" %in% colnames(data)){
     id_data = data[,c(protein_name_col, unmod_pep_col, 
-                      mod_pep_col, "Start")]
+                      mod_pep_col, "Start"), with=FALSE]
   } else {
     if (is.null(fasta_file)){
       stop("FASTA file not provided and `Start` column missing from data. \
@@ -403,6 +416,14 @@ MSstatsPTMSiteLocator = function(data,
                          protein_name_col, unmod_pep_col, mod_pep_col)
   }
   
+  id_data[,"original_mod"] = id_data[, ..mod_pep_col]
+  
+  if (localization_scores){
+    id_data = .removeCutoffSites(id_data, mod_pep_col, localization_cutoff,
+                                 remove_unlocalized_peptides)
+    mod_id="\\*"
+  }
+  
   if (terminus_included){
     id_data = .fixTerminus(id_data, terminus_id, unmod_pep_col)
   }
@@ -412,12 +433,16 @@ MSstatsPTMSiteLocator = function(data,
                                    function(x){gsub("[0-9]+|[[:punct:]]", "", x)})
   }
   
-  id_data = .locateSites(id_data, mod_id, mod_id_is_numeric,
-                         protein_name_col, unmod_pep_col, mod_pep_col)
+  id_data = .locateSites(id_data, mod_id, protein_name_col, 
+                         unmod_pep_col, mod_pep_col, mod_id_is_numeric)
   id_data = id_data[!duplicated(id_data),]
   
-  data = merge(data, id_data, by=c(protein_name_col, unmod_pep_col, 
-                                   mod_pep_col))
+  id_data[["new_peptide_col"]] = id_data[[mod_pep_col]]
+  
+  data = merge(data, id_data, by.x=c(protein_name_col, unmod_pep_col, 
+                                     mod_pep_col),
+               by.y=c(protein_name_col, unmod_pep_col, 
+                      "original_mod"))
   
   data[, "ProteinNameUnmod"] = data[, protein_name_col, with=FALSE]
   data[, protein_name_col] = data$ProteinName_mod
@@ -427,12 +452,69 @@ MSstatsPTMSiteLocator = function(data,
     data$Start = data$Start.y
   }
   remove = intersect(c("PeptideModifiedSequence_adj", "ProteinName_mod", 
-                       "start_fix", "Start.x", "Start.y"),
+                       "start_fix", "Start.x", "Start.y", "original_mod",
+                       "number_sites"),
                      colnames(data))
   data[, (remove):=NULL]
   return(data)
 }
+
+
+#' Remove sites below cutoff probability
+#' @param data data.table
+#' @param mod_pep_col column in data with modified sites
+#' @param cutoff numeric cutoff. Default is .75.
+#' @param remove_unlocalized_peptides Boolean if to remove peptides that 
+#' could not be fully localized.
+#' @importFrom stringr str_replace_all
+#' @return data.table with modifications below cutoff removed
+#' @keywords internal
+.removeCutoffSites = function(data, mod_pep_col, cutoff,
+                              remove_unlocalized_peptides){
   
+  data[,"number_sites"] = unlist(lapply(data[, ..mod_pep_col][[1]], function(x){
+    round(sum(as.numeric(regmatches(str_replace_all(x,"\\.",""), 
+                                    gregexpr("[[:digit:]]+", 
+                                             str_replace_all(x,"\\.","")))[[1]])
+              )/10000)}))
+  
+  remove_sites = function(peptide){
+    if (peptide == ""){
+      mod_pep=""
+    } else{
+      localized_site = as.numeric(
+        regmatches(peptide, gregexpr("0.[[:digit:]]+|1.000", peptide))[[1]]) >= cutoff
+      split_peptide = strsplit(peptide, "[0-9.()]")[[1]][
+        strsplit(peptide, "[0-9.()]")[[1]] !=""]
+      if (sum(localized_site) > 0){
+        i=0
+        for (mod_site in seq_along(localized_site)){
+          if (localized_site[mod_site]){
+            split_peptide = append(split_peptide, "*", 
+                                   after=mod_site+i)
+            i = i+1
+          }
+        }
+        
+      }
+      mod_pep = paste(split_peptide, collapse='')
+    }
+    return(mod_pep)
+  }
+  
+  data[,mod_pep_col] = unlist(lapply(data[,..mod_pep_col][[1]], 
+                                     function(x){remove_sites(x)}))
+  
+  if (remove_unlocalized_peptides){
+    count = unlist(lapply(data[,..mod_pep_col][[1]], function(x){
+      lengths(regmatches(x, gregexpr("\\*", x)))}))
+    
+    data = data[count == data[,"number_sites"][[1]],]
+  }
+  return(data)
+  
+}
+
 #' Add FASTA data into dataframe
 #' @param data data.table
 #' @param fasta_file string or data.table
@@ -453,7 +535,7 @@ MSstatsPTMSiteLocator = function(data,
   missing_prot = unique(data[is.na(data$sequence), 
                              protein_name_col, with=FALSE])
   if (nrow(missing_prot) > 0){
-    print(paste0("FASTA file missing ", as.character(length(missing_prot)),
+    print(paste0("FASTA file missing ", as.character(nrow(missing_prot)),
                  " Proteins. These will be removed. This may be due to non-unique identifications."))
   }
   
@@ -478,10 +560,9 @@ MSstatsPTMSiteLocator = function(data,
 .fixTerminus = function(data, terminus_id, unmod_pep_col){
   
   ## Terminus makes start location off
-  data$start_fix = lapply(data[unmod_pep_col], function(x){
+  data$start_fix = unlist(lapply(data[, unmod_pep_col, with=FALSE], function(x){
     as.integer(unlist(gregexpr(terminus_id, 
-                               substr(x, start=1, stop=2))) == 2)})
-  data$start_fix = unlist(data$start_fix)
+                               substr(x, start=1, stop=2))) == 2)}))
   data$Start = data$Start - unlist(data$start_fix)
   
   return(data)
@@ -492,25 +573,32 @@ MSstatsPTMSiteLocator = function(data,
 #' @param mod_id string
 #' @return data.table
 #' @keywords internal
-.locateSites = function(data, mod_id, mod_id_is_numeric,
-                        protein_name_col, unmod_pep_col, mod_pep_col){
+.locateSites = function(data, mod_id, protein_name_col, 
+                        unmod_pep_col, mod_pep_col, mod_id_is_numeric){
   
   data[, "PeptideModifiedSequence_adj"] = data[,mod_pep_col, with=FALSE]
   
   if (mod_id_is_numeric){
     mod_id="\\*"
+
+    ## In case brackets are round
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj,
+                                              function(x){gsub("\\(", "\\[", x)})
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj,
+                                              function(x){gsub("\\)", "\\]", x)})
+
     ## Replace mod locations with *
-    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj,
                                            function(x){gsub("[0-9.()]", "", x)})
-    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj,
                                            function(x){gsub("\\[", "", x)})
-    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
-                                              function(x){gsub("\\]", "", x)})
-    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
-                                              function(x){gsub("\\+", 
-                                                               mod_id, x)})
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj,
+                                              function(x){gsub("\\]", mod_id, x)})
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj,
+                                              function(x){gsub("\\+",
+                                                               "", x)})
     ## Fix instances of double mod aa (caused by Acetylation)
-    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj, 
+    data$PeptideModifiedSequence_adj = lapply(data$PeptideModifiedSequence_adj,
                                            function(x){
                                              gsub("\\*\\*", mod_id, x)})
     data$PeptideModifiedSequence_adj = unlist(data$PeptideModifiedSequence_adj)
@@ -786,4 +874,20 @@ MaxQtoMSstatsTMTFormatHelper = function(
   getOption("MSstatsMsg")("INFO", msg_final)
   getOption("MSstatsLog")("INFO", "\n")
   input
+}
+
+#' Extracts full mod id column from Philosopher data. Is a combo of AA and number
+#' 
+#' @noRd
+#' @keywords internal
+.getFullModID = function(input, mod_id_col){
+  columns = colnames(input)
+  
+  full_id = columns[grepl(mod_id_col, columns) & 
+                    !grepl("Best.Localization", columns)]
+  
+  if (length(full_id) > 1){
+    stop("Multiple columns found containing mod_id_col string. Please be more specific and add full column name (including mass).")
+  }
+  return(full_id)
 }

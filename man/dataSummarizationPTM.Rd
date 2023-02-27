@@ -54,12 +54,7 @@ FALSE represents no normalization is performed}
 \item{nameStandards}{vector of global standard peptide names for protein
 dataset. only for normalization with global standard peptides.}
 
-\item{nameStandards.PTM}{Same as above for PTM dataset.
-"all"(default) uses all features that the data set has.
-"top3" uses top 3 features which have highest average of log2(intensity)
-across runs. "topN" uses top N features which has highest average of
-log2(intensity) across runs. It needs the input for n_top_feature option.
-"highQuality" flags uninformative feature and outliers}
+\item{nameStandards.PTM}{Same as above for PTM dataset.}
 
 \item{featureSubset}{"all" (default) uses all features that the data set has.
 "top3" uses top 3 features which have highest average of log-intensity across runs.
