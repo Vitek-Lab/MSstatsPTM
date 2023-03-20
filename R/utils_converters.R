@@ -376,6 +376,9 @@ spectro_get_sites = function(str_idx, start, pep) {
 #' Default is '.'.
 #' @param mod_id_is_numeric Boolean indicating if modification identifier is 
 #' a number instead of a character (i.e. +80 vs *).
+#' @param remove_underscores Boolean indicating if underscores around peptide 
+#' exist. These should be removed to properly count where in sequence the 
+#' modification occurred. 
 #' 
 #' @importFrom data.table as.data.table
 #' 
@@ -398,7 +401,8 @@ MSstatsPTMSiteLocator = function(data,
                                  remove_unlocalized_peptides=TRUE,
                                  terminus_included=FALSE, 
                                  terminus_id="\\.",
-                                 mod_id_is_numeric=FALSE){
+                                 mod_id_is_numeric=FALSE,
+                                 remove_underscores=FALSE){
   
   ## Check if peptide number included in data
   if ("Start" %in% colnames(data)){
@@ -429,8 +433,13 @@ MSstatsPTMSiteLocator = function(data,
   }
   
   if (clean_mod){
-    id_data[,mod_pep_col] = lapply(id_data[,mod_pep_col], 
+    id_data[,mod_pep_col] = lapply(id_data[,mod_pep_col, with=FALSE], 
                                    function(x){gsub("[0-9]+|[[:punct:]]", "", x)})
+  }
+  
+  if (remove_underscores){
+    id_data[,mod_pep_col] = lapply(id_data[,mod_pep_col, with=FALSE], 
+                                   function(x){gsub("[_]", "", x)})
   }
   
   id_data = .locateSites(id_data, mod_id, protein_name_col, 
@@ -472,18 +481,26 @@ MSstatsPTMSiteLocator = function(data,
 .removeCutoffSites = function(data, mod_pep_col, cutoff,
                               remove_unlocalized_peptides){
   
+  # data[,"number_sites"] = unlist(lapply(data[, ..mod_pep_col][[1]], function(x){
+  #   round(sum(as.numeric(regmatches(str_replace_all(x,"\\.",""),
+  #                                   gregexpr("[[:digit:]]+",
+  #                                            str_replace_all(x,"\\.","")))[[1]])
+  #             )/10000)}))
+  
   data[,"number_sites"] = unlist(lapply(data[, ..mod_pep_col][[1]], function(x){
-    round(sum(as.numeric(regmatches(str_replace_all(x,"\\.",""), 
-                                    gregexpr("[[:digit:]]+", 
-                                             str_replace_all(x,"\\.","")))[[1]])
-              )/10000)}))
+    round(sum(as.numeric(regmatches(x,
+                                    gregexpr("[[:digit:]]+\\.*[[:digit:]]*",
+                                             x))[[1]])
+    )/100)}))
   
   remove_sites = function(peptide){
     if (peptide == ""){
       mod_pep=""
     } else{
+      # localized_site = as.numeric(
+      #   regmatches(peptide, gregexpr("0.[[:digit:]]+|1.000", peptide))[[1]]) >= cutoff
       localized_site = as.numeric(
-        regmatches(peptide, gregexpr("0.[[:digit:]]+|1.000", peptide))[[1]]) >= cutoff
+        regmatches(peptide, gregexpr("[[:digit:]]+.[[:digit:]]+|1.00", peptide))[[1]]) >= cutoff
       split_peptide = strsplit(peptide, "[0-9.()]")[[1]][
         strsplit(peptide, "[0-9.()]")[[1]] !=""]
       if (sum(localized_site) > 0){
@@ -681,7 +698,9 @@ MSstatsPTMSiteLocator = function(data,
 #' Pull out modifications from PD PTM data for input into protein name
 #' @noRd
 #' @keywords internal
-.extract_pd_mods = function(modifications, mod_id){
+.extract_pd_mods = function(modifications, mod_id, keep_all_mods){
+  
+  message("INFO: Extracting modifications")
   split_mods = str_split(modifications, ";")
   
   quick_filter = function(mod_list){
@@ -690,9 +709,18 @@ MSstatsPTMSiteLocator = function(data,
     return(mod_list[mask])
   }
   
-  target_mods = lapply(split_mods, quick_filter)
+  if(!keep_all_mods){
+    target_mods = lapply(split_mods, quick_filter)
+    target_mods = lapply(target_mods, function(x){str_trim(
+      str_replace(x, mod_id, ""))})
+  } else{
+    target_mods = lapply(split_mods, function(x){str_trim(
+      str_replace(x, "\\s*\\([^\\)]+\\)", ""))})
+  }
+
   join_mods = lapply(target_mods, function(x){paste(x, collapse="_")})
-  
+
+  join_mods = ifelse(join_mods=="", NA, join_mods)
   return(unlist(join_mods))
 }
 

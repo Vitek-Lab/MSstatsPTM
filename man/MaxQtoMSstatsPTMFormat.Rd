@@ -135,6 +135,34 @@ in global protein level, unmodified TMT experimental data must also be
 returned.
 }
 \examples{
-head(raw.input.tmt$PTM)
-head(raw.input.tmt$PROTEIN)
+# TMT experiment
+head(maxq_tmt_evidence)
+head(maxq_tmt_annotation)
+
+msstats_format_tmt = MaxQtoMSstatsPTMFormat(evidence=maxq_tmt_evidence,
+                                        annotation_ptm=maxq_tmt_annotation,
+                                        fasta=system.file("extdata", "maxq_tmt_fasta.fasta", package="MSstatsPTM"),
+                                        fasta_protein_name="uniprot_ac",
+                                        mod_id="\\\\(Phospho \\\\(STY\\\\)\\\\)",
+                                        use_unmod_peptides=TRUE,
+                                        labeling_type = "TMT",
+                                        which_proteinid_ptm = "Proteins")
+
+head(msstats_format_tmt$PTM)
+head(msstats_format_tmt$PROTEIN)
+
+# LF experiment
+head(maxq_lf_evidence)
+head(maxq_lf_annotation)
+
+msstats_format_lf = MaxQtoMSstatsPTMFormat(evidence=maxq_lf_evidence,
+                                        annotation_ptm=maxq_lf_annotation,
+                                        fasta=system.file("extdata", "maxq_lf_fasta.fasta", package="MSstatsPTM"),
+                                        fasta_protein_name="uniprot_ac",
+                                        mod_id="\\\\(Phospho \\\\(STY\\\\)\\\\)",
+                                        use_unmod_peptides=TRUE,
+                                        labeling_type = "LF",
+                                        which_proteinid_ptm = "Proteins")
+head(msstats_format_lf$PTM)
+head(msstats_format_lf$PROTEIN)
 }
