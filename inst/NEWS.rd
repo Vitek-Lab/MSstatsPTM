@@ -4,6 +4,17 @@
 \title{MSstatsPTM News}
 \encoding{UTF-8}
 
+\section{Changes in version 2.2.0 (2021-3-23)}{\itemize{
+  \item Added a number of new converters for different tools
+  \item FragPipe Converter
+  \item Update MaxQuant converter for TMT and LF experiments
+  \item Proteome Discoverer Converter
+  \item Spectronaut Converter
+  \item Added example datasets for available converters
+  \item We thank the Liang Xue and Pierre Jean in the computational proteomics 
+  team at Pfizer for their invaluable assistance in building these converters.
+}}
+
 \section{Changes in version 2.0.0 (2021-10-31)}{\itemize{
   \item Added unadjustable PTMs into `ADJUSTED.Model` data.table result
   \item New column named `Adjusted` in the `ADJUSTED.Model` data.table to distinguish between adjusted and unadjusted PTMs

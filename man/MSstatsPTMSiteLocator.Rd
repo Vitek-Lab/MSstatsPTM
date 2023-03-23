@@ -19,7 +19,8 @@ MSstatsPTMSiteLocator(
   terminus_included = FALSE,
   terminus_id = "\\\\.",
   mod_id_is_numeric = FALSE,
-  remove_underscores = FALSE
+  remove_underscores = FALSE,
+  remove_other_mods = FALSE
 )
 }
 \arguments{
@@ -74,6 +75,9 @@ a number instead of a character (i.e. +80 vs *).}
 \item{remove_underscores}{Boolean indicating if underscores around peptide
 exist. These should be removed to properly count where in sequence the
 modification occurred.}
+
+\item{remove_other_mods}{keeping mods that are not of interest can mess up
+the amino acid count. Remove them if they are causing issues.}
 }
 \value{
 \code{data.table} with site location added into \code{Protein} column.

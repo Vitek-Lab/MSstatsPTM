@@ -379,6 +379,8 @@ spectro_get_sites = function(str_idx, start, pep) {
 #' @param remove_underscores Boolean indicating if underscores around peptide 
 #' exist. These should be removed to properly count where in sequence the 
 #' modification occurred. 
+#' @param remove_other_mods keeping mods that are not of interest can mess up 
+#' the amino acid count. Remove them if they are causing issues.
 #' 
 #' @importFrom data.table as.data.table
 #' 
@@ -402,7 +404,8 @@ MSstatsPTMSiteLocator = function(data,
                                  terminus_included=FALSE, 
                                  terminus_id="\\.",
                                  mod_id_is_numeric=FALSE,
-                                 remove_underscores=FALSE){
+                                 remove_underscores=FALSE,
+                                 remove_other_mods=FALSE){
   
   ## Check if peptide number included in data
   if ("Start" %in% colnames(data)){
@@ -442,8 +445,19 @@ MSstatsPTMSiteLocator = function(data,
                                    function(x){gsub("[_]", "", x)})
   }
   
+  if (remove_other_mods){
+    keep_id = gsub("[^[:alpha:]]", "", str_split(mod_id, " ")[[1]][[1]])
+    pattern = paste0("\\[(?!", keep_id, ")(.*?)\\]")
+    
+    id_data[, (mod_pep_col) := lapply(id_data[,mod_pep_col, with=FALSE], 
+                                   function(x){
+                                     gsub(pattern, "", x, perl = TRUE)})
+    ]
+  }
+
   id_data = .locateSites(id_data, mod_id, protein_name_col, 
-                         unmod_pep_col, mod_pep_col, mod_id_is_numeric)
+                         unmod_pep_col, mod_pep_col, mod_id_is_numeric,
+                         remove_other_mods)
   id_data = id_data[!duplicated(id_data),]
   
   id_data[["new_peptide_col"]] = id_data[[mod_pep_col]]
@@ -486,12 +500,18 @@ MSstatsPTMSiteLocator = function(data,
   #                                   gregexpr("[[:digit:]]+",
   #                                            str_replace_all(x,"\\.","")))[[1]])
   #             )/10000)}))
-  
-  data[,"number_sites"] = unlist(lapply(data[, ..mod_pep_col][[1]], function(x){
-    round(sum(as.numeric(regmatches(x,
+  extract_sites = function(peptide){
+    total_sum = sum(as.numeric(regmatches(peptide,
                                     gregexpr("[[:digit:]]+\\.*[[:digit:]]*",
-                                             x))[[1]])
-    )/100)}))
+                                             peptide))[[1]]))
+    if (total_sum > 100){
+      total_sum = round(total_sum/100)
+    }
+    return(total_sum)
+  }
+  
+  
+  data[,"number_sites"] = unlist(lapply(data[, ..mod_pep_col][[1]], extract_sites))
   
   remove_sites = function(peptide){
     if (peptide == ""){
@@ -519,8 +539,7 @@ MSstatsPTMSiteLocator = function(data,
     return(mod_pep)
   }
   
-  data[,mod_pep_col] = unlist(lapply(data[,..mod_pep_col][[1]], 
-                                     function(x){remove_sites(x)}))
+  data[,mod_pep_col] = unlist(lapply(data[,..mod_pep_col][[1]], remove_sites))
   
   if (remove_unlocalized_peptides){
     count = unlist(lapply(data[,..mod_pep_col][[1]], function(x){
@@ -591,7 +610,8 @@ MSstatsPTMSiteLocator = function(data,
 #' @return data.table
 #' @keywords internal
 .locateSites = function(data, mod_id, protein_name_col, 
-                        unmod_pep_col, mod_pep_col, mod_id_is_numeric){
+                        unmod_pep_col, mod_pep_col, mod_id_is_numeric,
+                        replace_text=FALSE){
   
   data[, "PeptideModifiedSequence_adj"] = data[,mod_pep_col, with=FALSE]
   
@@ -619,6 +639,13 @@ MSstatsPTMSiteLocator = function(data,
                                            function(x){
                                              gsub("\\*\\*", mod_id, x)})
     data$PeptideModifiedSequence_adj = unlist(data$PeptideModifiedSequence_adj)
+  }
+  if(replace_text){
+    temp_mod_id = mod_id
+    mod_id = "\\*"
+    data$PeptideModifiedSequence_adj = unlist(lapply(data$PeptideModifiedSequence_adj,
+                                              function(x){
+                                                gsub(temp_mod_id, mod_id, x)}))
   }
   
   unmod_data = data[!grepl(mod_id, data[,"PeptideModifiedSequence_adj"][[1]]), ]

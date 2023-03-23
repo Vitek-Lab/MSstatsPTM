@@ -9,7 +9,7 @@ PDtoMSstatsPTMFormat(
   annotation,
   fasta_path,
   protein_input = NULL,
-  protein_annotation = NULL,
+  annotation_protein = NULL,
   mod_id = "\\\\(Phospho\\\\)",
   keep_all_mods = FALSE,
   use_unmod_peptides = FALSE,
@@ -43,7 +43,7 @@ the modified peptide dataset.}
 \item{protein_input}{PD report corresponding with unmodified experimental
 data.}
 
-\item{protein_annotation}{Same format as \code{annotation} corresponding to
+\item{annotation_protein}{Same format as \code{annotation} corresponding to
 unmodified data.}
 
 \item{mod_id}{Character that indicates the modification of interest. Default
@@ -108,7 +108,15 @@ automatically. If 'append = TRUE', has to be a valid path to a file.}
 Import Proteome Discoverer files, identify modification site location.
 }
 \examples{
-# The output should be in the following format.
-head(raw.input$PTM)
-head(raw.input$PROTEIN)
+head(pd_psm_input)
+head(pd_annotation)
+
+msstats_format = PDtoMSstatsPTMFormat(pd_psm_input, 
+                                      pd_annotation, 
+                                      system.file("extdata", "pd_fasta.fasta", package="MSstatsPTM"),
+                                      use_unmod_peptides=TRUE, 
+                                      which_proteinid = "Master.Protein.Accessions")
+
+head(msstats_format$PTM)
+head(msstats_format$PROTEIN)
 }

@@ -6,14 +6,14 @@
 \usage{
 MaxQtoMSstatsPTMFormat(
   evidence = NULL,
-  annotation_ptm = NULL,
+  annotation = NULL,
   fasta_path = NULL,
   fasta_protein_name = "uniprot_ac",
   mod_id = "\\\\(Phospho \\\\(STY\\\\)\\\\)",
   sites_data = NULL,
   evidence_prot = NULL,
   proteinGroups = NULL,
-  annotation_prot = NULL,
+  annotation_protein = NULL,
   use_unmod_peptides = FALSE,
   labeling_type = "LF",
   mod_num = "Single",
@@ -34,7 +34,7 @@ MaxQtoMSstatsPTMFormat(
 \item{evidence}{name of 'evidence.txt' data, which includes feature-level
 data for enriched (PTM) data.}
 
-\item{annotation_ptm}{data frame annotation file for the ptm level data.
+\item{annotation}{data frame annotation file for the ptm level data.
 Contains column Run, Fraction, TechRepMixture, Mixture, Channel,
 BioReplicate, Condition.}
 
@@ -57,7 +57,7 @@ feature-level data for global profiling (unmodified) data.}
 \item{proteinGroups}{name of 'proteinGroups.txt' data. It needs to matching
 protein group ID in \code{evidence_prot}.}
 
-\item{annotation_prot}{data frame annotation file for the protein level data.
+\item{annotation_protein}{data frame annotation file for the protein level data.
 Contains column Run, Fraction, TechRepMixture, Mixture, Channel,
 BioReplicate, Condition.}
 
@@ -132,7 +132,8 @@ Takes as input TMT experiments from MaxQ and converts the data into the
 format needed for MSstatsPTM. Requires modified file from MaxQ (evidence)
 and an annotation file for PTM data. To adjust modified peptides for changes
 in global protein level, unmodified TMT experimental data must also be
-returned.
+returned. Optionally can use \verb{Phospho(STY)Sites.txt} from MaxQuant, but this
+is not recommended.
 }
 \examples{
 # TMT experiment
@@ -140,13 +141,13 @@ head(maxq_tmt_evidence)
 head(maxq_tmt_annotation)
 
 msstats_format_tmt = MaxQtoMSstatsPTMFormat(evidence=maxq_tmt_evidence,
-                                        annotation_ptm=maxq_tmt_annotation,
-                                        fasta=system.file("extdata", "maxq_tmt_fasta.fasta", package="MSstatsPTM"),
-                                        fasta_protein_name="uniprot_ac",
-                                        mod_id="\\\\(Phospho \\\\(STY\\\\)\\\\)",
-                                        use_unmod_peptides=TRUE,
-                                        labeling_type = "TMT",
-                                        which_proteinid_ptm = "Proteins")
+                        annotation=maxq_tmt_annotation,
+                        fasta=system.file("extdata", "maxq_tmt_fasta.fasta", package="MSstatsPTM"),
+                        fasta_protein_name="uniprot_ac",
+                        mod_id="\\\\(Phospho \\\\(STY\\\\)\\\\)",
+                        use_unmod_peptides=TRUE,
+                        labeling_type = "TMT",
+                        which_proteinid_ptm = "Proteins")
 
 head(msstats_format_tmt$PTM)
 head(msstats_format_tmt$PROTEIN)
@@ -156,13 +157,13 @@ head(maxq_lf_evidence)
 head(maxq_lf_annotation)
 
 msstats_format_lf = MaxQtoMSstatsPTMFormat(evidence=maxq_lf_evidence,
-                                        annotation_ptm=maxq_lf_annotation,
-                                        fasta=system.file("extdata", "maxq_lf_fasta.fasta", package="MSstatsPTM"),
-                                        fasta_protein_name="uniprot_ac",
-                                        mod_id="\\\\(Phospho \\\\(STY\\\\)\\\\)",
-                                        use_unmod_peptides=TRUE,
-                                        labeling_type = "LF",
-                                        which_proteinid_ptm = "Proteins")
+                        annotation=maxq_lf_annotation,
+                        fasta=system.file("extdata", "maxq_lf_fasta.fasta", package="MSstatsPTM"),
+                        fasta_protein_name="uniprot_ac",
+                        mod_id="\\\\(Phospho \\\\(STY\\\\)\\\\)",
+                        use_unmod_peptides=TRUE,
+                        labeling_type = "LF",
+                        which_proteinid_ptm = "Proteins")
 head(msstats_format_lf$PTM)
 head(msstats_format_lf$PROTEIN)
 }

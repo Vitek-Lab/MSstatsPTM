@@ -1,3 +1,257 @@
+#' Example annotation file for a label-free MaxQuant experiment.
+#' 
+#' Must be manually created by the user and input into the 
+#' MaxQtoMSstatsPTMFormat converter. Requires the correct columns and maps the 
+#' experimental desing into the MSstats format. Specify unique bioreplicates for
+#' group comparison designs, and the same bioreplicate for repeated measure 
+#' designs. The columns and descriptions are below.
+#' 
+#' \itemize{
+#'   \item Run : Run name that matches exactly with MaxQuant run. Used to join 
+#'   evidence and metadata in annotation file.
+#'   \item Condition : Name of condition that was used for each run.
+#'   \item BioReplicate : Name of biological replicate. Repeating the same name 
+#'   here will tell MSstatsPTM that the experiment is a repeated measure design.
+#'   \item Raw.file : Run name that matches exactly with MaxQuant run. Used to join 
+#'   evidence and metadata in annotation file.
+#'   \item IsotopeLabelType: Name of isotope label. May be all `L` or unique 
+#'   depending on experimental design.
+#' }
+#' 
+#' @format A data.table with 5 columns.
+#' @examples
+#' head(maxq_lf_annotation)
+"maxq_lf_annotation"
+
+#' Example MaxQuant evidence file from the output of a label free experiment
+#' 
+#' Experiment was performed by the Olsen lab and published on Nat. Commun.
+#' (citation below).
+#' 
+#' Bekker-Jensen, D.B., Bernhardt, O.M., Hogrebe, A. et al. Rapid and 
+#' site-specific deep phosphoproteome profiling by data-independent acquisition 
+#' without the need for spectral libraries. Nat Commun 11, 787 (2020). 
+#' https://doi.org/10.1038/s41467-020-14609-1
+#' 
+#' The experiment was processed using MaxQuant by the computational proteomics 
+#' team at Pfizer (Liang Xue and Pierre Jean). 
+#' 
+#' The experiment did not contain a global profiling run, but we show an example 
+#' of extracting the unmodified peptides and using them in place of the 
+#' profiling run.
+#' 
+#' @format a data.table with 63 columns and 511 rows, the output of MaxQuant
+#' @examples
+#' head(maxq_lf_evidence)
+"maxq_lf_evidence"
+
+#' Example annotation file for a TMT MaxQuant experiment.
+#' 
+#' Must be manually created by the user and input into the 
+#' MaxQtoMSstatsPTMFormat converter. Requires the correct columns and maps the 
+#' experimental desing into the MSstats format. Specify unique bioreplicates for
+#' group comparison designs, and the same bioreplicate for repeated measure 
+#' designs. The columns and descriptions are below.
+#' 
+#' \itemize{
+#'   \item Run : Run name that matches exactly with MaxQuant run. Used to join 
+#'   evidence and metadata in annotation file.
+#'   \item Fraction : If multiple fractions were used (i.e. the same mixture 
+#'   split into multiple fractions) enter that here.
+#'   TechRepMixture : Multiple runs using the same bioreplicate
+#'   \item Channel : Mixture channel used
+#'   \item Condition : Name of condition that was used for each run.
+#'   \item Mixture : The unique mixture (plex) name
+#'   \item BioReplicate : Name of biological replicate. Repeating the same name 
+#'   here will tell MSstatsPTM that the experiment is a repeated measure design.
+#' }
+#' 
+#' @format A data.table with 7 columns.
+#' @examples
+#' head(maxq_tmt_annotation)
+"maxq_tmt_annotation"
+
+#' Example MaxQuant evidence file from the output of a TMT experiment
+#' 
+#' Experiment was performed by the Olsen lab and published on Nat. Commun.
+#' (citation below).
+#' 
+#' Hogrebe, A., von Stechow, L., Bekker-Jensen, D.B. et al. Benchmarking common 
+#' quantification strategies for large-scale phosphoproteomics. Nat Commun 9, 
+#' 1045 (2018). https://doi.org/10.1038/s41467-018-03309-6
+#' 
+#' The experiment was processed using MaxQuant by the computational proteomics 
+#' team at Pfizer (Liang Xue and Pierre Jean). 
+#' 
+#' The experiment did not contain a global profiling run, but we show an example 
+#' of extracting the unmodified peptides and using them in place of the 
+#' profiling run.
+#' 
+#' @format a data.table with 96 columns and 199 rows, the output of MaxQuant
+#' @examples
+#' head(maxq_tmt_evidence)
+"maxq_tmt_evidence"
+
+#' Example annotation file for a label-free Proteome Discoverer experiment.
+#' 
+#' Must be manually created by the user and input into the 
+#' PDtoMSstatsPTMFormat converter. Requires the correct columns and maps the 
+#' experimental desing into the MSstats format. Specify unique bioreplicates for
+#' group comparison designs, and the same bioreplicate for repeated measure 
+#' designs. The columns and descriptions are below.
+#' 
+#' \itemize{
+#'   \item Run : Run name that matches exactly with PD run. Used to join 
+#'   evidence and metadata in annotation file.
+#'   \item Condition : Name of condition that was used for each run.
+#'   \item BioReplicate : Name of biological replicate. Repeating the same name 
+#'   here will tell MSstatsPTM that the experiment is a repeated measure design.
+#' }
+#' 
+#' @format A data.table with 3 columns.
+#' @examples
+#' head(pd_annotation)
+"pd_annotation"
+
+#' Example Proteome Discoverer evidence file from the output of a label free experiment
+#' 
+#' Experiment was performed by the Olsen lab and published on Nat. Commun.
+#' (citation below).
+#' 
+#' Bekker-Jensen, D.B., Bernhardt, O.M., Hogrebe, A. et al. Rapid and 
+#' site-specific deep phosphoproteome profiling by data-independent acquisition 
+#' without the need for spectral libraries. Nat Commun 11, 787 (2020). 
+#' https://doi.org/10.1038/s41467-020-14609-1
+#' 
+#' The experiment was processed using Proteome Discoverer by the computational 
+#' proteomics team at Pfizer (Liang Xue and Pierre Jean). 
+#' 
+#' The experiment did not contain a global profiling run, but we show an example 
+#' of extracting the unmodified peptides and using them in place of the 
+#' profiling run.
+#' 
+#' @format a data.table with 60 columns and 1657 rows, the output of PD
+#' @examples
+#' head(pd_psm_input)
+"pd_psm_input"
+
+#' Example annotation file for a label-free Spectronaut experiment.
+#' 
+#' Must be manually created by the user and input into the 
+#' SpectronauttoMSstatsPTMFormat converter. Requires the correct columns and 
+#' maps the experimental desing into the MSstats format. Specify unique 
+#' bioreplicates for group comparison designs, and the same bioreplicate for 
+#' repeated measure designs. The columns and descriptions are below.
+#' 
+#' \itemize{
+#'   \item Run : Run name that matches exactly with Spectronaut run. Used to join 
+#'   evidence and metadata in annotation file.
+#'   \item Condition : Name of condition that was used for each run.
+#'   \item BioReplicate : Name of biological replicate. Repeating the same name 
+#'   here will tell MSstatsPTM that the experiment is a repeated measure design.
+#'   \item Raw.file : Run name that matches exactly with Spectronaut run. Used to join 
+#'   evidence and metadata in annotation file.
+#' }
+#' 
+#' @format A data.table with 5 columns.
+#' @examples
+#' head(spectronaut_annotation)
+"spectronaut_annotation"
+
+#' Example Spectronaut evidence file from the output of a label free experiment
+#' 
+#' Experiment was performed by the Olsen lab and published on Nat. Commun.
+#' (citation below).
+#' 
+#' Bekker-Jensen, D.B., Bernhardt, O.M., Hogrebe, A. et al. Rapid and 
+#' site-specific deep phosphoproteome profiling by data-independent acquisition 
+#' without the need for spectral libraries. Nat Commun 11, 787 (2020). 
+#' https://doi.org/10.1038/s41467-020-14609-1
+#' 
+#' The experiment was processed using Spectronaut by the computational proteomics 
+#' team at Pfizer (Liang Xue and Pierre Jean). 
+#' 
+#' The experiment did not contain a global profiling run, but we show an example 
+#' of extracting the unmodified peptides and using them in place of the 
+#' profiling run.
+#' 
+#' @format a data.table with 23 columns and 2683 rows, the output of Spectronaut
+#' @examples
+#' head(spectronaut_input)
+"spectronaut_input"
+
+#' Example annotation file for a TMT FragPipe experiment.
+#' 
+#' Automatically created by FragPipe, manually checked by the user and input 
+#' into the FragPipetoMSstatsPTMFormat converter. Requires the correct columns 
+#' and maps the experimental desing into the MSstats format. Specify unique 
+#' bioreplicates for group comparison designs, and the same bioreplicate for 
+#' repeated measure designs. The columns and descriptions are below.
+#' 
+#' \itemize{
+#'   \item Run : Run name that matches exactly with FragPipe run. Used to join 
+#'   evidence and metadata in annotation file.
+#'   \item Fraction : If multiple fractions were used (i.e. the same mixture 
+#'   split into multiple fractions) enter that here.
+#'   TechRepMixture : Multiple runs using the same bioreplicate
+#'   \item Channel : Mixture channel used
+#'   \item Condition : Name of condition that was used for each run.
+#'   \item Mixture : The unique mixture (plex) name
+#'   \item BioReplicate : Name of biological replicate. Repeating the same name 
+#'   here will tell MSstatsPTM that the experiment is a repeated measure design.
+#' }
+#' 
+#' @format A data.table with 7 columns.
+#' @examples
+#' head(fragpipe_annotation)
+"fragpipe_annotation"
+
+#' Example annotation file for a global profiling run TMT FragPipe experiment.
+#' 
+#' Automatically created by FragPipe, manually checked by the user and input 
+#' into the FragPipetoMSstatsPTMFormat converter. Requires the correct columns 
+#' and maps the experimental desing into the MSstats format. Specify unique 
+#' bioreplicates for group comparison designs, and the same bioreplicate for 
+#' repeated measure designs. The columns and descriptions are below.
+#' 
+#' \itemize{
+#'   \item Run : Run name that matches exactly with FragPipe run. Used to join 
+#'   evidence and metadata in annotation file.
+#'   \item Fraction : If multiple fractions were used (i.e. the same mixture 
+#'   split into multiple fractions) enter that here.
+#'   TechRepMixture : Multiple runs using the same bioreplicate
+#'   \item Channel : Mixture channel used
+#'   \item Condition : Name of condition that was used for each run.
+#'   \item Mixture : The unique mixture (plex) name
+#'   \item BioReplicate : Name of biological replicate. Repeating the same name 
+#'   here will tell MSstatsPTM that the experiment is a repeated measure design.
+#' }
+#' 
+#' @format A data.table with 7 columns.
+#' @examples
+#' head(fragpipe_annotation_protein)
+"fragpipe_annotation_protein"
+
+#' Output of FragPipe TMT PTM experiment
+#' 
+#' This dataset was provided by the FragPipe team at the Nesvilab. It was 
+#' processed using Philosopher and targeted Phosphorylation.
+#' 
+#' @format A data.table with 29 columns and 246 rows.
+#' @examples
+#' head(fragpipe_input)
+"fragpipe_input"
+
+#' Output of FragPipe TMT global profiling experiment
+#' 
+#' This dataset was provided by the FragPipe team at the Nesvilab. It was 
+#' processed using Philosopher and targeted Phosphorylation.
+#' 
+#' @format A data.table with 27 columns and 47 rows.
+#' @examples
+#' head(fragpipe_input_protein)
+"fragpipe_input_protein"
+
 #' Example of input PTM dataset for TMT experiments.
 #' 
 #' It can be the output of MSstatsPTM converter MaxQtoMSstatsPTMFormat or other 
