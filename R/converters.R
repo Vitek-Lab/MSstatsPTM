@@ -452,6 +452,8 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
 #' data.
 #' @param annotation_protein Same format as `annotation` corresponding to 
 #' unmodified data.
+#' @param labeling_type type of experimental design, must be one of `LF` for 
+#' label free or `TMT` for tandem mass tag.
 #' @param mod_id Character that indicates the modification of interest. Default 
 #' is `\\(Phospho\\)`. Note `\\` must be included before special characters.
 #' @param keep_all_mods Boolean indicating whether to keep or remove peptides 
@@ -514,7 +516,9 @@ PDtoMSstatsPTMFormat = function(input,
                                 fasta_path,
                                 protein_input=NULL,
                                 annotation_protein=NULL,
+                                labeling_type = "LF",
                                 mod_id="\\(Phospho\\)",
+                                use_localization_cutoff=TRUE,
                                 keep_all_mods=FALSE,
                                 use_unmod_peptides=FALSE,
                                 fasta_protein_name="uniprot_iso",
@@ -535,8 +539,6 @@ PDtoMSstatsPTMFormat = function(input,
   
   input = as.data.table(input)
   
-
-  
   if (!is.null(protein_input) & use_unmod_peptides == TRUE){
     stop("Either pass protein_input data or set use_unmod_peptides = TRUE, not both")
   }
@@ -546,45 +548,26 @@ PDtoMSstatsPTMFormat = function(input,
     .checkAnnotation(annotation_protein, "LF")
   }
   
-  probability_column = colnames(input)[grepl("Best.Site.Probabilities", 
-                                             colnames(input))]
-  
-  probs = input[, probability_column, with=FALSE][[1]]
-  probs = str_split(probs, ";")
-  insert_prob = lapply(probs, function(x){
-    paste0("(",str_trim(gsub(".*:","",x)), ")")}
-    )
-  insert_prob = ifelse(insert_prob=="()", NA, insert_prob)
-  
-  insert_position = lapply(probs, function(x){gsub(".*?([0-9]+).*", "\\1", 
-                                                   str_trim(gsub(":.*","",x)))})
-  insert_position = lapply(insert_position, function(x){
-    ifelse(x=="", NA, as.numeric(x))})
-  
-  inject <- function(string, index, replacement){
-    stri_sub_replace_all(string, from = index+1,
-                                  to = index,
-                                  replacement = replacement)
+  if (use_localization_cutoff){
+    input = .getPDmods(input)
+    
+    input = MSstatsPTMSiteLocator(input, 
+                                  protein_name_col= which_proteinid,
+                                  unmod_pep_col = "Sequence",
+                                  mod_pep_col = "ModSequence",
+                                  clean_mod=FALSE,
+                                  fasta_file=fasta_path, 
+                                  fasta_protein_name=fasta_protein_name,
+                                  mod_id="\\*", 
+                                  localization_scores=TRUE,
+                                  localization_cutoff=localization_cutoff,
+                                  remove_unlocalized_peptides=remove_unlocalized_peptides,
+                                  terminus_included=FALSE, 
+                                  terminus_id="\\.")
+  } else {
+    mods = .extract_pd_mods(input$Modifications, mod_id, keep_all_mods)
+    input[,which_proteinid] = paste(input[,..which_proteinid][[1]], mods,sep="_")
   }
-  
-  inserted_string = mapply(inject, input[, "Sequence"][[1]], insert_position, insert_prob)
-  inserted_string = ifelse(is.na(inserted_string), input[, "Sequence"][[1]], inserted_string)
-  input[, "ModSequence"] = inserted_string
-  
-  
-  input = MSstatsPTMSiteLocator(input, 
-                                protein_name_col= which_proteinid,
-                                unmod_pep_col = "Sequence",
-                                mod_pep_col = "ModSequence",
-                                clean_mod=FALSE,
-                                fasta_file=fasta_path, 
-                                fasta_protein_name=fasta_protein_name,
-                                mod_id="\\*", 
-                                localization_scores=TRUE,
-                                localization_cutoff=localization_cutoff,
-                                remove_unlocalized_peptides=remove_unlocalized_peptides,
-                                terminus_included=FALSE, 
-                                terminus_id="\\.")
   input$Sequence = input$ModSequence
   ptm_input = PDtoMSstatsFormat(input, annotation, useNumProteinsColumn,
                                 useUniquePeptide, summaryforMultipleRows,

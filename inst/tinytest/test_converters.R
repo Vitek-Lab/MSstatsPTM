@@ -127,6 +127,13 @@ expect_silent(PDtoMSstatsPTMFormat(pd_psm_input,
     use_unmod_peptides=TRUE,
     which_proteinid = "Master.Protein.Accessions"))
 
+expect_silent(PDtoMSstatsPTMFormat(pd_psm_input, 
+                                   pd_annotation,
+                                   system.file("extdata", "pd_fasta.fasta", package="MSstatsPTM"),
+                                   use_unmod_peptides=TRUE,
+                                   which_proteinid = "Master.Protein.Accessions",
+                                   use_localization_cutoff = FALSE))
+
 expect_error(PDtoMSstatsPTMFormat(pd_psm_input, 
                                    pd_annotation,
                                    use_unmod_peptides=TRUE,

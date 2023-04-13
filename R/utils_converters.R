@@ -748,7 +748,7 @@ MSstatsPTMSiteLocator = function(data,
   join_mods = lapply(target_mods, function(x){paste(x, collapse="_")})
 
   join_mods = ifelse(join_mods=="", NA, join_mods)
-  return(unlist(join_mods))
+  return(unlist(ifelse(is.na(join_mods), "", join_mods)))
 }
 
 
@@ -945,4 +945,36 @@ MaxQtoMSstatsTMTFormatHelper = function(
     stop("Multiple columns found containing mod_id_col string. Please be more specific and add full column name (including mass).")
   }
   return(full_id)
+}
+
+#' Extract PD mod sites using probability
+#' @noRd
+#' @keywords internal
+.getPDmods = function(input){
+  probability_column = colnames(input)[grepl("Best.Site.Probabilities", 
+                                             colnames(input))]
+  
+  probs = input[, probability_column, with=FALSE][[1]]
+  probs = str_split(probs, ";")
+  insert_prob = lapply(probs, function(x){
+    paste0("(",str_trim(gsub(".*:","",x)), ")")}
+  )
+  insert_prob = ifelse(insert_prob=="()", NA, insert_prob)
+  
+  insert_position = lapply(probs, function(x){gsub(".*?([0-9]+).*", "\\1", 
+                                                   str_trim(gsub(":.*","",x)))})
+  insert_position = lapply(insert_position, function(x){
+    ifelse(x=="", NA, as.numeric(x))})
+  
+  inject <- function(string, index, replacement){
+    stri_sub_replace_all(string, from = index+1,
+                         to = index,
+                         replacement = replacement)
+  }
+  
+  inserted_string = mapply(inject, input[, "Sequence"][[1]], insert_position, insert_prob)
+  inserted_string = ifelse(is.na(inserted_string), input[, "Sequence"][[1]], inserted_string)
+  input[, "ModSequence"] = inserted_string
+  
+  return(input)
 }
