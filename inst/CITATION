@@ -4,7 +4,14 @@ citEntry(entry	= 'Article',
          proteomics',
          author = c(
            person('Devon', 'Kohler', email='kohler.d@northeastern.edu',
-                  role = c('aut', 'cre'))
+                  role = c('aut', 'cre')),
+           person("Tsung-Heng", "Tsai", email="tsai.tsungheng@gmail.com", role="aut"),
+           person("Erik", "Verschueren", email="erik.verschueren@gmail.com", role="aut"),
+           person("Ting", "Huang", email = "thuang0703@gmail.com", role="aut"),
+           person("Trent", "Hinkle", email = "hinkle.trent@gene.com", role="aut"),
+           person("Lilian", "Phu", email = "phu.lilian@gene.com", role="aut"),
+           person("Meena", "Choi", email = "mnchoi67@gmail.com", role="aut"),
+  	       person("Olga", "Vitek", email = "o.vitek@northeastern.edu", role = "aut")
          ),
          journal='Molecular and Cellular Proteomics',
          volume='100477',

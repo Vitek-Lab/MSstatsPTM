@@ -9,7 +9,7 @@ SpectronauttoMSstatsPTMFormat(
   annotation = NULL,
   fasta_path = NULL,
   protein_input = NULL,
-  protein_annotation = NULL,
+  annotation_protein = NULL,
   use_unmod_peptides = FALSE,
   intensity = "PeakArea",
   mod_id = "\\\\[Phospho \\\\(STY\\\\)\\\\]",
@@ -44,7 +44,7 @@ the modified peptide dataset.}
 \item{protein_input}{name of Spectronaut global protein output, which is
 as in the same format as \code{input} parameter.}
 
-\item{protein_annotation}{name of annotation file for global protein data, in
+\item{annotation_protein}{name of annotation file for global protein data, in
 the same format as above.}
 
 \item{use_unmod_peptides}{If \code{protein_input} is not provided,
@@ -103,7 +103,18 @@ required by MSstatsPTM.
 Currently only supports label-free quantification.
 }
 \examples{
-# The output should be in the following format.
-head(raw.input$PTM)
-head(raw.input$PROTEIN)
+
+head(spectronaut_input)
+head(spectronaut_annotation)
+
+msstats_input = SpectronauttoMSstatsPTMFormat(spectronaut_input, 
+                  annotation=spectronaut_annotation, 
+                  fasta_path=system.file("extdata", "spectronaut_fasta.fasta", package="MSstatsPTM"),
+                  use_unmod_peptides=TRUE,
+                  mod_id = "\\\\[Phospho \\\\(STY\\\\)\\\\]",
+                  fasta_protein_name = "uniprot_iso"
+                  )
+
+head(msstats_input$PTM)
+head(msstats_input$PROTEIN)
 }

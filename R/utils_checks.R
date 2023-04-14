@@ -1,3 +1,34 @@
+#' Check annotation file to ensure it is formatted correctly
+#' @noRd
+.checkAnnotation = function(annotation, label_type){
+  columns = colnames(annotation)
+  
+  if (!("Run" %in% columns | "Raw.file" %in% columns)){
+    msg = "Run column missing in annotation file. Annotation must include either
+    `Run` or `Raw.file` column to match with input data."
+    stop(msg)
+  }
+  
+  if (label_type == "LF"){
+    max_columns = c("Run", "Raw.file", "Condition", 
+                    "BioReplicate", "IsotopeLabelType")
+  } else if (label_type == "TMT"){
+    max_columns = c("Run", "Raw.file", "Fraction", "TechRepMixture", "Channel", 
+                    "Condition", "Mixture", "BioReplicate")
+  }
+  
+  if (sum(columns %in% max_columns) != length(columns)){
+    msg = paste0(
+    "Extra columns included in the annotation file that are not required. 
+    This can cause problems in the converter dependencies. Please 
+    only include the following columns in the annotation file: 
+                 ", paste0(max_columns, collapse=", "))
+    stop(msg)
+  }
+}
+
+
+
 #' Check validity of parameters to MaxQ Converter function
 #' @noRd
 .checkMaxQconverterParams = function(mod.num = 'Total',

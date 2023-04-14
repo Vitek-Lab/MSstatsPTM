@@ -7,10 +7,17 @@
 PDtoMSstatsPTMFormat(
   input,
   annotation,
+  fasta_path,
   protein_input = NULL,
-  protein_annotation = NULL,
+  annotation_protein = NULL,
+  labeling_type = "LF",
   mod_id = "\\\\(Phospho\\\\)",
+  use_localization_cutoff = FALSE,
+  keep_all_mods = FALSE,
   use_unmod_peptides = FALSE,
+  fasta_protein_name = "uniprot_iso",
+  localization_cutoff = 75,
+  remove_unlocalized_peptides = TRUE,
   useNumProteinsColumn = FALSE,
   useUniquePeptide = TRUE,
   summaryforMultipleRows = max,
@@ -19,7 +26,6 @@ PDtoMSstatsPTMFormat(
   removeProtein_with1Peptide = FALSE,
   which_quantification = "Precursor.Area",
   which_proteinid = "Protein.Group.Accessions",
-  which_sequence = "Sequence",
   use_log_file = TRUE,
   append = FALSE,
   verbose = TRUE,
@@ -31,20 +37,40 @@ PDtoMSstatsPTMFormat(
 
 \item{annotation}{name of 'annotation.txt' or 'annotation.csv' data which
 includes Condition, BioReplicate, Run information. 'Run' will be matched
-with 'Spectrum.File'.}
+with 'Spectrum.File'}
+
+\item{fasta_path}{string containing path to the corresponding fasta file for
+the modified peptide dataset.}
 
 \item{protein_input}{PD report corresponding with unmodified experimental
 data.}
 
-\item{protein_annotation}{Same format as \code{annotation} corresponding to
+\item{annotation_protein}{Same format as \code{annotation} corresponding to
 unmodified data.}
+
+\item{labeling_type}{type of experimental design, must be one of \code{LF} for
+label free or \code{TMT} for tandem mass tag.}
 
 \item{mod_id}{Character that indicates the modification of interest. Default
 is \verb{\\\\(Phospho\\\\)}. Note \verb{\\\\} must be included before special characters.}
 
+\item{use_localization_cutoff}{Boolean indicating whether to use a custom
+localization cutoff or rely on PD's modifications column. \code{TRUE} is default
+and apply custom cutoff \code{localization_cutoff}.}
+
+\item{keep_all_mods}{Boolean indicating whether to keep or remove peptides
+not in \code{mod_id}. Default is FALSE.}
+
 \item{use_unmod_peptides}{If \code{protein_input} is not provided,
 unmodified peptides can be extracted from \code{input} to be used in place of a
 global profiling run. Default is \code{FALSE}.}
+
+\item{fasta_protein_name}{Name of fasta column that matches with protein name
+in evidence file. Default is \code{uniprot_iso}.}
+
+\item{localization_cutoff}{Minimum localization score required to keep modification. Default is .75.}
+
+\item{remove_unlocalized_peptides}{Boolean indicating if peptides without all sites localized should be kept. Default is TRUE (non-localized sites will be removed).}
 
 \item{useNumProteinsColumn}{TRUE removes peptides which have more than 1 in
 Proteins column of PD output.}
@@ -71,9 +97,6 @@ quantified intensities. 'Intensity' or 'Area' can be used instead.}
 \item{which_proteinid}{Use 'Protein.Accessions'(default) column for protein
 name. 'Master.Protein.Accessions' can be used instead.}
 
-\item{which_sequence}{Use 'Sequence'(default) column for peptide sequence.
-'Annotated.Sequence' can be used instead.}
-
 \item{use_log_file}{logical. If TRUE, information about data processing will
 be saved to a file.}
 
@@ -94,7 +117,15 @@ automatically. If 'append = TRUE', has to be a valid path to a file.}
 Import Proteome Discoverer files, identify modification site location.
 }
 \examples{
-# The output should be in the following format.
-head(raw.input$PTM)
-head(raw.input$PROTEIN)
+head(pd_psm_input)
+head(pd_annotation)
+
+msstats_format = PDtoMSstatsPTMFormat(pd_psm_input, 
+                                      pd_annotation, 
+                                      system.file("extdata", "pd_fasta.fasta", package="MSstatsPTM"),
+                                      use_unmod_peptides=TRUE, 
+                                      which_proteinid = "Master.Protein.Accessions")
+
+head(msstats_format$PTM)
+head(msstats_format$PROTEIN)
 }

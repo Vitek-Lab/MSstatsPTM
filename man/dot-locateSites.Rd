@@ -10,7 +10,8 @@
   protein_name_col,
   unmod_pep_col,
   mod_pep_col,
-  mod_id_is_numeric
+  mod_id_is_numeric,
+  replace_text = FALSE
 )
 }
 \arguments{

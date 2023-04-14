@@ -376,6 +376,11 @@ spectro_get_sites = function(str_idx, start, pep) {
 #' Default is '.'.
 #' @param mod_id_is_numeric Boolean indicating if modification identifier is 
 #' a number instead of a character (i.e. +80 vs *).
+#' @param remove_underscores Boolean indicating if underscores around peptide 
+#' exist. These should be removed to properly count where in sequence the 
+#' modification occurred. 
+#' @param remove_other_mods keeping mods that are not of interest can mess up 
+#' the amino acid count. Remove them if they are causing issues.
 #' 
 #' @importFrom data.table as.data.table
 #' 
@@ -398,7 +403,9 @@ MSstatsPTMSiteLocator = function(data,
                                  remove_unlocalized_peptides=TRUE,
                                  terminus_included=FALSE, 
                                  terminus_id="\\.",
-                                 mod_id_is_numeric=FALSE){
+                                 mod_id_is_numeric=FALSE,
+                                 remove_underscores=FALSE,
+                                 remove_other_mods=FALSE){
   
   ## Check if peptide number included in data
   if ("Start" %in% colnames(data)){
@@ -429,12 +436,28 @@ MSstatsPTMSiteLocator = function(data,
   }
   
   if (clean_mod){
-    id_data[,mod_pep_col] = lapply(id_data[,mod_pep_col], 
+    id_data[,mod_pep_col] = lapply(id_data[,mod_pep_col, with=FALSE], 
                                    function(x){gsub("[0-9]+|[[:punct:]]", "", x)})
   }
   
+  if (remove_underscores){
+    id_data[,mod_pep_col] = lapply(id_data[,mod_pep_col, with=FALSE], 
+                                   function(x){gsub("[_]", "", x)})
+  }
+  
+  if (remove_other_mods){
+    keep_id = gsub("[^[:alpha:]]", "", str_split(mod_id, " ")[[1]][[1]])
+    pattern = paste0("\\[(?!", keep_id, ")(.*?)\\]")
+    
+    id_data[, (mod_pep_col) := lapply(id_data[,mod_pep_col, with=FALSE], 
+                                   function(x){
+                                     gsub(pattern, "", x, perl = TRUE)})
+    ]
+  }
+
   id_data = .locateSites(id_data, mod_id, protein_name_col, 
-                         unmod_pep_col, mod_pep_col, mod_id_is_numeric)
+                         unmod_pep_col, mod_pep_col, mod_id_is_numeric,
+                         remove_other_mods)
   id_data = id_data[!duplicated(id_data),]
   
   id_data[["new_peptide_col"]] = id_data[[mod_pep_col]]
@@ -472,18 +495,32 @@ MSstatsPTMSiteLocator = function(data,
 .removeCutoffSites = function(data, mod_pep_col, cutoff,
                               remove_unlocalized_peptides){
   
-  data[,"number_sites"] = unlist(lapply(data[, ..mod_pep_col][[1]], function(x){
-    round(sum(as.numeric(regmatches(str_replace_all(x,"\\.",""), 
-                                    gregexpr("[[:digit:]]+", 
-                                             str_replace_all(x,"\\.","")))[[1]])
-              )/10000)}))
+  # data[,"number_sites"] = unlist(lapply(data[, ..mod_pep_col][[1]], function(x){
+  #   round(sum(as.numeric(regmatches(str_replace_all(x,"\\.",""),
+  #                                   gregexpr("[[:digit:]]+",
+  #                                            str_replace_all(x,"\\.","")))[[1]])
+  #             )/10000)}))
+  extract_sites = function(peptide){
+    total_sum = sum(as.numeric(regmatches(peptide,
+                                    gregexpr("[[:digit:]]+\\.*[[:digit:]]*",
+                                             peptide))[[1]]))
+    if (total_sum > 100){
+      total_sum = round(total_sum/100)
+    }
+    return(total_sum)
+  }
+  
+  
+  data[,"number_sites"] = unlist(lapply(data[, ..mod_pep_col][[1]], extract_sites))
   
   remove_sites = function(peptide){
     if (peptide == ""){
       mod_pep=""
     } else{
+      # localized_site = as.numeric(
+      #   regmatches(peptide, gregexpr("0.[[:digit:]]+|1.000", peptide))[[1]]) >= cutoff
       localized_site = as.numeric(
-        regmatches(peptide, gregexpr("0.[[:digit:]]+|1.000", peptide))[[1]]) >= cutoff
+        regmatches(peptide, gregexpr("[[:digit:]]+.[[:digit:]]+|1.00", peptide))[[1]]) >= cutoff
       split_peptide = strsplit(peptide, "[0-9.()]")[[1]][
         strsplit(peptide, "[0-9.()]")[[1]] !=""]
       if (sum(localized_site) > 0){
@@ -502,8 +539,7 @@ MSstatsPTMSiteLocator = function(data,
     return(mod_pep)
   }
   
-  data[,mod_pep_col] = unlist(lapply(data[,..mod_pep_col][[1]], 
-                                     function(x){remove_sites(x)}))
+  data[,mod_pep_col] = unlist(lapply(data[,..mod_pep_col][[1]], remove_sites))
   
   if (remove_unlocalized_peptides){
     count = unlist(lapply(data[,..mod_pep_col][[1]], function(x){
@@ -574,7 +610,8 @@ MSstatsPTMSiteLocator = function(data,
 #' @return data.table
 #' @keywords internal
 .locateSites = function(data, mod_id, protein_name_col, 
-                        unmod_pep_col, mod_pep_col, mod_id_is_numeric){
+                        unmod_pep_col, mod_pep_col, mod_id_is_numeric,
+                        replace_text=FALSE){
   
   data[, "PeptideModifiedSequence_adj"] = data[,mod_pep_col, with=FALSE]
   
@@ -602,6 +639,13 @@ MSstatsPTMSiteLocator = function(data,
                                            function(x){
                                              gsub("\\*\\*", mod_id, x)})
     data$PeptideModifiedSequence_adj = unlist(data$PeptideModifiedSequence_adj)
+  }
+  if(replace_text){
+    temp_mod_id = mod_id
+    mod_id = "\\*"
+    data$PeptideModifiedSequence_adj = unlist(lapply(data$PeptideModifiedSequence_adj,
+                                              function(x){
+                                                gsub(temp_mod_id, mod_id, x)}))
   }
   
   unmod_data = data[!grepl(mod_id, data[,"PeptideModifiedSequence_adj"][[1]]), ]
@@ -676,24 +720,6 @@ MSstatsPTMSiteLocator = function(data,
   }
   
   return(unlist(sequence))
-}
-
-#' Pull out modifications from PD PTM data for input into protein name
-#' @noRd
-#' @keywords internal
-.extract_pd_mods = function(modifications, mod_id){
-  split_mods = str_split(modifications, ";")
-  
-  quick_filter = function(mod_list){
-    mod_list = str_trim(mod_list)
-    mask = ifelse(grepl(mod_id, mod_list), TRUE, FALSE)
-    return(mod_list[mask])
-  }
-  
-  target_mods = lapply(split_mods, quick_filter)
-  join_mods = lapply(target_mods, function(x){paste(x, collapse="_")})
-  
-  return(unlist(join_mods))
 }
 
 
@@ -890,4 +916,81 @@ MaxQtoMSstatsTMTFormatHelper = function(
     stop("Multiple columns found containing mod_id_col string. Please be more specific and add full column name (including mass).")
   }
   return(full_id)
+}
+
+#' Extract PD mod sites using probability
+#' @noRd
+#' @keywords internal
+.getPDmods = function(input){
+  
+  message("INFO: Extracting modifications")
+  probability_column = colnames(input)[grepl("Best.Site.Probabilities", 
+                                             colnames(input))]
+  
+  probs = input[, probability_column, with=FALSE][[1]]
+  probs = str_split(probs, ";")
+  insert_prob = lapply(probs, function(x){
+    paste0("(",str_trim(gsub(".*:","",x)), ")")}
+  )
+  insert_prob = ifelse(insert_prob=="()", NA, insert_prob)
+  
+  insert_position = lapply(probs, function(x){gsub(".*?([0-9]+).*", "\\1", 
+                                                   str_trim(gsub(":.*","",x)))})
+  insert_position = suppressWarnings(lapply(insert_position, 
+                                            function(x){as.numeric(x)}))
+  
+  inject <- function(string, index, replacement){
+    stri_sub_replace_all(string, from = index+1,
+                         to = index,
+                         replacement = replacement)
+  }
+  
+  inserted_string = mapply(inject, input[, "Sequence"][[1]], insert_position, insert_prob)
+  inserted_string = ifelse(is.na(inserted_string), input[, "Sequence"][[1]], inserted_string)
+  input[, "ModSequence"] = inserted_string
+  
+  return(input)
+}
+
+#' Pull out modifications from PD PTM data for input into protein name
+#' @noRd
+#' @keywords internal
+.extract_pd_mods = function(input, mod_id, keep_all_mods){
+  
+  message("INFO: Extracting modifications")
+  modifications = input$Modifications
+  split_mods = str_split(modifications, ";")
+  
+  quick_filter = function(mod_list){
+    mod_list = str_trim(mod_list)
+    mask = ifelse(grepl(mod_id, mod_list), TRUE, FALSE)
+    return(mod_list[mask])
+  }
+  
+  if(!keep_all_mods){
+    target_mods = lapply(split_mods, quick_filter)
+    target_mods = lapply(target_mods, function(x){str_trim(
+      str_replace(x, mod_id, ""))})
+  } else{
+    target_mods = lapply(split_mods, function(x){str_trim(
+      str_replace(x, "\\s*\\([^\\)]+\\)", ""))})
+  }
+  insert_position = lapply(target_mods, function(x){gsub(".*?([0-9]+).*", 
+                                                        "\\1", x)})
+  
+  insert_position = suppressWarnings(lapply(insert_position, 
+                                            function(x){as.numeric(x)}))
+  
+  inject <- function(string, index, replacement){
+    index = index[!is.na(index)]
+    stri_sub_replace_all(string, from = index+1,
+                         to = index,
+                         replacement = replacement)
+  }
+  
+  inserted_string = mapply(inject, input[, "Sequence"][[1]], insert_position, "*")
+  inserted_string = ifelse(is.na(inserted_string), input[, "Sequence"][[1]], inserted_string)
+  input[, "ModSequence"] = inserted_string
+  
+  return(input)
 }
