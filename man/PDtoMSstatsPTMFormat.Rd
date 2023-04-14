@@ -10,7 +10,9 @@ PDtoMSstatsPTMFormat(
   fasta_path,
   protein_input = NULL,
   annotation_protein = NULL,
+  labeling_type = "LF",
   mod_id = "\\\\(Phospho\\\\)",
+  use_localization_cutoff = FALSE,
   keep_all_mods = FALSE,
   use_unmod_peptides = FALSE,
   fasta_protein_name = "uniprot_iso",
@@ -46,8 +48,15 @@ data.}
 \item{annotation_protein}{Same format as \code{annotation} corresponding to
 unmodified data.}
 
+\item{labeling_type}{type of experimental design, must be one of \code{LF} for
+label free or \code{TMT} for tandem mass tag.}
+
 \item{mod_id}{Character that indicates the modification of interest. Default
 is \verb{\\\\(Phospho\\\\)}. Note \verb{\\\\} must be included before special characters.}
+
+\item{use_localization_cutoff}{Boolean indicating whether to use a custom
+localization cutoff or rely on PD's modifications column. \code{TRUE} is default
+and apply custom cutoff \code{localization_cutoff}.}
 
 \item{keep_all_mods}{Boolean indicating whether to keep or remove peptides
 not in \code{mod_id}. Default is FALSE.}

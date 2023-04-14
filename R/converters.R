@@ -458,6 +458,9 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
 #' is `\\(Phospho\\)`. Note `\\` must be included before special characters.
 #' @param keep_all_mods Boolean indicating whether to keep or remove peptides 
 #' not in `mod_id`. Default is FALSE.
+#' @param use_localization_cutoff Boolean indicating whether to use a custom 
+#' localization cutoff or rely on PD's modifications column. `TRUE` is default 
+#' and apply custom cutoff `localization_cutoff`.
 #' @param use_unmod_peptides If `protein_input` is not provided, 
 #' unmodified peptides can be extracted from `input` to be used in place of a 
 #' global profiling run. Default is `FALSE`.
@@ -493,6 +496,7 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
 #' automatically. If 'append = TRUE', has to be a valid path to a file.
 #' 
 #' @importFrom MSstats PDtoMSstatsFormat 
+#' @importFrom MSstatsTMT PDtoMSstatsTMTFormat
 #' @importFrom stringr str_split str_trim
 #' @importFrom data.table setnames
 #' @importFrom stringi stri_sub_replace_all
@@ -518,7 +522,7 @@ PDtoMSstatsPTMFormat = function(input,
                                 annotation_protein=NULL,
                                 labeling_type = "LF",
                                 mod_id="\\(Phospho\\)",
-                                use_localization_cutoff=TRUE,
+                                use_localization_cutoff=FALSE,
                                 keep_all_mods=FALSE,
                                 use_unmod_peptides=FALSE,
                                 fasta_protein_name="uniprot_iso",
@@ -539,13 +543,17 @@ PDtoMSstatsPTMFormat = function(input,
   
   input = as.data.table(input)
   
+  if (is.null(fasta_path) & use_localization_cutoff == TRUE){
+    stop("A FASTA file must be included if using a custom localization cutoff. Please pass a FASTA file to `fasta_path`.")
+  }
+  
   if (!is.null(protein_input) & use_unmod_peptides == TRUE){
     stop("Either pass protein_input data or set use_unmod_peptides = TRUE, not both")
   }
   
-  .checkAnnotation(annotation, "LF")
+  .checkAnnotation(annotation, labeling_type)
   if (!is.null(annotation_protein)){
-    .checkAnnotation(annotation_protein, "LF")
+    .checkAnnotation(annotation_protein, labeling_type)
   }
   
   if (use_localization_cutoff){
@@ -565,17 +573,44 @@ PDtoMSstatsPTMFormat = function(input,
                                   terminus_included=FALSE, 
                                   terminus_id="\\.")
   } else {
-    mods = .extract_pd_mods(input$Modifications, mod_id, keep_all_mods)
-    input[,which_proteinid] = paste(input[,..which_proteinid][[1]], mods,sep="_")
+    input = .extract_pd_mods(input, mod_id, keep_all_mods)
+    # input[,which_proteinid] = paste(input[,..which_proteinid][[1]], mods,sep="_")
+    
+    input = MSstatsPTMSiteLocator(input, 
+                                  protein_name_col= which_proteinid,
+                                  unmod_pep_col = "Sequence",
+                                  mod_pep_col = "ModSequence",
+                                  clean_mod=FALSE,
+                                  fasta_file=fasta_path, 
+                                  fasta_protein_name=fasta_protein_name,
+                                  mod_id="\\*", 
+                                  localization_scores=FALSE,
+                                  localization_cutoff=localization_cutoff,
+                                  remove_unlocalized_peptides=remove_unlocalized_peptides,
+                                  terminus_included=FALSE, 
+                                  terminus_id="\\.")
+    
   }
+  
   input$Sequence = input$ModSequence
-  ptm_input = PDtoMSstatsFormat(input, annotation, useNumProteinsColumn,
-                                useUniquePeptide, summaryforMultipleRows,
-                                removeFewMeasurements, removeOxidationMpeptides,
-                                removeProtein_with1Peptide, 
-                                which_quantification, which_proteinid, 
-                                "Sequence", use_log_file, append, verbose,
-                                log_file_path)
+  
+  if (labeling_type == "LF"){
+    ptm_input = PDtoMSstatsFormat(input, annotation, useNumProteinsColumn,
+                                  useUniquePeptide, summaryforMultipleRows,
+                                  removeFewMeasurements, removeOxidationMpeptides,
+                                  removeProtein_with1Peptide, 
+                                  which_quantification, which_proteinid, 
+                                  "Sequence", use_log_file, append, verbose,
+                                  log_file_path)
+  } else if (labeling_type == "TMT"){
+    ptm_input = PDtoMSstatsTMTFormat(input, annotation, which_proteinid, 
+                                     useNumProteinsColumn,
+                                     useUniquePeptide, TRUE,
+                                     removeProtein_with1Peptide, 
+                                     summaryforMultipleRows, 
+                                     use_log_file, append, verbose,
+                                     log_file_path)
+  }
   
   if ("PeptideModifiedSequence" %in% colnames(ptm_input)){
     setnames(ptm_input, c("PeptideModifiedSequence"), c("PeptideSequence"))
@@ -584,15 +619,25 @@ PDtoMSstatsPTMFormat = function(input,
   msstats_input = list(PTM = ptm_input)
   
   if (!is.null(protein_input)) {
-    protein_input = PDtoMSstatsFormat(protein_input, annotation_protein, 
-                                      useNumProteinsColumn,
-                                      useUniquePeptide, summaryforMultipleRows,
-                                      removeFewMeasurements, 
-                                      removeOxidationMpeptides,
-                                      removeProtein_with1Peptide, 
-                                      which_quantification, which_proteinid, 
-                                      "Sequence", use_log_file, append, 
-                                      verbose, log_file_path)
+    if (labeling_type == "LF"){
+      protein_input = PDtoMSstatsFormat(protein_input, annotation_protein, 
+                                        useNumProteinsColumn,
+                                        useUniquePeptide, summaryforMultipleRows,
+                                        removeFewMeasurements, 
+                                        removeOxidationMpeptides,
+                                        removeProtein_with1Peptide, 
+                                        which_quantification, which_proteinid, 
+                                        "Sequence", use_log_file, append, 
+                                        verbose, log_file_path)
+    } else if (labeling_type == "TMT"){
+      protein_input = PDtoMSstatsTMTFormat(protein_input, annotation_protein, 
+                                       which_proteinid, useNumProteinsColumn,
+                                       useUniquePeptide, TRUE,
+                                       removeProtein_with1Peptide, 
+                                       summaryforMultipleRows, 
+                                       use_log_file, append, verbose,
+                                       log_file_path)
+    }
     
     if ("PeptideModifiedSequence" %in% colnames(protein_input)){
       setnames(protein_input, c("PeptideModifiedSequence"), 

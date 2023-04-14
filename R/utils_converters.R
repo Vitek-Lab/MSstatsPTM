@@ -722,35 +722,6 @@ MSstatsPTMSiteLocator = function(data,
   return(unlist(sequence))
 }
 
-#' Pull out modifications from PD PTM data for input into protein name
-#' @noRd
-#' @keywords internal
-.extract_pd_mods = function(modifications, mod_id, keep_all_mods){
-  
-  message("INFO: Extracting modifications")
-  split_mods = str_split(modifications, ";")
-  
-  quick_filter = function(mod_list){
-    mod_list = str_trim(mod_list)
-    mask = ifelse(grepl(mod_id, mod_list), TRUE, FALSE)
-    return(mod_list[mask])
-  }
-  
-  if(!keep_all_mods){
-    target_mods = lapply(split_mods, quick_filter)
-    target_mods = lapply(target_mods, function(x){str_trim(
-      str_replace(x, mod_id, ""))})
-  } else{
-    target_mods = lapply(split_mods, function(x){str_trim(
-      str_replace(x, "\\s*\\([^\\)]+\\)", ""))})
-  }
-
-  join_mods = lapply(target_mods, function(x){paste(x, collapse="_")})
-
-  join_mods = ifelse(join_mods=="", NA, join_mods)
-  return(unlist(ifelse(is.na(join_mods), "", join_mods)))
-}
-
 
 #' Remake MaxQ MSstatsConvert::.cleanRawMaxQuant function to not require proteinGroups file
 #' 
@@ -951,6 +922,8 @@ MaxQtoMSstatsTMTFormatHelper = function(
 #' @noRd
 #' @keywords internal
 .getPDmods = function(input){
+  
+  message("INFO: Extracting modifications")
   probability_column = colnames(input)[grepl("Best.Site.Probabilities", 
                                              colnames(input))]
   
@@ -963,8 +936,8 @@ MaxQtoMSstatsTMTFormatHelper = function(
   
   insert_position = lapply(probs, function(x){gsub(".*?([0-9]+).*", "\\1", 
                                                    str_trim(gsub(":.*","",x)))})
-  insert_position = lapply(insert_position, function(x){
-    ifelse(x=="", NA, as.numeric(x))})
+  insert_position = suppressWarnings(lapply(insert_position, 
+                                            function(x){as.numeric(x)}))
   
   inject <- function(string, index, replacement){
     stri_sub_replace_all(string, from = index+1,
@@ -973,6 +946,49 @@ MaxQtoMSstatsTMTFormatHelper = function(
   }
   
   inserted_string = mapply(inject, input[, "Sequence"][[1]], insert_position, insert_prob)
+  inserted_string = ifelse(is.na(inserted_string), input[, "Sequence"][[1]], inserted_string)
+  input[, "ModSequence"] = inserted_string
+  
+  return(input)
+}
+
+#' Pull out modifications from PD PTM data for input into protein name
+#' @noRd
+#' @keywords internal
+.extract_pd_mods = function(input, mod_id, keep_all_mods){
+  
+  message("INFO: Extracting modifications")
+  modifications = input$Modifications
+  split_mods = str_split(modifications, ";")
+  
+  quick_filter = function(mod_list){
+    mod_list = str_trim(mod_list)
+    mask = ifelse(grepl(mod_id, mod_list), TRUE, FALSE)
+    return(mod_list[mask])
+  }
+  
+  if(!keep_all_mods){
+    target_mods = lapply(split_mods, quick_filter)
+    target_mods = lapply(target_mods, function(x){str_trim(
+      str_replace(x, mod_id, ""))})
+  } else{
+    target_mods = lapply(split_mods, function(x){str_trim(
+      str_replace(x, "\\s*\\([^\\)]+\\)", ""))})
+  }
+  insert_position = lapply(target_mods, function(x){gsub(".*?([0-9]+).*", 
+                                                        "\\1", x)})
+  
+  insert_position = suppressWarnings(lapply(insert_position, 
+                                            function(x){as.numeric(x)}))
+  
+  inject <- function(string, index, replacement){
+    index = index[!is.na(index)]
+    stri_sub_replace_all(string, from = index+1,
+                         to = index,
+                         replacement = replacement)
+  }
+  
+  inserted_string = mapply(inject, input[, "Sequence"][[1]], insert_position, "*")
   inserted_string = ifelse(is.na(inserted_string), input[, "Sequence"][[1]], inserted_string)
   input[, "ModSequence"] = inserted_string
   
