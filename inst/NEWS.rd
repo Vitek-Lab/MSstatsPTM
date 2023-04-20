@@ -11,7 +11,7 @@
   \item Proteome Discoverer Converter
   \item Spectronaut Converter
   \item Added example datasets for available converters
-  \item We thank the Liang Xue and Pierre Jean in the computational proteomics 
+  \item We thank Liang Xue and Pierre Jean in the computational proteomics 
   team at Pfizer for their invaluable assistance in building these converters.
 }}
 
