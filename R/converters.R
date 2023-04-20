@@ -418,7 +418,7 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
       msstats.abun = MaxQtoMSstatsFormat(evidence = evidence_prot,
                                          proteinGroups = proteinGroups,
                                          annotation = annotation_protein,
-                                         which.proteinid = which_proteinid_protein)
+                                         proteinID = which_proteinid_protein)
     }
     
     MSstatsPTMformat = list('PTM' = msstatsptm_input, 
