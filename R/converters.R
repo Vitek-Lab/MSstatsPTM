@@ -913,6 +913,8 @@ PStoMSstatsPTMFormat = function(
 #' 
 #' @param input name of Skyline PTM output
 #' @param fasta_path A string of path to a FASTA file, used to match PTM peptides.
+#' @param fasta_protein_name Name of fasta column that matches with protein name
+#' in evidence file. Default is `uniprot_iso`.
 #' @param annotation name of 'annotation.txt' data which includes Condition, 
 #' BioReplicate, Run. If annotation is already complete in Skyline, use 
 #' annotation=NULL (default). It will use the annotation information from input.
@@ -961,6 +963,7 @@ PStoMSstatsPTMFormat = function(
 #' head(raw.input$PROTEIN)
 SkylinetoMSstatsPTMFormat = function(input,
                                      fasta_path,
+                                     fasta_protein_name="uniprot_iso",
                                      annotation=NULL,
                                      input_protein=NULL,
                                      annotation_protein=NULL,
@@ -991,9 +994,9 @@ SkylinetoMSstatsPTMFormat = function(input,
   ## Filter for required modifications
   message("Filtering modifications based on function arguements..")
   if (is.null(input_protein) & use_unmod_peptides){
-    input_prot = input[!grepl("\\[+", input$`Peptide Modified Sequence`), ]
+    input_protein = input[!grepl("\\[+", input$`Peptide Modified Sequence`), ]
     
-    if (nrow(input_prot)){
+    if (nrow(input_protein)){
       stop("No unmodified peptides in PTM dataset. It cannot be used for \
            adjustment.")
     }
@@ -1008,7 +1011,8 @@ SkylinetoMSstatsPTMFormat = function(input,
   
   ## Locate sites
   input = MSstatsPTMSiteLocator(input, 
-                                fasta_file=fasta_path, 
+                                fasta_file=fasta_path,
+                                fasta_protein_name=fasta_protein_name,
                                 terminus_included=FALSE,
                                 mod_id_is_numeric=TRUE)
 
