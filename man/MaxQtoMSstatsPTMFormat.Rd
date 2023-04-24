@@ -7,7 +7,7 @@
 MaxQtoMSstatsPTMFormat(
   evidence = NULL,
   annotation = NULL,
-  fasta_path = NULL,
+  fasta_path,
   fasta_protein_name = "uniprot_ac",
   mod_id = "\\\\(Phospho \\\\(STY\\\\)\\\\)",
   sites_data = NULL,

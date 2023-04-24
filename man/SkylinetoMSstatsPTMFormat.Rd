@@ -7,6 +7,7 @@
 SkylinetoMSstatsPTMFormat(
   input,
   fasta_path,
+  fasta_protein_name = "uniprot_iso",
   annotation = NULL,
   input_protein = NULL,
   annotation_protein = NULL,
@@ -28,6 +29,9 @@ SkylinetoMSstatsPTMFormat(
 \item{input}{name of Skyline PTM output}
 
 \item{fasta_path}{A string of path to a FASTA file, used to match PTM peptides.}
+
+\item{fasta_protein_name}{Name of fasta column that matches with protein name
+in evidence file. Default is \code{uniprot_iso}.}
 
 \item{annotation}{name of 'annotation.txt' data which includes Condition,
 BioReplicate, Run. If annotation is already complete in Skyline, use
