@@ -18,19 +18,23 @@ visualizations.
 \section{functions }{
 
 \itemize{
+\item \code{\link{FragPipetoMSstatsPTMFormat}} : Generates MSstatsPTM
+required input format for TMT FragePipe outputs.
 \item \code{\link{MaxQtoMSstatsPTMFormat}} : Generates MSstatsPTM required
-input format for TMT MaxQuant outputs.
+input format for label-free and TMT MaxQuant outputs.
 \item \code{\link{ProgenesistoMSstatsPTMFormat}} : Generates MSstatsPTM
-required input format for non-TMT Proteoviz outputs.
+required input format for label-free Progenesis outputs.
 \item \code{\link{SpectronauttoMSstatsPTMFormat}} : Generates MSstatsPTM
-required input format for non-TMT Spectronaut outputs.
-\item \code{\link{SkylinetoMSstatsPTMFormat}} : (Beta Version) Generates
-MSstatsPTM required input format for non-TMT Skyline outputs.
-\item \code{\link{PStoMSstatsPTMFormat}} : (Beta Version) Generates
-MSstatsPTM required input format for non-TMT PEAKS outputs.
+required input format for label-free Spectronaut outputs.
+\item \code{\link{SkylinetoMSstatsPTMFormat}} : Generates
+MSstatsPTM required input format for Skyline outputs.
+\item \code{\link{PStoMSstatsPTMFormat}} : Generates
+MSstatsPTM required input format for PEAKS outputs.
+\item \code{\link{PDtoMSstatsPTMFormat}} : Generates
+MSstatsPTM required input format for Proteome Discoverer outputs.
 \item \code{\link{dataSummarizationPTM}} : Summarizes PSM level
 quantification to peptide (modification) and protein level quantification.
-For use in non-TMT analysis
+For use in label-free analysis
 \item \code{\link{dataSummarizationPTM_TMT}} : Summarizes PSM level
 quantification to peptide (modification) and protein level quantification.
 For use in TMT analysis.

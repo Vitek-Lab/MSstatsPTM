@@ -18,10 +18,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-This Vignette provides an example workflow for how to use the package 
-`MSstatsPTM` for a labelfree dataset. It also provides examples and an 
-analysis of how adjusting for global protein levels allows for better 
-interpretations of PTM modeling results.
+This vignette provides an example workflow for how to use the package 
+`MSstatsPTM` for a mass spectrometry based proteomics experiment acquired with 
+a labelfree acquisition methods, such as DDA/DIA/SRM/PRM. It also provides 
+examples and an analysis of how adjusting for global protein levels allows for 
+better interpretations of PTM modeling results.
 
 ## Installation
 
@@ -51,10 +52,10 @@ converter.**
 
 The first step is to load in the raw dataset for both the PTM and Protein 
 datasets. Each dataset can formatted using dedicated converters in `MSstatsPTM`,
-such as `ProgenesistoMSstatsPTMFormat`, or converters from base `MSstats` such
-as `SkylinetoMSstatsFormat`, `MaxQtoMSstatsFormat`, `ProgenesistoMSstatsFormat`, 
-ect. If using converters from `MSstats` note they will need to be run both on 
-the global protein and PTM datasets.
+such as `FragePipetoMSstatsPTMFormat`. If there is not a dedicated converter 
+for your tool in `MSstatsPTM`, you can alternatively leverage converters from 
+base `MSstats`. If using converters from `MSstats` note they will need to be 
+run both on the global protein and PTM datasets.
 
 Please note for the PTM dataset, both the protein and modification site (or 
 peptide), must be added into the `ProteinName` column. This allows for the 
@@ -62,29 +63,167 @@ package to summarize to the peptide level, and avoid the off chance there are
 matching peptides between proteins. For an example of how this can be done 
 please see the code below.
 
-#### 1.1.1 Raw Data Converter
+The output of the converter is a list with two formatted data.tables. One each 
+for the PTM and Protein datasets. If a global profiling run was not performed, 
+the Protein data.table will just be `NULL`
 
-```{r raw_data_ptm, eval = FALSE}
+#### 1.1.1 MaxQuant - `MaxQtoMSstatsPTMFormat`
 
-annotation = data.frame('Condition' = c('Control', 'Control', 'Control',
-                                         'Treatment', 'Treatment', 'Treatment'),
-                         'BioReplicate' = c(1,2,3,4,5,6),
-                         'Run' = c('prot_run_1', 'prot_run_2', 'prot_run_3',
-                                   'phos_run_1', 'phos_run_2', 'phos_run_3'),
-                         'Type' = c("Protein", "Protein", "Protein", "PTM", 
-                                    "PTM", "PTM"))
+`MSstatsPTM` includes a dedicated converter for MaxQuant output. Experiments can
+be acquired with label-free or TMT labeling methods. No matter the experiment, 
+we recommend using the `evidence.txt` file, and not a PTM specific file such as 
+the `Phospho (STY).txt` file. The `MaxQtoMSstatsPTMFormat` converter includes a
+variety of parameters. Examples for processing a TMT and LF dataset can be seen 
+below.
 
-# Run MSstatsPTM converter with modified and unmodified datasets.
-raw.input = ProgenesistoMSstatsPTMFormat(raw_ptm_df, annotation, 
-                                          raw_protein_df, fasta_path)
+``` {r maxq, eval=TRUE}
+# TMT experiment
+head(maxq_tmt_evidence)
+head(maxq_tmt_annotation)
+ 
+msstats_format_tmt = MaxQtoMSstatsPTMFormat(evidence=maxq_tmt_evidence,
+                                    annotation=maxq_tmt_annotation,
+                                    fasta=system.file("extdata", 
+                                                      "maxq_tmt_fasta.fasta", 
+                                                      package="MSstatsPTM"),
+                                    fasta_protein_name="uniprot_ac",
+                                    mod_id="\\(Phospho \\(STY\\)\\)",
+                                    use_unmod_peptides=TRUE,
+                                    labeling_type = "TMT",
+                                    which_proteinid_ptm = "Proteins")
+
+head(msstats_format_tmt$PTM)
+head(msstats_format_tmt$PROTEIN)
+
+# LF experiment
+head(maxq_lf_evidence)
+head(maxq_lf_annotation)
+
+msstats_format_lf = MaxQtoMSstatsPTMFormat(evidence=maxq_lf_evidence,
+                                     annotation=maxq_lf_annotation,
+                                     fasta=system.file("extdata", 
+                                                       "maxq_lf_fasta.fasta", 
+                                                       package="MSstatsPTM"),
+                                     fasta_protein_name="uniprot_ac",
+                                     mod_id="\\(Phospho \\(STY\\)\\)",
+                                     use_unmod_peptides=TRUE,
+                                     labeling_type = "LF",
+                                     which_proteinid_ptm = "Proteins")
+
+head(msstats_format_lf$PTM)
+head(msstats_format_lf$PROTEIN)
+
 ```
 
-The output of the converter is a list with two formatted data.tables. One each 
-for the PTM and Protein datasets.
+#### 1.1.2 FragPipe - `FragPipetoMSstatsPTMFormat`
 
-If there is not a dedicated MSstatsPTM converter for a processing tool, 
-base MSstats converters can be used as follows. Please note ProteinName column 
-must be a combination of the Protein Name and sitename.
+`MSstatsPTM` includes a dedicated converter for FragPipe output. Experiments 
+must be acquired with TMT labeling methods (a label-free converter is currently 
+in development).The input is the `msstats.csv` and annotation files 
+automatically generated by FragPipe. FragPipe provides additional info on the 
+localization of modification sites, and the `FragPipetoMSstatsPTMFormat` 
+converter includes localization options that are not present in other 
+converters.
+
+``` {r fragpipe, eval=TRUE}
+head(fragpipe_input)
+head(fragpipe_annotation)
+head(fragpipe_input_protein)
+head(fragpipe_annotation_protein)
+
+msstats_data = FragPipetoMSstatsPTMFormat(fragpipe_input,
+                                          fragpipe_annotation,
+                                          fragpipe_input_protein, 
+                                          fragpipe_annotation_protein,
+                                          mod_id_col = "STY",
+                                          localization_cutoff=.75,
+                                          remove_unlocalized_peptides=TRUE)
+head(msstats_data$PTM)
+head(msstats_data$PROTEIN)
+```
+
+
+
+
+
+#### 1.1.3 Proteome Discoverer - `PDtoMSstatsPTMFormat`
+
+`MSstatsPTM` includes a dedicated converter for Proteome Discoverer output. 
+Experiments can be acquired with label-free or TMT labeling methods. The input 
+is the `psm` file and a custom built annotation file. Proteome Discoverer 
+provides additional info on the localization of modification sites, and the 
+`PDtoMSstatsPTMFormat` converter includes localization options that are not 
+present in other converters.
+
+``` {r pd, eval=TRUE}
+head(pd_psm_input)
+head(pd_annotation)
+
+msstats_format = PDtoMSstatsPTMFormat(pd_psm_input, 
+                                 pd_annotation, 
+                                 system.file("extdata", "pd_fasta.fasta", 
+                                             package="MSstatsPTM"),
+                                 use_unmod_peptides=TRUE, 
+                                 which_proteinid = "Master.Protein.Accessions")
+
+head(msstats_format$PTM)
+head(msstats_format$PROTEIN)
+```
+
+
+#### 1.1.4 Spectronaut - `SpectronauttoMSstatsPTMFormat`
+
+`MSstatsPTM` includes a dedicated converter for Spectronaut output. 
+Experiments can be acquired with label-free labeling methods.
+
+``` {r pd, eval=TRUE}
+head(spectronaut_input)
+head(spectronaut_annotation)
+
+msstats_input = SpectronauttoMSstatsPTMFormat(spectronaut_input, 
+                  annotation=spectronaut_annotation, 
+                  fasta_path=system.file("extdata", "spectronaut_fasta.fasta", 
+                                         package="MSstatsPTM"),
+                  use_unmod_peptides=TRUE,
+                  mod_id = "\\[Phospho \\(STY\\)\\]",
+                  fasta_protein_name = "uniprot_iso"
+                  )
+ 
+head(msstats_input$PTM)
+head(msstats_input$PROTEIN)
+
+```
+
+
+#### 1.1.5 Skyline - `SkylinetoMSstatsPTMFormat`
+
+`MSstatsPTM` includes a dedicated converter for Skyline output. 
+Experiments can be acquired with label-free labeling methods.
+
+
+#### 1.1.6 Peak Studio - `PStoMSstatsPTMFormat`
+
+`MSstatsPTM` includes a dedicated converter for Peak Studio output. 
+Experiments can be acquired with label-free labeling methods.
+
+#### 1.1.6 Progenesis - `ProgenesistoMSstatsPTMFormat`
+
+`MSstatsPTM` includes a dedicated converter for Progenesis output. 
+Experiments can be acquired with label-free labeling methods.
+
+#### 1.1.7 Additional tools
+
+If there is not a dedicated `MSstatsPTM` converter for a processing tool, 
+the existing converters in `MSstats` and `MSstatsTMT` converters can be used as 
+described below. 
+
+Note, in order to do this, it is critical that the ProteinName column be a 
+combination of the Protein Name and modification site.
+
+As an example, if you would like to analyze an experiment processed with DIANN, 
+you can leverage the `DIANNtoMSstatsFormat` in `MSstats`. Given two datasets, 
+named `raw_ptm_df` and `raw_protein_df`, and an annotation file, we can process 
+the data as follows.
 
 ```{r raw_data, eval = FALSE}
 # Add site into ProteinName column
@@ -92,20 +231,15 @@ raw_ptm_df$ProteinName = paste(raw_ptm_df$ProteinName,
                                 raw_ptm_df$Site, sep = "_")
 
 # Run MSstats Converters
-PTM.data = MSstats::ProgenesistoMSstatsFormat(raw_ptm_df, annotation)
-PROTEIN.data = MSstats::ProgenesistoMSstatsFormat(raw_protein_df, annotation)
+PTM_data = MSstats::DIANNtoMSstatsFormat(raw_ptm_df, annotation)
+PROTEIN_data = MSstats::DIANNtoMSstatsFormat(raw_protein_df, annotation)
 
 # Combine into one list
-raw.input = list(PTM = PTM.data,
-                  PROTEIN = PROTEIN.data)
+msstatsptm_input_data = list(PTM = PTM_data, PROTEIN = PROTEIN_data)
 ```
 
-Both of these conversion methods will output the same results.
-
-``` {r}
-head(raw.input$PTM)
-head(raw.input$PROTEIN)
-```
+The variable `msstatsptm_input_data` can now be used as the input to the 
+remainder of the `MSstatsPTM` processing pipeline.
 
 ### 1.2 Summarization - `dataSummarizationPTM`
 

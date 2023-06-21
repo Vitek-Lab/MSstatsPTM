@@ -46,54 +46,9 @@ MSstatsPTM please add a github issue
 `https://github.com/Vitek-Lab/MSstatsPTM/issues` and we will add the 
 converter.**
 
-The first step is to load in the raw dataset for both the PTM and Protein 
-datasets. Each dataset can formatted using dedicated converters in `MSstatsPTM`,
-such as `MaxQtoMSstatsPTMFormat`, or converters from base `MSstatsTMT` such
-as `PDtoMSstatsTMTFormat`, `MaxQtoMSstatsTMTFormat`,
-`SpectroMinetoMSstatsTMTFormat`, ect. If using converters from `MSstatsTMT` note 
-they will need to be run both on the global protein and PTM datasets.
-
-Please note for the PTM dataset, both the protein and modification site (or 
-peptide), must be added into the `ProteinName` column. This allows for the 
-package to summarize to the peptide level, and avoid the off chance there are 
-matching peptides between proteins. For an example of how this can be done 
-please see the code below.
-
-#### 1.1.1 Raw Data Converter
-
-```{r raw_data_ptm, eval = FALSE}
-# Run MSstatsPTM converter with modified and unmodified datasets.
-raw.input <- MaxQtoMSstatsPTMFormat(raw_ptm_df, annotation, evidence_file, 
-                                    proteinGroupsfile)
-```
-
-The output of the converter is a list with two formatted data.tables. One each 
-for the PTM and Protein datasets.
-
-Given there is not a dedicated MSstatsPTM converter for the processing tool, 
-base MSstats converters can be used as follows. Please note ProteinName column 
-must be a combination of the Protein Name and sitename.
-
-```{r raw_data, eval = FALSE}
-# Add site into ProteinName column
-raw_ptm_df$ProteinName <- paste(raw_ptm_df$ProteinName,
-                                raw_ptm_df$Site, sep = "_")
-
-# Run MSstats Converters
-PTM.data <- MaxQtoMSstatsTMTFormat(raw_ptm_df)
-PROTEIN.data <- MaxQtoMSstatsTMTFormat(raw_protein_df)
-
-# Combine into one list
-raw.input <- list(PTM = PTM.data,
-                  PROTEIN = PROTEIN.data)
-```
-
-Both of these conversion methods will output the same results.
-
-``` {r}
-head(raw.input.tmt$PTM)
-head(raw.input.tmt$PROTEIN)
-```
+We go in depth on all converters included in this package in the 
+`MSstatsPTM_LabelFree_Workflow`. For more information about data conversion 
+please review the relevant sections there.
 
 ### 1.2 Summarization - dataSummarizationPTM_TMT
 
