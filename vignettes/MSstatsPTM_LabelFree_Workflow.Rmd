@@ -176,7 +176,7 @@ head(msstats_format$PROTEIN)
 `MSstatsPTM` includes a dedicated converter for Spectronaut output. 
 Experiments can be acquired with label-free labeling methods.
 
-``` {r pd, eval=TRUE}
+``` {r Spectronaut, eval=TRUE}
 head(spectronaut_input)
 head(spectronaut_annotation)
 
