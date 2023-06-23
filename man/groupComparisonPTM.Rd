@@ -2,7 +2,7 @@
 % Please edit documentation in R/groupComparisonPTM.R
 \name{groupComparisonPTM}
 \alias{groupComparisonPTM}
-\title{Model PTM and/or protein data and make adjustments if needed}
+\title{Perform differential analysis on MS-based proteomics experiments targeting PTMs}
 \usage{
 groupComparisonPTM(
   data,
@@ -61,11 +61,12 @@ list of modeling results. Includes PTM, PROTEIN, and ADJUSTED
 data.tables with their corresponding model results.
 }
 \description{
-Takes summarized PTM and protein data from proteinSummarization.
-If protein data is unavailable, PTM data only can be passed into the
-function. Including protein data allows for adjusting PTM Fold Change by the
-change in protein abundance without modification.
-MSstatsContrastMatrix
+Takes summarized PTM and protein data from \code{dataSummarizationPTM} or
+\code{dataSummarizationPTM_TMT} functions and performs differential analysis.
+Leverages unmodified protein data to perform adjustment and deconvolute the
+effect of the PTM and unmodified protein. If protein data is unavailable,
+PTM data can still be passed into the function, however adjustment can not be
+performed. All model results are returned for completeness.
 }
 \examples{
 

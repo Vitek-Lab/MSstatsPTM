@@ -2,7 +2,7 @@
 % Please edit documentation in R/dataSummarizationPTM.R
 \name{dataSummarizationPTM}
 \alias{dataSummarizationPTM}
-\title{Process MS PTM and global protein data}
+\title{Data summarization function for label-free MS experiments targeting PTMs.}
 \usage{
 dataSummarizationPTM(
   data,
@@ -35,8 +35,8 @@ dataSummarizationPTM(
 )
 }
 \arguments{
-\item{data}{name of the list with PTM and (optionally) Protein data.tables,
-which can be the output of the MSstatsPTM converter functions}
+\item{data}{name of the list with PTM and (optionally) unmodified protein
+data.tables, which can be the output of the MSstatsPTM converter functions}
 
 \item{logTrans}{logarithm transformation with base 2(default) or 10}
 
@@ -142,9 +142,11 @@ summarization results.
 }
 \description{
 Utilizes functionality from MSstats to clean, summarize, and
-normalize PTM and protein level data. Imputes missing values, protein and PTM
-level summarization from peptide level quantification. Applies global median
-normalization on peptide level data and normalizes between runs.
+normalize PTM and protein level data. Imputes missing values, performs
+normalization, and summarizes data. PTM data is summarized up to the
+modification and protein data is summarized up to the protein level. Takes
+as input the output of the included converters (see included \code{raw.input}
+data object for required input format).
 }
 \examples{
 head(raw.input$PTM)
