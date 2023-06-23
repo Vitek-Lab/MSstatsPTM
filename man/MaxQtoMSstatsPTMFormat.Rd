@@ -2,7 +2,7 @@
 % Please edit documentation in R/converters.R
 \name{MaxQtoMSstatsPTMFormat}
 \alias{MaxQtoMSstatsPTMFormat}
-\title{Convert output of TMT labeled MaxQuant experiment into MSstatsPTM format}
+\title{Convert output of label-free or TMT MaxQuant experiments into MSstatsPTM format}
 \usage{
 MaxQtoMSstatsPTMFormat(
   evidence = NULL,
@@ -128,12 +128,13 @@ a list of two data.tables named 'PTM' and 'PROTEIN' in the format
 required by MSstatsPTM.
 }
 \description{
-Takes as input TMT experiments from MaxQ and converts the data into the
-format needed for MSstatsPTM. Requires modified file from MaxQ (evidence)
+Takes as input LF/TMT experiments from MaxQ and converts the data into the
+format needed for MSstatsPTM. Requires modified evidence.txt file from MaxQ
 and an annotation file for PTM data. To adjust modified peptides for changes
 in global protein level, unmodified TMT experimental data must also be
-returned. Optionally can use \verb{Phospho(STY)Sites.txt} from MaxQuant, but this
-is not recommended.
+returned. Optionally can use \verb{Phospho(STY)Sites.txt} (or other PTM specific
+files) from MaxQuant, but this is not recommended. If PTM specific file
+provided, the raw intensities must be provided, not a ratio.
 }
 \examples{
 # TMT experiment

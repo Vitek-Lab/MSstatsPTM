@@ -1,14 +1,17 @@
-#' Process MS PTM and global protein data produced via tandem mass tag labeling
+#' Data summarization function for TMT labelled MS experiments targeting PTMs.
 #'
 #' Utilizes functionality from MSstatsTMT to clean, summarize, and
-#' normalize PTM and protein level data. Imputes missing values, protein and PTM
-#' level summarization from peptide level quantification. Applies global median
-#' normalization on peptide level data and normalizes between runs.
+#' normalize PTM and protein level data. Imputes missing values, performs 
+#' normalization, and summarizes data. PTM data is summarized up to the 
+#' modification and protein data is summarized up to the protein level. Takes 
+#' as input the output of the included converters (see included `raw.input.tmt` 
+#' data object for required input format).
 #'
 #' @export
 #' @importFrom MSstatsTMT proteinSummarization
 #' @importFrom MSstatsConvert MSstatsLogsSettings MSstatsSaveSessionInfo
 #' @importFrom data.table as.data.table is.data.table
+#' 
 #' @param data Name of the output of MSstatsPTM converter function or 
 #' peptide-level quantified data from other tools. It should be a list 
 #' containing one or two data tables, named PTM and PROTEIN for modified and 

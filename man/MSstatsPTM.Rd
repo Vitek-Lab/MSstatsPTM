@@ -3,17 +3,20 @@
 \docType{package}
 \name{MSstatsPTM}
 \alias{MSstatsPTM}
-\title{MSstatsPTM: A package for detecting differencially abundant post
-translational modifications (PTM) in shotgun mass spectrometry-bsed proteomic
-experiments.}
+\title{MSstatsPTM: A package for detecting differentially abundant
+post-translational modifications (PTM) in mass spectrometry-based
+proteomic experiments.}
 \description{
 A set of tools for detecting differentially abundant PTMs and proteins in
 shotgun mass spectrometry-based proteomic experiments. The package can handle
-a variety of acquisition types, including label free, DDA, DIA, and TMT. The
+a variety of acquisition types, including label free and TMT experiments,
+acquired with DDA, DIA, SRM or PRM acquisition methods. The
 package includes tools to convert raw data from different spectral processing
-tools, summarize feature intensities, and fit a linear mixed effects model.
-Additionally the package includes functionality to plot a variety of data
-visualizations.
+tools, summarize feature intensities, and fit a linear mixed effects model. A
+major advantage of the package is to leverage a separate global profiling run
+and adjust the PTM fold change for changes in the unmodified protein, showing
+the unconvoluted PTM fold change. Finally, the package includes functionality
+to plot a variety of data visualizations.
 }
 \section{functions }{
 
