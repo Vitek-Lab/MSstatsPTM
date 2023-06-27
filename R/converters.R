@@ -151,14 +151,15 @@ FragPipetoMSstatsPTMFormat = function(input,
 }
 
 
-#' Convert output of TMT labeled MaxQuant experiment into MSstatsPTM format
+#' Convert output of label-free or TMT MaxQuant experiments into MSstatsPTM format
 #' 
-#' Takes as input TMT experiments from MaxQ and converts the data into the 
-#' format needed for MSstatsPTM. Requires modified file from MaxQ (evidence) 
+#' Takes as input LF/TMT experiments from MaxQ and converts the data into the 
+#' format needed for MSstatsPTM. Requires modified evidence.txt file from MaxQ 
 #' and an annotation file for PTM data. To adjust modified peptides for changes 
 #' in global protein level, unmodified TMT experimental data must also be 
-#' returned. Optionally can use `Phospho(STY)Sites.txt` from MaxQuant, but this 
-#' is not recommended.
+#' returned. Optionally can use `Phospho(STY)Sites.txt` (or other PTM specific 
+#' files) from MaxQuant, but this is not recommended. If PTM specific file 
+#' provided, the raw intensities must be provided, not a ratio.
 #'
 #' @export
 #' @importFrom stringr str_extract regex str_replace fixed str_split
@@ -1053,7 +1054,12 @@ SkylinetoMSstatsPTMFormat = function(input,
 
 #' Convert Spectronaut output into MSstatsPTM format
 #' 
-#' Currently only supports label-free quantification.
+#' Converters label-free Spectronaut data into MSstatsPTM format. Requires PSM 
+#' output from Spectronaut and a custom made annotation file, mapping the run 
+#' name to the condition and bioreplicate. Can optionally take a seperate PSM 
+#' file for a global profiling run. If no global profiling run provided, the 
+#' function can extract the unmodified peptides from the PTM PSM file and use 
+#' them as a global profiling run (not recommended).
 #' 
 #' @param input name of Spectronaut PTM output, which is long-format. 
 #' ProteinName, PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge, 
@@ -1203,5 +1209,4 @@ SpectronauttoMSstatsPTMFormat = function(
   }
   
   return(msstats_input)
-
 }

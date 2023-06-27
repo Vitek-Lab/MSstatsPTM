@@ -121,13 +121,13 @@ expect_silent(SpectronauttoMSstatsPTMFormat(spectronaut_input,
 data("pd_psm_input", package = "MSstatsPTM")
 data("pd_annotation", package = "MSstatsPTM")
 
-expect_silent(PDtoMSstatsPTMFormat(pd_psm_input, 
+expect_message(PDtoMSstatsPTMFormat(pd_psm_input, 
     pd_annotation,
     system.file("extdata", "pd_fasta.fasta", package="MSstatsPTM"),
     use_unmod_peptides=TRUE,
     which_proteinid = "Master.Protein.Accessions"))
 
-expect_silent(PDtoMSstatsPTMFormat(pd_psm_input, 
+expect_message(PDtoMSstatsPTMFormat(pd_psm_input, 
                                    pd_annotation,
                                    system.file("extdata", "pd_fasta.fasta", package="MSstatsPTM"),
                                    use_unmod_peptides=TRUE,
@@ -139,7 +139,7 @@ expect_error(PDtoMSstatsPTMFormat(pd_psm_input,
                                    use_unmod_peptides=TRUE,
                                    which_proteinid = "Master.Protein.Accessions"))
 
-expect_silent(PDtoMSstatsPTMFormat(pd_psm_input, 
+expect_message(PDtoMSstatsPTMFormat(pd_psm_input, 
                                   pd_annotation,
                                   system.file("extdata", "pd_fasta.fasta", package="MSstatsPTM"),
                                   which_proteinid = "Master.Protein.Accessions"))

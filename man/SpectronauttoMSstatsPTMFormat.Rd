@@ -108,7 +108,12 @@ a list of two data.tables named 'PTM' and 'PROTEIN' in the format
 required by MSstatsPTM.
 }
 \description{
-Currently only supports label-free quantification.
+Converters label-free Spectronaut data into MSstatsPTM format. Requires PSM
+output from Spectronaut and a custom made annotation file, mapping the run
+name to the condition and bioreplicate. Can optionally take a seperate PSM
+file for a global profiling run. If no global profiling run provided, the
+function can extract the unmodified peptides from the PTM PSM file and use
+them as a global profiling run (not recommended).
 }
 \examples{
 

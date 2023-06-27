@@ -1,17 +1,19 @@
-#' Process MS PTM and global protein data
+#' Data summarization function for label-free MS experiments targeting PTMs.
 #'
 #' Utilizes functionality from MSstats to clean, summarize, and
-#' normalize PTM and protein level data. Imputes missing values, protein and PTM
-#' level summarization from peptide level quantification. Applies global median
-#' normalization on peptide level data and normalizes between runs.
+#' normalize PTM and protein level data. Imputes missing values, performs 
+#' normalization, and summarizes data. PTM data is summarized up to the 
+#' modification and protein data is summarized up to the protein level. Takes 
+#' as input the output of the included converters (see included `raw.input` 
+#' data object for required input format).
 #'
 #' @export
 #' @importFrom MSstats dataProcess
 #' @importFrom MSstatsConvert MSstatsLogsSettings MSstatsSaveSessionInfo
 #' @importFrom data.table as.data.table is.data.table
 #' 
-#' @param data name of the list with PTM and (optionally) Protein data.tables, 
-#' which can be the output of the MSstatsPTM converter functions
+#' @param data name of the list with PTM and (optionally) unmodified protein 
+#' data.tables, which can be the output of the MSstatsPTM converter functions
 #' @param logTrans logarithm transformation with base 2(default) or 10
 #' @param normalization normalization for the protein level dataset, to remove 
 #' systematic bias between MS runs. There are three different normalizations 
