@@ -21,6 +21,7 @@ MaxQtoMSstatsPTMFormat(
   ptm_keyword = "phos",
   which_proteinid_ptm = "Proteins",
   which_proteinid_protein = "Proteins",
+  remove_other_mods = TRUE,
   removeMpeptides = FALSE,
   removeOxidationMpeptides = FALSE,
   removeProtein_with1Peptide = FALSE,
@@ -100,6 +101,13 @@ shared peptides.}
 
 \item{which_proteinid_protein}{For Protein dataset, which column to use for
 protein name. Same options as above.}
+
+\item{remove_other_mods}{Remove peptides which include modfications other
+than the one listed in \code{mod_id}. Default is \code{TRUE}. For example, in an
+experiment targeting Phosphorylation, setting this parameter to \code{TRUE} would
+remove peptides like
+(Acetyl (Protein N-term))AAAAPDSRVS(Phospho (STY))EEENLK. Set this parameter
+to \code{FALSE} to keep peptides with extraneous modifications.}
 
 \item{removeMpeptides}{If Oxidation (M) modifications should be removed.
 Default is TRUE.}

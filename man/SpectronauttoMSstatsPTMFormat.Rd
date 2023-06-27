@@ -14,6 +14,7 @@ SpectronauttoMSstatsPTMFormat(
   intensity = "PeakArea",
   mod_id = "\\\\[Phospho \\\\(STY\\\\)\\\\]",
   fasta_protein_name = "uniprot_iso",
+  remove_other_mods = TRUE,
   filter_with_Qvalue = TRUE,
   qvalue_cutoff = 0.01,
   useUniquePeptide = TRUE,
@@ -60,6 +61,13 @@ is \verb{\\\\(Phospho\\\\)}. Note \verb{\\\\} must be included before special ch
 
 \item{fasta_protein_name}{Name of fasta column that matches with protein name
 in evidence file. Default is \code{uniprot_iso}.}
+
+\item{remove_other_mods}{Remove peptides which include modfications other
+than the one listed in \code{mod_id}. Default is \code{TRUE}. For example, in an
+experiment targeting Phosphorylation, setting this parameter to \code{TRUE} would
+remove peptides like
+(Acetyl (Protein N-term))AAAAPDSRVS(Phospho (STY))EEENLK. Set this parameter
+to \code{FALSE} to keep peptides with extraneous modifications.}
 
 \item{filter_with_Qvalue}{TRUE(default) will filter out the intensities that
 have greater than qvalue_cutoff in EG.Qvalue column. Those intensities will

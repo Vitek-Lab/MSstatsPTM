@@ -219,6 +219,12 @@ FragPipetoMSstatsPTMFormat = function(input,
 #' 'Leading.razor.protein' or 'Gene.names' can be used instead to get the 
 #' protein ID with single protein. However, those can potentially have the 
 #' shared peptides.
+#' @param remove_other_mods Remove peptides which include modfications other 
+#' than the one listed in `mod_id`. Default is `TRUE`. For example, in an 
+#' experiment targeting Phosphorylation, setting this parameter to `TRUE` would 
+#' remove peptides like 
+#' (Acetyl (Protein N-term))AAAAPDSRVS(Phospho (STY))EEENLK. Set this parameter 
+#' to `FALSE` to keep peptides with extraneous modifications.
 #' @param which_proteinid_protein For Protein dataset, which column to use for 
 #' protein name. Same options as above.
 #' @param removeMpeptides If Oxidation (M) modifications should be removed. 
@@ -287,6 +293,7 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
                                   ptm_keyword = "phos",
                                   which_proteinid_ptm = "Proteins",
                                   which_proteinid_protein = "Proteins",
+                                  remove_other_mods=TRUE,
                                   removeMpeptides = FALSE,
                                   removeOxidationMpeptides = FALSE,
                                   removeProtein_with1Peptide = FALSE,
@@ -353,7 +360,10 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
                                              fasta_protein_name="uniprot_ac", 
                                              mod_id=mod_id, 
                                              terminus_included=FALSE,
-                                             remove_underscores=TRUE)
+                                             remove_underscores=TRUE,
+                                             remove_other_mods=remove_other_mods,
+                                             bracket="(",
+                                             replace_text=TRUE)
       
       msstatsptm_input = MaxQtoMSstatsFormatHelper(evidence_sites,
                                                    annotation,
@@ -1070,6 +1080,12 @@ SkylinetoMSstatsPTMFormat = function(input,
 #' is `\\(Phospho\\)`. Note `\\` must be included before special characters.
 #' @param fasta_protein_name Name of fasta column that matches with protein name
 #' in evidence file. Default is `uniprot_iso`.
+#' @param remove_other_mods Remove peptides which include modfications other 
+#' than the one listed in `mod_id`. Default is `TRUE`. For example, in an 
+#' experiment targeting Phosphorylation, setting this parameter to `TRUE` would 
+#' remove peptides like 
+#' (Acetyl (Protein N-term))AAAAPDSRVS(Phospho (STY))EEENLK. Set this parameter 
+#' to `FALSE` to keep peptides with extraneous modifications.
 #' @param filter_with_Qvalue TRUE(default) will filter out the intensities that 
 #' have greater than qvalue_cutoff in EG.Qvalue column. Those intensities will 
 #' be replaced with zero and will be considered as censored missing values for 
@@ -1123,6 +1139,7 @@ SpectronauttoMSstatsPTMFormat = function(
     intensity = "PeakArea",
     mod_id="\\[Phospho \\(STY\\)\\]",
     fasta_protein_name="uniprot_iso",
+    remove_other_mods=TRUE,
     filter_with_Qvalue = TRUE,
     qvalue_cutoff = 0.01,
     useUniquePeptide = TRUE,
@@ -1149,13 +1166,14 @@ SpectronauttoMSstatsPTMFormat = function(
   input = MSstatsPTMSiteLocator(input, protein_name_col= "PG.ProteinGroups",
                                 unmod_pep_col = "PeptideSequence",
                                 mod_pep_col = mod_col,
-                                # clean_mod=TRUE,
                                 fasta_file=fasta_path, 
                                 fasta_protein_name=fasta_protein_name,
                                 mod_id=mod_id, 
                                 terminus_included=FALSE, terminus_id="\\.",
                                 remove_underscores=TRUE,
-                                remove_other_mods=TRUE)
+                                remove_other_mods=remove_other_mods,
+                                bracket="[",
+                                replace_text=TRUE)
   
   ptm_input = SpectronauttoMSstatsFormat(input, annotation, intensity, 
                                          filter_with_Qvalue,
