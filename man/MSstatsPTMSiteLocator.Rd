@@ -20,7 +20,9 @@ MSstatsPTMSiteLocator(
   terminus_id = "\\\\.",
   mod_id_is_numeric = FALSE,
   remove_underscores = FALSE,
-  remove_other_mods = FALSE
+  remove_other_mods = FALSE,
+  bracket = FALSE,
+  replace_text = FALSE
 )
 }
 \arguments{
@@ -78,6 +80,13 @@ modification occurred.}
 
 \item{remove_other_mods}{keeping mods that are not of interest can mess up
 the amino acid count. Remove them if they are causing issues.}
+
+\item{bracket}{bracket type that encompasses PTM (usually \code{[} or \code{(}). Always
+pass opening bracket (there is a function to grab the close bracket). Default
+is FALSE (i.e. no bracket).}
+
+\item{replace_text}{If PTM is noted by text (i.e. \code{Phospho}) and needs to be
+replaced by an indicator (\code{*})}
 }
 \value{
 \code{data.table} with site location added into \code{Protein} column.

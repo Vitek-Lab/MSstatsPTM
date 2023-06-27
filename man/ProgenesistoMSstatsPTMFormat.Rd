@@ -2,7 +2,7 @@
 % Please edit documentation in R/converters.R
 \name{ProgenesistoMSstatsPTMFormat}
 \alias{ProgenesistoMSstatsPTMFormat}
-\title{Converts label-free Progenesis output into the format needed for MSstatsPTM}
+\title{Converts non-TMT Progenesis output into the format needed for MSstatsPTM}
 \usage{
 ProgenesistoMSstatsPTMFormat(
   ptm_input,
@@ -62,7 +62,7 @@ a list of two data.tables named 'PTM' and 'PROTEIN' in the format
 required by MSstatsPTM.
 }
 \description{
-Converts label-free Progenesis output into the format needed for MSstatsPTM
+Converts non-TMT Progenesis output into the format needed for MSstatsPTM
 }
 \examples{
 
