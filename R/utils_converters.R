@@ -381,8 +381,14 @@ spectro_get_sites = function(str_idx, start, pep) {
 #' modification occurred. 
 #' @param remove_other_mods keeping mods that are not of interest can mess up 
 #' the amino acid count. Remove them if they are causing issues.
+#' @param bracket bracket type that encompasses PTM (usually `[` or `(`). Always
+#' pass opening bracket (there is a function to grab the close bracket). Default 
+#' is FALSE (i.e. no bracket).
+#' @param replace_text If PTM is noted by text (i.e. `Phospho`) and needs to be 
+#' replaced by an indicator (`*`)
 #' 
 #' @importFrom data.table as.data.table
+#' @importFrom stringr str_extract_all str_replace_all
 #' 
 #' @return `data.table` with site location added into `Protein` column.
 #' @export 
@@ -405,7 +411,9 @@ MSstatsPTMSiteLocator = function(data,
                                  terminus_id="\\.",
                                  mod_id_is_numeric=FALSE,
                                  remove_underscores=FALSE,
-                                 remove_other_mods=FALSE){
+                                 remove_other_mods=FALSE,
+                                 bracket=FALSE,
+                                 replace_text=FALSE){
   
   ## Check if peptide number included in data
   if ("Start" %in% colnames(data)){
@@ -445,19 +453,32 @@ MSstatsPTMSiteLocator = function(data,
                                    function(x){gsub("[_]", "", x)})
   }
   
-  if (remove_other_mods){
-    keep_id = gsub("[^[:alpha:]]", "", str_split(mod_id, " ")[[1]][[1]])
-    pattern = paste0("\\[(?!", keep_id, ")(.*?)\\]")
+  
+  if (typeof(bracket) == "character"){
+    close_bracket = get_closing_bracket(bracket)
+    bracket_regex = paste0("\\", bracket, ".*?\\", close_bracket)
     
-    id_data[, (mod_pep_col) := lapply(id_data[,mod_pep_col, with=FALSE], 
-                                   function(x){
-                                     gsub(pattern, "", x, perl = TRUE)})
-    ]
+    if (remove_other_mods){
+      keep_id = gsub("[^[:alpha:]]", "", str_split(mod_id, " ")[[1]][[1]])
+      remove = unlist(lapply(id_data[,mod_pep_col, with=FALSE][[1]], function(x){
+          all(grepl(keep_id, stringr::str_extract_all(x, bracket_regex)[[1]]))
+          }))
+      id_data = id_data[remove]
+      
+    } else {
+      keep_id = paste0(gsub("[^[:alpha:]]", "", str_split(mod_id, " ")[[1]]),collapse = "|")
+      pattern = paste0("\\", bracket, "(?!", keep_id, ")(.*?)\\)\\", close_bracket)
+      
+      id_data[, (mod_pep_col) := lapply(id_data[,mod_pep_col, with=FALSE], 
+                                        function(x){
+                                          gsub(pattern, "", x, perl = TRUE)})
+      ]
+    }
   }
 
   id_data = .locateSites(id_data, mod_id, protein_name_col, 
                          unmod_pep_col, mod_pep_col, mod_id_is_numeric,
-                         remove_other_mods)
+                         replace_text)
   id_data = id_data[!duplicated(id_data),]
   
   id_data[["new_peptide_col"]] = id_data[[mod_pep_col]]
@@ -993,4 +1014,12 @@ MaxQtoMSstatsTMTFormatHelper = function(
   input[, "ModSequence"] = inserted_string
   
   return(input)
+}
+
+#' simple function to grab closing bracket
+#' @noRd
+#' @keywords internal
+get_closing_bracket <- function(open_bracket) {
+  closing_brackets <- c(")", "]", "}")
+  return(closing_brackets[which(open_bracket == c("(", "[", "{"))])
 }
