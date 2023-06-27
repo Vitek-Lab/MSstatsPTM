@@ -340,7 +340,11 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
                                              fasta_file = fasta_path,
                                              fasta_protein_name = "uniprot_ac", 
                                              mod_id=mod_id, 
-                                             terminus_included = FALSE)
+                                             terminus_included = FALSE,
+                                             remove_underscores=TRUE,
+                                             remove_other_mods=remove_other_mods,
+                                             bracket="(",
+                                             replace_text=TRUE)
       
       msstatsptm_input = MaxQtoMSstatsTMTFormatHelper(evidence_sites,
                                                       annotation,
