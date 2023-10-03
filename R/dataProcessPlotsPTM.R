@@ -78,33 +78,33 @@
 #'                     which.PTM = "Q9UQ80_K376",
 #'                     address = FALSE)
 dataProcessPlotsPTM = function(data,
-                                type = 'PROFILEPLOT',
-                                ylimUp = FALSE,
-                                ylimDown = FALSE,
-                                x.axis.size = 10,
-                                y.axis.size = 10,
-                                text.size = 4,
-                                text.angle = 90,
-                                legend.size = 7,
-                                dot.size.profile = 2,
-                                ncol.guide = 5,
-                                width = 10,
-                                height = 12,
-                                ptm.title = "All PTMs",
-                                protein.title = "All Proteins",
-                                which.PTM = "all", 
-                                which.Protein = NULL,
-                                originalPlot = TRUE,
-                                summaryPlot = TRUE,
-                                address = "") {
+                               type = 'PROFILEPLOT',
+                               ylimUp = FALSE,
+                               ylimDown = FALSE,
+                               x.axis.size = 10,
+                               y.axis.size = 10,
+                               text.size = 4,
+                               text.angle = 90,
+                               legend.size = 7,
+                               dot.size.profile = 2,
+                               ncol.guide = 5,
+                               width = 10,
+                               height = 12,
+                               ptm.title = "All PTMs",
+                               protein.title = "All Proteins",
+                               which.PTM = "all", 
+                               which.Protein = NULL,
+                               originalPlot = TRUE,
+                               summaryPlot = TRUE,
+                               address = "") {
   
   type = toupper(type)
   label = .check.dataProcess.plotting.data(data, type, ylimUp, ylimDown, 
-                                            x.axis.size,
-                                y.axis.size, text.size, text.angle, legend.size,
-                                dot.size.profile, ncol.guide, width, height,
-                                ptm.title, protein.title, which.PTM, 
-                                originalPlot, summaryPlot, address)
+                                           x.axis.size,
+                                           y.axis.size, text.size, text.angle, legend.size,
+                                           dot.size.profile, ncol.guide, width, height,
+                                           ptm.title, protein.title, which.PTM, 
+                                           originalPlot, summaryPlot, address)
   
   data.table.list = .format.data.process.plots(data, label)
   
@@ -119,7 +119,7 @@ dataProcessPlotsPTM = function(data,
       GLOBALPROTEIN %in% which.Protein]
     
     if (sum(nrow(data.table.list[[1]]), nrow(data.table.list[[2]]), 
-           nrow(data.table.list[[3]]), nrow(data.table.list[[4]])) == 0){
+            nrow(data.table.list[[3]]), nrow(data.table.list[[4]])) == 0){
       msg = paste0("The protein ", which.Protein, " specified in Which.Protein",
                    " is not in the global protein run. Please specify ",
                    "individual peptides only for this Protein.")
@@ -131,31 +131,32 @@ dataProcessPlotsPTM = function(data,
   ## ---------------
   if (type == "PROFILEPLOT") {
     if (label == 'TMT'){
-      .profile.tmt(data.table.list, type, ylimUp, ylimDown, 
+      plot <- .profile.tmt(data.table.list, type, ylimUp, ylimDown, 
                    x.axis.size, y.axis.size,text.size,text.angle, 
                    legend.size, dot.size.profile, ncol.guide, width, 
                    height, which.PTM, originalPlot, summaryPlot, 
                    address)
     } else if (label == 'LabelFree'){
-      .profile.lf(data.table.list, type, ylimUp, ylimDown, 
+      plot <- .profile.lf(data.table.list, type, ylimUp, ylimDown, 
                   x.axis.size, y.axis.size,text.size,text.angle, 
                   legend.size, dot.size.profile, ncol.guide, width, 
                   height, which.PTM, originalPlot, 
                   summaryPlot, address)
     }
   }
-
+  
   ## QC plot (Quality control plot) ##
   ## ---------------------------------
   if (type == "QCPLOT") {
     if (label == 'TMT'){
-      .qc.tmt(data.table.list, type, ylimUp, ylimDown, width, height, 
+      plot <- .qc.tmt(data.table.list, type, ylimUp, ylimDown, width, height, 
               x.axis.size, y.axis.size, text.size, text.angle,
               which.PTM, address, ptm.title, protein.title)
     } else if (label == 'LabelFree'){
-      .qc.lf(data.table.list, type, ylimUp, ylimDown, width, height, 
+      plot <- .qc.lf(data.table.list, type, ylimUp, ylimDown, width, height, 
              x.axis.size, y.axis.size, text.size,
              which.PTM, address, ptm.title, protein.title)
     } 
   }
+  return(plot)
 }
