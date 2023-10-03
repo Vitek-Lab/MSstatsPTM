@@ -158,5 +158,6 @@ dataProcessPlotsPTM = function(data,
              which.PTM, address, ptm.title, protein.title)
     } 
   }
+  print("TEST LINE FOR PTM PLOTS")
   return(plot)
 }
