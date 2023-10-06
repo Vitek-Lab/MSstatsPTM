@@ -16,6 +16,8 @@
 #' @importFrom data.table data.table as.data.table melt dcast `:=` setnames copy rbindlist
 #' @importFrom checkmate assertCharacter assertNumeric assertChoice
 #' @importFrom MSstats theme_msstats
+#' @importFrom plotly ggplotly subplot
+#' @importFrom dplyr %>%
 #' 
 #' @param data name of the list with PTM and (optionally) Protein data, which
 #' can be the output of the MSstatsPTM 
@@ -136,12 +138,14 @@ dataProcessPlotsPTM = function(data,
                    legend.size, dot.size.profile, ncol.guide, width, 
                    height, which.PTM, originalPlot, summaryPlot, 
                    address)
+      print("INSIDE TMT")
     } else if (label == 'LabelFree'){
       plot <- .profile.lf(data.table.list, type, ylimUp, ylimDown, 
                   x.axis.size, y.axis.size,text.size,text.angle, 
                   legend.size, dot.size.profile, ncol.guide, width, 
                   height, which.PTM, originalPlot, 
                   summaryPlot, address)
+      print("INSIDE LabelFree")
     }
   }
   
