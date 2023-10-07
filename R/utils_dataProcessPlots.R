@@ -600,7 +600,7 @@
   } else {
     plot_proteins = unique(datafeature.ptm[, c('PROTEINNAME')])
   }
-
+  profile_plots_list <- list()
   if (originalPlot) {
     if (address != FALSE) {
       allfiles = list.files()
@@ -635,9 +635,8 @@
                                  y.axis.size, text.size, text.angle, 
                                  legend.size, dot.size.profile, ncol.guide)
         protein_temp <- .convert.ggplot.plotly(protein_temp)
-        
-        return(subplot(ptm_temp,protein_temp,nrows=2))
-      } else {return(ptm_temp)}
+        profile_plots_list <- append(profile_plots_list, subplot(ptm_temp,protein_temp,nrows=2))
+      } else {profile_plots_list <- append(profile_plots_list, ptm_temp)}
       message(paste0("Drew the Profile plot for ", 
                     as.character(plot_proteins[, PROTEINNAME][i]),
                     " (", i, " of ", nrow(plot_proteins), ")"))
@@ -683,8 +682,8 @@
           y.axis.size, text.size, text.angle, legend.size,
           dot.size.profile, ncol.guide)
         protein_temp <- .convert.ggplot.plotly(protein_temp)
-        return(subplot(ptm_temp,protein_temp,nrows=2))
-      } else {return(ptm_temp)}
+        profile_plots_list <- append(profile_plots_list, subplot(ptm_temp,protein_temp,nrows=2))
+      } else {profile_plots_list <- append(profile_plots_list, ptm_temp)}
       
       message(paste("Drew the Profile plot for ", 
                     as.character(plot_proteins[, PROTEINNAME][i]),
@@ -696,6 +695,7 @@
       dev.off()
     }
   } # end summarization plot
+  return(profile_plots_list)
 }
 
 #' Plot boxplot of all proteins
@@ -894,7 +894,7 @@
     groupline.protein = protein.list[[3]]
     groupline.all.protein = protein.list[[4]]
   }
-    
+  profile_plots_list <- list()
   ## all protein
   if (which.Protein[[1]] == 'all' | which.Protein[[1]] == 'allonly') {
     
@@ -909,11 +909,12 @@
                                     y.limdown, x.axis.size, y.axis.size,text.size, 
                                     text.angle)
       ptemp.protein = .convert.ggplot.plotly(ptemp.protein)
-      return(subplot(ptemp.ptm,ptemp.protein,nrows=2))
+      profile_plots_list[[1]] <- subplot(ptemp.ptm,ptemp.protein,nrows=2)
     } else {
-      return(ptemp.ptm)
+      profile_plots_list[[1]] <- ptemp.ptm
     }
     message("Drew the Quality Contol plot(boxplot) for all ptms/proteins.")
+    return(profile_plots_list)
   }
   
   if (length(data.table.list) == 4){
@@ -1002,15 +1003,17 @@
                                          y.axis.size, text.size, text.angle)
         ptemp.protein = .convert.ggplot.plotly(ptemp.protein)
         
-        return(subplot(ptemp.ptm,ptemp.protein,nrows=2))
-      } else {return(ptemp.ptm)}
+        profile_plots_list <- append(profile_plots_list, subplot(ptemp.ptm,ptemp.protein,nrows=2))
+        
+      } else {profile_plots_list <- append(profile_plots_list, ptemp.ptm)}
 
       message(paste("Drew the Quality Contol plot(boxplot) for",
                     as.character(plot_proteins[, PROTEINNAME][i]), "(", i, 
                     " of ", nrow(plot_proteins), ")"))
       
     } # end-loop
-    }
+  }
+  return(profile_plots_list)
   
   if (address != FALSE) {
     dev.off()
@@ -1396,7 +1399,7 @@
   } else {
     plot_proteins = unique(datafeature.ptm[, c('PROTEINNAME')])
   }
-  
+  profile_plots_list <- list()
   if (originalPlot) {
     if (address != FALSE) {
       allfiles = list.files()
@@ -1433,9 +1436,8 @@
                                          legend.size, dot.size.profile, 
                                          ncol.guide)
         protein_temp = .convert.ggplot.plotly(protein_temp)
-        
-        return(subplot(ptm_temp,protein_temp,nrows=2))
-      } else{return(ptm_temp)}
+        profile_plots_list <- append(profile_plots_list, subplot(ptm_temp,protein_temp,nrows=2))
+      } else{profile_plots_list <- append(profile_plots_list, ptm_temp)}
       
       message(paste0("Drew the Profile plot for ", 
                     as.character(plot_proteins[, PROTEINNAME][i]),
@@ -1483,8 +1485,8 @@
           ncol.guide)
         protein_temp = .convert.ggplot.plotly(protein_temp)
         
-        return(subplot(ptm_temp,protein_temp,nrows=2))
-      } else {return(ptm_temp)}
+        profile_plots_list <- append(profile_plots_list, subplot(ptm_temp,protein_temp,nrows=2))
+      } else {profile_plots_list <- append(profile_plots_list, ptm_temp)}
         
       message(paste("Drew the Profile plot for ", 
                     as.character(plot_proteins[, PROTEINNAME][i]),
@@ -1494,6 +1496,8 @@
       dev.off()
     }
   } # end summarization plot
+  
+  return(profile_plots_list)
   
 }
 
@@ -1780,9 +1784,9 @@
                                          y.limdown, y.limup, x.axis.size, 
                                          y.axis.size, text.size)
         ptemp.protein = .convert.ggplot.plotly(ptemp.protein)
-        profile_plots_list[[i]] <- subplot(ptemp.ptm,ptemp.protein,nrows=2)
+        profile_plots_list <- append(profile_plots_list, subplot(ptemp.ptm,ptemp.protein,nrows=2))
       } else {
-        profile_plots_list[[i]] <- ptemp.ptm}
+        profile_plots_list <- append(profile_plots_list, ptemp.ptm)}
       message(paste0("Drew the Quality Contol plot(boxplot) for ",
                     as.character(plot_proteins[, PROTEINNAME][i]), " (", i, 
                     " of ", nrow(plot_proteins), ")"))

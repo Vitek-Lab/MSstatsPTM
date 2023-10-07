@@ -133,34 +133,35 @@ dataProcessPlotsPTM = function(data,
   ## ---------------
   if (type == "PROFILEPLOT") {
     if (label == 'TMT'){
-      plot <- .profile.tmt(data.table.list, type, ylimUp, ylimDown, 
+      plots <- .profile.tmt(data.table.list, type, ylimUp, ylimDown, 
                    x.axis.size, y.axis.size,text.size,text.angle, 
                    legend.size, dot.size.profile, ncol.guide, width, 
                    height, which.PTM, originalPlot, summaryPlot, 
                    address)
-      print("INSIDE TMT")
+      
     } else if (label == 'LabelFree'){
-      plot <- .profile.lf(data.table.list, type, ylimUp, ylimDown, 
+      plots <- .profile.lf(data.table.list, type, ylimUp, ylimDown, 
                   x.axis.size, y.axis.size,text.size,text.angle, 
                   legend.size, dot.size.profile, ncol.guide, width, 
                   height, which.PTM, originalPlot, 
                   summaryPlot, address)
-      print("INSIDE LabelFree")
+     
     }
+    return(plots)
   }
   
   ## QC plot (Quality control plot) ##
   ## ---------------------------------
   if (type == "QCPLOT") {
     if (label == 'TMT'){
-      .qc.tmt(data.table.list, type, ylimUp, ylimDown, width, height, 
+      plots <- .qc.tmt(data.table.list, type, ylimUp, ylimDown, width, height, 
               x.axis.size, y.axis.size, text.size, text.angle,
               which.PTM, address, ptm.title, protein.title)
     } else if (label == 'LabelFree'){
       plots <- .qc.lf(data.table.list, type, ylimUp, ylimDown, width, height, 
              x.axis.size, y.axis.size, text.size,
              which.PTM, address, ptm.title, protein.title)
-      return(plots)
     } 
+    return(plots)
   }
 }
