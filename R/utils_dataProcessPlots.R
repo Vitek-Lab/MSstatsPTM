@@ -1671,10 +1671,10 @@
     datarun.protein = protein.list[[2]]
     groupName.protein = protein.list[[3]]
   }
+  profile_plots_list <- list()
 
   ## all protein
   if (which.Protein[[1]] == 'all' | which.Protein[[1]] == 'allonly') {
-    
     ## Plot all QC
     ptemp.ptm = .qc.all.plot.lf(datafeature.ptm, groupName.ptm, ptm_title,
                                  y.limdown, y.limup, x.axis.size, y.axis.size, 
@@ -1686,10 +1686,13 @@
                                     x.axis.size, y.axis.size, text.size)
       ptemp.protein = .convert.ggplot.plotly(ptemp.protein)
       
-      return(subplot(ptemp.ptm,ptemp.protein,nrows=2))
-    } else{return(ptemp.ptm)}
+      profile_plots_list[[1]] <- subplot(ptemp.ptm,ptemp.protein,nrows=2)
+    } else{
+      profile_plots_list[[1]] <- ptemp.ptm
+      }
     
     message("Drew the Quality Contol plot(boxplot) for all ptms/proteins.")
+    return(profile_plots_list)
   }
   
   ## each protein
@@ -1777,14 +1780,16 @@
                                          y.limdown, y.limup, x.axis.size, 
                                          y.axis.size, text.size)
         ptemp.protein = .convert.ggplot.plotly(ptemp.protein)
-        
-        return(subplot(ptemp.ptm,ptemp.protein,nrows=2))
-      } else {return(ptemp.ptm)}
+        profile_plots_list[[i]] <- subplot(ptemp.ptm,ptemp.protein,nrows=2)
+      } else {
+        profile_plots_list[[i]] <- ptemp.ptm}
       message(paste0("Drew the Quality Contol plot(boxplot) for ",
                     as.character(plot_proteins[, PROTEINNAME][i]), " (", i, 
                     " of ", nrow(plot_proteins), ")"))
     } # end-loop
-    }
+  }
+
+  return(profile_plots_list)
   
   if (address != FALSE) {
     dev.off()

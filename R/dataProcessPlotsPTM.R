@@ -153,15 +153,14 @@ dataProcessPlotsPTM = function(data,
   ## ---------------------------------
   if (type == "QCPLOT") {
     if (label == 'TMT'){
-      plot <- .qc.tmt(data.table.list, type, ylimUp, ylimDown, width, height, 
+      .qc.tmt(data.table.list, type, ylimUp, ylimDown, width, height, 
               x.axis.size, y.axis.size, text.size, text.angle,
               which.PTM, address, ptm.title, protein.title)
     } else if (label == 'LabelFree'){
-      plot <- .qc.lf(data.table.list, type, ylimUp, ylimDown, width, height, 
+      plots <- .qc.lf(data.table.list, type, ylimUp, ylimDown, width, height, 
              x.axis.size, y.axis.size, text.size,
              which.PTM, address, ptm.title, protein.title)
+      return(plots)
     } 
   }
-  print("TEST LINE FOR PTM PLOTS")
-  return(plot)
 }
