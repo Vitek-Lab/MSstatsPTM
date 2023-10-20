@@ -1,3 +1,156 @@
+#' Convert the output of DIA-NN PSM file into MSstatsPTM format
+#' 
+#' Takes as input the `report.tsv` file from DIA-NN and converts it into 
+#' MSstatsPTM format. Requires PSM and an annotation file. Optionally an 
+#' additional `report.tsv` file for a corresponding global profiling run can 
+#' be included.
+#' 
+#' @importFrom data.table as.data.table
+#' @importFrom MSstats DIANNtoMSstatsFormat
+#' 
+#' @param input data.frame of `report.tsv` file produced by Philosopher
+#' @param annotation annotation with Run, Fraction, TechRepMixture, Mixture, Channel, 
+#' BioReplicate, Condition columns or a path to file. Refer to the example 'annotation' for the meaning of each column.
+#' @param input_protein same as `input` for global profiling run. Default is NULL.
+#' @param annotation_protein same as `annotation` for global profiling run. Default is NULL.
+#' @param fasta_path A string of path to a FASTA file, used to match PTM peptides.
+#' @param use_unmod_peptides Boolean if the unmodified peptides in the input 
+#' file should be used to construct the unmodified protein output. Only used if
+#' `input_protein` is not provided. Default is `FALSE`.
+#' @param protein_id_col Use 'Protein.Groups'(default) column for protein name. 
+#' @param fasta_protein_name Name of column that matches with the protein names 
+#' in `protein_id_col`. The protein names in these two columns must match in 
+#' order to join the FASTA file with the DIA-NN output.
+#' @param global_qvalue_cutoff The global qvalue cutoff. Default is 0.01.
+#' @param qvalue_cutoff local qvalue cutoff for library. Default is 0.01.
+#' @param pg_qvalue_cutoff local qvalue cutoff for protein groups Run should be 
+#' the same as filename. Default is 0.01.
+#' @param useUniquePeptide logical, if TRUE (default) removes peptides that are assigned for more than one proteins. 
+#' We assume to use unique peptide for each protein.
+#' @param removeFewMeasurements TRUE (default) will remove the features that have 1 or 2 measurements within each Run.
+#' @param removeOxidationMpeptides TRUE (default) will remove the peptides including oxidation (M) sequence.
+#' @param removeProtein_with1Feature TRUE will remove the proteins which have only 1 peptide and charge. Defaut is FALSE.
+#' @param MBR If analaysis was done with match between runs or not. Default is TRUE.
+#' @param use_log_file logical. If TRUE, information about data processing will 
+#' be saved to a file.
+#' @param append logical. If TRUE, information about data processing will be 
+#' added to an existing log file.
+#' @param verbose logical. If TRUE, information about data processing wil be 
+#' printed to the console.
+#' @param log_file_path character. Path to a file to which information about 
+#' data processing will be saved. If not provided, such a file will be created 
+#' automatically. If 'append = TRUE', has to be a valid path to a file.
+#' 
+#' @return `list` of one or two `data.frame` of class `MSstatsTMT`, named `PTM` and `PROTEIN`
+#' 
+#' @export
+#' 
+#' @examples
+#' # ptm = read.csv("Phospho/report.tsv", sep="\t")
+#' # protein = read.csv("Protein/report.tsv", sep="\t")
+#' # annotation = read.csv("Phospho/annotation.csv")
+#' # annotation_protein = read.csv("Protein/annotation.csv")
+#' 
+#' #DIANNtoMSstatsPTMFormat(ptm, annotation, 
+#' #                        protein, annotation_protein,
+#' #                        fasta_path="fasta_file.fasta")
+#' 
+DIANNtoMSstatsPTMFormat = function(input,
+                                   annotation,
+                                   input_protein=NULL,
+                                   annotation_protein=NULL,
+                                   fasta_path=NULL,
+                                   use_unmod_peptides=FALSE,
+                                   protein_id_col = "Protein.Group",
+                                   fasta_protein_name="uniprot_ac",
+                                   global_qvalue_cutoff = 0.01,
+                                   qvalue_cutoff = 0.01,
+                                   pg_qvalue_cutoff = 0.01,
+                                   useUniquePeptide = TRUE,
+                                   removeFewMeasurements = TRUE,
+                                   removeOxidationMpeptides = TRUE,
+                                   removeProtein_with1Feature = FALSE,
+                                   MBR=TRUE,
+                                   use_log_file = TRUE,
+                                   append = FALSE,
+                                   verbose = TRUE,
+                                   log_file_path = NULL){
+  
+  MSstatsConvert::MSstatsLogsSettings(use_log_file, append, verbose, 
+                                      log_file_path, 
+                                      base = "MSstatsPTM_converter_log_")
+  
+  ## Check input parameters
+  checkmate::assertTRUE(!is.null(input) & !is.null(annotation))
+  .checkAnnotation(annotation, "LF")
+  if (!is.null(annotation_protein)){
+    .checkAnnotation(annotation_protein, "LF")
+  }
+  
+  input = as.data.table(input)
+  fasta = MSstatsPTM::tidyFasta("fasta_file.fasta")
+  
+  input = MSstatsPTMSiteLocator(input, 
+                                protein_name_col=protein_id_col, 
+                                unmod_pep_col="Stripped.Sequence",
+                                mod_pep_col="Modified.Sequence",
+                                clean_mod=TRUE,
+                                fasta_file=fasta,
+                                fasta_protein_name=fasta_protein_name,
+                                mod_id="UniMod",
+                                replace_text=TRUE)
+  
+  if (use_unmod_peptides){
+    input_protein = input[input[,..protein_id_col][[1]]  == input$ProteinNameUnmod]  
+    annotation_protein = annotation
+  } else {
+    input = input[input[,..protein_id_col][[1]] != input$ProteinNameUnmod]
+  }
+  
+  ptm_input = DIANNtoMSstatsFormat(input, 
+                                   annotation,
+                                   global_qvalue_cutoff,
+                                   qvalue_cutoff,
+                                   pg_qvalue_cutoff,
+                                   useUniquePeptide,
+                                   removeFewMeasurements,
+                                   removeOxidationMpeptides,
+                                   removeProtein_with1Feature,
+                                   use_log_file,
+                                   append,
+                                   verbose,
+                                   log_file_path,
+                                   MBR)
+  
+  msstats_format = list(PTM=ptm_input, PROTEIN=NULL)
+  
+  if (!is.null(input_protein)){
+    checkmate::assertTRUE(!is.null(input_protein) & 
+                            !is.null(annotation_protein))
+    
+    protein_input = DIANNtoMSstatsFormat(input_protein, 
+                                         annotation_protein,
+                                         global_qvalue_cutoff,
+                                         qvalue_cutoff,
+                                         pg_qvalue_cutoff,
+                                         useUniquePeptide,
+                                         removeFewMeasurements,
+                                         removeOxidationMpeptides,
+                                         removeProtein_with1Feature,
+                                         use_log_file,
+                                         append,
+                                         verbose,
+                                         log_file_path,
+                                         MBR)
+    
+    msstats_format = list(PTM=ptm_input, PROTEIN=protein_input)
+    
+  }
+  return(msstats_format)
+}
+
+
+
 #' Convert output of TMT labeled Fragpipe data into MSstatsPTM format.
 #' 
 #' Takes as input TMT experiments which are the output of Fragpipe and converts
@@ -88,7 +241,7 @@ FragPipetoMSstatsPTMFormat = function(input,
                                        log_file_path = NULL){
   MSstatsConvert::MSstatsLogsSettings(use_log_file, append, verbose, 
                                       log_file_path, 
-                                      base = "MSstatsTMT_converter_log_")
+                                      base = "MSstatsPTM_converter_log_")
   
   ## Check input parameters
   checkmate::assertTRUE(!is.null(input) & !is.null(annotation))
