@@ -88,7 +88,7 @@ DIANNtoMSstatsPTMFormat = function(input,
   }
   
   input = as.data.table(input)
-  fasta = MSstatsPTM::tidyFasta("fasta_file.fasta")
+  fasta = MSstatsPTM::tidyFasta(fasta_path)
   
   input = MSstatsPTMSiteLocator(input, 
                                 protein_name_col=protein_id_col, 
