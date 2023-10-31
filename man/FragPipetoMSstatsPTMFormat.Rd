@@ -6,10 +6,11 @@
 \usage{
 FragPipetoMSstatsPTMFormat(
   input,
-  annotation,
+  annotation = NULL,
   input_protein = NULL,
   annotation_protein = NULL,
   use_unmod_peptides = FALSE,
+  label_type = "TMT",
   protein_id_col = "Protein",
   peptide_id_col = "Peptide.Sequence",
   mod_id_col = "STY",
@@ -18,7 +19,7 @@ FragPipetoMSstatsPTMFormat(
   Purity_cutoff = 0.6,
   PeptideProphet_prob_cutoff = 0.7,
   useUniquePeptide = TRUE,
-  rmPSM_withfewMea_withinRun = TRUE,
+  rmPSM_withfewMea_withinRun = FALSE,
   rmPeptide_OxidationM = TRUE,
   rmProtein_with1Feature = FALSE,
   summaryforMultipleRows = sum,
@@ -43,11 +44,16 @@ consistent with the channel columns (Ignore the prefix "Channel ") in msstats.cs
 file should be used to construct the unmodified protein output. Only used if
 \code{input_protein} is not provided. Default is \code{FALSE}.}
 
-\item{protein_id_col}{Use 'Protein'(default) column for protein name.
-'Master.Protein.Accessions' can be used instead to get the protein ID with single protein.}
+\item{label_type}{Type of labeling used for experiment. Must be one of "LF"
+or "TMT". Default is "TMT".}
 
-\item{peptide_id_col}{Use 'Peptide.Sequence'(default) column for peptide sequence.
-'Modified.Peptide.Sequence' can be used instead to get the modified peptide sequence.}
+\item{protein_id_col}{Use 'Protein'(default) column for TMT. This needs to be
+changed to "ProteinName" for label free. For TMT, 'Master.Protein.Accessions'
+can be used instead to get the protein ID with single protein.}
+
+\item{peptide_id_col}{Use 'Peptide.Sequence'(default) column for TMT. Must be
+changed to "PeptideSequence" for label free. "Modified.Peptide.Sequence" can
+be used instead to get the modified peptide sequence.}
 
 \item{mod_id_col}{Column containing the modified Amino Acids. For example, a Phosphorylation experiment may pass \code{STY}. The corresponding column with \code{STY} combined with the mass (e.x. \code{STY.79.9663}) will be selected. Default is \code{STY}.}
 
@@ -96,6 +102,7 @@ corresponding global profiling run was performed. Site localization is
 performed and only high probability localizations are kept.
 }
 \examples{
+# TMT Example
 head(fragpipe_input)
 head(fragpipe_annotation)
 head(fragpipe_input_protein)
@@ -105,6 +112,7 @@ msstats_data = FragPipetoMSstatsPTMFormat(fragpipe_input,
                                           fragpipe_annotation,
                                           fragpipe_input_protein, 
                                           fragpipe_annotation_protein,
+                                          label_type="TMT",
                                           mod_id_col = "STY",
                                           localization_cutoff=.75,
                                           remove_unlocalized_peptides=TRUE)
