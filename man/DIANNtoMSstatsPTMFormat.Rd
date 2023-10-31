@@ -90,6 +90,13 @@ additional \code{report.tsv} file for a corresponding global profiling run can
 be included.
 }
 \examples{
-# TODO add examples
+# ptm = read.csv("Phospho/report.tsv", sep="\t")
+# protein = read.csv("Protein/report.tsv", sep="\t")
+# annotation = read.csv("Phospho/annotation.csv")
+# annotation_protein = read.csv("Protein/annotation.csv")
+
+#DIANNtoMSstatsPTMFormat(ptm, annotation, 
+#                        protein, annotation_protein,
+#                        fasta_path="fasta_file.fasta")
 
 }
