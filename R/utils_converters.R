@@ -535,7 +535,7 @@ MSstatsPTMSiteLocator = function(data,
   data[,"number_sites"] = unlist(lapply(data[, ..mod_pep_col][[1]], extract_sites))
   
   remove_sites = function(peptide){
-    if (peptide == ""){
+    if (peptide == "" | is.na(peptide)){
       mod_pep=""
     } else{
       # localized_site = as.numeric(
