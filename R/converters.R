@@ -88,7 +88,7 @@ DIANNtoMSstatsPTMFormat = function(input,
   }
   
   input = as.data.table(input)
-  fasta = MSstatsPTM::tidyFasta("fasta_file.fasta")
+  fasta = MSstatsPTM::tidyFasta(fasta_path)
   
   input = MSstatsPTMSiteLocator(input, 
                                 protein_name_col=protein_id_col, 
@@ -162,6 +162,7 @@ DIANNtoMSstatsPTMFormat = function(input,
 #' @export
 #' @importFrom data.table as.data.table
 #' @importFrom MSstatsTMT PhilosophertoMSstatsTMTFormat
+#' @importFrom MSstats FragPipetoMSstatsFormat
 #' 
 #' @param input data.frame of `msstats.csv` file produced by Philosopher
 #' @param annotation annotation with Run, Fraction, TechRepMixture, Mixture, Channel, 
@@ -172,10 +173,14 @@ DIANNtoMSstatsPTMFormat = function(input,
 #' @param use_unmod_peptides Boolean if the unmodified peptides in the input 
 #' file should be used to construct the unmodified protein output. Only used if
 #' `input_protein` is not provided. Default is `FALSE`.
-#' @param protein_id_col Use 'Protein'(default) column for protein name. 
-#' 'Master.Protein.Accessions' can be used instead to get the protein ID with single protein.
-#' @param peptide_id_col Use 'Peptide.Sequence'(default) column for peptide sequence.
-#'  'Modified.Peptide.Sequence' can be used instead to get the modified peptide sequence.
+#' @param label_type Type of labeling used for experiment. Must be one of "LF" 
+#' or "TMT". Default is "TMT".
+#' @param protein_id_col Use 'Protein'(default) column for TMT. This needs to be
+#' changed to "ProteinName" for label free. For TMT, 'Master.Protein.Accessions'
+#' can be used instead to get the protein ID with single protein.
+#' @param peptide_id_col Use 'Peptide.Sequence'(default) column for TMT. Must be
+#' changed to "PeptideSequence" for label free. "Modified.Peptide.Sequence" can 
+#' be used instead to get the modified peptide sequence.
 #' @param mod_id_col Column containing the modified Amino Acids. For example, a Phosphorylation experiment may pass `STY`. The corresponding column with `STY` combined with the mass (e.x. `STY.79.9663`) will be selected. Default is `STY`.
 #' @param localization_cutoff Minimum localization score required to keep modification. Default is .75.
 #' @param remove_unlocalized_peptides Boolean indicating if peptides without all sites localized should be kept. Default is TRUE (non-localized sites will be removed).
@@ -204,6 +209,7 @@ DIANNtoMSstatsPTMFormat = function(input,
 #' @export
 #' 
 #' @examples 
+#' # TMT Example
 #' head(fragpipe_input)
 #' head(fragpipe_annotation)
 #' head(fragpipe_input_protein)
@@ -213,16 +219,18 @@ DIANNtoMSstatsPTMFormat = function(input,
 #'                                           fragpipe_annotation,
 #'                                           fragpipe_input_protein, 
 #'                                           fragpipe_annotation_protein,
+#'                                           label_type="TMT",
 #'                                           mod_id_col = "STY",
 #'                                           localization_cutoff=.75,
 #'                                           remove_unlocalized_peptides=TRUE)
 #' head(msstats_data$PTM)
 #' head(msstats_data$PROTEIN)
 FragPipetoMSstatsPTMFormat = function(input,
-                                       annotation,
+                                       annotation=NULL,
                                        input_protein=NULL,
                                        annotation_protein=NULL,
                                        use_unmod_peptides=FALSE,
+                                       label_type="TMT",
                                        protein_id_col = "Protein",
                                        peptide_id_col = "Peptide.Sequence",
                                        mod_id_col = "STY",
@@ -231,7 +239,7 @@ FragPipetoMSstatsPTMFormat = function(input,
                                        Purity_cutoff = 0.6,
                                        PeptideProphet_prob_cutoff = 0.7,
                                        useUniquePeptide = TRUE,
-                                       rmPSM_withfewMea_withinRun = TRUE,
+                                       rmPSM_withfewMea_withinRun = FALSE,
                                        rmPeptide_OxidationM = TRUE,
                                        rmProtein_with1Feature = FALSE,
                                        summaryforMultipleRows = sum,
@@ -244,17 +252,22 @@ FragPipetoMSstatsPTMFormat = function(input,
                                       base = "MSstatsPTM_converter_log_")
   
   ## Check input parameters
-  checkmate::assertTRUE(!is.null(input) & !is.null(annotation))
-  .checkAnnotation(annotation, "TMT")
-  if (!is.null(annotation_protein)){
-    .checkAnnotation(annotation_protein, "TMT")
+  checkmate::assertTRUE(!is.null(input))
+  if (label_type == "TMT"){
+    checkmate::assertTRUE(!is.null(annotation))
+    .checkAnnotation(annotation, "TMT")
+    if (!is.null(annotation_protein)){
+      .checkAnnotation(annotation_protein, "TMT")
+    }
   }
   
   input = as.data.table(input)
   
   mod_id_col = .getFullModID(input, mod_id_col)
   input$Start = input$Protein.Start
-  input$Is.Unique = as.logical(input$Is.Unique)
+  if ("Is.Unique" %in% colnames(input)){
+    input$Is.Unique = as.logical(input$Is.Unique)
+  }
   
   input = MSstatsPTMSiteLocator(input, 
                        protein_name_col= protein_id_col,
@@ -271,31 +284,48 @@ FragPipetoMSstatsPTMFormat = function(input,
                        terminus_id="\\.")
   
   if (use_unmod_peptides){
-    input_protein = input[input$Protein == input$ProteinNameUnmod]  
+    input_protein = input[input[[protein_id_col]] == input$ProteinNameUnmod]
+    input = input[input[[protein_id_col]] != input$ProteinNameUnmod]  
     annotation_protein = annotation
   } else {
-    input = input[input$Protein != input$ProteinNameUnmod]  
+    input = input[input[[protein_id_col]] != input$ProteinNameUnmod]  
   }
   
-  input[[peptide_id_col]] = input[["new_peptide_col"]]
-  ptm_input = PhilosophertoMSstatsTMTFormat(
-    input, annotation, protein_id_col, peptide_id_col, Purity_cutoff, 
-    PeptideProphet_prob_cutoff, useUniquePeptide, rmPSM_withfewMea_withinRun, 
-    rmPeptide_OxidationM, rmProtein_with1Feature, summaryforMultipleRows, 
-    use_log_file, append, verbose, log_file_path)
+  input[[peptide_id_col]] = input[[colnames(input)[grepl("new_peptide_col", colnames(input))][[1]]]]
+  if (label_type == "TMT"){
+    
+    ptm_input = PhilosophertoMSstatsTMTFormat(
+      input, annotation, protein_id_col, peptide_id_col, Purity_cutoff, 
+      PeptideProphet_prob_cutoff, useUniquePeptide, rmPSM_withfewMea_withinRun, 
+      rmPeptide_OxidationM, rmProtein_with1Feature, summaryforMultipleRows, 
+      use_log_file, append, verbose, log_file_path)
+  } else if (label_type == "LF"){
+    msstats_cols = c("ProteinName", "PeptideSequence", "PrecursorCharge", 
+                     "FragmentIon", "ProductCharge", "IsotopeLabelType", 
+                     "Condition", "BioReplicate", "Run", "Intensity")
+    ptm_input = FragPipetoMSstatsFormat(
+      input[,..msstats_cols], useUniquePeptide, rmPSM_withfewMea_withinRun, 
+      rmProtein_with1Feature, summaryforMultipleRows,
+      use_log_file, append, verbose, log_file_path
+    )
+  }
   
   msstats_format = list(PTM=ptm_input, PROTEIN=NULL)
   
   if (!is.null(input_protein)){
-    checkmate::assertTRUE(!is.null(input_protein) & 
-                            !is.null(annotation_protein))
     
-    protein_input = PhilosophertoMSstatsTMTFormat(
-      input_protein, annotation_protein, protein_id_col, peptide_id_col, 
-      Purity_cutoff, PeptideProphet_prob_cutoff, useUniquePeptide, 
-      rmPSM_withfewMea_withinRun, rmPeptide_OxidationM, rmProtein_with1Feature, 
-      summaryforMultipleRows, use_log_file, append, verbose, log_file_path)
-    
+    if (label_type == "TMT"){
+      protein_input = PhilosophertoMSstatsTMTFormat(
+        input_protein, annotation_protein, protein_id_col, peptide_id_col, 
+        Purity_cutoff, PeptideProphet_prob_cutoff, useUniquePeptide, 
+        rmPSM_withfewMea_withinRun, rmPeptide_OxidationM, rmProtein_with1Feature, 
+        summaryforMultipleRows, use_log_file, append, verbose, log_file_path)
+    } else if (label_type == "LF"){
+      protein_input = FragPipetoMSstatsFormat(
+        input_protein[,..msstats_cols], useUniquePeptide, rmPSM_withfewMea_withinRun, 
+        rmProtein_with1Feature, summaryforMultipleRows,
+        use_log_file, append, verbose, log_file_path)
+    }
     msstats_format = list(PTM=ptm_input, PROTEIN=protein_input)
     
   }
