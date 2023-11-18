@@ -20,7 +20,7 @@ Authors@R: c(
   	person("Olga", "Vitek", email = "o.vitek@northeastern.edu", role = "aut"))
 License: Artistic-2.0
 Depends: R (>= 4.2)
-Imports: dplyr, gridExtra, stringr, stats, ggplot2, stringi,
+Imports: dplyr, gridExtra, stringr, stats, ggplot2,plotly, stringi,
             grDevices, MSstatsTMT, MSstatsConvert, MSstats,
             data.table, Rcpp, Biostrings, checkmate, ggrepel
 Suggests: knitr, rmarkdown, tinytest, covr
