@@ -976,7 +976,7 @@ MaxQtoMSstatsTMTFormatHelper = function(
 #' Pull out modifications from PD PTM data for input into protein name
 #' @noRd
 #' @keywords internal
-.extract_pd_mods = function(input, mod_id, keep_all_mods){
+.extract_pd_mods = function(input, mod_id, keep_all_mods, sequence_col){
   
   message("INFO: Extracting modifications")
   modifications = input$Modifications
@@ -1009,8 +1009,11 @@ MaxQtoMSstatsTMTFormatHelper = function(
                          replacement = replacement)
   }
   
-  inserted_string = mapply(inject, input[, "Sequence"][[1]], insert_position, "*")
-  inserted_string = ifelse(is.na(inserted_string), input[, "Sequence"][[1]], inserted_string)
+  inserted_string = mapply(inject, input[, ..sequence_col][[1]], 
+                           insert_position, "*")
+  inserted_string = ifelse(is.na(inserted_string), 
+                           input[, ..sequence_col][[1]], 
+                           inserted_string)
   input[, "ModSequence"] = inserted_string
   
   return(input)

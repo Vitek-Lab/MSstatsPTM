@@ -694,7 +694,7 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
 #' 
 #' @importFrom MSstats PDtoMSstatsFormat 
 #' @importFrom MSstatsTMT PDtoMSstatsTMTFormat
-#' @importFrom stringr str_split str_trim
+#' @importFrom stringr str_split str_trim str_split_i
 #' @importFrom data.table setnames
 #' @importFrom stringi stri_sub_replace_all
 #' @return `list` of `data.table`
@@ -753,12 +753,20 @@ PDtoMSstatsPTMFormat = function(input,
     .checkAnnotation(annotation_protein, labeling_type)
   }
   
+  if (labeling_type == "LF"){
+    sequence_col = "Sequence"
+  } else if (labeling_type == "TMT"){
+    sequence_col = "Annotated.Sequence"
+    input[[sequence_col]] = toupper(str_split_i(input[[sequence_col]], 
+                                                "\\.", i=2))
+  }
+  
   if (use_localization_cutoff){
     input = .getPDmods(input)
     
     input = MSstatsPTMSiteLocator(input, 
                                   protein_name_col= which_proteinid,
-                                  unmod_pep_col = "Sequence",
+                                  unmod_pep_col = sequence_col,
                                   mod_pep_col = "ModSequence",
                                   clean_mod=FALSE,
                                   fasta_file=fasta_path, 
@@ -770,12 +778,12 @@ PDtoMSstatsPTMFormat = function(input,
                                   terminus_included=FALSE, 
                                   terminus_id="\\.")
   } else {
-    input = .extract_pd_mods(input, mod_id, keep_all_mods)
+    input = .extract_pd_mods(input, mod_id, keep_all_mods, sequence_col)
     # input[,which_proteinid] = paste(input[,..which_proteinid][[1]], mods,sep="_")
     
     input = MSstatsPTMSiteLocator(input, 
                                   protein_name_col= which_proteinid,
-                                  unmod_pep_col = "Sequence",
+                                  unmod_pep_col = sequence_col,
                                   mod_pep_col = "ModSequence",
                                   clean_mod=FALSE,
                                   fasta_file=fasta_path, 
@@ -789,7 +797,7 @@ PDtoMSstatsPTMFormat = function(input,
     
   }
   
-  input$Sequence = input$ModSequence
+  input[[sequence_col]] = input[, "ModSequence"]
   
   if (labeling_type == "LF"){
     ptm_input = PDtoMSstatsFormat(input, annotation, useNumProteinsColumn,
@@ -797,7 +805,7 @@ PDtoMSstatsPTMFormat = function(input,
                                   removeFewMeasurements, removeOxidationMpeptides,
                                   removeProtein_with1Peptide, 
                                   which_quantification, which_proteinid, 
-                                  "Sequence", use_log_file, append, verbose,
+                                  sequence_col, use_log_file, append, verbose,
                                   log_file_path)
   } else if (labeling_type == "TMT"){
     ptm_input = PDtoMSstatsTMTFormat(input, annotation, which_proteinid, 
@@ -812,8 +820,6 @@ PDtoMSstatsPTMFormat = function(input,
   if ("PeptideModifiedSequence" %in% colnames(ptm_input)){
     setnames(ptm_input, c("PeptideModifiedSequence"), c("PeptideSequence"))
   }
-  
-  msstats_input = list(PTM = ptm_input)
   
   if (!is.null(protein_input)) {
     if (labeling_type == "LF"){
@@ -850,6 +856,10 @@ PDtoMSstatsPTMFormat = function(input,
     ptm_input = ptm_input[grepl(mod_id, ptm_input$PeptideSequence),]
     
     msstats_input = list(PTM = ptm_input, PROTEIN = protein_input)
+  } else {
+    ptm_input = ptm_input[grepl("\\*", ptm_input[, "PeptideSequence"]), ]
+    
+    msstats_input = list(PTM = ptm_input)
   }
   
   return(msstats_input)
