@@ -778,7 +778,7 @@ PDtoMSstatsPTMFormat = function(input,
                                   terminus_included=FALSE, 
                                   terminus_id="\\.")
   } else {
-    input = .extract_pd_mods(input, mod_id, keep_all_mods, sequence_col)
+    input = .extract_pd_mods(input, mod_id, keep_all_mods)
     # input[,which_proteinid] = paste(input[,..which_proteinid][[1]], mods,sep="_")
     
     input = MSstatsPTMSiteLocator(input, 
@@ -1210,12 +1210,11 @@ SkylinetoMSstatsPTMFormat = function(input,
     }
   }
   
-  ## Ensure only modified peptides are used
-  input = input[grepl("\\[+", input$`Peptide Modified Sequence`), ]
-
-  setnames(input, c("Protein Name", "Peptide Sequence", 
-                    "Peptide Modified Sequence"), 
+  setnames(input, c("Protein.Name", "Peptide", "Peptide.Modified.Sequence"), 
            c("ProteinName","PeptideSequence", "PeptideModifiedSequence"))
+  
+  ## Ensure only modified peptides are used
+  input = input[grepl("\\[+", input$`PeptideModifiedSequence`), ]
   
   ## Locate sites
   input = MSstatsPTMSiteLocator(input, 
