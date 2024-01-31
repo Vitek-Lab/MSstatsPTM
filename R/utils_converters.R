@@ -677,7 +677,8 @@ MSstatsPTMSiteLocator = function(data,
                       function(x){unlist(gregexpr(mod_id, x))})
   
   string_num = lapply(string_num, function(x){x - 1:length(x)})
-  site_num = mapply(function(x,y){x + y - 1}, string_num, mod_data$Start)
+  site_num = mapply(function(x,y){x + y - 1}, string_num, mod_data$Start, 
+                    SIMPLIFY=FALSE)
   
   site_aa = lapply(mod_data$PeptideModifiedSequence_adj, function(x){
     unlist(lapply(unlist(gregexpr(mod_id, x)) - 1, 
@@ -685,7 +686,7 @@ MSstatsPTMSiteLocator = function(data,
   
   ## Combine number and aa
   full_site = lapply(mapply(function(x,y){paste(x, y, sep="")}, 
-                            site_aa, site_num),
+                            site_aa, site_num, SIMPLIFY=FALSE),
                      function(z){paste(z, collapse='_')})
   mod_data$ProteinName_mod = paste(mod_data[, protein_name_col, with=FALSE][[1]], 
                                    full_site, sep="_")
