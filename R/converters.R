@@ -778,7 +778,7 @@ PDtoMSstatsPTMFormat = function(input,
                                   terminus_included=FALSE, 
                                   terminus_id="\\.")
   } else {
-    input = .extract_pd_mods(input, mod_id, keep_all_mods)
+    input = .extract_pd_mods(input, mod_id, keep_all_mods, sequence_col)
     # input[,which_proteinid] = paste(input[,..which_proteinid][[1]], mods,sep="_")
     
     input = MSstatsPTMSiteLocator(input, 
