@@ -135,6 +135,19 @@
 #' head(pd_psm_input)
 "pd_psm_input"
 
+#' Example output of Proteome Discoverer converter
+#' 
+#' output using example data provided in package
+#' 
+#' The experiment did not contain a global profiling run, but we show an example 
+#' of extracting the unmodified peptides and using them in place of the 
+#' profiling run.
+#' 
+#' @format a list with 2 data.frames
+#' @examples
+#' head(pd_testing_output)
+"pd_testing_output"
+
 #' Example annotation file for a label-free Spectronaut experiment.
 #' 
 #' Must be manually created by the user and input into the 
