@@ -120,6 +120,7 @@ expect_silent(SpectronauttoMSstatsPTMFormat(spectronaut_input,
 ## PD
 data("pd_psm_input", package = "MSstatsPTM")
 data("pd_annotation", package = "MSstatsPTM")
+data("pd_testing_output", package = "MSstatsPTM")
 
 expect_message(PDtoMSstatsPTMFormat(pd_psm_input, 
     pd_annotation,
@@ -127,9 +128,24 @@ expect_message(PDtoMSstatsPTMFormat(pd_psm_input,
     use_unmod_peptides=TRUE,
     which_proteinid = "Master.Protein.Accessions"))
 
+expect_equal(pd_testing_output, PDtoMSstatsPTMFormat(pd_psm_input, 
+                                   pd_annotation,
+                                   system.file("extdata", "pd_fasta.fasta", 
+                                               package="MSstatsPTM"),
+                                   use_unmod_peptides=TRUE,
+                                   which_proteinid = "Master.Protein.Accessions"))
+ 
+expect_equal(pd_testing_output, PDtoMSstatsPTMFormat(pd_psm_input, 
+                                    pd_annotation,
+                                    system.file("extdata", "pd_fasta.fasta", 
+                                                package="MSstatsPTM"),
+                                    use_unmod_peptides=TRUE,
+                                    which_proteinid = "Master.Protein.Accessions"))
+
 expect_message(PDtoMSstatsPTMFormat(pd_psm_input, 
                                    pd_annotation,
-                                   system.file("extdata", "pd_fasta.fasta", package="MSstatsPTM"),
+                                   system.file("extdata", "pd_fasta.fasta", 
+                                               package="MSstatsPTM"),
                                    use_unmod_peptides=TRUE,
                                    which_proteinid = "Master.Protein.Accessions",
                                    use_localization_cutoff = FALSE))
@@ -141,15 +157,18 @@ expect_error(PDtoMSstatsPTMFormat(pd_psm_input,
 
 expect_message(PDtoMSstatsPTMFormat(pd_psm_input, 
                                   pd_annotation,
-                                  system.file("extdata", "pd_fasta.fasta", package="MSstatsPTM"),
+                                  system.file("extdata", "pd_fasta.fasta", 
+                                              package="MSstatsPTM"),
                                   which_proteinid = "Master.Protein.Accessions"))
 
 expect_error(PDtoMSstatsPTMFormat(pd_psm_input, 
                                   NULL,
-                                  system.file("extdata", "pd_fasta.fasta", package="MSstatsPTM"),
+                                  system.file("extdata", "pd_fasta.fasta", 
+                                              package="MSstatsPTM"),
                                   which_proteinid = "Master.Protein.Accessions"))
 
 expect_error(PDtoMSstatsPTMFormat(pd_psm_input, 
                                   data.frame(columns=c("Condition", "BioReplicate")),
-                                  system.file("extdata", "pd_fasta.fasta", package="MSstatsPTM"),
+                                  system.file("extdata", "pd_fasta.fasta", 
+                                              package="MSstatsPTM"),
                                   which_proteinid = "Master.Protein.Accessions"))
