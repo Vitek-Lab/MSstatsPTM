@@ -848,13 +848,11 @@ PDtoMSstatsPTMFormat = function(input,
     }
     
     msstats_input = list(PTM = ptm_input, PROTEIN = protein_input)
-  }
-  
-  else {
+  } else {
     if (use_unmod_peptides){
       ptm_input=as.data.frame(ptm_input)
-      protein_input = ptm_input[!grepl(mod_id, ptm_input$PeptideSequence),]
-      ptm_input = ptm_input[grepl(mod_id, ptm_input$PeptideSequence),]
+      protein_input = ptm_input[!grepl("\\*", ptm_input$PeptideSequence),]
+      ptm_input = ptm_input[grepl("\\*", ptm_input$PeptideSequence),]
       
       msstats_input = list(PTM = ptm_input, PROTEIN = protein_input)
     } else {
