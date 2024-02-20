@@ -1406,3 +1406,133 @@ SpectronauttoMSstatsPTMFormat = function(
   
   return(msstats_input)
 }
+
+#' Import Metamorpheus files into PTM format
+#' 
+#' @author Anthony Wu
+#' 
+#' @param input name of Metamorpheus output file, which is tabular format. Use the AllQuantifiedPeaks.tsv file from the Metamorpheus output.
+#' @param annotation name of 'annotation.txt' data which includes Condition, BioReplicate.
+#' @param fasta_path string containing path to the corresponding fasta file for 
+#' the modified peptide dataset.
+#' @param use_unmod_peptides If `protein_input` is not provided, 
+#' unmodified peptides can be extracted from `input` to be used in place of a 
+#' global profiling run. Default is `FALSE`.
+#' @param mod_id Character that indicates the modification of interest. Default 
+#' is `Common Biological:Phosphorylation on S`. 
+#' Note `\\` must be included before special characters.
+#' @param useUniquePeptide TRUE (default) removes peptides that are assigned for
+#'  more than one proteins. We assume to use unique peptide for each protein.
+#' @param removeFewMeasurements TRUE (default) will remove the features that 
+#' have 1 or 2 measurements across runs.
+#' @param removeProtein_with1Feature TRUE will remove the proteins which have 
+#' only 1 feature, which is the combination of peptide, precursor charge, 
+#' fragment and charge. FALSE is default.
+#' @param summaryforMultipleRows max(default) or sum - when there are multiple 
+#' measurements for certain feature and certain run, use highest or sum of 
+#' multiple intensities.
+#' @param use_log_file logical. If TRUE, information about data processing will 
+#' be saved to a file.
+#' @param append logical. If TRUE, information about data processing will be 
+#' added to an existing log file.
+#' @param verbose logical. If TRUE, information about data processing wil be 
+#' printed to the console.
+#' @param log_file_path character. Path to a file to which information about 
+#' data processing will be saved. If not provided, such a file will be created 
+#' automatically. If 'append = TRUE', has to be a valid path to a file. 
+#' @return a list of two data.tables named 'PTM' and 'PROTEIN' in the format 
+#' required by MSstatsPTM.
+#' @importFrom MSstatsConvert MetamorpheusToMSstatsFormat
+#' @export
+#' 
+#' @examples 
+#' input = system.file("tinytest/raw_data/Metamorpheus/AllQuantifiedPeaks.tsv", 
+#'                                 package = "MSstatsPTM")
+#' input = data.table::fread(input)
+#' annot = system.file("tinytest/raw_data/Metamorpheus/ExperimentalDesign.tsv", 
+#'                                 package = "MSstatsPTM")
+#' annot = data.table::fread(annot)
+#' fasta_path=system.file("extdata", "metamorpheus_fasta.fasta", 
+#'                                 package="MSstatsPTM")
+#' metamorpheus_imported = MetamorpheusToMSstatsPTMFormat(
+#'     input, 
+#'     annot, 
+#'     fasta_path=fasta_path,
+#'     use_unmod_peptides=TRUE,
+#'     mod_id = "\\[Common Fixed:Carbamidomethyl on C\\]"
+#' )
+#' head(metamorpheus_imported$PTM)
+#' head(metamorpheus_imported$PROTEIN)
+MetamorpheusToMSstatsPTMFormat = function(input,
+                                          annotation,
+                                          fasta_path,
+                                          use_unmod_peptides = FALSE,
+                                          mod_id = "\\[Common Biological:Phosphorylation on S\\]",
+                                          useUniquePeptide = TRUE, 
+                                          removeFewMeasurements = TRUE,
+                                          removeProtein_with1Feature = FALSE, 
+                                          summaryforMultipleRows = max,
+                                          use_log_file = TRUE, 
+                                          append = FALSE, 
+                                          verbose = TRUE, 
+                                          log_file_path = NULL) {
+    
+    MSstatsConvert::MSstatsLogsSettings(use_log_file, append, verbose, 
+                                        log_file_path, 
+                                        base = "MSstatsPTM_converter_log_")
+    
+    input = as.data.table(input)
+    
+    ## Check input parameters
+    checkmate::assertTRUE(!is.null(input))
+    .checkAnnotation(annotation, "LF")
+    
+    fasta = MSstatsPTM::tidyFasta(fasta_path)
+
+    protein_id_col = "Protein Group"
+    input = MSstatsPTMSiteLocator(input,
+                                  protein_name_col=protein_id_col,
+                                  unmod_pep_col="Base Sequence",
+                                  mod_pep_col="Full Sequence",
+                                  fasta_file=fasta,
+                                  mod_id=mod_id,
+                                  fasta_protein_name="uniprot_iso")
+
+    if (use_unmod_peptides){
+        protein_input = input[input[,..protein_id_col][[1]]  == input$ProteinNameUnmod]
+        annotation_protein = annotation
+    } else {
+        input = input[input[,..protein_id_col][[1]] != input$ProteinNameUnmod]
+    }
+    
+    ptm_input = MetamorpheusToMSstatsFormat(input,
+                                            annotation,
+                                            useUniquePeptide, 
+                                            removeFewMeasurements,
+                                            removeProtein_with1Feature, 
+                                            summaryforMultipleRows,
+                                            use_log_file, 
+                                            append, 
+                                            verbose, 
+                                            log_file_path)
+    
+    msstats_format = list(PTM = ptm_input, PROTEIN = NULL)
+    
+    if (use_unmod_peptides) {
+        protein_input = MetamorpheusToMSstatsFormat(protein_input,
+                                                    annotation_protein,
+                                                    useUniquePeptide, 
+                                                    removeFewMeasurements,
+                                                    removeProtein_with1Feature, 
+                                                    summaryforMultipleRows,
+                                                    use_log_file, 
+                                                    append, 
+                                                    verbose, 
+                                                    log_file_path)
+        
+        msstats_format = list(PTM = ptm_input, PROTEIN = protein_input)
+    }
+    
+    return(msstats_format)
+    
+}

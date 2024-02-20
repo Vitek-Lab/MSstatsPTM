@@ -2,6 +2,7 @@
 % Please edit documentation in R/MSstatsPTM.R
 \docType{package}
 \name{MSstatsPTM}
+\alias{MSstatsPTM-package}
 \alias{MSstatsPTM}
 \title{MSstatsPTM: A package for detecting differentially abundant
 post-translational modifications (PTM) in mass spectrometry-based
@@ -52,3 +53,23 @@ analysis and summarization
 }
 }
 
+\seealso{
+Useful links:
+\itemize{
+  \item Report bugs at \url{https://github.com/Vitek-Lab/MSstatsPTM/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Devon Kohler \email{kohler.d@northeastern.edu}
+
+Authors:
+\itemize{
+  \item Tsung-Heng Tsai \email{tsai.tsungheng@gmail.com}
+  \item Ting Huang \email{thuang0703@gmail.com}
+  \item Mateusz Staniak \email{mtst@mstaniak.pl}
+  \item Meena Choi \email{mnchoi67@gmail.com}
+  \item Olga Vitek \email{o.vitek@northeastern.edu}
+}
+
+}
