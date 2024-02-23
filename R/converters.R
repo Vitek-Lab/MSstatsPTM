@@ -1530,6 +1530,8 @@ MetamorpheusToMSstatsPTMFormat = function(input,
                                                     verbose, 
                                                     log_file_path)
         
+        ptm_input = ptm_input[grepl(mod_id, ptm_input$PeptideSequence),]
+        
         msstats_format = list(PTM = ptm_input, PROTEIN = protein_input)
     }
     
