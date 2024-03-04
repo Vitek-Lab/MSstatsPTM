@@ -172,3 +172,21 @@ expect_error(PDtoMSstatsPTMFormat(pd_psm_input,
                                   system.file("extdata", "pd_fasta.fasta", 
                                               package="MSstatsPTM"),
                                   which_proteinid = "Master.Protein.Accessions"))
+
+
+## Metamorpheus
+input = system.file("tinytest/raw_data/Metamorpheus/AllQuantifiedPeaks.tsv", 
+                                package = "MSstatsPTM")
+input = data.table::fread(input)
+annot = system.file("tinytest/raw_data/Metamorpheus/ExperimentalDesign.tsv",
+                                package = "MSstatsPTM")
+annot = data.table::fread(annot)
+metamorpheus_imported = MetamorpheusToMSstatsPTMFormat(
+                                                input,
+                                                annot,
+                                                fasta_path=system.file("extdata", "metamorpheus_fasta.fasta", package="MSstatsPTM"),
+                                                use_unmod_peptides=TRUE,
+                                                mod_id = "\\[Common Fixed:Carbamidomethyl on C\\]"
+)
+expect_true(nrow(metamorpheus_imported$PTM) > 0)
+expect_true(nrow(metamorpheus_imported$PROTEIN) > 0)
