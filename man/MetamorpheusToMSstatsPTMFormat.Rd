@@ -8,8 +8,10 @@ MetamorpheusToMSstatsPTMFormat(
   input,
   annotation,
   fasta_path,
+  input_protein = NULL,
+  annotation_protein = NULL,
   use_unmod_peptides = FALSE,
-  mod_id = "\\\\[Common Biological:Phosphorylation on S\\\\]",
+  mod_ids = c("\\\\[Common Biological:Phosphorylation on S\\\\]"),
   useUniquePeptide = TRUE,
   removeFewMeasurements = TRUE,
   removeProtein_with1Feature = FALSE,
@@ -28,12 +30,18 @@ MetamorpheusToMSstatsPTMFormat(
 \item{fasta_path}{string containing path to the corresponding fasta file for
 the modified peptide dataset.}
 
+\item{input_protein}{same as \code{input} for global profiling run. Default is NULL.}
+
+\item{annotation_protein}{same as \code{annotation} for global profiling run. Default is NULL.}
+
 \item{use_unmod_peptides}{If \code{protein_input} is not provided,
 unmodified peptides can be extracted from \code{input} to be used in place of a
 global profiling run. Default is \code{FALSE}.}
 
-\item{mod_id}{Character that indicates the modification of interest. Default
-is \verb{Common Biological:Phosphorylation on S}.
+\item{mod_ids}{List of modifications of interest. Default
+is a list with only \verb{Common Biological:Phosphorylation on S}.
+Please note that the 'mod_ids' parameter currently supports lists of size 1 only.
+Future updates aim to extend its functionality to accommodate lists of greater sizes.
 Note \verb{\\\\} must be included before special characters.}
 
 \item{useUniquePeptide}{TRUE (default) removes peptides that are assigned for
@@ -77,14 +85,22 @@ input = data.table::fread(input)
 annot = system.file("tinytest/raw_data/Metamorpheus/ExperimentalDesign.tsv", 
                                 package = "MSstatsPTM")
 annot = data.table::fread(annot)
+input_protein = system.file("tinytest/raw_data/Metamorpheus/AllQuantifiedPeaksGlobalProteome.tsv",
+                                package = "MSstatsPTM")
+input_protein = data.table::fread(input_protein)
+annot_protein = system.file("tinytest/raw_data/Metamorpheus/ExperimentalDesignGlobalProteome.tsv", 
+                                package = "MSstatsPTM")
+annot_protein = data.table::fread(annot_protein)
 fasta_path=system.file("extdata", "metamorpheus_fasta.fasta", 
                                 package="MSstatsPTM")
 metamorpheus_imported = MetamorpheusToMSstatsPTMFormat(
     input, 
     annot, 
     fasta_path=fasta_path,
-    use_unmod_peptides=TRUE,
-    mod_id = "\\\\[Common Fixed:Carbamidomethyl on C\\\\]"
+    input_protein=input_protein,
+    annotation_protein=annot_protein,
+    use_unmod_peptides=FALSE,
+    mod_ids = c("\\\\[Common Fixed:Carbamidomethyl on C\\\\]")
 )
 head(metamorpheus_imported$PTM)
 head(metamorpheus_imported$PROTEIN)

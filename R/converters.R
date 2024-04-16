@@ -1415,12 +1415,16 @@ SpectronauttoMSstatsPTMFormat = function(
 #' @param annotation name of 'annotation.txt' data which includes Condition, BioReplicate.
 #' @param fasta_path string containing path to the corresponding fasta file for 
 #' the modified peptide dataset.
+#' @param input_protein same as `input` for global profiling run. Default is NULL.
+#' @param annotation_protein same as `annotation` for global profiling run. Default is NULL.
 #' @param use_unmod_peptides If `protein_input` is not provided, 
 #' unmodified peptides can be extracted from `input` to be used in place of a 
 #' global profiling run. Default is `FALSE`.
-#' @param mod_id Character that indicates the modification of interest. Default 
-#' is `Common Biological:Phosphorylation on S`. 
-#' Note `\\` must be included before special characters.
+#' @param mod_ids List of modifications of interest. Default 
+#' is a list with only `Common Biological:Phosphorylation on S`. 
+#' Please note that the 'mod_ids' parameter currently supports lists of size 1 only. 
+#' Future updates aim to extend its functionality to accommodate lists of greater sizes.
+#' Note `\\` must be included before special characters. 
 #' @param useUniquePeptide TRUE (default) removes peptides that are assigned for
 #'  more than one proteins. We assume to use unique peptide for each protein.
 #' @param removeFewMeasurements TRUE (default) will remove the features that 
@@ -1452,22 +1456,32 @@ SpectronauttoMSstatsPTMFormat = function(
 #' annot = system.file("tinytest/raw_data/Metamorpheus/ExperimentalDesign.tsv", 
 #'                                 package = "MSstatsPTM")
 #' annot = data.table::fread(annot)
+#' input_protein = system.file("tinytest/raw_data/Metamorpheus/AllQuantifiedPeaksGlobalProteome.tsv",
+#'                                 package = "MSstatsPTM")
+#' input_protein = data.table::fread(input_protein)
+#' annot_protein = system.file("tinytest/raw_data/Metamorpheus/ExperimentalDesignGlobalProteome.tsv", 
+#'                                 package = "MSstatsPTM")
+#' annot_protein = data.table::fread(annot_protein)
 #' fasta_path=system.file("extdata", "metamorpheus_fasta.fasta", 
 #'                                 package="MSstatsPTM")
 #' metamorpheus_imported = MetamorpheusToMSstatsPTMFormat(
 #'     input, 
 #'     annot, 
 #'     fasta_path=fasta_path,
-#'     use_unmod_peptides=TRUE,
-#'     mod_id = "\\[Common Fixed:Carbamidomethyl on C\\]"
+#'     input_protein=input_protein,
+#'     annotation_protein=annot_protein,
+#'     use_unmod_peptides=FALSE,
+#'     mod_ids = c("\\[Common Fixed:Carbamidomethyl on C\\]")
 #' )
 #' head(metamorpheus_imported$PTM)
 #' head(metamorpheus_imported$PROTEIN)
 MetamorpheusToMSstatsPTMFormat = function(input,
                                           annotation,
                                           fasta_path,
+                                          input_protein = NULL,
+                                          annotation_protein = NULL,
                                           use_unmod_peptides = FALSE,
-                                          mod_id = "\\[Common Biological:Phosphorylation on S\\]",
+                                          mod_ids = c("\\[Common Biological:Phosphorylation on S\\]"),
                                           useUniquePeptide = TRUE, 
                                           removeFewMeasurements = TRUE,
                                           removeProtein_with1Feature = FALSE, 
@@ -1481,11 +1495,15 @@ MetamorpheusToMSstatsPTMFormat = function(input,
                                         log_file_path, 
                                         base = "MSstatsPTM_converter_log_")
     
+    mod_id = mod_ids[[1]]
     input = as.data.table(input)
     
     ## Check input parameters
     checkmate::assertTRUE(!is.null(input))
     .checkAnnotation(annotation, "LF")
+    if (!is.null(input_protein)) {
+        checkmate::assertTRUE(!is.null(annotation_protein))
+    }
     
     fasta = MSstatsPTM::tidyFasta(fasta_path)
 
@@ -1499,7 +1517,7 @@ MetamorpheusToMSstatsPTMFormat = function(input,
                                   fasta_protein_name="uniprot_iso")
 
     if (use_unmod_peptides){
-        protein_input = input[input[,..protein_id_col][[1]]  == input$ProteinNameUnmod]
+        input_protein = input[input[,..protein_id_col][[1]]  == input$ProteinNameUnmod]
         annotation_protein = annotation
     } else {
         input = input[input[,..protein_id_col][[1]] != input$ProteinNameUnmod]
@@ -1518,8 +1536,8 @@ MetamorpheusToMSstatsPTMFormat = function(input,
     
     msstats_format = list(PTM = ptm_input, PROTEIN = NULL)
     
-    if (use_unmod_peptides) {
-        protein_input = MetamorpheusToMSstatsFormat(protein_input,
+    if (!is.null(input_protein)) {
+        protein_input = MetamorpheusToMSstatsFormat(input_protein,
                                                     annotation_protein,
                                                     useUniquePeptide, 
                                                     removeFewMeasurements,

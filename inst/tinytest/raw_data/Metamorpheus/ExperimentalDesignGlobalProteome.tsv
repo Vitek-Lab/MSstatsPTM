@@ -1,0 +1,7 @@
+Run	Condition	BioReplicate
+180323acs_001_HUVEC_P5_no_VEGF_control_1_001-calib	control	7
+180323acs_002_HUVEC_P5_no_VEGF_control_1_002-calib	control	8
+180323acs_003_HUVEC_P5_50ng_mL_VEGF_1min_1_001-calib	1_min	9
+180323acs_004_HUVEC_P5_50ng_mL_VEGF_1min_1_002-calib	1_min	10
+180323acs_007_HUVEC_P5_50ng_mL_VEGF_10min_1_001-calib	10_min	11
+180323acs_008_HUVEC_P5_50ng_mL_VEGF_10min_1_002-calib	10_min	12

@@ -181,12 +181,21 @@ input = data.table::fread(input)
 annot = system.file("tinytest/raw_data/Metamorpheus/ExperimentalDesign.tsv",
                                 package = "MSstatsPTM")
 annot = data.table::fread(annot)
+input_protein = system.file("tinytest/raw_data/Metamorpheus/AllQuantifiedPeaksGlobalProteome.tsv",
+                                package = "MSstatsPTM")
+input_protein = data.table::fread(input_protein)
+annot_protein = system.file("tinytest/raw_data/Metamorpheus/ExperimentalDesignGlobalProteome.tsv",
+                                package = "MSstatsPTM")
+annot_protein = data.table::fread(annot_protein)
+fasta_path=system.file("extdata", "metamorpheus_fasta.fasta", 
+                       package="MSstatsPTM")
 metamorpheus_imported = MetamorpheusToMSstatsPTMFormat(
-                                                input,
-                                                annot,
-                                                fasta_path=system.file("extdata", "metamorpheus_fasta.fasta", package="MSstatsPTM"),
-                                                use_unmod_peptides=TRUE,
-                                                mod_id = "\\[Common Fixed:Carbamidomethyl on C\\]"
-)
+        input,
+        annot,
+        fasta_path=fasta_path,
+        input_protein=input_protein,
+        annotation_protein=annot_protein,
+        mod_ids = c("\\[Common Fixed:Carbamidomethyl on C\\]")
+    )
 expect_true(nrow(metamorpheus_imported$PTM) > 0)
 expect_true(nrow(metamorpheus_imported$PROTEIN) > 0)
