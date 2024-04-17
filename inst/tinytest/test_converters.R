@@ -1,3 +1,39 @@
+## Utility functions
+
+#' Validate positive number of rows from converter output
+#' 
+#' @author Anthony Wu
+#' 
+#' @param msstats_ptm_input A list containing PTM and PROTEIN data tables
+.validatePositiveNumberOfRows = function(msstats_ptm_input) {
+    expect_true(nrow(msstats_ptm_input$PTM) > 0)
+    expect_true(nrow(msstats_ptm_input$PROTEIN) > 0)
+}
+
+#' Validate protein ID count in converter output
+#' 
+#' @author Anthony Wu
+#' 
+#' @param msstats_input Either PTM or PROTEIN data tables
+#' @param protein_id Protein ID to validate
+#' @param count Expected count of protein ID in ProteinName column
+.validateProteinId = function(msstats_input, protein_id, count) {
+    expect_equal(length(which(msstats_input$ProteinName==protein_id)), count)
+}
+
+#' Validate ptm ID count in converter output
+#' 
+#' @author Anthony Wu
+#' 
+#' @param msstats_input Either PTM or PROTEIN data tables
+#' @param ptm_substring PTM to validate
+#' @param count Expected count of PTM in PeptideSequence column
+.validatePtmSubstring = function(msstats_input, ptm_substring, count) {
+    expect_equal(
+        length(which(grepl(ptm_substring, msstats_input$PeptideSequence))),
+        count
+    )
+}
 
 ## MaxQ TMT
 data("maxq_tmt_evidence", package = "MSstatsPTM")
@@ -197,5 +233,29 @@ metamorpheus_imported = MetamorpheusToMSstatsPTMFormat(
         annotation_protein=annot_protein,
         mod_ids = c("\\[Common Fixed:Carbamidomethyl on C\\]")
     )
-expect_true(nrow(metamorpheus_imported$PTM) > 0)
-expect_true(nrow(metamorpheus_imported$PROTEIN) > 0)
+.validatePositiveNumberOfRows(metamorpheus_imported)
+.validateProteinId(metamorpheus_imported$PROTEIN, "O95817", 12)
+.validateProteinId(metamorpheus_imported$PTM, "O95817_C207", 6)
+.validateProteinId(metamorpheus_imported$PTM, "O95817", 0)
+.validatePtmSubstring(
+    metamorpheus_imported$PTM, "\\[Common Fixed:Carbamidomethyl on C\\]", 
+    length(metamorpheus_imported$PTM$PeptideSequence))
+.validatePtmSubstring(
+    metamorpheus_imported$PROTEIN, "\\[Common Fixed:Carbamidomethyl on C\\]", 0)
+
+metamorpheus_imported = MetamorpheusToMSstatsPTMFormat(
+    input,
+    annot,
+    fasta_path=fasta_path,
+    use_unmod_peptides = TRUE,
+    mod_ids = c("\\[Common Fixed:Carbamidomethyl on C\\]")
+)
+.validatePositiveNumberOfRows(metamorpheus_imported)
+.validateProteinId(metamorpheus_imported$PROTEIN, "O95817", 6)
+.validateProteinId(metamorpheus_imported$PTM, "O95817_C207", 6)
+.validateProteinId(metamorpheus_imported$PTM, "O95817", 0)
+.validatePtmSubstring(
+    metamorpheus_imported$PTM, "\\[Common Fixed:Carbamidomethyl on C\\]", 
+    length(metamorpheus_imported$PTM$PeptideSequence))
+.validatePtmSubstring(
+    metamorpheus_imported$PROTEIN, "\\[Common Fixed:Carbamidomethyl on C\\]", 0)
