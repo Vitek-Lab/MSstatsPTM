@@ -4,6 +4,10 @@
 \title{MSstatsPTM News}
 \encoding{UTF-8}
 
+\section{Changes in version 2.6.0 (2024-05-01)}{\itemize{
+  \item New converter for Metamorpheus
+}}
+
 \section{Changes in version 2.2.0 (2021-3-23)}{\itemize{
   \item Added a number of new converters for different tools
   \item FragPipe Converter
