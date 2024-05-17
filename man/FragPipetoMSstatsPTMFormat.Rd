@@ -61,7 +61,9 @@ be used instead to get the modified peptide sequence.}
 
 \item{remove_unlocalized_peptides}{Boolean indicating if peptides without all sites localized should be kept. Default is TRUE (non-localized sites will be removed).}
 
-\item{Purity_cutoff}{Cutoff for purity. Default is 0.6}
+\item{Purity_cutoff}{Cutoff for purity. Default is 0.6. Purity refers to how much of the detected ion signal
+within a specific inclusion window belongs to the target molecule or its closely related forms,
+compared to any other unwanted signals or noise. Higher values indicate greater purity.}
 
 \item{PeptideProphet_prob_cutoff}{Cutoff for the peptide identification probability. Default is 0.7.
 The probability is confidence score determined by PeptideProphet and higher values indicate greater confidence.}
@@ -102,7 +104,7 @@ corresponding global profiling run was performed. Site localization is
 performed and only high probability localizations are kept.
 }
 \examples{
-# TMT Example
+# TMT Example (with global profiling run)
 head(fragpipe_input)
 head(fragpipe_annotation)
 head(fragpipe_input_protein)
@@ -118,4 +120,26 @@ msstats_data = FragPipetoMSstatsPTMFormat(fragpipe_input,
                                           remove_unlocalized_peptides=TRUE)
 head(msstats_data$PTM)
 head(msstats_data$PROTEIN)
+
+# LFQ Example (w/out global profiling run)
+input = system.file("tinytest/raw_data/Fragpipe/MSstats.csv", 
+                                        package = "MSstatsPTM")
+input = data.table::fread(input)
+annot = system.file("tinytest/raw_data/Fragpipe/experiment_annotation.tsv", 
+                                        package = "MSstatsPTM")
+annot = data.table::fread(annot)                                        
+
+msstats_data = FragPipetoMSstatsPTMFormat(input,
+                                          annot,
+                                          label_type="LF",
+                                          mod_id_col = "STY",
+                                          localization_cutoff=.75,
+                                          protein_id_col = "ProteinName",
+                                          peptide_id_col = "PeptideSequence")
+head(msstats_data$PTM)
+
+# Note that this is NULL because we did not include a global profiling run.
+# Ideally, you should include an independent global profiling run.
+head(msstats_data$PROTEIN)
+
 }

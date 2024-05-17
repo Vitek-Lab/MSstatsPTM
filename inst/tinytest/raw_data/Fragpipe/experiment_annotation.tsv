@@ -1,0 +1,9 @@
+file	sample	sample_name	condition	replicate
+E:\Edmond\jennifer_PTM\ptm\LFQ_yeast_phospho_email\dda_phospho_raw\mutant\CR_Tio2-phos85D_1716.d	MUT_1	MUT_1	MUT	1
+E:\Edmond\jennifer_PTM\ptm\LFQ_yeast_phospho_email\dda_phospho_raw\mutant\JCI-TiO2-DDAphosMethod-rho_1339.d	MUT_2	MUT_2	MUT	2
+E:\Edmond\jennifer_PTM\ptm\LFQ_yeast_phospho_email\dda_phospho_raw\mutant\JCI-TiO2-DDAstd-rho_1336.d	MUT_3	MUT_3	MUT	3
+E:\Edmond\jennifer_PTM\ptm\LFQ_yeast_phospho_email\dda_phospho_raw\mutant\JCI_230921_TiO2-phos85D_1660.d	MUT_4	MUT_4	MUT	4
+E:\Edmond\jennifer_PTM\ptm\LFQ_yeast_phospho_email\dda_phospho_raw\WT\3-9-2023_JCI_230308_DDA_TiO2-10L_S1-A5_199.d	WT_1	WT_1	WT	1
+E:\Edmond\jennifer_PTM\ptm\LFQ_yeast_phospho_email\dda_phospho_raw\WT\CR_Tio2-WT_1715.d	WT_2	WT_2	WT	2
+E:\Edmond\jennifer_PTM\ptm\LFQ_yeast_phospho_email\dda_phospho_raw\WT\JCI-TiO2-DDAphosMethod-WT_1338.d	WT_3	WT_3	WT	3
+E:\Edmond\jennifer_PTM\ptm\LFQ_yeast_phospho_email\dda_phospho_raw\WT\JCI-TiO2-DDAstd-WT_1335.d	WT_4	WT_4	WT	4
