@@ -74,6 +74,9 @@
 #' values. default is 0.999
 #' @param fix_missing Default is Null. Optional, same as the 'fix_missing' 
 #' parameter in MSstatsConvert::MSstatsBalancedDesign function
+#' @param numberOfCores Number of cores for parallel processing. When > 1, 
+#' a logfile named `MSstats_dataProcess_log_progress.log` is created to 
+#' track progress. Only works for Linux & Mac OS. Default is 1.
 #' @param use_log_file logical. If TRUE, information about data processing
 #' will be saved to a file.
 #' @param append logical. If TRUE, information about data processing will be 
@@ -117,6 +120,7 @@ dataSummarizationPTM = function(
   remove50missing = FALSE,
   fix_missing = NULL,
   maxQuantileforCensored = 0.999,
+  numberOfCores = 1,
   use_log_file = TRUE, 
   append = TRUE,
   verbose = TRUE, 
@@ -172,7 +176,7 @@ dataSummarizationPTM = function(
                                 summaryMethod, equalFeatureVar, censoredInt,
                                 MBimpute.PTM, remove50missing, fix_missing,
                                 maxQuantileforCensored, use_log_file, append,
-                                verbose, log_file_path = path)
+                                verbose, path, numberOfCores)
   if (adj.protein) {
     message("Starting Protein summarization...")
     getOption("MSstatsLog")("INFO", "Starting Protein summarization..")
@@ -184,7 +188,7 @@ dataSummarizationPTM = function(
                                   summaryMethod, equalFeatureVar, censoredInt,
                                   MBimpute, remove50missing, fix_missing,
                                   maxQuantileforCensored, use_log_file, append,
-                                  verbose, log_file_path = path)
+                                  verbose, path, numberOfCores)
   }
 
   ## Compile and return summarized results

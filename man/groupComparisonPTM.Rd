@@ -11,6 +11,7 @@ groupComparisonPTM(
   moderated = FALSE,
   adj.method = "BH",
   log_base = 2,
+  numberOfCores = 1,
   use_log_file = TRUE,
   append = FALSE,
   verbose = TRUE,
@@ -39,6 +40,10 @@ comparison. "BH" is default. "BH" is used for all other experiment types}
 
 \item{log_base}{For non-TMT experiments only. The base of the logarithm used
 in summarization.}
+
+\item{numberOfCores}{Number of cores for parallel processing. When > 1,
+a logfile named \code{MSstats_groupComparison_log_progress.log} is created to
+track progress. Only works for Linux & Mac OS. Default is 1.}
 
 \item{use_log_file}{logical. If TRUE, information about data processing
 will be saved to a file.}

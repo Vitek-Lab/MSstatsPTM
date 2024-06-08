@@ -30,6 +30,9 @@
 #' comparison. "BH" is default. "BH" is used for all other experiment types
 #' @param log_base For non-TMT experiments only. The base of the logarithm used 
 #' in summarization.
+#' @param numberOfCores Number of cores for parallel processing. When > 1, 
+#' a logfile named `MSstats_groupComparison_log_progress.log` is created to 
+#' track progress. Only works for Linux & Mac OS. Default is 1.
 #' @param use_log_file logical. If TRUE, information about data processing
 #' will be saved to a file.
 #' @param append logical. If TRUE, information about data processing will be 
@@ -54,6 +57,7 @@ groupComparisonPTM = function(data, data.type,
                                moderated = FALSE, 
                                adj.method = "BH",
                                log_base = 2,
+                               numberOfCores = 1,
                                use_log_file = TRUE, 
                                append = FALSE,
                                verbose = TRUE, 
@@ -122,7 +126,7 @@ groupComparisonPTM = function(data, data.type,
     ptm_model_full = groupComparison(contrast.matrix,
                                       data.ptm, TRUE, log_base, 
                                       use_log_file, append, verbose, 
-                                      log_file_path = path)
+                                      path, numberOfCores)
     ptm_model = ptm_model_full$ComparisonResult
     ptm_model_site_sep = ptm_model_full$ComparisonResult
     ptm_model_details = ptm_model_full$FittedModel
@@ -153,7 +157,7 @@ groupComparisonPTM = function(data, data.type,
                                             data.protein,
                                             TRUE, log_base, use_log_file, 
                                             append, verbose, 
-                                            log_file_path = path)
+                                            path, numberOfCores)
       protein_model = protein_model_full$ComparisonResult
       protein_model_details = protein_model_full$FittedModel
     }

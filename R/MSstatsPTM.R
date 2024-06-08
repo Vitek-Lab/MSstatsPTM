@@ -45,6 +45,6 @@
 #'    analysis and summarization
 #' }
 #'
-#' @docType _PACKAGE
+#' @docType package
 #' @name MSstatsPTM
 NULL

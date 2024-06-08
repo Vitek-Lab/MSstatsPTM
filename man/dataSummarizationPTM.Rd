@@ -27,6 +27,7 @@ dataSummarizationPTM(
   remove50missing = FALSE,
   fix_missing = NULL,
   maxQuantileforCensored = 0.999,
+  numberOfCores = 1,
   use_log_file = TRUE,
   append = TRUE,
   verbose = TRUE,
@@ -118,6 +119,10 @@ parameter in MSstatsConvert::MSstatsBalancedDesign function}
 
 \item{maxQuantileforCensored}{Maximum quantile for deciding censored missing
 values. default is 0.999}
+
+\item{numberOfCores}{Number of cores for parallel processing. When > 1,
+a logfile named \code{MSstats_dataProcess_log_progress.log} is created to
+track progress. Only works for Linux & Mac OS. Default is 1.}
 
 \item{use_log_file}{logical. If TRUE, information about data processing
 will be saved to a file.}
