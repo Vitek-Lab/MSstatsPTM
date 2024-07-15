@@ -32,4 +32,4 @@ biocViews: ImmunoOncology, MassSpectrometry, Proteomics, Software, DifferentialE
 BugReports: https://github.com/Vitek-Lab/MSstatsPTM/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2

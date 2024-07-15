@@ -66,16 +66,17 @@ Converts non-TMT Progenesis output into the format needed for MSstatsPTM
 }
 \examples{
 
-# Example annotation file
-annotation = data.frame('Condition' = c('Control', 'Control', 'Control',
-                         'Treatment', 'Treatment', 'Treatment'),
-                         'BioReplicate' = c(1,2,3,4,5,6),
-                         'Run' = c('prot_run_1', 'prot_run_2', 'prot_run_3',
-                                  'phos_run_1', 'phos_run_2', 'phos_run_3'),
-                         'Type' = c("Protein", "Protein", "Protein", "PTM", 
-                                    "PTM", "PTM"))
-                                    
-# The output should be in the following format.
-head(raw.input$PTM)
-head(raw.input$PROTEIN)
+input = system.file("tinytest/raw_data/Progenesis/progenesis_peptide.csv", 
+                                package = "MSstatsPTM")
+input = data.table::fread(input)
+colnames(input) = unlist(input[1,])
+input = input[-1,]
+annot = system.file("tinytest/raw_data/Progenesis/phospho_annotation.csv", 
+                                package = "MSstatsPTM")
+annot = data.table::fread(annot)
+prog_imported = ProgenesistoMSstatsPTMFormat(
+    input, 
+    annot
+)
+head(prog_imported$PTM)
 }

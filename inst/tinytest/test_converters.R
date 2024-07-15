@@ -259,3 +259,20 @@ metamorpheus_imported = MetamorpheusToMSstatsPTMFormat(
     length(metamorpheus_imported$PTM$PeptideSequence))
 .validatePtmSubstring(
     metamorpheus_imported$PROTEIN, "\\[Common Fixed:Carbamidomethyl on C\\]", 0)
+
+
+# Progenesis
+input = system.file("tinytest/raw_data/Progenesis/progenesis_peptide.csv", 
+                    package = "MSstatsPTM")
+input = data.table::fread(input)
+colnames(input) = unlist(input[1,])
+input = input[-1,]
+annot = system.file("tinytest/raw_data/Progenesis/phospho_annotation.csv",
+                    package = "MSstatsPTM")
+annot = data.table::fread(annot)
+prog_imported = ProgenesistoMSstatsPTMFormat(
+    input,
+    annot,
+)
+
+.validateProteinId(prog_imported$PTM, "sp|A2ASS6|TITIN_MOUSE_AVTSPPRVKSPEPR_[4] Phospho (ST)|[10] Phospho (ST)", 18)
