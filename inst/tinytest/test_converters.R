@@ -209,6 +209,40 @@ expect_error(PDtoMSstatsPTMFormat(pd_psm_input,
                                               package="MSstatsPTM"),
                                   which_proteinid = "Master.Protein.Accessions"))
 
+input = system.file("tinytest/raw_data/PD/pd-ptm-input.csv", 
+                    package = "MSstatsPTM")
+input = data.table::fread(input)
+annot = system.file("tinytest/raw_data/PD/pd-ptm-annot.csv",
+                    package = "MSstatsPTM")
+annot = data.table::fread(annot)
+input_protein = system.file("tinytest/raw_data/PD/protein-input.csv",
+                            package = "MSstatsPTM")
+input_protein = data.table::fread(input_protein)
+annot_protein = system.file("tinytest/raw_data/PD/protein-annot.csv",
+                            package = "MSstatsPTM")
+annot_protein = data.table::fread(annot_protein)
+fasta_path=system.file("extdata", "pd_with_proteome.fasta", 
+                       package="MSstatsPTM")
+pd_imported = PDtoMSstatsPTMFormat(
+    input,
+    annotation = annot,
+    protein_input = input_protein,
+    annotation_protein = annot_protein,
+    fasta_path = fasta_path,
+    mod_id = "\\(GG\\)",
+    labeling_type = "TMT",
+    use_localization_cutoff = FALSE,
+    which_proteinid = "Master.Protein.Accessions")
+
+.validatePositiveNumberOfRows(pd_imported)
+.validateProteinId(pd_imported$PROTEIN, "P52480", 30)
+.validateProteinId(pd_imported$PTM, "P52480_K305", 12)
+.validateProteinId(pd_imported$PTM, "P52480", 0)
+.validatePtmSubstring(
+    pd_imported$PTM, "\\*",
+    length(pd_imported$PTM$PeptideSequence))
+.validatePtmSubstring(
+    pd_imported$PROTEIN, "\\*", 0)
 
 ## Metamorpheus
 input = system.file("tinytest/raw_data/Metamorpheus/AllQuantifiedPeaks.tsv", 

@@ -725,6 +725,36 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
 #' @export 
 #' 
 #' @examples
+#' # Global profiling example
+#' input = system.file("tinytest/raw_data/PD/pd-ptm-input.csv", 
+#' package = "MSstatsPTM")
+#' input = data.table::fread(input)
+#' annot = system.file("tinytest/raw_data/PD/pd-ptm-annot.csv",
+#'                     package = "MSstatsPTM")
+#' annot = data.table::fread(annot)
+#' input_protein = system.file("tinytest/raw_data/PD/protein-input.csv",
+#'                             package = "MSstatsPTM")
+#' input_protein = data.table::fread(input_protein)
+#' annot_protein = system.file("tinytest/raw_data/PD/protein-annot.csv",
+#'                             package = "MSstatsPTM")
+#' annot_protein = data.table::fread(annot_protein)
+#' fasta_path=system.file("extdata", "pd_with_proteome.fasta", 
+#'                        package="MSstatsPTM")
+#' pd_imported = PDtoMSstatsPTMFormat(
+#'     input,
+#'     annotation = annot,
+#'     protein_input = input_protein,
+#'     annotation_protein = annot_protein,
+#'     fasta_path = fasta_path,
+#'     mod_id = "\\(GG\\)",
+#'     labeling_type = "TMT",
+#'     use_localization_cutoff = FALSE,
+#'     which_proteinid = "Master.Protein.Accessions")
+#'    
+#' head(pd_imported$PTM)
+#' head(pd_imported$PROTEIN)
+#' 
+#' # No global profiling example
 #' head(pd_psm_input)
 #' head(pd_annotation)
 #' 
@@ -870,6 +900,8 @@ PDtoMSstatsPTMFormat = function(input,
       setnames(protein_input, c("PeptideModifiedSequence"), 
                c("PeptideSequence"))
     }
+      
+    ptm_input = ptm_input[grepl("\\*", ptm_input[, "PeptideSequence"]), ]
     
     msstats_input = list(PTM = ptm_input, PROTEIN = protein_input)
   } else {

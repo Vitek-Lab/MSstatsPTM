@@ -1,0 +1,7 @@
+﻿Run,Channel,Condition,Mixture,TechRepMixture,Fraction,BioReplicate
+Ref_1022-1_FAIMS_MS2.raw,126,Young,mixture1,1,1,Young_1
+Ref_1022-1_FAIMS_MS2.raw,127,Young,mixture1,1,1,Young_2
+Ref_1022-1_FAIMS_MS2.raw,128,Young,mixture1,1,1,Young_3
+Ref_1022-1_FAIMS_MS2.raw,129,Old,mixture1,1,1,Old_1
+Ref_1022-1_FAIMS_MS2.raw,130,Old,mixture1,1,1,Old_2
+Ref_1022-1_FAIMS_MS2.raw,131,Old,mixture1,1,1,Old_3
