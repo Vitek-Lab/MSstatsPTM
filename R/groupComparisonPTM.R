@@ -215,14 +215,15 @@ groupComparisonPTM = function(data, data.type,
     adjusted_models$temp_check = NULL
     
     adjusted_models = rbindlist(list(adjusted_models, missing_rows), 
-                                use.names=TRUE)
+                                use.names = TRUE)
     adjusted_models = adjusted_models[!is.na(adjusted_models$Protein)]
     
     getOption(option_log)("INFO", "Adjustment complete, returning models.")
-    models = list('PTM.Model'=ptm_model, 'PROTEIN.Model'=protein_model,
-                  'ADJUSTED.Model'=adjusted_models, 
-                  'Model.Details'=list('PTM'=ptm_model_details,
-                                       'PROTEIN'=protein_model_details))
+    models = list('PTM.Model' = ptm_model, 
+                  'PROTEIN.Model' = protein_model,
+                  'ADJUSTED.Model' = adjusted_models, 
+                  'Model.Details' = list('PTM' = ptm_model_details,
+                                       'PROTEIN' = protein_model_details))
   }
 
   return(models)
