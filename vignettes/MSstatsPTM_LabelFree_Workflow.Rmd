@@ -57,6 +57,19 @@ for your tool in `MSstatsPTM`, you can alternatively leverage converters from
 base `MSstats`. If using converters from `MSstats` note they will need to be 
 run both on the global protein and PTM datasets.
 
+You might notice a FASTA file is also needed for some converters. This
+FASTA file can be obtained by querying
+[Uniprot](https://www.uniprot.org/id-mapping) with all of the protein
+IDs present in your PTM dataset. The FASTA file is a necessary input
+because some tools (e.g. MaxQuant) do not report the specific amino acid
+that is modified relative to the whole *protein* sequence. Rather, they
+report the specific amino acid relative to the reported *peptide*. This
+distinction is important because modifications like phosphorylation,
+methylation, or acetylation often have specific roles depending on where
+they occur within the full-length protein. With the help of a FASTA
+file, MSstatsPTM can determine the specific amino acid that is modified
+in the context of the whole protein sequence.
+
 Please note for the PTM dataset, both the protein and modification site (or 
 peptide), must be added into the `ProteinName` column. This allows for the 
 package to summarize to the peptide level, and avoid the off chance there are 
