@@ -89,9 +89,6 @@
   ## Adjust colnames to avoid repeating code
   for (i in seq_along(data.list)) {
     colnames(data.list[[i]]) = toupper(colnames(data.list[[i]]))
-    if ('INTENSITY' %in% colnames(data.list[[i]])){
-      data.list[[i]]$ABUNDANCE = log2(data.list[[i]]$INTENSITY)
-    }
     setnames(data.list[[i]], c('LOGINTENSITIES', 'GROUP', 'PROTEIN', 
                                'Protein', 'LOG2INTENSITY'), 
              c('ABUNDANCE', 'CONDITION', 'PROTEINNAME', 'PROTEINNAME',
