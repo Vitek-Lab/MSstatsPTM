@@ -1719,7 +1719,6 @@ ProteinProspectortoMSstatsPTMFormat = function(
                                   mod_pep_col = "Peptide",
                                   clean_mod=FALSE,
                                   mod_id=mod_id,
-                                  remove_other_mods = TRUE,
                                   bracket = "(",
                                   replace_text = TRUE
     )
