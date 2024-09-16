@@ -1720,7 +1720,8 @@ ProteinProspectortoMSstatsPTMFormat = function(
                                   clean_mod=FALSE,
                                   mod_id=mod_id,
                                   remove_other_mods = TRUE,
-                                  bracket = "("
+                                  bracket = "(",
+                                  replace_text = TRUE
     )
     
     if (use_unmod_peptides){
