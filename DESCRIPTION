@@ -23,7 +23,13 @@ Depends: R (>= 4.3)
 Imports: dplyr, gridExtra, stringr, stats, ggplot2, stringi,
             grDevices, MSstatsTMT, MSstatsConvert, MSstats,
             data.table, Rcpp, Biostrings, checkmate, ggrepel
-Suggests: knitr, rmarkdown, tinytest, covr
+Suggests: 
+    knitr,
+    rmarkdown,
+    tinytest,
+    covr,
+    mockery,
+    testthat (>= 3.0.0)
 LazyData: true
 LinkingTo: Rcpp
 VignetteBuilder: knitr
@@ -33,3 +39,4 @@ BugReports: https://github.com/Vitek-Lab/MSstatsPTM/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Config/testthat/edition: 3
