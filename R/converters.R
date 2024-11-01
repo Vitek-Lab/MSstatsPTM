@@ -1685,7 +1685,7 @@ ProteinProspectortoMSstatsPTMFormat = function(
         input_protein = NULL,
         annotation_protein = NULL,
         use_unmod_peptides = FALSE,
-        mod_ids = c("\\(Phospho\\)"),
+        mod_ids = c("Phospho"),
         useUniquePeptide = TRUE, 
         removeFewMeasurements = TRUE,
         removeProtein_with1Feature = FALSE, 
@@ -1711,6 +1711,7 @@ ProteinProspectortoMSstatsPTMFormat = function(
     
     input$Peptide = gsub("TMT[0-9]*plex-", "", input$Peptide) # remove TMT tags
     input = input[!grepl("\\|", input$`Protein Mods`),] # filter out rows with uncertainty in protein mods
+    input$Peptide = gsub(paste0("\\((?!", mod_id, "\\)).*?\\)"), "", input$Peptide, perl=TRUE) # filter out other modifications
     
     protein_id_col = "Acc #"
     input = MSstatsPTMSiteLocator(input, 
@@ -1718,7 +1719,7 @@ ProteinProspectortoMSstatsPTMFormat = function(
                                   unmod_pep_col = "DB Peptide",
                                   mod_pep_col = "Peptide",
                                   clean_mod=FALSE,
-                                  mod_id=mod_id,
+                                  mod_id=paste0("\\(", mod_id, "\\)"),
                                   bracket = "(",
                                   replace_text = TRUE
     )

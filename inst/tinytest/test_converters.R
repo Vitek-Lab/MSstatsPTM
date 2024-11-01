@@ -587,6 +587,7 @@ protein_prospector_imported = ProteinProspectortoMSstatsPTMFormat(
 .validatePositiveNumberOfRows(protein_prospector_imported)
 .validateProteinId(protein_prospector_imported$PROTEIN, "P16546", 234)
 .validateProteinId(protein_prospector_imported$PTM, "P16546_S572", 6)
+.validateProteinId(protein_prospector_imported$PTM, "Q9QYX7_S617_S625", 6)
 .validateProteinId(protein_prospector_imported$PTM, "P16546", 0)
 .validatePtmSubstring(
     protein_prospector_imported$PTM, "\\(Phospho\\)", 
