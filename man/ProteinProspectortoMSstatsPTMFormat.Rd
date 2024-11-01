@@ -10,7 +10,7 @@ ProteinProspectortoMSstatsPTMFormat(
   input_protein = NULL,
   annotation_protein = NULL,
   use_unmod_peptides = FALSE,
-  mod_ids = c("\\\\(Phospho\\\\)"),
+  mod_ids = c("Phospho"),
   useUniquePeptide = TRUE,
   removeFewMeasurements = TRUE,
   removeProtein_with1Feature = FALSE,
@@ -37,10 +37,9 @@ unmodified peptides can be extracted from \code{input} to be used in place of a
 global profiling run. Default is \code{FALSE}.}
 
 \item{mod_ids}{List of modifications of interest. Default
-is a list with only \verb{\\\\(Phospho\\\\)}.
+is a list with only \code{Phospho}.
 Please note that the 'mod_ids' parameter currently supports lists of size 1 only.
-Future updates aim to extend its functionality to accommodate lists of greater sizes.
-Note \verb{\\\\} must be included before special characters.}
+Future updates aim to extend its functionality to accommodate lists of greater sizes.}
 
 \item{useUniquePeptide}{TRUE (default) removes peptides that are assigned for
 more than one proteins. We assume to use unique peptide for each protein.}
