@@ -1701,7 +1701,7 @@ ProteinProspectortoMSstatsPTMFormat = function(
     mod_id = mod_ids[[1]]
     input = as.data.table(input)
     
-    ## Check input parameters
+    ## Check input parameters 
     checkmate::assertTRUE(!is.null(input))
     .checkAnnotation(annotation, "TMT")
     if (!is.null(input_protein)) {
