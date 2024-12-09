@@ -1629,7 +1629,7 @@ MetamorpheusToMSstatsPTMFormat = function(input,
 #' unmodified peptides can be extracted from `input` to be used in place of a 
 #' global profiling run. Default is `FALSE`.
 #' @param mod_ids List of modifications of interest. Default 
-#' is a list with only `Phospho`. 
+#' is a list with only `Phospho`.
 #' Please note that the 'mod_ids' parameter currently supports lists of size 1 only. 
 #' Future updates aim to extend its functionality to accommodate lists of greater sizes.
 #' @param useUniquePeptide TRUE (default) removes peptides that are assigned for
