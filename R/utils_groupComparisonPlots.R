@@ -197,10 +197,10 @@
 #' @noRd
 .plotHeatmap = function(data, sig, FCcutoff, logBase.pvalue, ylimUp, ylimDown, 
                      text.angle, x.axis.size, y.axis.size, dot.size, colorkey, 
-                     numProtein, width, height, address){
+                     numProtein, width, height, address, isPlotly){
   ## If there are the file with the same name, 
   ## add next numbering at the end of file name
-  if (address != FALSE) {
+  if (!isPlotly && address != FALSE) {
     allfiles = list.files()
     
     num = 0
@@ -214,47 +214,54 @@
     
     pdf(finalfile, width=width, height=height)
   }
-
-  .plot.model.heatmap(data[['PTM.Model']], sig, FCcutoff, logBase.pvalue, 
+  final_plots = list()
+  ptm_heatmap_plot <- .plot.model.heatmap(data[['PTM.Model']], sig, FCcutoff, logBase.pvalue, 
                       ylimUp, ylimDown, x.axis.size, y.axis.size, text.angle,
                       colorkey, numProtein,
-                      "Unadjusted PTM")
-  
+                      "Unadjusted PTM", isPlotly)
+  final_plots[[1]] <- ptm_heatmap_plot
   if (nrow(data[['PROTEIN.Model']]) > 0){
-    .plot.model.heatmap(data[['PROTEIN.Model']], sig, FCcutoff, logBase.pvalue, 
+    protein_heatmap_plot <- .plot.model.heatmap(data[['PROTEIN.Model']], sig, FCcutoff, logBase.pvalue,
                         ylimUp, ylimDown, x.axis.size, y.axis.size, text.angle,
                         colorkey, numProtein,
-                        "Protein")
-    .plot.model.heatmap(data[['ADJUSTED.Model']], sig, FCcutoff, logBase.pvalue, 
+                        "Protein", isPlotly)
+    final_plots[[2]] <- protein_heatmap_plot
+    adjusted_heatmap_plot <- .plot.model.heatmap(data[['ADJUSTED.Model']], sig, FCcutoff, logBase.pvalue,
                         ylimUp, ylimDown, x.axis.size, y.axis.size, text.angle,
                         colorkey, numProtein,
-                        "Adjusted PTM")
+                        "Adjusted PTM", isPlotly)
+    final_plots[[3]] <- adjusted_heatmap_plot
   }
   
-  if (address != FALSE) {
+  if (address != FALSE && !isPlotly) {
     dev.off()
   }
+  if (isPlotly) {
+    final_plots
+  }
 }
+
+
 
 #' Plots individual model heatmap
 #' @noRd
 .plot.model.heatmap = function(data, sig, FCcutoff, logBase.pvalue, ylimUp,
                                  ylimDown, x.axis.size, y.axis.size, text.angle,
-                                 colorkey, numProtein, model){
-  
+                                 colorkey, numProtein, model, isPlotly){
+
   Label = Protein = sign_adj_pval = NULL
-  
+
   if (logBase.pvalue == 2) {
     y.limUp = 30
   } else if (logBase.pvalue == 10) {
     y.limUp = 10
   }
-  
+
   if (is.numeric(ylimUp)) {
-    y.limUp = ylimUp 
+    y.limUp = ylimUp
   }
-  
-  
+
+
   ## if FCcutoff is assigned, make p-value insignificant.
   if (is.numeric(FCcutoff)) {
     if (colnames(data)[3] == "log2FC") {
@@ -273,37 +280,83 @@
   } else if (logBase.pvalue == 10) {
       temp =  -log10(data$adj.pvalue) * sign(data[, 3])
   }
-  
+
   data$sign_adj_pval = temp
+  
   obj = data[, c("Protein", "Label", "sign_adj_pval")]
   
-  ## maximum number of proteins per heatmap
-  unique_prot = unique(obj$Protein)
-  totalpro = length(unique_prot)
-  numheatmap = totalpro %/% numProtein + 1
-  
-  ## draw heatmap
-  ## loop for numProtein
-  for (j in seq_len(numheatmap)) {
-    
-    plot_prot = unique_prot[((j - 1) * numProtein + 1):(j * numProtein)]
-    temp_obj = obj[obj$Protein %in% plot_prot]
-    
-    limits = c(-1,1)*max(abs(temp_obj$sign_adj_pval[
-      is.finite(temp_obj$sign_adj_pval)]))
-    
-    temp_heatmap = ggplot(temp_obj, aes(Label, Protein, fill = sign_adj_pval)
-                           ) + geom_tile() + scale_fill_distiller(
-        palette = "RdBu", name = "(sign) Adj pvalue", 
+  if(!isPlotly) {
+    ## maximum number of proteins per heatmap
+    unique_prot = unique(obj$Protein)
+    totalpro = length(unique_prot)
+    if(is.null(numProtein)) {
+      numProtein = 50
+    }
+    numheatmap = totalpro %/% numProtein + 1
+    ## draw heatmap
+    ## loop for numProtein
+    for (j in seq_len(numheatmap)) {
+      
+      plot_prot = unique_prot[((j - 1) * numProtein + 1):(j * numProtein)]
+      temp_obj = obj[obj$Protein %in% plot_prot]
+      
+      limits = c(-1,1)*max(abs(temp_obj$sign_adj_pval[
+        is.finite(temp_obj$sign_adj_pval)]))
+      temp_heatmap = ggplot(temp_obj, aes(Label, Protein, fill = sign_adj_pval)
+      ) + geom_tile() + scale_fill_distiller(
+        palette = "RdBu", name = "(sign) Adj pvalue",
         limits = limits) + labs(
-        title = paste0(model, " - Page #", as.character(j)), y = model, 
-        x = "Comparison") +
-      theme_msstats(type = "COMPARISONPLOT", x.axis.size, y.axis.size, 13, 
-                    element_rect(fill = "gray95"),
-                    element_text(colour = c("#00B0F6"), size = 14),
-                    "bottom", text_angle = text.angle)
-    print(temp_heatmap)
-  } 
+          title = paste0(model, " - Page #", as.character(j)), y = model,
+          x = "Comparison") +
+        theme_msstats(type = "COMPARISONPLOT", x.axis.size, y.axis.size, 13,
+                      element_rect(fill = "gray95"),
+                      element_text(colour = c("#00B0F6"), size = 14),
+                      "bottom", text_angle = text.angle)
+      print(temp_heatmap)
+    }
+  } else {
+    limits = c(-1, 1) * max(abs(obj$sign_adj_pval[is.finite(obj$sign_adj_pval)]))
+    data$sign_adj_pval[is.infinite(data$sign_adj_pval)] <- NaN
+    obj = data[, c("Protein", "Label", "sign_adj_pval")]
+    if (!is.null(numProtein)) {
+      # subset numProtein unique proteins
+      obj$Protein <- as.character(obj$Protein)
+      unique_proteins <- unique(obj$Protein)
+      top_10_proteins <- unique_proteins[1:numProtein]
+      obj <- obj[obj$Protein %in% top_10_proteins, ]
+      limits = c(-1, 1) * max(abs(obj$sign_adj_pval[is.finite(obj$sign_adj_pval)]))
+    }
+    
+    colors <- c("#2166AC", "#4393C3", "#92C5DE", "#D1E5F0", "#FFFFFF", "#FDDBC7", "#F4A582", "#D6604D", "#B2182B")
+    heatmap_plot <- plot_ly(
+      data = obj,
+      x = as.character(obj$Label),
+      y = obj$Protein,
+      z = ~sign_adj_pval,
+      width = 800,
+      height = 600,
+      zmin = limits[1],
+      zmax = limits[2],
+      xgap = 0,
+      ygap = 0,
+      colorbar = list(title = "(sign) Adj pvalue", tickfont = list(size = 13)),
+      colors = colors,
+      zauto = FALSE,
+      type = "heatmap"
+    )
+    
+    # Customize the layout
+    heatmap_plot <- plotly::layout(
+      heatmap_plot,
+      title = paste0(model, " : All Pages"),
+      xaxis = list(title = "Comparison", tickangle = 45, tickfont = list(size = x.axis.size)),
+      yaxis = list(title = model, tickfont = list(size = y.axis.size)),
+      plot_bgcolor = "grey"
+    )
+    return(heatmap_plot)
+  }
+
+  
 }
 
 #' Wrapper for plotting volcano plot for every model provided
@@ -311,10 +364,10 @@
 .plotVolcano = function(data, sig, FCcutoff, logBase.pvalue, ylimUp, ylimDown, 
                      xlimUp, x.axis.size, y.axis.size, dot.size, text.size, 
                      legend.size, ProteinName, colorkey, numProtein,
-                     width, height, address, plot_name_list){
+                     width, height, address, plot_name_list, isPlotly){
   ## If there are the file with the same name
   ## add next numbering at the end of file name
-  if (address != FALSE) {
+  if (!isPlotly && address != FALSE) {
     allfiles = list.files()
     
     num = 0
@@ -329,24 +382,27 @@
     pdf(finalfile, width=width, height=height)
   }
 
-  .plot.model.volcano(data[['PTM.Model']], sig, FCcutoff, logBase.pvalue, 
+  ptm_plots <- .plot.model.volcano(data[['PTM.Model']], sig, FCcutoff, logBase.pvalue, 
                       ylimUp, ylimDown, xlimUp, x.axis.size, y.axis.size, 
                       dot.size, text.size, legend.size, ProteinName,
-                      plot_name_list[[1]])
-  
+                      plot_name_list[[1]], isPlotly)
+  final_plots = ptm_plots
   if (nrow(data[['PROTEIN.Model']])) {
-    .plot.model.volcano(data[['PROTEIN.Model']], sig, FCcutoff, logBase.pvalue, 
+    protein_plots <- .plot.model.volcano(data[['PROTEIN.Model']], sig, FCcutoff, logBase.pvalue, 
                         ylimUp, ylimDown, xlimUp, x.axis.size, y.axis.size, 
                         dot.size, text.size, legend.size, ProteinName,
-                        plot_name_list[[2]])
-    .plot.model.volcano(data[['ADJUSTED.Model']], sig, FCcutoff, logBase.pvalue,
+                        plot_name_list[[2]], isPlotly)
+    adjusted_plots <- .plot.model.volcano(data[['ADJUSTED.Model']], sig, FCcutoff, logBase.pvalue,
                         ylimUp, ylimDown, xlimUp, x.axis.size, y.axis.size, 
                         dot.size, text.size, legend.size, ProteinName,
-                        plot_name_list[[3]])
+                        plot_name_list[[3]], isPlotly)
+    final_plots <- c(final_plots, protein_plots, adjusted_plots)
   }
-  
   if (address != FALSE) {
     dev.off()
+  }
+  if (isPlotly) {
+    final_plots
   }
 }
 
@@ -355,7 +411,7 @@
 .plot.model.volcano = function(data, sig, FCcutoff, logBase.pvalue, ylimUp,
                                 ylimDown, xlimUp, x.axis.size, y.axis.size, 
                                 dot.size, text.size, legend.size, ProteinName,
-                                model){
+                                model, isPlotly){
   log2FC = Protein = NULL
   
   if (logBase.pvalue == 2) {
@@ -399,7 +455,7 @@
   }
   
   data$colgroup = factor(data$colgroup, levels=c("black", "blue", "red"))
-  
+  plots <- vector("list", nlevels(data$Label))
   ## for multiple volcano plots, 
   for (i in seq_len(nlevels(data$Label))) {
     
@@ -610,5 +666,9 @@
       # )
     
     print(pfinal)
+    plots[[i]] = pfinal
+  }
+  if (isPlotly) {
+    plots
   }
 }

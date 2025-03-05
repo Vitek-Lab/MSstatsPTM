@@ -17,6 +17,7 @@
 #' @importFrom ggrepel geom_text_repel
 #' @importFrom checkmate assertNumeric assertChoice assertLogical
 #' @importFrom MSstats theme_msstats
+#' @importFrom plotly ggplotly style add_trace plot_ly subplot layout
 #' 
 #' @param data name of the list with models, which can be the output of the 
 #' MSstatsPTM \code{\link[MSstatsPTM]{groupComparisonPTM}} function
@@ -76,6 +77,9 @@
 #' "Heatmap.pdf". The command address can help to specify where to store the 
 #' file as well as how to modify the beginning of the file name. If 
 #' address=FALSE, plot will be not saved as pdf file but showed in window
+#' @param isPlotly Parameter to use Plotly or ggplot2. If set to TRUE, MSstats 
+#' will save Plotly plots as HTML files. If set to FALSE MSstats will save ggplot2 plots
+#' as PDF files
 #' @return plot or pdf
 #' @examples 
 #' 
@@ -102,12 +106,13 @@ groupComparisonPlotsPTM = function(data = data,
                                     legend.size=13,
                                     ProteinName=TRUE,
                                     colorkey=TRUE,
-                                    numProtein=50, 
+                                    numProtein=NULL, 
                                     width=10, 
                                     height=10, 
                                     which.Comparison = "all", 
                                     which.PTM = "all",
-                                    address="") {
+                                    address="",
+                                    isPlotly = FALSE) {
   
   .check.plotting.data(data, type, sig, FCcutoff, logBase.pvalue, ylimUp,
                        ylimDown, xlimUp, x.axis.size, y.axis.size, dot.size,
@@ -121,18 +126,71 @@ groupComparisonPlotsPTM = function(data = data,
   plot_name_list = c("Unadjusted Peptides", "Global Protein", 
                      "Adjusted Peptide")
   
+  if(isPlotly & address != FALSE) {
+    print("Plots will be saved as .HTML file as plotly is selected, set isPlotly = FALSE, if 
+            you want to generate PDF using ggplot2")
+  }
+  
   if (type == 'HEATMAP') {
-    
-    .plotHeatmap(data, sig, FCcutoff, logBase.pvalue, ylimUp, ylimDown, text.angle,
+    plotly_plots <- .plotHeatmap(data, sig, FCcutoff, logBase.pvalue, ylimUp, ylimDown, text.angle,
                   x.axis.size, y.axis.size, dot.size, colorkey, numProtein, 
-                  width, height, address)
-  } else if (type == 'VOLCANOPLOT') {
+                  width, height, address, isPlotly)
     
-    .plotVolcano(data, sig, FCcutoff, logBase.pvalue, ylimUp, ylimDown, xlimUp, 
+    if(isPlotly) {
+      if(address != FALSE) {
+        .savePlotlyPlotHTML(plotly_plots,address,"Heatmap" ,width, height)
+      }
+      plotly_plots
+    }
+    
+  } else if (type == 'VOLCANOPLOT') {
+    plots <- .plotVolcano(data, sig, FCcutoff, logBase.pvalue, ylimUp, ylimDown, xlimUp, 
                   x.axis.size, y.axis.size, dot.size, text.size, legend.size, 
                   ProteinName, colorkey, numProtein, width, height, 
-                  address, plot_name_list)
+                  address, plot_name_list, isPlotly)
+    
+    plotly_plots <- vector("list", length(plots))
+    if(isPlotly) {
+      for(i in seq_along(plots)) {
+        plot <- plots[[i]]
+        plotly_plot <- .convertGgplot2Plotly(plot, width = 1000)
+        plotly_plot <- .fixLegendPlotlyPlotsVolcano(plotly_plot)
+        plotly_plots[[i]] = list(plotly_plot)
+      }
+      if(address != FALSE) {
+        .savePlotlyPlotHTML(plotly_plots,address,"VolcanoPlot" ,width, height)
+      }
+      plotly_plots <- unlist(plotly_plots, recursive = FALSE)
+      plotly_plots
+    }
   }
+}
+
+.fixLegendPlotlyPlotsVolcano = function(plot) {
+  df <- data.frame(id = seq_along(plot$x$data), legend_entries = unlist(lapply(plot$x$data, `[[`, "name")))
+  # Create a mapping
+  color_mapping <- c("black" = "No regulation", "red" = "Up-regulated", "blue" = "Down-regulated")
+  # Update the legend_entries column
+  df$legend_group <- sapply(df$legend_entries, function(entry) {
+    for (color in names(color_mapping)) {
+      if (grepl(color, entry)) {
+        entry <- gsub(color, color_mapping[color], entry)
+        break
+      }
+    }
+    entry <- gsub(",.+", "", entry)
+    entry <- gsub("\\(|\\)", "", entry)  # Remove any remaining parentheses
+    entry
+  })
+  for (i in df$id) {
+    if(length(grep(df$legend_group[[i]], color_mapping)) == 0) { # keep only 3 legends
+      plot$x$data[[i]]$showlegend <- FALSE
+    }
+    plot$x$data[[i]]$name <- df$legend_group[[i]]
+    plot$x$data[[i]]$legendgroup <- plot$x$data[[i]]$name
+  }
+  plot <- plotly::layout(plot,legend=list(title=list(text="")))
+  plot
 }
   
   

@@ -66,6 +66,8 @@ Useful links:
 Authors:
 \itemize{
   \item Tsung-Heng Tsai \email{tsai.tsungheng@gmail.com}
+  \item Tony Wu \email{wu.anthon@northeastern.edu}
+  \item Deril Raju \email{raju.d@northeastern.edu}
   \item Ting Huang \email{thuang0703@gmail.com}
   \item Mateusz Staniak \email{mtst@mstaniak.pl}
   \item Meena Choi \email{mnchoi67@gmail.com}

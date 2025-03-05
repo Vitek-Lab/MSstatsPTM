@@ -524,3 +524,73 @@ fragpipe_input = FragPipetoMSstatsPTMFormat(input,
 .validatePtmSubstring(
     fragpipe_input$PTM, "\\*", 
     length(fragpipe_input$PTM$PeptideSequence))
+
+
+## Protein Prospector
+
+#### Setup
+input = system.file("tinytest/raw_data/ProteinProspector/Prospector_PhosphoTMT.txt",
+                    package = "MSstatsPTM")
+input = data.table::fread(input)
+annot = system.file("tinytest/raw_data/ProteinProspector/Annotation.csv",
+                    package = "MSstatsPTM")
+annot = data.table::fread(annot)
+input_protein = system.file("tinytest/raw_data/ProteinProspector/Prospector_TotalTMT.txt",
+                            package = "MSstatsConvert")
+input_protein = data.table::fread(input_protein)
+annot_protein = system.file("tinytest/raw_data/ProteinProspector/Annotation.csv",
+                            package = "MSstatsConvert")
+annot_protein = data.table::fread(annot_protein)
+
+#### Happy Case
+expect_silent(ProteinProspectortoMSstatsPTMFormat(
+    input,
+    annot,
+    input_protein,
+    annot_protein
+))
+
+#### Global profiling run removed
+expect_silent(ProteinProspectortoMSstatsPTMFormat(
+    input,
+    annot
+))
+
+#### Global profiling run removed with use_unmod_peptides = TRUE
+expect_silent(ProteinProspectortoMSstatsPTMFormat(
+    input,
+    annot,
+    use_unmod_peptides = TRUE
+))
+
+#### Annotation missing
+expect_error(ProteinProspectortoMSstatsPTMFormat(
+    input,
+    input_protein,
+    annot_protein
+))
+
+#### Annotation global profiling missing
+expect_error(ProteinProspectortoMSstatsPTMFormat(
+    input,
+    annot,
+    input_protein
+))
+
+#### Output validation tests
+protein_prospector_imported = ProteinProspectortoMSstatsPTMFormat(
+    input,
+    annot,
+    input_protein,
+    annot_protein
+)
+.validatePositiveNumberOfRows(protein_prospector_imported)
+.validateProteinId(protein_prospector_imported$PROTEIN, "P16546", 234)
+.validateProteinId(protein_prospector_imported$PTM, "P16546_S572", 6)
+.validateProteinId(protein_prospector_imported$PTM, "Q9QYX7_S617_S625", 6)
+.validateProteinId(protein_prospector_imported$PTM, "P16546", 0)
+.validatePtmSubstring(
+    protein_prospector_imported$PTM, "\\(Phospho\\)", 
+    length(protein_prospector_imported$PTM$PeptideSequence))
+.validatePtmSubstring(
+    protein_prospector_imported$PROTEIN, "\\(Phospho\\)", 0)

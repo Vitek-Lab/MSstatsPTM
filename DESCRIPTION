@@ -1,8 +1,8 @@
 Package: MSstatsPTM
 Type: Package
 Title: Statistical Characterization of Post-translational Modifications
-Version: 2.8.1
-Date: 2024-11-25
+Version: 2.9.2
+Date: 2025-03-05
 Description: MSstatsPTM provides general statistical methods for quantitative 
     characterization of post-translational modifications (PTMs). Supports DDA, 
     DIA, SRM, and tandem mass tag (TMT) labeling. Typically, the 
@@ -14,6 +14,8 @@ Description: MSstatsPTM provides general statistical methods for quantitative
 Authors@R: c(
     person("Devon", "Kohler", email = "kohler.d@northeastern.edu", role = c("aut", "cre")),
     person("Tsung-Heng", "Tsai", email="tsai.tsungheng@gmail.com", role=c("aut")),
+    person("Tony", "Wu", email = "wu.anthon@northeastern.edu", role = "aut"),
+    person("Deril", "Raju", email = "raju.d@northeastern.edu", role = "aut"),
     person("Ting", "Huang", email = "thuang0703@gmail.com", role=c("aut")),
     person("Mateusz", "Staniak", email = "mtst@mstaniak.pl", role = c("aut")),
   	person("Meena", "Choi", email = "mnchoi67@gmail.com", role="aut"),
@@ -22,7 +24,7 @@ License: Artistic-2.0
 Depends: R (>= 4.3)
 Imports: dplyr, gridExtra, stringr, stats, ggplot2, stringi,
             grDevices, MSstatsTMT, MSstatsConvert, MSstats,
-            data.table, Rcpp, Biostrings, checkmate, ggrepel
+            data.table, Rcpp, Biostrings, checkmate, ggrepel, plotly, htmltools
 Suggests: 
     knitr,
     rmarkdown,

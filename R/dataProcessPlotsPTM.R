@@ -16,6 +16,7 @@
 #' @importFrom data.table data.table as.data.table melt dcast `:=` setnames copy rbindlist
 #' @importFrom checkmate assertCharacter assertNumeric assertChoice
 #' @importFrom MSstats theme_msstats
+#' @importFrom plotly ggplotly style add_trace plot_ly subplot layout
 #' 
 #' @param data name of the list with PTM and (optionally) Protein data, which
 #' can be the output of the MSstatsPTM 
@@ -56,6 +57,9 @@
 #' summarization for each channel and MS run.
 #' @param address the name of folder that will store the results. Default folder
 #'  is the current working directory.
+#' @param isPlotly Parameter to use Plotly or ggplot2. If set to TRUE, MSstats 
+#' will save Plotly plots as HTML files. If set to FALSE MSstats will save ggplot2 plots
+#' as PDF files
 #' The other assigned folder has to be existed under the current working
 #' directory.
 #' An output pdf file is automatically created with the default name of
@@ -96,7 +100,8 @@ dataProcessPlotsPTM = function(data,
                                 which.Protein = NULL,
                                 originalPlot = TRUE,
                                 summaryPlot = TRUE,
-                                address = "") {
+                                address = "",
+                                isPlotly = FALSE) {
   
   type = toupper(type)
   label = .check.dataProcess.plotting.data(data, type, ylimUp, ylimDown, 
@@ -108,7 +113,12 @@ dataProcessPlotsPTM = function(data,
   
   data.table.list = .format.data.process.plots(data, label)
   
-  ## Filter for all PTMs in one protein
+  if(isPlotly & address != FALSE) {
+    print("Plots will be saved as .HTML file as plotly is selected, set isPlotly = FALSE, if 
+            you want to generate PDF using ggplot2")
+  }
+  
+  ## Filter for all PTMs in one proteins
   if (!is.null(which.Protein)){
     
     data.table.list[[1]] = data.table.list[[1]][PROTEINNAME %in% which.Protein]
@@ -131,31 +141,255 @@ dataProcessPlotsPTM = function(data,
   ## ---------------
   if (type == "PROFILEPLOT") {
     if (label == 'TMT'){
-      .profile.tmt(data.table.list, type, ylimUp, ylimDown, 
+      plots <- .profile.tmt(data.table.list, type, ylimUp, ylimDown, 
                    x.axis.size, y.axis.size,text.size,text.angle, 
                    legend.size, dot.size.profile, ncol.guide, width, 
                    height, which.PTM, originalPlot, summaryPlot, 
-                   address)
+                   address, isPlotly)
     } else if (label == 'LabelFree'){
-      .profile.lf(data.table.list, type, ylimUp, ylimDown, 
+      plots <- .profile.lf(data.table.list, type, ylimUp, ylimDown, 
                   x.axis.size, y.axis.size,text.size,text.angle, 
                   legend.size, dot.size.profile, ncol.guide, width, 
                   height, which.PTM, originalPlot, 
-                  summaryPlot, address)
+                  summaryPlot, address, isPlotly)
+    }
+    
+    plotly_plots <- list()
+    if(isPlotly) {
+      og_plotly_plot = NULL
+      summ_plotly_plot = NULL
+      if("original_plot" %in% names(plots)) {
+        for(i in seq_along(plots[["original_plot"]])) {
+          plot_i <- plots[["original_plot"]][[paste("plot",i)]]
+          plotly_plot_ptm <- .convertGgplot2Plotly(plot_i[["PTEMP.PTM"]])
+          plotly_plot_ptm = .fixLegendPlotlyPlotsDataprocess(plotly_plot_ptm, "OriginalPlot")
+          if (!is.null(plot_i[["PTEMP.PROTEIN"]])) {
+            plotly_plot_protein <- .convertGgplot2Plotly(plot_i[["PTEMP.PROTEIN"]])
+            plotly_plot_protein = .fixLegendPlotlyPlotsDataprocess(plotly_plot_protein, "OriginalPlot")
+            plotly_plot_combined_original <- .combineSubPlotsPlotly(plotly_plot_ptm, plotly_plot_protein)
+            plotly_plots = c(plotly_plots, list(plotly_plot_combined_original))
+          } else {
+            plotly_plots = c(plotly_plots, list(plotly_plot_ptm))
+          }
+        }
+      }
+      if("summary_plot" %in% names(plots)) {
+        for(i in seq_along(plots[["summary_plot"]])) {
+          plot_i <- plots[["summary_plot"]][[paste("plot",i)]]
+          plotly_plot_ptm <- .convertGgplot2Plotly(plot_i[["PTEMP.PTM"]])
+          plotly_plot_ptm = .fixLegendPlotlyPlotsDataprocess(plotly_plot_ptm, "SummaryPlot")
+          if (!is.null(plot_i[["PTEMP.PROTEIN"]])) {
+            plotly_plot_protein <- .convertGgplot2Plotly(plot_i[["PTEMP.PROTEIN"]])
+            plotly_plot_combined_summary <- .combineSubPlotsPlotly(plotly_plot_ptm, plotly_plot_protein)
+            plotly_plot_combined_summary = .fixLegendPlotlyPlotsDataprocess(plotly_plot_combined_summary, "SummaryPlot")
+            plotly_plots = c(plotly_plots, list(plotly_plot_combined_summary))
+          } else {
+            plotly_plots = c(plotly_plots, list(plotly_plot_ptm))
+          }
+        }
+      }
+      if(address != FALSE) {
+        .savePlotlyPlotHTML(plotly_plots,address,"ProfilePlot" ,width, height)
+      }
+      plotly_plots
     }
   }
 
   ## QC plot (Quality control plot) ##
   ## ---------------------------------
-  if (type == "QCPLOT") {
+  else if (type == "QCPLOT") {
     if (label == 'TMT'){
-      .qc.tmt(data.table.list, type, ylimUp, ylimDown, width, height, 
+      plots <- .qc.tmt(data.table.list, type, ylimUp, ylimDown, width, height, 
               x.axis.size, y.axis.size, text.size, text.angle,
-              which.PTM, address, ptm.title, protein.title)
+              which.PTM, address, ptm.title, protein.title, isPlotly)
     } else if (label == 'LabelFree'){
-      .qc.lf(data.table.list, type, ylimUp, ylimDown, width, height, 
+      plots <- .qc.lf(data.table.list, type, ylimUp, ylimDown, width, height, 
              x.axis.size, y.axis.size, text.size,
-             which.PTM, address, ptm.title, protein.title)
+             which.PTM, address, ptm.title, protein.title, isPlotly)
     } 
+    
+    plotly_plots <- list()
+    if(isPlotly) {
+      for(i in seq_along(plots)) {
+        plot <- plots[[i]]
+        plotly_plot_ptm <- .convertGgplot2Plotly(plot[["PTEMP.PTM"]])
+        if(label == "TMT") {
+          plotly_plot_ptm <- facet_strip_bigger(plotly_plot_ptm)
+        }
+        if (!is.null(plot[["PTEMP.PROTEIN"]])) {
+          plotly_plot_protein <- .convertGgplot2Plotly(plot[["PTEMP.PROTEIN"]])
+          if(label == "TMT") {
+            plotly_plot_protein <- facet_strip_bigger(plotly_plot_protein)
+          }
+          plotly_plot_combined <- .combineSubPlotsPlotly(plotly_plot_ptm, plotly_plot_protein)
+          plotly_plots[[i]] = list(plotly_plot_combined)
+        } else {
+          plotly_plots[[i]] = list(plotly_plot_ptm)
+        }
+        
+      }
+      if(address != FALSE) {
+        .savePlotlyPlotHTML(plotly_plots,address,"QCPlot" ,width, height)
+      }
+      plotly_plots <- unlist(plotly_plots, recursive = FALSE)
+      plotly_plots
+    }
   }
+}
+
+.combineSubPlotsPlotly = function(plotly_plot_ptm, plotly_plot_protein) {
+  title_ptm <- plotly_plot_ptm$x$layout$title$text
+  title_protein <- plotly_plot_protein$x$layout$title$text
+  
+  plotly_plot_ptm <- plotly::layout(plotly_plot_ptm, title = "")
+  plotly_plot_protein <- plotly::layout(plotly_plot_protein, title = "")
+  
+  plotly_plot_combined <- subplot(plotly_plot_ptm, plotly_plot_protein, nrows = 2, margin=0.1,titleX = TRUE, titleY = TRUE)
+  plotly_plot_combined <- plotly::layout(plotly_plot_combined,
+                                         annotations = list(
+                                           list(
+                                             x = 0.04,  # Centered horizontally
+                                             y = 1.05,  # Above the first plot
+                                             text = title_ptm,  # Use extracted title
+                                             showarrow = FALSE,
+                                             xref = 'paper',
+                                             yref = 'paper',
+                                             xanchor = 'center',
+                                             yanchor = 'bottom',
+                                             font = list(size = 16)
+                                           ),
+                                           list(
+                                             x = 0.04,  # Centered horizontally
+                                             y = 0.45,  # Above the second plot (adjust as necessary)
+                                             text = title_protein,  # Use extracted title
+                                             showarrow = FALSE,
+                                             xref = 'paper',
+                                             yref = 'paper',
+                                             xanchor = 'center',
+                                             yanchor = 'bottom',
+                                             font = list(size = 16)
+                                           )
+                                         )
+  )
+  plotly_plot_combined
+}
+
+.fixLegendPlotlyPlotsDataprocess = function(plot, type) {
+  df <- data.frame(id = seq_along(plot$x$data), legend_entries = unlist(lapply(plot$x$data, `[[`, "name")))
+  df$legend_group <- gsub("^\\((.*?),.*", "\\1", df$legend_entries)
+  df$is_first <- !duplicated(df$legend_group)
+  df$is_bool <- ifelse(grepl("TRUE|FALSE", df$legend_group), TRUE, FALSE)
+  df$is_valid_column <- ifelse(grepl("Processed feature-level data|Run summary", df$legend_entries), TRUE, FALSE)
+  plot$x$data[[nrow(df)]]$showlegend <- FALSE # remove text legend
+  
+  for (i in df$id) {
+    is_first <- df$is_first[[i]]
+    is_bool <- df$is_bool[[i]]
+    plot$x$data[[i]]$name <- df$legend_group[[i]]
+    plot$x$data[[i]]$legendgroup <- plot$x$data[[i]]$name
+    if (!is_first) {
+      plot$x$data[[i]]$showlegend <- FALSE
+    } 
+    if(type == "SummaryPlot") {
+      is_valid_column <- df$is_valid_column[[i]]
+      if (!is_valid_column) plot$x$data[[i]]$showlegend <- FALSE
+    }
+    if(is_bool) plot$x$data[[i]]$showlegend <- FALSE
+  }
+  plot
+}
+
+facet_strip_bigger <- function(gp){
+  if (!is.null(gp$x$layout$annotations)) {
+    for (i in seq_along(gp$x$layout$annotations)) {
+      if(gp$x$layout$annotations[[i]]$text != "Log2-intensities" && gp$x$layout$annotations[[i]]$text != "MS runs") {
+        gp$x$layout$annotations[[i]]$font$size <- 7
+        # gp$x$layout$annotations[[i]]$xanchor <- "center"
+        gp$x$layout$annotations[[i]]$xshift <- 50
+      }
+    }
+  }
+  return(gp)
+}
+
+#' converter for plots from ggplot to plotly
+#' @noRd
+.convertGgplot2Plotly = function(plot, tips = "all", width = 1800, height = 600) {
+  converted_plot <- ggplotly(plot,tooltip = tips)
+  converted_plot <- plotly::layout(
+    converted_plot,
+    width = width,   # Set the width of the chart in pixels
+    height = height,  # Set the height of the chart in pixels
+    title = list(
+      font = list(
+        size = 18
+      )
+    ),
+    legend = list(
+      x = 0,     # Set the x position of the legend
+      y = -0.25,    # Set the y position of the legend (negative value to move below the plot)
+      orientation = "h",  # Horizontal orientation
+      font = list(
+        size = 12  # Set the font size for legend item labels
+      ),
+      title = list(
+        font = list(
+          size = 12  # Set the font size for the legend title
+        )
+      )
+    )
+  ) 
+  converted_plot
+}
+
+.savePlotlyPlotHTML = function(plots, address, file_name, width, height) {
+  print("Saving plots as HTML")
+  pb <- txtProgressBar(min = 0, max = 4, style = 3)
+  
+  setTxtProgressBar(pb, 1)
+  file_name = getFileName(address, file_name, width, height)
+  file_name = paste0(file_name,".html")
+  
+  setTxtProgressBar(pb, 2)
+  doc <- .getPlotlyPlotHTML(plots, width, height)
+  
+  setTxtProgressBar(pb, 3)
+  htmltools::save_html(html = doc, file = file_name) # works but lib same folder
+  
+  setTxtProgressBar(pb, 4)
+  zip(paste0(gsub("\\.html$", "", file_name),".zip"), c(file_name, "lib"))
+  unlink(file_name)
+  unlink("lib",recursive = T)
+  
+  close(pb)
+}
+
+getFileName = function(name_base, file_name, width, height) {
+  all_files = list.files(".")
+  if(file_name == 'ProfilePlot'){
+    num_same_name = sum(grepl(paste0("^", name_base, file_name, "_[0-9]?"), all_files))
+  } else {
+    num_same_name = sum(grepl(paste0("^", name_base, file_name, "[0-9]?"), all_files))
+  }
+  if (num_same_name > 0) {
+    file_name = paste(file_name, num_same_name + 1, sep = "_")
+  }
+  file_path = paste0(name_base, file_name)
+  return(file_path)
+}
+
+.getPlotlyPlotHTML = function(plots, width, height) {
+  doc <- htmltools::tagList(lapply(plots,function(x) htmltools::div(x, style = "float:left;width:100%;")))
+  # Set a specific width for each plot
+  plot_width <- 800
+  plot_height <- 600
+  
+  # Create a div for each plot with style settings
+  divs <- lapply(plots, function(x) {
+    htmltools::div(x, style = paste0("width:", plot_width, "px; height:", plot_height, "px; margin: 10px;"))
+  })
+  
+  # Combine the divs into a tagList
+  doc <- htmltools::tagList(divs)
+  doc
 }

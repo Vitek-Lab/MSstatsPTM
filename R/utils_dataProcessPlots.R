@@ -30,7 +30,6 @@
   
   ## Test if input is labelfree or tmt
   data.ptm = data[['PTM']]$FeatureLevelData
-  
   if ('Mixture' %in% colnames(data.ptm)){
     label = "TMT"
   }
@@ -89,6 +88,9 @@
   ## Adjust colnames to avoid repeating code
   for (i in seq_along(data.list)) {
     colnames(data.list[[i]]) = toupper(colnames(data.list[[i]]))
+    if ('INTENSITY' %in% colnames(data.list[[i]])){
+      data.list[[i]]$ABUNDANCE = log2(data.list[[i]]$INTENSITY)
+    }
     setnames(data.list[[i]], c('LOGINTENSITIES', 'GROUP', 'PROTEIN', 
                                'Protein', 'LOG2INTENSITY'), 
              c('ABUNDANCE', 'CONDITION', 'PROTEINNAME', 'PROTEINNAME',
@@ -290,17 +292,16 @@
   }
   
   yaxis.name = 'Log2-intensities'
-  
   ## 1st plot for Protein plot
   protein_temp = ggplot(aes_string(x = 'xorder', y = 'ABUNDANCE',
                                     color = 'PSM', linetype = 'PSM'),
                          data = sub) +
     facet_grid(~RUN) +
-    geom_point(size=dot.size.profile, na.rm=TRUE) +
+    geom_point(data = sub, aes(shape=CENSORED), size=dot.size.profile, na.rm=TRUE) +
     geom_line(size = 0.5, na.rm=TRUE) +
     scale_colour_manual(values=cbp[s]) +
     scale_linetype_manual(values = ss) +
-    scale_shape_manual(values = c(16)) +
+    scale_shape_manual(values = c(16, 1),labels = c("Detected data", "Censored missing data")) +
     labs(title = unique(sub$PROTEINNAME),
          x = 'MS runs') +
     scale_y_continuous(yaxis.name, limits = c(y.limdown, y.limup)) +
@@ -421,10 +422,11 @@
                                 color = 'analysis', linetype = 'PSM', 
                                 size = 'analysis'), data = final) +
     facet_grid(~RUN) +
-    geom_point(size = dot.size.profile, na.rm=TRUE) +
+    # geom_point(size = dot.size.profile, na.rm=TRUE) +
+    geom_point(data = final, aes(shape=CENSORED), size=dot.size.profile, na.rm=TRUE) +
     geom_line(size = 0.5, na.rm=TRUE) +
     scale_colour_manual(values = c("lightgray", "darkred")) +
-    scale_shape_manual(values = c(16)) +
+    scale_shape_manual(values = c(16, 1),labels = c("Detected data", "Censored missing data")) +
     scale_size_manual(values = c(1.7, 2), guide = "none") +
     scale_linetype_manual(values = c(rep(1, times = length(
       unique(final$PSM))-1), 2), guide = "none") +
@@ -460,7 +462,7 @@
                           x.axis.size, y.axis.size,text.size,text.angle, 
                           legend.size, dot.size.profile, ncol.guide, width, 
                           height,which.Protein,originalPlot,summaryPlot,
-                          address){
+                          address, isPlotly){
   
   PROTEINNAME = GLOBALPROTEIN = NULL
   
@@ -580,9 +582,14 @@
   } else {
     plot_proteins = unique(datafeature.ptm[, c('PROTEINNAME')])
   }
+  
+  # init list to return plots
+  output_plots <- list()
+  output_plots[["original_plot"]] = list()
+  output_plots[["summary_plot"]] = list()
 
   if (originalPlot) {
-    if (address != FALSE) {
+    if (!isPlotly && address != FALSE) {
       allfiles = list.files()
       
       num = 0
@@ -613,16 +620,20 @@
                                  y.limup, y.limdown, x.axis.size,
                                  y.axis.size, text.size, text.angle, 
                                  legend.size, dot.size.profile, ncol.guide)
-        
+        original_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = protein_temp)
         grid.arrange(ptm_temp, protein_temp, ncol=1)
-      } else {print(ptm_temp)}
+      } else {
+        original_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = NULL)
+        print(ptm_temp)
+      }
+      output_plots[["original_plot"]][[paste("plot",i)]] <- original_profile_plots
       message(paste0("Drew the Profile plot for ", 
                     as.character(plot_proteins[, PROTEINNAME][i]),
                     " (", i, " of ", nrow(plot_proteins), ")"))
     }
     # end-loop for each protein
     
-    if (address != FALSE) {
+    if (address != FALSE & !isPlotly) {
       dev.off()
     }
     
@@ -633,7 +644,7 @@
   ############################################
   
   if (summaryPlot) {
-    if (address != FALSE) {
+    if (!isPlotly && address != FALSE) {
       allfiles = list.files()
       
       num = 0
@@ -659,20 +670,26 @@
           plot_proteins[, GLOBALPROTEIN][i]), y.limup, y.limdown, x.axis.size,
           y.axis.size, text.size, text.angle, legend.size,
           dot.size.profile, ncol.guide)
-        
+        summary_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = protein_temp)
         grid.arrange(ptm_temp, protein_temp, ncol=1)
-      } else {print(ptm_temp)}
-      
+      } else {
+        summary_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = NULL)
+        print(ptm_temp)
+      }
+      output_plots[["summary_plot"]][[paste("plot",i)]] <- summary_profile_plots
       message(paste("Drew the Profile plot for ", 
                     as.character(plot_proteins[, PROTEINNAME][i]),
                     "(", i, " of ", nrow(plot_proteins), ")"))
 
       }
       
-    if (address!=FALSE) {
+    if (address!=FALSE & !isPlotly) {
       dev.off()
     }
   } # end summarization plot
+  if(isPlotly) {
+    output_plots
+  }
 }
 
 #' Plot boxplot of all proteins
@@ -718,7 +735,9 @@
     theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size, 13, 
                   element_rect(fill = "gray95"),
                   element_text(colour = c("#00B0F6"), size = 14),
-                  "none", text_angle = text.angle)
+                  "none", text_angle = text.angle) +
+    theme(strip.text.x = element_text(
+            size = 5,angle = 15))
     # theme(
     #   panel.background = element_rect(fill = 'white', colour = "black"),
     #   legend.key = element_rect(fill = 'white', colour = 'white'),
@@ -785,7 +804,9 @@
     theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size, 13, 
                   element_rect(fill = "gray95"),
                   element_text(colour = c("#00B0F6"), size = 14),
-                  "none", text_angle = text.angle)
+                  "none", text_angle = text.angle) +
+    theme(strip.text.x = element_text(
+      size = 5,angle = 15))
     # theme(
     #   panel.background = element_rect(fill = 'white', colour = "black"),
     #   legend.key = element_rect(fill = 'white', colour = 'white'),
@@ -808,7 +829,7 @@
 #' @noRd
 .qc.tmt = function(data.table.list, type, ylimUp, ylimDown, width, height,
                     x.axis.size, y.axis.size,text.size, text.angle, 
-                    which.Protein, address, ptm_title, protein_title) {
+                    which.Protein, address, ptm_title, protein_title, isPlotly) {
   
   PROTEINNAME = GLOBALPROTEIN = NULL
   
@@ -830,7 +851,7 @@
   ## save the plots as pdf or not
   ## If there are the file with the same name
   ## add next numbering at the end of file name
-  if (address != FALSE) {
+  if (!isPlotly && address != FALSE) {
     allfiles = list.files()
     
     num = 0
@@ -871,6 +892,9 @@
     groupline.protein = protein.list[[3]]
     groupline.all.protein = protein.list[[4]]
   }
+  
+  # Init list to return plots
+  output_plots = list()
     
   ## all protein
   if (which.Protein[[1]] == 'all' | which.Protein[[1]] == 'allonly') {
@@ -885,9 +909,12 @@
                                     y.limdown, x.axis.size, y.axis.size,text.size, 
                                     text.angle)
       grid.arrange(ptemp.ptm, ptemp.protein, ncol=1)
+      all_protein_plots <- list(PTEMP.PTM = ptemp.ptm, PTEMP.PROTEIN = ptemp.protein)
     } else {
+      all_protein_plots <- list(PTEMP.PTM = ptemp.ptm, PTEMP.PROTEIN = NULL)
       print(ptemp.ptm)
     }
+    output_plots[[1]] = all_protein_plots
     message("Drew the Quality Contol plot(boxplot) for all ptms/proteins.")
   }
   
@@ -975,8 +1002,12 @@
                                          y.limup, y.limdown, x.axis.size, 
                                          y.axis.size, text.size, text.angle)
         grid.arrange(ptemp.ptm, ptemp.protein, ncol=1)
-      } else {print(ptemp.ptm)}
-
+        single_protein_plots <- list(PTEMP.PTM = ptemp.ptm, PTEMP.PROTEIN = ptemp.protein)
+      } else {
+        print(ptemp.ptm)
+        single_protein_plots <- list(PTEMP.PTM = ptemp.ptm, PTEMP.PROTEIN = NULL)
+      }
+      output_plots[[i+1]] = single_protein_plots # to accomodate all proteins
       message(paste("Drew the Quality Contol plot(boxplot) for",
                     as.character(plot_proteins[, PROTEINNAME][i]), "(", i, 
                     " of ", nrow(plot_proteins), ")"))
@@ -986,6 +1017,11 @@
   
   if (address != FALSE) {
     dev.off()
+  }
+  
+  if(isPlotly) {
+    output_plots <- Filter(function(x) !is.null(x), output_plots)
+    output_plots
   }
 }
 
@@ -1103,18 +1139,17 @@
   
   yaxis.name = 'Log-intensities'
   sub$group_aes = paste(sub$CONDITION, sub$FEATURE, sep = "_")
-  
   ## 1st plot for Protein plot
   protein_temp = ggplot(data=sub) + facet_grid(~LABEL) +
     geom_point(aes_string(x='RUN', y='ABUNDANCE', 
-                          color='FEATURE', group = 'group_aes'), #
+                          color='FEATURE',  shape='CENSORED'), #
                size=dot.size.profile, na.rm=TRUE) +
     geom_line(aes_string(x='RUN', y='ABUNDANCE', 
-                         color='FEATURE', linetype='FEATURE', group = 'group_aes'), #
+                         color='FEATURE', linetype='FEATURE'), #
               size = 0.5, na.rm=TRUE) +
     scale_colour_manual(values=cbp[s]) +
     scale_linetype_manual(values = ss) +
-    scale_shape_manual(values = c(16)) +
+    scale_shape_manual(values = c(16, 1),labels = c("Detected data", "Censored missing data")) +
     labs(title = unique(sub$PROTEINNAME),
          x = 'MS runs') +
     scale_y_continuous(yaxis.name, limits = c(y.limdown, y.limup)) +
@@ -1213,13 +1248,11 @@
   ## Draw summarized ptm plot
   ptempall = ggplot(data=final) +
     geom_point(aes_string(x='RUN', y='ABUNDANCE', 
-                          color='analysis',
-                          group = 'group_aes'), size = dot.size.profile, na.rm=TRUE) +
+                          color='analysis', shape='CENSORED'), size = dot.size.profile, na.rm=TRUE) +
     geom_line(aes_string(x='RUN', y='ABUNDANCE', 
-                         color='analysis', linetype='FEATURE', 
-                         group = 'group_aes'), size = 0.5, na.rm=TRUE) + 
+                         color='analysis', linetype='FEATURE'), size = 0.5, na.rm=TRUE) + 
     scale_colour_manual(values = c("lightgray", "darkred")) +
-    scale_shape_manual(values = c(16)) +
+    scale_shape_manual(values = c(16, 1),labels = c("Detected data", "Censored missing data")) +
     scale_size_manual(values = c(1.7, 2), guide = "none") +
     scale_linetype_manual(values = c(rep(1, times = length(
       unique(final$FEATURE))-1), 2), guide = "none") +
@@ -1250,7 +1283,7 @@
                              x.axis.size, y.axis.size,text.size,text.angle, 
                              legend.size, dot.size.profile, ncol.guide, width, 
                              height,which.Protein,originalPlot,summaryPlot,
-                             address) {
+                             address, isPlotly) {
   
   PROTEINNAME = GLOBALPROTEIN = NULL
   
@@ -1369,8 +1402,13 @@
     plot_proteins = unique(datafeature.ptm[, c('PROTEINNAME')])
   }
   
+  # init list to return plots
+  output_plots <- list()
+  output_plots[["original_plot"]] = list()
+  output_plots[["summary_plot"]] = list()
+  
   if (originalPlot) {
-    if (address != FALSE) {
+    if (!isPlotly && address != FALSE) {
       allfiles = list.files()
       
       num = 0
@@ -1403,17 +1441,20 @@
                                          y.axis.size, text.size, text.angle, 
                                          legend.size, dot.size.profile, 
                                          ncol.guide)
-        
+        original_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = protein_temp)
         grid.arrange(ptm_temp, protein_temp, ncol=1)
-      } else{print(ptm_temp)}
-      
+      } else{
+        original_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = NULL)
+        print(ptm_temp)
+      }
+      output_plots[["original_plot"]][[paste("plot",i)]] <- original_profile_plots
       message(paste0("Drew the Profile plot for ", 
                     as.character(plot_proteins[, PROTEINNAME][i]),
                     " (", i, " of ", nrow(plot_proteins), ")"))
     }
     # end-loop for each protein
     
-    if (address != FALSE) {
+    if (address != FALSE & !isPlotly) {
       dev.off()
     }
     
@@ -1424,7 +1465,7 @@
   ############################################
   
   if (summaryPlot) {
-    if (address != FALSE) {
+    if (!isPlotly && address != FALSE) {
       allfiles = list.files()
       
       num = 0
@@ -1451,18 +1492,24 @@
           plot_proteins[, GLOBALPROTEIN][i]), y.limup, y.limdown, x.axis.size,
           y.axis.size, text.size, text.angle, legend.size, dot.size.profile, 
           ncol.guide)
-        
+        summary_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = protein_temp)
         grid.arrange(ptm_temp, protein_temp, ncol=1)
-      } else {print(ptm_temp)}
-        
+      } else {
+        summary_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = NULL)
+        print(ptm_temp)
+      }
+      output_plots[["summary_plot"]][[paste("plot",i)]] <- summary_profile_plots
       message(paste("Drew the Profile plot for ", 
                     as.character(plot_proteins[, PROTEINNAME][i]),
                     "(", i, " of ", nrow(plot_proteins), ")"))
     }
-    if (address!=FALSE) {
+    if (address!=FALSE & !isPlotly) {
       dev.off()
     }
   } # end summarization plot
+  if(isPlotly) {
+    output_plots
+  }
   
 }
 
@@ -1471,7 +1518,6 @@
 .qc.all.plot.lf = function(datafeature, groupName, title, 
                             y.limdown, y.limup, x.axis.size, y.axis.size, 
                             text.size) {
-  
   lineNameAxis = RUN = ABUNDANCE = Name = NULL
   
   ## for annotation of condition
@@ -1521,7 +1567,6 @@
 #' @noRd
 .qc.single.plot.lf = function(datafeature, groupname, protein, y.limdown, y.limup,
                             x.axis.size, y.axis.size,text.size){
-  
   PROTEINNAME = ABUNDANCE = lineNameAxis = RUN = Name = NULL
   
   sub = datafeature[PROTEINNAME == protein, ]
@@ -1580,7 +1625,7 @@
 #' @noRd
 .qc.lf = function(data.table.list, type, ylimUp, ylimDown, width, height,
                         x.axis.size, y.axis.size,text.size, which.Protein,
-                         address, ptm_title, protein_title) {
+                         address, ptm_title, protein_title, isPlotly) {
   
   PROTEINNAME = GLOBALPROTEIN = NULL
   
@@ -1602,7 +1647,7 @@
   ## save the plots as pdf or not
   ## If there are the file with the same name
   ## add next numbering at the end of file name
-  if (address != FALSE) {
+  if (!isPlotly && address != FALSE) {
     allfiles = list.files()
     
     num = 0
@@ -1640,10 +1685,12 @@
     datarun.protein = protein.list[[2]]
     groupName.protein = protein.list[[3]]
   }
+  
+  # Init list to return plots
+  output_plots = list()
 
   ## all protein
   if (which.Protein[[1]] == 'all' | which.Protein[[1]] == 'allonly') {
-    
     ## Plot all QC
     ptemp.ptm = .qc.all.plot.lf(datafeature.ptm, groupName.ptm, ptm_title,
                                  y.limdown, y.limup, x.axis.size, y.axis.size, 
@@ -1653,8 +1700,12 @@
                                        protein_title, y.limdown, y.limup, 
                                     x.axis.size, y.axis.size, text.size)
       grid.arrange(ptemp.ptm, ptemp.protein, ncol=1)
-    } else{print(ptemp.ptm)}
-    
+      all_protein_plots <- list(PTEMP.PTM = ptemp.ptm, PTEMP.PROTEIN = ptemp.protein)
+    } else{
+      all_protein_plots <- list(PTEMP.PTM = ptemp.ptm, PTEMP.PROTEIN = NULL)
+      print(ptemp.ptm)
+    }
+    output_plots[[1]] = all_protein_plots
     message("Drew the Quality Contol plot(boxplot) for all ptms/proteins.")
   }
   
@@ -1729,7 +1780,6 @@
     }
     
     for (i in seq_len(nrow(plot_proteins))) {
-      
       ptemp.ptm = .qc.single.plot.lf(datafeature.ptm, groupName.ptm, 
                                    as.character(plot_proteins[, PROTEINNAME][i]
                                                 ),
@@ -1742,14 +1792,24 @@
                                          y.limdown, y.limup, x.axis.size, 
                                          y.axis.size, text.size)
         grid.arrange(ptemp.ptm, ptemp.protein, ncol=1)
-      } else {print(ptemp.ptm)}
+        single_protein_plots <- list(PTEMP.PTM = ptemp.ptm, PTEMP.PROTEIN = ptemp.protein)
+      } else {
+        print(ptemp.ptm)
+        single_protein_plots <- list(PTEMP.PTM = ptemp.ptm, PTEMP.PROTEIN = NULL)
+      }
+      output_plots[[i+1]] = single_protein_plots # to accomodate all proteins
       message(paste0("Drew the Quality Contol plot(boxplot) for ",
                     as.character(plot_proteins[, PROTEINNAME][i]), " (", i, 
                     " of ", nrow(plot_proteins), ")"))
     } # end-loop
     }
   
-  if (address != FALSE) {
+  if (address != FALSE & !isPlotly) {
     dev.off()
+  }
+  
+  if(isPlotly) {
+    output_plots <- Filter(function(x) !is.null(x), output_plots)
+    output_plots
   }
 }

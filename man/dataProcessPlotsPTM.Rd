@@ -24,7 +24,8 @@ dataProcessPlotsPTM(
   which.Protein = NULL,
   originalPlot = TRUE,
   summaryPlot = TRUE,
-  address = ""
+  address = "",
+  isPlotly = FALSE
 )
 }
 \arguments{
@@ -85,7 +86,11 @@ normalization.}
 summarization for each channel and MS run.}
 
 \item{address}{the name of folder that will store the results. Default folder
-is the current working directory.
+is the current working directory.}
+
+\item{isPlotly}{Parameter to use Plotly or ggplot2. If set to TRUE, MSstats
+will save Plotly plots as HTML files. If set to FALSE MSstats will save ggplot2 plots
+as PDF files
 The other assigned folder has to be existed under the current working
 directory.
 An output pdf file is automatically created with the default name of

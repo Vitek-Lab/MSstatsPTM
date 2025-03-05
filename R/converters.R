@@ -1613,3 +1613,153 @@ MetamorpheusToMSstatsPTMFormat = function(input,
     return(msstats_format)
     
 }
+
+
+#' Generate MSstatsPTM required input format from Protein Prospector output
+#' 
+#' @author Anthony Wu
+#' 
+#' @param input Input txt peptide report file from Protein Prospector with 
+#' "Keep Replicates", "Mods in Peptide", and "Protein Mods" options selected.
+#' @param annotation data frame which contains column Run, Fraction, 
+#' TechRepMixture, Mixture, Channel, BioReplicate, Condition. 
+#' @param input_protein same as `input` for global profiling run. Default is NULL.
+#' @param annotation_protein same as `annotation` for global profiling run. Default is NULL.
+#' @param use_unmod_peptides If `protein_input` is not provided, 
+#' unmodified peptides can be extracted from `input` to be used in place of a 
+#' global profiling run. Default is `FALSE`.
+#' @param mod_ids List of modifications of interest. Default 
+#' is a list with only `Phospho`.
+#' Please note that the 'mod_ids' parameter currently supports lists of size 1 only. 
+#' Future updates aim to extend its functionality to accommodate lists of greater sizes.
+#' @param useUniquePeptide TRUE (default) removes peptides that are assigned for
+#'  more than one proteins. We assume to use unique peptide for each protein.
+#' @param removeFewMeasurements TRUE (default) will remove the features that 
+#' have 1 or 2 measurements across runs.
+#' @param removeProtein_with1Feature TRUE will remove the proteins which have 
+#' only 1 feature, which is the combination of peptide, precursor charge, 
+#' fragment and charge. FALSE is default.
+#' @param summaryforMultipleRows sum(default) or max - when there are multiple 
+#' measurements for certain feature and certain run, use highest or sum of 
+#' multiple intensities.
+#' @param use_log_file logical. If TRUE, information about data processing will 
+#' be saved to a file.
+#' @param append logical. If TRUE, information about data processing will be 
+#' added to an existing log file.
+#' @param verbose logical. If TRUE, information about data processing wil be 
+#' printed to the console.
+#' @param log_file_path character. Path to a file to which information about 
+#' data processing will be saved. If not provided, such a file will be created 
+#' automatically. If 'append = TRUE', has to be a valid path to a file. 
+#' @return a list of two data.tables named 'PTM' and 'PROTEIN' in the format 
+#' required by MSstatsPTM.
+#' @importFrom MSstatsConvert ProteinProspectortoMSstatsTMTFormat
+#' 
+#' @export
+#' 
+#' @examples
+#' input = system.file("tinytest/raw_data/ProteinProspector/Prospector_PhosphoTMT.txt",
+#'     package = "MSstatsPTM")
+#' input = data.table::fread(input)
+#' annot = system.file("tinytest/raw_data/ProteinProspector/Annotation.csv",
+#'                                 package = "MSstatsPTM")
+#' annot = data.table::fread(annot)
+#' input_protein = system.file("tinytest/raw_data/ProteinProspector/Prospector_TotalTMT.txt",
+#'     package = "MSstatsConvert")
+#' input_protein = data.table::fread(input_protein)
+#' annot_protein = system.file("tinytest/raw_data/ProteinProspector/Annotation.csv",
+#'                                 package = "MSstatsConvert")
+#' annot_protein = data.table::fread(annot_protein)
+#' output <- ProteinProspectortoMSstatsPTMFormat(
+#'     input, 
+#'     annot, 
+#'     input_protein,
+#'     annot_protein
+#' )
+#' head(output)
+#' 
+ProteinProspectortoMSstatsPTMFormat = function(
+        input,
+        annotation,
+        input_protein = NULL,
+        annotation_protein = NULL,
+        use_unmod_peptides = FALSE,
+        mod_ids = c("Phospho"),
+        useUniquePeptide = TRUE, 
+        removeFewMeasurements = TRUE,
+        removeProtein_with1Feature = FALSE, 
+        summaryforMultipleRows = sum,
+        use_log_file = TRUE, 
+        append = FALSE, 
+        verbose = TRUE, 
+        log_file_path = NULL
+) {
+    MSstatsConvert::MSstatsLogsSettings(use_log_file, append, verbose, 
+                                        log_file_path, 
+                                        base = "MSstatsPTM_converter_log_")
+    
+    mod_id = mod_ids[[1]]
+    input = as.data.table(input)
+    
+    ## Check input parameters 
+    checkmate::assertTRUE(!is.null(input))
+    .checkAnnotation(annotation, "TMT")
+    if (!is.null(input_protein)) {
+        checkmate::assertTRUE(!is.null(annotation_protein))
+    }
+    
+    input$Peptide = gsub("TMT[0-9]*plex-", "", input$Peptide) # remove TMT tags
+    input = input[!grepl("\\|", input$`Protein Mods`),] # filter out rows with uncertainty in protein mods
+    input$Peptide = gsub(paste0("\\((?!", mod_id, "\\)).*?\\)"), "", input$Peptide, perl=TRUE) # filter out other modifications
+    
+    protein_id_col = "Acc #"
+    input = MSstatsPTMSiteLocator(input, 
+                                  protein_name_col=protein_id_col,
+                                  unmod_pep_col = "DB Peptide",
+                                  mod_pep_col = "Peptide",
+                                  clean_mod=FALSE,
+                                  mod_id=paste0("\\(", mod_id, "\\)"),
+                                  bracket = "(",
+                                  replace_text = TRUE
+    )
+    
+    if (use_unmod_peptides){
+        input_protein = input[input[,..protein_id_col][[1]]  == input$ProteinNameUnmod]
+        annotation_protein = annotation
+    } else {
+        input = input[input[,..protein_id_col][[1]] != input$ProteinNameUnmod]
+    }
+    
+    input[["DB Peptide"]] = input[[colnames(input)[grepl("new_peptide_col", colnames(input))][[1]]]]
+    ptm_input = ProteinProspectortoMSstatsTMTFormat(input,
+                                            annotation,
+                                            useUniquePeptide, 
+                                            removeFewMeasurements,
+                                            removeProtein_with1Feature, 
+                                            summaryforMultipleRows,
+                                            use_log_file, 
+                                            append, 
+                                            verbose, 
+                                            log_file_path)
+    
+    msstats_format = list(PTM = ptm_input, PROTEIN = NULL)
+    
+    if (!is.null(input_protein)) {
+        protein_input = ProteinProspectortoMSstatsTMTFormat(input_protein,
+                                                    annotation_protein,
+                                                    useUniquePeptide, 
+                                                    removeFewMeasurements,
+                                                    removeProtein_with1Feature, 
+                                                    summaryforMultipleRows,
+                                                    use_log_file, 
+                                                    append, 
+                                                    verbose, 
+                                                    log_file_path)
+        
+        ptm_input = ptm_input[grepl(mod_id, ptm_input$PeptideSequence),]
+        
+        msstats_format = list(PTM = ptm_input, PROTEIN = protein_input)
+    }
+    
+    return(msstats_format)
+}
