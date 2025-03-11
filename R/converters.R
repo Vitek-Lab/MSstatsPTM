@@ -520,6 +520,12 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
     .checkAnnotation(annotation_protein, labeling_type)
   }
   
+  if (!is.null(evidence_prot)){
+    if (is.null(proteinGroups)) {
+      stop("proteinGroups is NULL.  Please input the proteinGroups file from your global proteome dataset using the proteinGroups parameter")
+    }
+  }
+  
   # .checkMaxQconverterParams(mod.num,
   #                           ptm.keyword,
   #                           which.proteinid.ptm,
@@ -625,11 +631,6 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
   
   if (!is.null(evidence_prot)){
     annotation_protein = as.data.table(annotation_protein)
-    
-    ## Clean raw data
-    #evidence = as.data.table(evidence)
-    # evidence = evidence[!grepl("phos", evidence$Raw.file),]
-    #proteinGroups = as.data.table(proteinGroups)
     
     if(labeling_type == "TMT"){
       msstats.abun = MaxQtoMSstatsTMTFormat(evidence = evidence_prot,
