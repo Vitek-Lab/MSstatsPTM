@@ -125,7 +125,8 @@ row.names(comparison)<-c('1-4', '2-5', '3-6', '1-3',
 colnames(comparison) <- c('Condition_1','Condition_2','Condition_3',
                           'Condition_4','Condition_5','Condition_6')
 MSstatsPTM.model <- groupComparisonPTM(MSstatsPTM.summary,
-                                       data.type = "TMT",
+                                       ptm_label_type = "TMT",
+                                       protein_label_type = "TMT",
                                        contrast.matrix = comparison,
                                        use_log_file = FALSE, append = FALSE)
 head(MSstatsPTM.model$PTM.Model)

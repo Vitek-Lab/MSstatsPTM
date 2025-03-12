@@ -335,7 +335,8 @@ row.names(comparison) = "CCCP-Ctrl"
 colnames(comparison) = c("CCCP", "Combo", "Ctrl", "USP30_OE")
 
 MSstatsPTM.model = groupComparisonPTM(MSstatsPTM.summary, 
-                                      data.type = "LabelFree",
+                                      ptm_label_type = "LF",
+                                      protein_label_type = "LF",
                                       contrast.matrix = comparison,
                                       use_log_file = FALSE, append = FALSE,
                                       verbose = FALSE)
