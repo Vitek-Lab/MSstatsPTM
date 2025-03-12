@@ -47,7 +47,8 @@
 #' 
 #' @examples
 #' model.lf.msstatsptm = groupComparisonPTM(summary.data, 
-#'                                      data.type = "LabelFree",
+#'                                      ptm_label_type="LF",
+#'                                      protein_label_type="LF",
 #'                                      verbose = FALSE)
 #'                                      
 #' #(1) Minimal number of biological replicates per condition

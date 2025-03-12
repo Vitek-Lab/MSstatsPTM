@@ -10,6 +10,10 @@ dataProcessPTM(
   protein_label_type,
   MBimpute_ptm = FALSE,
   MBimpute_protein = TRUE,
+  use_log_file = TRUE,
+  append = FALSE,
+  verbose = TRUE,
+  log_file_path = NULL,
   ...
 )
 }

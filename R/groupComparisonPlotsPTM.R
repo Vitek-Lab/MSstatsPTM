@@ -84,7 +84,8 @@
 #' @examples 
 #' 
 #' model.lf.msstatsptm = groupComparisonPTM(summary.data, 
-#'                                      data.type = "LabelFree")
+#'                                      ptm_label_type="LF",
+#'                                      protein_label_type="LF")
 #' groupComparisonPlotsPTM(data = model.lf.msstatsptm,
 #'                         type = "VolcanoPlot",
 #'                         FCcutoff= 2,
