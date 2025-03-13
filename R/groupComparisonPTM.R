@@ -105,7 +105,13 @@ groupComparisonPTM = function(data,
   ## Create pairwise matrix for label free
   if (contrast.matrix[1] == "pairwise"){
     # getOption(option_log)("INFO", "Building pairwise matrix.")
-    labels = unique(data.ptm$ProteinLevelData$GROUP)
+    if ("GROUP" %in% colnames(data.ptm$ProteinLevelData)) {
+      labels <- unique(data.ptm$ProteinLevelData$GROUP)
+    } else if ("Condition" %in% colnames(data.ptm$ProteinLevelData)) {
+      labels <- unique(data.ptm$ProteinLevelData$Condition)
+    } else {
+      stop("Error: Neither 'GROUP' nor 'Condition' column exists in data.ptm$ProteinLevelData.")
+    }
     contrast.matrix = MSstatsContrastMatrix('pairwise', labels)
   }
   
