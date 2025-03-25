@@ -71,11 +71,11 @@ The probability is confidence score determined by PeptideProphet and higher valu
 \item{useUniquePeptide}{logical, if TRUE (default) removes peptides that are assigned for more than one proteins.
 We assume to use unique peptide for each protein.}
 
-\item{rmPSM_withfewMea_withinRun}{TRUE (default) will remove the features that have 1 or 2 measurements within each Run.}
+\item{rmPSM_withfewMea_withinRun}{TRUE will remove the features that have 1 or 2 measurements within each Run. Default is FALSE.}
 
 \item{rmPeptide_OxidationM}{TRUE (default) will remove the peptides including oxidation (M) sequence.}
 
-\item{rmProtein_with1Feature}{TRUE will remove the proteins which have only 1 peptide and charge. Defaut is FALSE.}
+\item{rmProtein_with1Feature}{TRUE will remove the proteins which have only 1 peptide and charge. Default is FALSE.}
 
 \item{summaryforMultipleRows}{sum (default) or max - when there are multiple measurements for certain feature in certain run,
 select the feature with the largest summation or maximal value.}

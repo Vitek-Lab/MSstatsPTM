@@ -191,9 +191,9 @@ DIANNtoMSstatsPTMFormat = function(input,
 #' The probability is confidence score determined by PeptideProphet and higher values indicate greater confidence.
 #' @param useUniquePeptide logical, if TRUE (default) removes peptides that are assigned for more than one proteins. 
 #' We assume to use unique peptide for each protein.
-#' @param rmPSM_withfewMea_withinRun TRUE (default) will remove the features that have 1 or 2 measurements within each Run.
+#' @param rmPSM_withfewMea_withinRun TRUE will remove the features that have 1 or 2 measurements within each Run. Default is FALSE.
 #' @param rmPeptide_OxidationM TRUE (default) will remove the peptides including oxidation (M) sequence.
-#' @param rmProtein_with1Feature TRUE will remove the proteins which have only 1 peptide and charge. Defaut is FALSE.
+#' @param rmProtein_with1Feature TRUE will remove the proteins which have only 1 peptide and charge. Default is FALSE.
 #' @param summaryforMultipleRows sum (default) or max - when there are multiple measurements for certain feature in certain run, 
 #' select the feature with the largest summation or maximal value.
 #' @param use_log_file logical. If TRUE, information about data processing will 
