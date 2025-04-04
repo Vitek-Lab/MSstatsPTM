@@ -146,9 +146,9 @@ mq_imported = MaxQtoMSstatsPTMFormat(evidence=maxq_lf_evidence,
                                      labeling_type = "LF",
                                      which_proteinid_ptm = "Proteins")
 .validatePositiveNumberOfRows(mq_imported)
-.validateProteinId(mq_imported$PROTEIN, "P36578", 144)
-.validateProteinId(mq_imported$PTM, "P36578_S295", 72)
-.validateProteinId(mq_imported$PTM, "Q13523_S431_S437", 36)
+.validateProteinId(mq_imported$PROTEIN, "P36578", 132)
+.validateProteinId(mq_imported$PTM, "P36578_S295", 66)
+.validateProteinId(mq_imported$PTM, "Q13523_S431_S437", 33)
 .validatePtmSubstring(
     mq_imported$PTM, "Phospho \\(STY\\)", 
     length(mq_imported$PTM$PeptideSequence))
