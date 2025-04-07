@@ -57,19 +57,6 @@ for your tool in `MSstatsPTM`, you can alternatively leverage converters from
 base `MSstats`. If using converters from `MSstats` note they will need to be 
 run both on the global protein and PTM datasets.
 
-You might notice a FASTA file is also needed for some converters. This
-FASTA file can be obtained by querying
-[Uniprot](https://www.uniprot.org/id-mapping) with all of the protein
-IDs present in your PTM dataset. The FASTA file is a necessary input
-because some tools (e.g. MaxQuant) do not report the specific amino acid
-that is modified relative to the whole *protein* sequence. Rather, they
-report the specific amino acid relative to the reported *peptide*. This
-distinction is important because modifications like phosphorylation,
-methylation, or acetylation often have specific roles depending on where
-they occur within the full-length protein. With the help of a FASTA
-file, MSstatsPTM can determine the specific amino acid that is modified
-in the context of the whole protein sequence.
-
 Please note for the PTM dataset, both the protein and modification site (or 
 peptide), must be added into the `ProteinName` column. This allows for the 
 package to summarize to the peptide level, and avoid the off chance there are 
@@ -240,7 +227,36 @@ Experiments can be acquired with label-free labeling methods.
 `MSstatsPTM` includes a dedicated converter for Progenesis output. 
 Experiments can be acquired with label-free labeling methods.
 
-#### 1.1.7 Additional tools
+#### 1.1.7 FASTA File
+
+You might notice a FASTA file is also needed for some converters. This
+FASTA file can be obtained by querying
+[Uniprot](https://www.uniprot.org/id-mapping) with all of the protein
+IDs present in your PTM dataset.  
+
+Follow these steps to download a FASTA file from UniProt:
+
+1. **Prepare your protein IDs** Make a list of your protein IDs (e.g., UniProt accessions like P31749, Q9Y243, etc.). You can copy-paste them into the UniProt tool.
+2. **Go to the UniProt ID mapping tool** Open the UniProt ID mapping page: https://www.uniprot.org/id-mapping
+3. **Select input database** In the "From" dropdown, choose: UniProtKB AC/ID
+4. **Select output database** In the "To" dropdown:
+    + If isoform-specific data is needed, select: UniProtKB/Swiss-Prot
+    + Otherwise, select: UniProtKB
+5. **Submit your IDs** Paste your protein IDs into the text box and click "Submit".
+6. **Download the FASTA file** Once the mapping is complete, you’ll see a results page.
+    + Click the "Download" button on the top of the table.
+    + Select "FASTA (canonical)" and click download
+
+The FASTA file is a necessary input because some tools (e.g. MaxQuant) do not 
+report the specific amino acid that is modified relative to the whole *protein* 
+sequence. Rather, they report the specific amino acid relative to the reported 
+*peptide*. This distinction is important because modifications like phosphorylation,
+methylation, or acetylation often have specific roles depending on where
+they occur within the full-length protein. With the help of a FASTA
+file, MSstatsPTM can determine the specific amino acid that is modified
+in the context of the whole protein sequence.
+
+#### 1.1.8 Additional tools
 
 If there is not a dedicated `MSstatsPTM` converter for a processing tool, 
 the existing converters in `MSstats` and `MSstatsTMT` converters can be used as 
