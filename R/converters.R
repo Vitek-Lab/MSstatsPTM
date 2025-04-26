@@ -47,6 +47,7 @@
 #' @export
 #' 
 #' @examples
+#' # Example from PRIDE ID PXD053502
 #' input = system.file("tinytest/raw_data/DIANN/report.tsv", 
 #'                                         package = "MSstatsPTM")
 #' input = data.table::fread(input)

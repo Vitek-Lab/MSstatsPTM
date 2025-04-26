@@ -91,6 +91,7 @@ additional \code{report.tsv} file for a corresponding global profiling run can
 be included.
 }
 \examples{
+# Example from PRIDE ID PXD053502
 input = system.file("tinytest/raw_data/DIANN/report.tsv", 
                                         package = "MSstatsPTM")
 input = data.table::fread(input)
