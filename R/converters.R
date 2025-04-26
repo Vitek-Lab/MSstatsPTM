@@ -20,7 +20,8 @@
 #' @param protein_id_col Use 'Protein.Groups'(default) column for protein name. 
 #' @param fasta_protein_name Name of column that matches with the protein names 
 #' in `protein_id_col`. The protein names in these two columns must match in 
-#' order to join the FASTA file with the DIA-NN output.
+#' order to join the FASTA file with the DIA-NN output. Default is "uniprot_ac"
+#' for uniprot ID. For uniprot mnemonic ID, use "entry_name"
 #' @param global_qvalue_cutoff The global qvalue cutoff. Default is 0.01.
 #' @param qvalue_cutoff local qvalue cutoff for library. Default is 0.01.
 #' @param pg_qvalue_cutoff local qvalue cutoff for protein groups Run should be 
@@ -46,14 +47,25 @@
 #' @export
 #' 
 #' @examples
-#' # ptm = read.csv("Phospho/report.tsv", sep="\t")
-#' # protein = read.csv("Protein/report.tsv", sep="\t")
-#' # annotation = read.csv("Phospho/annotation.csv")
-#' # annotation_protein = read.csv("Protein/annotation.csv")
+#' input = system.file("tinytest/raw_data/DIANN/report.tsv", 
+#'                                         package = "MSstatsPTM")
+#' input = data.table::fread(input)
+#' annot = system.file("tinytest/raw_data/DIANN/annot.csv", 
+#'                                         package = "MSstatsPTM")
+#' annot = data.table::fread(annot)
+#' fasta_path = system.file("extdata", "diann.fasta", 
+#'                        package="MSstatsPTM")
 #' 
-#' #DIANNtoMSstatsPTMFormat(ptm, annotation, 
-#' #                        protein, annotation_protein,
-#' #                        fasta_path="fasta_file.fasta")
+#' msstatsptm_format = DIANNtoMSstatsPTMFormat(
+#'     input, 
+#'     annot, 
+#'     protein_id_col = "Protein.Names", 
+#'     fasta_path = fasta_path, 
+#'     fasta_protein_name = "entry_name", 
+#'     use_log_file = FALSE
+#' )
+#' 
+#' head(msstatsptm_format$PTM)
 #' 
 DIANNtoMSstatsPTMFormat = function(input,
                                    annotation,
