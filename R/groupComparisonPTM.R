@@ -19,6 +19,8 @@
 #' function \code{\link[MSstatsPTM]{dataSummarizationPTM}}  or 
 #' \code{\link[MSstatsPTM]{dataSummarizationPTM_TMT}} depending on acquisition
 #' type.
+#' @param data.type Type of data. Must be one of `LF` or `TMT`. Will be deprecated 
+#' in favor of ptm_label_type and protein_label_type.
 #' @param ptm_label_type Indicator of labeling type for PTM dataset. Must be one
 #' of `LF` or `TMT`
 #' @param protein_label_type Indicator of labeling type for PROTEIN dataset. 
@@ -54,8 +56,9 @@
 #'                                      protein_label_type="LF",
 #'                                      verbose = FALSE)
 groupComparisonPTM = function(data, 
-                              ptm_label_type,
-                              protein_label_type,
+                              data.type = NULL,
+                              ptm_label_type = "LF",
+                              protein_label_type = "LF",
                               contrast.matrix = "pairwise",
                               moderated = FALSE, 
                               adj.method = "BH",
@@ -88,6 +91,10 @@ groupComparisonPTM = function(data,
   #                     pkg_name = pkg)
   
   # getOption(option_log)("INFO", "Starting parameter and data checks..")
+  if (!is.null(data.type) && (data.type == "TMT" || data.type == "LF")) {
+      ptm_label_type = data.type
+      protein_label_type = data.type
+  }
   
   Label = Site = NULL
   
@@ -234,6 +241,12 @@ groupComparisonPTM = function(data,
                   'ADJUSTED.Model'=adjusted_models, 
                   'Model.Details'=list('PTM'=ptm_model_details,
                                        'PROTEIN'=protein_model_details))
+  }
+  
+  if (!is.null(data.type) && (data.type == "TMT" || data.type == "LF")) {
+      warning("DEPRECATION NOTICE: The `data.type` argument is being deprecated. 
+              Please use `ptm_label_type` and `protein_label_type` instead ahead
+              of Release 3.22")
   }
 
   return(models)

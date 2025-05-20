@@ -6,8 +6,9 @@
 \usage{
 groupComparisonPTM(
   data,
-  ptm_label_type,
-  protein_label_type,
+  data.type = NULL,
+  ptm_label_type = "LF",
+  protein_label_type = "LF",
   contrast.matrix = "pairwise",
   moderated = FALSE,
   adj.method = "BH",
@@ -25,6 +26,9 @@ groupComparisonPTM(
 function \code{\link[MSstatsPTM]{dataSummarizationPTM}}  or
 \code{\link[MSstatsPTM]{dataSummarizationPTM_TMT}} depending on acquisition
 type.}
+
+\item{data.type}{Type of data. Must be one of \code{LF} or \code{TMT}. Will be deprecated
+in favor of ptm_label_type and protein_label_type.}
 
 \item{ptm_label_type}{Indicator of labeling type for PTM dataset. Must be one
 of \code{LF} or \code{TMT}}
