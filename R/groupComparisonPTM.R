@@ -21,10 +21,6 @@
 #' type.
 #' @param data.type Type of data. Must be one of `LF` or `TMT`. Will be deprecated 
 #' in favor of ptm_label_type and protein_label_type.
-#' @param ptm_label_type Indicator of labeling type for PTM dataset. Must be one
-#' of `LF` or `TMT`
-#' @param protein_label_type Indicator of labeling type for PROTEIN dataset. 
-#' Must be one of `LF` or `TMT`
 #' @param contrast.matrix comparison between conditions of interests. Default 
 #' models full pairwise comparison between all conditions
 #' @param moderated For TMT experiments only. TRUE will moderate t statistic; 
@@ -46,6 +42,10 @@
 #' If not provided, such a file will be created automatically.
 #' If `append = TRUE`, has to be a valid path to a file.
 #' @param base start of the file name.
+#' @param ptm_label_type Indicator of labeling type for PTM dataset. Must be one
+#' of `LF` or `TMT`
+#' @param protein_label_type Indicator of labeling type for PROTEIN dataset. 
+#' Must be one of `LF` or `TMT`
 #' @return list of modeling results. Includes PTM, PROTEIN, and ADJUSTED
 #'         data.tables with their corresponding model results.
 #'         
@@ -57,8 +57,6 @@
 #'                                      verbose = FALSE)
 groupComparisonPTM = function(data, 
                               data.type = NULL,
-                              ptm_label_type = "LF",
-                              protein_label_type = "LF",
                               contrast.matrix = "pairwise",
                               moderated = FALSE, 
                               adj.method = "BH",
@@ -68,7 +66,9 @@ groupComparisonPTM = function(data,
                               append = FALSE,
                               verbose = TRUE, 
                               log_file_path = NULL,
-                              base = "MSstatsPTM_log_") {
+                              base = "MSstatsPTM_log_",
+                              ptm_label_type = "LF",
+                              protein_label_type = "LF") {
   
   ## Start log  
   # if (is.null(log_file_path) & use_log_file == TRUE){
