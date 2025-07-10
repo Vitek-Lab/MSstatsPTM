@@ -621,8 +621,6 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
                                                            keep = 1)]
   }
   
-  MSstatsPTMformat = list('PTM' = msstatsptm_input)
-  
   if (!is.null(evidence_prot)){
     annotation_protein = as.data.table(annotation_protein)
     
@@ -643,9 +641,10 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
                                          proteinID = which_proteinid_protein)
     }
     
+    msstatsptm_input = msstatsptm_input[grepl(mod_id, msstatsptm_input$PeptideSequence),]
     MSstatsPTMformat = list('PTM' = msstatsptm_input, 
                             "PROTEIN" = msstats.abun)
-    
+    return(MSstatsPTMformat)
   }
   
   if (use_unmod_peptides){
@@ -654,6 +653,9 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
     
     MSstatsPTMformat = list(PTM = msstatsptm_input, 
                             PROTEIN = msstats.abun)
+  } else {
+    msstatsptm_input = msstatsptm_input[grepl(mod_id, msstatsptm_input$PeptideSequence),]
+    MSstatsPTMformat = list('PTM' = msstatsptm_input)
   }
   
   return(MSstatsPTMformat)
