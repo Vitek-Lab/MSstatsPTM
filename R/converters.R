@@ -655,6 +655,7 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
                                          proteinID = which_proteinid_protein)
     }
     
+    msstatsptm_input = msstatsptm_input[grepl(mod_id, msstatsptm_input$PeptideSequence),]
     MSstatsPTMformat = list('PTM' = msstatsptm_input, 
                             "PROTEIN" = msstats.abun)
     return(MSstatsPTMformat)
