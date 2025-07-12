@@ -5,9 +5,13 @@
 #' @author Anthony Wu
 #' 
 #' @param msstats_ptm_input A list containing PTM and PROTEIN data tables
-.validatePositiveNumberOfRows = function(msstats_ptm_input) {
+.validatePositiveNumberOfRows = function(msstats_ptm_input, global_profiling = TRUE) {
     expect_true(nrow(msstats_ptm_input$PTM) > 0)
-    expect_true(nrow(msstats_ptm_input$PROTEIN) > 0)
+    if (global_profiling) {
+      expect_true(nrow(msstats_ptm_input$PROTEIN) > 0) 
+    } else {
+      expect_true(is.null(msstats_ptm_input$PROTEIN))
+    }
 }
 
 #' Validate protein ID count in converter output
@@ -35,7 +39,7 @@
     )
 }
 
-## MaxQ TMT
+## MaxQ TMT useUnmodPeptides = TRUE
 data("maxq_tmt_evidence", package = "MSstatsPTM")
 data("maxq_tmt_annotation", package = "MSstatsPTM")
 
@@ -84,12 +88,26 @@ mq_imported = MaxQtoMSstatsPTMFormat(evidence=maxq_tmt_evidence,
 .validateProteinId(mq_imported$PTM, "P29966_T150", 70)
 .validateProteinId(mq_imported$PTM, "P29966_T143_S145", 10)
 .validatePtmSubstring(
-    mq_imported$PTM, "Phospho \\(STY\\)", 
-    length(mq_imported$PTM$PeptideSequence))
+  mq_imported$PTM, "Phospho \\(STY\\)", 
+  length(mq_imported$PTM$PeptideSequence))
 .validatePtmSubstring(
-    mq_imported$PROTEIN, "Phospho \\(STY\\)", 0)
+  mq_imported$PROTEIN, "Phospho \\(STY\\)", 0)
 
-## MaxQ LF
+## MaxQ TMT useUnmodPeptides = FALSE
+mq_imported = MaxQtoMSstatsPTMFormat(evidence=maxq_tmt_evidence,
+                                     annotation=maxq_tmt_annotation,
+                                     fasta=system.file("extdata", "maxq_tmt_fasta.fasta", package="MSstatsPTM"),
+                                     fasta_protein_name="uniprot_ac",
+                                     use_unmod_peptides=FALSE,
+                                     labeling_type = "TMT")
+.validatePositiveNumberOfRows(mq_imported, global_profiling = FALSE)
+.validateProteinId(mq_imported$PTM, "P29966_T150", 70)
+.validateProteinId(mq_imported$PTM, "P29966_T143_S145", 10)
+.validatePtmSubstring(
+  mq_imported$PTM, "Phospho \\(STY\\)", 
+  length(mq_imported$PTM$PeptideSequence))
+
+## MaxQ LF useUnmodPeptides = TRUE
 data("maxq_lf_evidence", package = "MSstatsPTM")
 data("maxq_lf_annotation", package = "MSstatsPTM")
 
@@ -154,6 +172,22 @@ mq_imported = MaxQtoMSstatsPTMFormat(evidence=maxq_lf_evidence,
     length(mq_imported$PTM$PeptideSequence))
 .validatePtmSubstring(
     mq_imported$PROTEIN, "Phospho \\(STY\\)", 0)
+
+## MaxQ LF useUnmodPeptides = FALSE
+mq_imported = MaxQtoMSstatsPTMFormat(evidence=maxq_lf_evidence,
+                                     annotation=maxq_lf_annotation,
+                                     fasta=system.file("extdata", "maxq_lf_fasta.fasta", package="MSstatsPTM"),
+                                     fasta_protein_name="uniprot_ac",
+                                     mod_id="\\(Phospho \\(STY\\)\\)",
+                                     use_unmod_peptides=FALSE,
+                                     labeling_type = "LF",
+                                     which_proteinid_ptm = "Proteins")
+.validatePositiveNumberOfRows(mq_imported, global_profiling = FALSE)
+.validateProteinId(mq_imported$PTM, "P36578_S295", 66)
+.validateProteinId(mq_imported$PTM, "Q13523_S431_S437", 33)
+.validatePtmSubstring(
+  mq_imported$PTM, "Phospho \\(STY\\)", 
+  length(mq_imported$PTM$PeptideSequence))
 
 ## Spectronaut
 data("spectronaut_input", package = "MSstatsPTM")
