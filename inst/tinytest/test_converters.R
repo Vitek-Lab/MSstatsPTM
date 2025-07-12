@@ -5,6 +5,8 @@
 #' @author Anthony Wu
 #' 
 #' @param msstats_ptm_input A list containing PTM and PROTEIN data tables
+#' @param global_profiling Default TRUE indicates msstats_ptm_input should have 
+#' the PROTEIN element
 .validatePositiveNumberOfRows = function(msstats_ptm_input, global_profiling = TRUE) {
     expect_true(nrow(msstats_ptm_input$PTM) > 0)
     if (global_profiling) {
