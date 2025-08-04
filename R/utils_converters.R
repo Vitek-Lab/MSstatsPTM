@@ -609,11 +609,14 @@ MSstatsPTMSiteLocator = function(data,
   
   return(data)
 }
-#' Add site location and aa
-#' @param data data.table
-#' @param fasta_file string or data.table
-#' @return data.table
-#' @keywords internal
+
+#' Fix terminus location adjustments
+#' @param data data.table containing peptide data
+#' @param terminus_id character string identifying the terminus 
+#' (e.g. N-terminus)
+#' @param unmod_pep_col character string specifying the column name containing 
+#' unmodified peptide sequences
+#' @return data.table with corrected Start positions
 .fixTerminus = function(data, terminus_id, unmod_pep_col){
   
   ## Terminus makes start location off

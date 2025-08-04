@@ -2,19 +2,22 @@
 % Please edit documentation in R/utils_converters.R
 \name{.fixTerminus}
 \alias{.fixTerminus}
-\title{Add site location and aa}
+\title{Fix terminus location adjustments}
 \usage{
 .fixTerminus(data, terminus_id, unmod_pep_col)
 }
 \arguments{
-\item{data}{data.table}
+\item{data}{data.table containing peptide data}
 
-\item{fasta_file}{string or data.table}
+\item{terminus_id}{character string identifying the terminus
+(e.g. N-terminus)}
+
+\item{unmod_pep_col}{character string specifying the column name containing
+unmodified peptide sequences}
 }
 \value{
-data.table
+data.table with corrected Start positions
 }
 \description{
-Add site location and aa
+Fix terminus location adjustments
 }
-\keyword{internal}
