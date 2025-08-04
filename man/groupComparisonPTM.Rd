@@ -7,8 +7,6 @@
 groupComparisonPTM(
   data,
   data.type = NULL,
-  ptm_label_type = "LF",
-  protein_label_type = "LF",
   contrast.matrix = "pairwise",
   moderated = FALSE,
   adj.method = "BH",
@@ -18,7 +16,9 @@ groupComparisonPTM(
   append = FALSE,
   verbose = TRUE,
   log_file_path = NULL,
-  base = "MSstatsPTM_log_"
+  base = "MSstatsPTM_log_",
+  ptm_label_type = "LF",
+  protein_label_type = "LF"
 )
 }
 \arguments{
@@ -29,12 +29,6 @@ type.}
 
 \item{data.type}{Type of data. Must be one of \code{LF} or \code{TMT}. Will be deprecated
 in favor of ptm_label_type and protein_label_type.}
-
-\item{ptm_label_type}{Indicator of labeling type for PTM dataset. Must be one
-of \code{LF} or \code{TMT}}
-
-\item{protein_label_type}{Indicator of labeling type for PROTEIN dataset.
-Must be one of \code{LF} or \code{TMT}}
 
 \item{contrast.matrix}{comparison between conditions of interests. Default
 models full pairwise comparison between all conditions}
@@ -66,6 +60,12 @@ If not provided, such a file will be created automatically.
 If \code{append = TRUE}, has to be a valid path to a file.}
 
 \item{base}{start of the file name.}
+
+\item{ptm_label_type}{Indicator of labeling type for PTM dataset. Must be one
+of \code{LF} or \code{TMT}}
+
+\item{protein_label_type}{Indicator of labeling type for PROTEIN dataset.
+Must be one of \code{LF} or \code{TMT}}
 }
 \value{
 list of modeling results. Includes PTM, PROTEIN, and ADJUSTED

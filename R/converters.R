@@ -1450,22 +1450,26 @@ SpectronauttoMSstatsPTMFormat = function(
                                 bracket="[",
                                 replace_text=TRUE)
   
-  ptm_input = SpectronauttoMSstatsFormat(input, annotation, intensity, 
-                                         filter_with_Qvalue,
-                                         qvalue_cutoff, useUniquePeptide, 
-                                         removeFewMeasurements, 
-                                         removeProtein_with1Feature, 
-                                         summaryforMultipleRows)
+  ptm_input = SpectronauttoMSstatsFormat(input, annotation, 
+                                         intensity = intensity, 
+                                         filter_with_Qvalue = filter_with_Qvalue,
+                                         qvalue_cutoff = qvalue_cutoff, 
+                                         useUniquePeptide = useUniquePeptide, 
+                                         removeFewMeasurements = removeFewMeasurements, 
+                                         removeProtein_with1Feature = removeProtein_with1Feature, 
+                                         summaryforMultipleRows = summaryforMultipleRows)
   
   msstats_input = list(PTM = ptm_input)
   if (!is.null(protein_input)) {
     protein_input = SpectronauttoMSstatsFormat(protein_input, 
-                                               annotation_protein, intensity, 
-                                               filter_with_Qvalue,
-                                               qvalue_cutoff, useUniquePeptide, 
-                                               removeFewMeasurements, 
-                                               removeProtein_with1Feature, 
-                                               summaryforMultipleRows)
+                                               annotation_protein, 
+                                               intensity = intensity, 
+                                               filter_with_Qvalue = filter_with_Qvalue,
+                                               qvalue_cutoff = qvalue_cutoff, 
+                                               useUniquePeptide = useUniquePeptide, 
+                                               removeFewMeasurements = removeFewMeasurements, 
+                                               removeProtein_with1Feature = removeProtein_with1Feature, 
+                                               summaryforMultipleRows = summaryforMultipleRows)
     
     msstats_input = list(PTM = ptm_input, PROTEIN = protein_input)
   }
@@ -1598,28 +1602,28 @@ MetamorpheusToMSstatsPTMFormat = function(input,
     
     ptm_input = MetamorpheusToMSstatsFormat(input,
                                             annotation,
-                                            useUniquePeptide, 
-                                            removeFewMeasurements,
-                                            removeProtein_with1Feature, 
-                                            summaryforMultipleRows,
-                                            use_log_file, 
-                                            append, 
-                                            verbose, 
-                                            log_file_path)
+                                            useUniquePeptide = useUniquePeptide, 
+                                            removeFewMeasurements = removeFewMeasurements,
+                                            removeProtein_with1Feature = removeProtein_with1Feature, 
+                                            summaryforMultipleRows = summaryforMultipleRows,
+                                            use_log_file = use_log_file, 
+                                            append = append, 
+                                            verbose = verbose, 
+                                            log_file_path = log_file_path)
     
     msstats_format = list(PTM = ptm_input, PROTEIN = NULL)
     
     if (!is.null(input_protein)) {
         protein_input = MetamorpheusToMSstatsFormat(input_protein,
                                                     annotation_protein,
-                                                    useUniquePeptide, 
-                                                    removeFewMeasurements,
-                                                    removeProtein_with1Feature, 
-                                                    summaryforMultipleRows,
-                                                    use_log_file, 
-                                                    append, 
-                                                    verbose, 
-                                                    log_file_path)
+                                                    useUniquePeptide = useUniquePeptide, 
+                                                    removeFewMeasurements = removeFewMeasurements,
+                                                    removeProtein_with1Feature = removeProtein_with1Feature, 
+                                                    summaryforMultipleRows = summaryforMultipleRows,
+                                                    use_log_file = use_log_file, 
+                                                    append = append, 
+                                                    verbose = verbose, 
+                                                    log_file_path = log_file_path)
         
         ptm_input = ptm_input[grepl(mod_id, ptm_input$PeptideSequence),]
         
