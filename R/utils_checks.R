@@ -11,10 +11,13 @@
   
   if (label_type == "LF"){
     max_columns = c("Run", "Raw.file", "Condition", 
-                    "BioReplicate", "IsotopeLabelType")
+                    "BioReplicate", "IsotopeLabelType", "Fraction")
   } else if (label_type == "TMT"){
     max_columns = c("Run", "Raw.file", "Fraction", "TechRepMixture", "Channel", 
                     "Condition", "Mixture", "BioReplicate")
+  } else {
+    msg = paste("Labeling type must be either LF or TMT")
+    stop(msg)
   }
   
   if (sum(columns %in% max_columns) != length(columns)){
