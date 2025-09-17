@@ -140,6 +140,13 @@ msstats_data = FragPipetoMSstatsPTMFormat(input,
                                           localization_cutoff=.75,
                                           protein_id_col = "ProteinName",
                                           peptide_id_col = "PeptideSequence")
+                                          
+# If no global profiling run is available, omit input_protein and set:
+# msstats_data = FragPipetoMSstatsPTMFormat(input, annot,
+#   label_type = "LF", mod_id_col = "STY",
+#   localization_cutoff = .75, protein_id_col = "ProteinName",
+#   peptide_id_col = "PeptideSequence", use_unmod_peptides = FALSE)
+
 head(msstats_data$PTM)
 head(msstats_data$PROTEIN)
 
