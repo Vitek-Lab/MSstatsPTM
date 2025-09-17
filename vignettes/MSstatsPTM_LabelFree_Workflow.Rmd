@@ -140,22 +140,28 @@ msstats_data = FragPipetoMSstatsPTMFormat(fragpipe_input,
 head(msstats_data$PTM)
 head(msstats_data$PROTEIN)
 
-# LFQ Example (w/out global profiling run)
+# LFQ Example
 input = system.file("tinytest/raw_data/Fragpipe/MSstats.csv", 
                                         package = "MSstatsPTM")
 input = data.table::fread(input)
 annot = system.file("tinytest/raw_data/Fragpipe/experiment_annotation.tsv", 
                                         package = "MSstatsPTM")
-annot = data.table::fread(annot)                                        
+annot = data.table::fread(annot)    
+input_protein = system.file("tinytest/raw_data/Fragpipe/msstats_proteome_lf.csv",
+                                        package = "MSstatsPTM")
+
+input_protein = data.table::fread(input_protein) # Global profiling run
 
 msstats_data = FragPipetoMSstatsPTMFormat(input,
                                           annot,
+                                          input_protein = input_protein,
                                           label_type="LF",
                                           mod_id_col = "STY",
                                           localization_cutoff=.75,
                                           protein_id_col = "ProteinName",
                                           peptide_id_col = "PeptideSequence")
 head(msstats_data$PTM)
+head(msstats_data$PROTEIN)
 ```
 
 
