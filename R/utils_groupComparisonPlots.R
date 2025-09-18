@@ -581,7 +581,7 @@
         geom_line(data=sigcut,
                   aes(x = .data$logFC, y = .data$logadjp, linetype = .data$line),
                   colour="darkgrey",
-                  size=0.6,
+                  linewidth=0.6,
                   show.legend=TRUE) +
         scale_linetype_manual(values=c('twodash'=6),
                               labels=c(paste0("Adj p-value cutoff (", sig, ")"))
@@ -624,17 +624,17 @@
         geom_line(data=sigcut, 
                   aes(x = .data$logFC, y = .data$logadjp, linetype = .data$line),
                   colour="darkgrey",
-                  size=0.6,
+                  linewidth=0.6,
                   show.legend=TRUE) +
         geom_line(data=FCcutpos,
                   aes(x = .data$logFC, y = .data$logadjp, linetype = .data$line),
                   colour="darkgrey",
-                  size=0.6,
+                  linewidth=0.6,
                   show.legend=TRUE) +
         geom_line(data=FCcutneg,
                   aes(x = .data$logFC, y = .data$logadjp, linetype = .data$line),
                   colour="darkgrey",
-                  size=0.6) +
+                  linewidth=0.6) +
         scale_linetype_manual(values=c('dotted'=3, 'twodash'=6),
                               labels=c(paste0("Fold change cutoff (", FCcutoff, 
                                               ")"),
