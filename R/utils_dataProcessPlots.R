@@ -298,7 +298,7 @@
                          data = sub) +
     facet_grid(~RUN) +
     geom_point(data = sub, aes(shape=.data$CENSORED), size=dot.size.profile, na.rm=TRUE) +
-    geom_line(size = 0.5, na.rm=TRUE) +
+    geom_line(linewidth = 0.5, na.rm=TRUE) +
     scale_colour_manual(values=cbp[s]) +
     scale_linetype_manual(values = ss) +
     scale_shape_manual(values = c(16, 1),labels = c("Detected data", "Censored missing data")) +
@@ -424,7 +424,7 @@
     facet_grid(~RUN) +
     # geom_point(size = dot.size.profile, na.rm=TRUE) +
     geom_point(data = final, aes(shape=.data$CENSORED), size=dot.size.profile, na.rm=TRUE) +
-    geom_line(size = 0.5, na.rm=TRUE) +
+    geom_line(linewidth = 0.5, na.rm=TRUE) +
     scale_colour_manual(values = c("lightgray", "darkred")) +
     scale_shape_manual(values = c(16, 1),labels = c("Detected data", "Censored missing data")) +
     scale_size_manual(values = c(1.7, 2), guide = "none") +
@@ -1146,7 +1146,7 @@
                size=dot.size.profile, na.rm=TRUE) +
     geom_line(aes(x=.data$RUN, y=.data$ABUNDANCE, 
                          color=.data$FEATURE, linetype=.data$FEATURE), #
-              size = 0.5, na.rm=TRUE) +
+              linewidth = 0.5, na.rm=TRUE) +
     scale_colour_manual(values=cbp[s]) +
     scale_linetype_manual(values = ss) +
     scale_shape_manual(values = c(16, 1),labels = c("Detected data", "Censored missing data")) +
@@ -1250,7 +1250,7 @@
     geom_point(aes(x=.data$RUN, y=.data$ABUNDANCE, 
                           color=.data$analysis, shape=.data$CENSORED), size = dot.size.profile, na.rm=TRUE) +
     geom_line(aes(x=.data$RUN, y=.data$ABUNDANCE, 
-                         color=.data$analysis, linetype=.data$FEATURE), size = 0.5, na.rm=TRUE) + 
+                         color=.data$analysis, linetype=.data$FEATURE), linewidth = 0.5, na.rm=TRUE) + 
     scale_colour_manual(values = c("lightgray", "darkred")) +
     scale_shape_manual(values = c(16, 1),labels = c("Detected data", "Censored missing data")) +
     scale_size_manual(values = c(1.7, 2), guide = "none") +
