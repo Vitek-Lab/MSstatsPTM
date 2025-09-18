@@ -293,11 +293,11 @@
   
   yaxis.name = 'Log2-intensities'
   ## 1st plot for Protein plot
-  protein_temp = ggplot(aes_string(x = 'xorder', y = 'ABUNDANCE',
-                                    color = 'PSM', linetype = 'PSM'),
+  protein_temp = ggplot(aes(x = .data$xorder, y = .data$ABUNDANCE,
+                                    color = .data$PSM, linetype = .data$PSM),
                          data = sub) +
     facet_grid(~RUN) +
-    geom_point(data = sub, aes(shape=CENSORED), size=dot.size.profile, na.rm=TRUE) +
+    geom_point(data = sub, aes(shape=.data$CENSORED), size=dot.size.profile, na.rm=TRUE) +
     geom_line(size = 0.5, na.rm=TRUE) +
     scale_colour_manual(values=cbp[s]) +
     scale_linetype_manual(values = ss) +
@@ -307,10 +307,10 @@
     scale_y_continuous(yaxis.name, limits = c(y.limdown, y.limup)) +
     scale_x_continuous('MS runs') +
     geom_vline(data = groupline.tmp,
-               aes(xintercept = cumGroupAxis),
+               aes(xintercept = .data$cumGroupAxis),
                colour = "grey", linetype = "longdash") +
     geom_text(data = groupline.all.tmp,
-              aes(x = xorder, y = abundance, label = CONDITION),
+              aes(x = .data$xorder, y = .data$abundance, label = .data$CONDITION),
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
@@ -418,12 +418,12 @@
   yaxis.name = 'Log2-intensities'
 
   ## Draw summarized ptm plot
-  ptempall = ggplot(aes_string(x = 'xorder', y = 'ABUNDANCE', 
-                                color = 'analysis', linetype = 'PSM', 
-                                size = 'analysis'), data = final) +
+  ptempall = ggplot(aes(x = .data$xorder, y = .data$ABUNDANCE, 
+                                color = .data$analysis, linetype = .data$PSM, 
+                                size = .data$analysis), data = final) +
     facet_grid(~RUN) +
     # geom_point(size = dot.size.profile, na.rm=TRUE) +
-    geom_point(data = final, aes(shape=CENSORED), size=dot.size.profile, na.rm=TRUE) +
+    geom_point(data = final, aes(shape=.data$CENSORED), size=dot.size.profile, na.rm=TRUE) +
     geom_line(size = 0.5, na.rm=TRUE) +
     scale_colour_manual(values = c("lightgray", "darkred")) +
     scale_shape_manual(values = c(16, 1),labels = c("Detected data", "Censored missing data")) +
@@ -434,10 +434,10 @@
          x = 'MS runs') +
     scale_y_continuous(yaxis.name, limits = c(y.limdown, y.limup)) +
     geom_vline(data = groupline.tmp,
-               aes(xintercept = cumGroupAxis),
+               aes(xintercept = .data$cumGroupAxis),
                colour = "grey", linetype = "longdash") +
     geom_text(data = groupline.all.tmp,
-              aes(x = xorder, y = abundance, label = CONDITION),
+              aes(x = .data$xorder, y = .data$abundance, label = .data$CONDITION),
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
@@ -450,7 +450,7 @@
   
   ## draw point again because some red summary dots could be hiden
   ptempall = ptempall + geom_point(data = final, aes(
-    x = xorder, y = ABUNDANCE, size = analysis, color = analysis)
+    x = .data$xorder, y = .data$ABUNDANCE, size = .data$analysis, color = .data$analysis)
     )
 
   return(ptempall)
@@ -717,18 +717,18 @@
   ## y-axis labeling
   yaxis.name = 'Log2-intensities'
   
-  ptemp = ggplot(aes_string(x = 'xorder', y = 'ABUNDANCE'),
+  ptemp = ggplot(aes(x = .data$xorder, y = .data$ABUNDANCE),
                       data = datafeature) +
     facet_grid(~RUN) +
-    geom_boxplot(aes_string(fill = 'CONDITION'), outlier.shape = 1,
+    geom_boxplot(aes(fill = .data$CONDITION), outlier.shape = 1,
                  outlier.size = 1.5) +
     labs(title = title, x = 'MS runs') +
     scale_y_continuous(yaxis.name, limits = c(ylimdown, ylimup)) +
     geom_vline(data = groupline.tmp,
-               aes(xintercept = cumGroupAxis),
+               aes(xintercept = .data$cumGroupAxis),
                colour = "grey", linetype = "longdash") +
     geom_text(data = groupline.all.tmp,
-              aes(x = xorder, y = abundance, label = CONDITION),
+              aes(x = .data$xorder, y = .data$abundance, label = .data$CONDITION),
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
@@ -786,18 +786,18 @@
   sub$xorder = factor(sub$xorder)
   yaxis.name = 'Log2-intensities'
   
-  ptemp = ggplot(aes_string(x = 'xorder', y = 'ABUNDANCE'),
+  ptemp = ggplot(aes(x = .data$xorder, y = .data$ABUNDANCE),
                       data = sub) +
     facet_grid(~RUN) +
-    geom_boxplot(aes_string(fill = 'CONDITION'), outlier.shape = 1,
+    geom_boxplot(aes(fill = .data$CONDITION), outlier.shape = 1,
                  outlier.size = 1.5) +
     labs(title = protein, x = 'MS runs') +
     scale_y_continuous(yaxis.name, limits = c(ylimdown, ylimup)) +
     geom_vline(data = groupline.tmp,
-               aes(xintercept = cumGroupAxis),
+               aes(xintercept = .data$cumGroupAxis),
                colour = "grey", linetype = "longdash") +
     geom_text(data = groupline.all.tmp,
-              aes(x = xorder, y = abundance, label = CONDITION),
+              aes(x = .data$xorder, y = .data$abundance, label = .data$CONDITION),
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
@@ -1141,11 +1141,11 @@
   sub$group_aes = paste(sub$CONDITION, sub$FEATURE, sep = "_")
   ## 1st plot for Protein plot
   protein_temp = ggplot(data=sub) + facet_grid(~LABEL) +
-    geom_point(aes_string(x='RUN', y='ABUNDANCE', 
-                          color='FEATURE',  shape='CENSORED'), #
+    geom_point(aes(x=.data$RUN, y=.data$ABUNDANCE, 
+                          color=.data$FEATURE,  shape=.data$CENSORED), #
                size=dot.size.profile, na.rm=TRUE) +
-    geom_line(aes_string(x='RUN', y='ABUNDANCE', 
-                         color='FEATURE', linetype='FEATURE'), #
+    geom_line(aes(x=.data$RUN, y=.data$ABUNDANCE, 
+                         color=.data$FEATURE, linetype=.data$FEATURE), #
               size = 0.5, na.rm=TRUE) +
     scale_colour_manual(values=cbp[s]) +
     scale_linetype_manual(values = ss) +
@@ -1155,10 +1155,10 @@
     scale_y_continuous(yaxis.name, limits = c(y.limdown, y.limup)) +
     scale_x_continuous('MS runs', breaks=groupNametemp$lineNameAxis) +
     geom_vline(data = groupNametemp[lineNameAxis != 0],
-               aes(xintercept = lineNameAxis + 0.5),
+               aes(xintercept = .data$lineNameAxis + 0.5),
                colour = "grey", linetype = "longdash") +
     geom_text(data = groupNametemp,
-              aes_string(x = "RUN", y = "ABUNDANCE", label = "Name"),
+              aes(x = .data$RUN, y = .data$ABUNDANCE, label = .data$Name),
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
@@ -1247,10 +1247,10 @@
   
   ## Draw summarized ptm plot
   ptempall = ggplot(data=final) +
-    geom_point(aes_string(x='RUN', y='ABUNDANCE', 
-                          color='analysis', shape='CENSORED'), size = dot.size.profile, na.rm=TRUE) +
-    geom_line(aes_string(x='RUN', y='ABUNDANCE', 
-                         color='analysis', linetype='FEATURE'), size = 0.5, na.rm=TRUE) + 
+    geom_point(aes(x=.data$RUN, y=.data$ABUNDANCE, 
+                          color=.data$analysis, shape=.data$CENSORED), size = dot.size.profile, na.rm=TRUE) +
+    geom_line(aes(x=.data$RUN, y=.data$ABUNDANCE, 
+                         color=.data$analysis, linetype=.data$FEATURE), size = 0.5, na.rm=TRUE) + 
     scale_colour_manual(values = c("lightgray", "darkred")) +
     scale_shape_manual(values = c(16, 1),labels = c("Detected data", "Censored missing data")) +
     scale_size_manual(values = c(1.7, 2), guide = "none") +
@@ -1260,10 +1260,10 @@
          x = 'MS runs') +
     scale_y_continuous(yaxis.name, limits = c(y.limdown, y.limup)) +
     geom_vline(data = groupNametemp[lineNameAxis != 0],
-               aes(xintercept = lineNameAxis + 0.5),
+               aes(xintercept = .data$lineNameAxis + 0.5),
                colour = "grey", linetype = "longdash") +
     geom_text(data = groupNametemp,
-              aes(x = RUN, y = ABUNDANCE, label = Name),
+              aes(x = .data$RUN, y = .data$ABUNDANCE, label = .data$Name),
               size = text.size,
               angle = text.angle, hjust = .9,
               color = "black") +
@@ -1528,17 +1528,17 @@
   ## y-axis labeling
   yaxis.name = 'Log-intensities'
   
-  ptemp = ggplot(aes_string(x = 'RUN', y = 'ABUNDANCE'),
+  ptemp = ggplot(aes(x = .data$RUN, y = .data$ABUNDANCE),
                   data = datafeature) +
-    geom_boxplot(aes_string(fill = 'CONDITION'), outlier.shape = 1,
+    geom_boxplot(aes(fill = .data$CONDITION), outlier.shape = 1,
                  outlier.size = 1.5) +
     labs(title = title, x = 'MS runs') +
     scale_y_continuous(yaxis.name, y.limdown, y.limup) +
     geom_vline(data = groupName.tmp[lineNameAxis != 0],
-               aes(xintercept = lineNameAxis + 0.5),
+               aes(xintercept = .data$lineNameAxis + 0.5),
                colour = "grey", linetype = "longdash") +
     geom_text(data = groupName.tmp,
-              aes(x = RUN, y = ABUNDANCE - 1, label = Name),
+              aes(x = .data$RUN, y = .data$ABUNDANCE - 1, label = .data$Name),
               size = text.size,
               angle = 0,color = "black") +
     theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size,
@@ -1587,17 +1587,17 @@
   ## for boxplot, x-axis, xorder should be factor
   yaxis.name = 'Log-intensities'
   
-  ptemp = ggplot(aes_string(x = 'RUN', y = 'ABUNDANCE'),
+  ptemp = ggplot(aes(x = .data$RUN, y = .data$ABUNDANCE),
                   data = sub) +
-    geom_boxplot(aes_string(fill = 'CONDITION'), outlier.shape = 1,
+    geom_boxplot(aes(fill = .data$CONDITION), outlier.shape = 1,
                  outlier.size = 1.5) +
     labs(title = protein, x = 'MS runs') +
     scale_y_continuous(yaxis.name, limits = c(y.limdown, y.limup)) +
     geom_vline(data = groupname.tmp[lineNameAxis != 0],
-               aes(xintercept = lineNameAxis + .5),
+               aes(xintercept = .data$lineNameAxis + .5),
                colour = "grey", linetype = "longdash") +
     geom_text(data = groupname.tmp,
-              aes(x = RUN, y = ABUNDANCE, label = Name),
+              aes(x = .data$RUN, y = .data$ABUNDANCE, label = .data$Name),
               size = text.size,
               color = "black") +
     theme_msstats(type = "PROFILEPLOT", x.axis.size, y.axis.size,
