@@ -19,8 +19,6 @@
 #' function \code{\link[MSstatsPTM]{dataSummarizationPTM}}  or 
 #' \code{\link[MSstatsPTM]{dataSummarizationPTM_TMT}} depending on acquisition
 #' type.
-#' @param data.type Type of data. Must be one of `LF` or `TMT`. Will be deprecated 
-#' in favor of ptm_label_type and protein_label_type.
 #' @param contrast.matrix comparison between conditions of interests. Default 
 #' models full pairwise comparison between all conditions
 #' @param moderated For TMT experiments only. TRUE will moderate t statistic; 
@@ -56,8 +54,9 @@
 #'                                      protein_label_type="LF",
 #'                                      verbose = FALSE)
 groupComparisonPTM = function(data, 
-                              data.type = NULL,
                               contrast.matrix = "pairwise",
+                              ptm_label_type = "LF",
+                              protein_label_type = "LF",
                               moderated = FALSE, 
                               adj.method = "BH",
                               log_base = 2,
@@ -66,35 +65,7 @@ groupComparisonPTM = function(data,
                               append = FALSE,
                               verbose = TRUE, 
                               log_file_path = NULL,
-                              base = "MSstatsPTM_log_",
-                              ptm_label_type = "LF",
-                              protein_label_type = "LF") {
-  
-  ## Start log  
-  # if (is.null(log_file_path) & use_log_file == TRUE){
-  #   time_now = Sys.time()
-  #   path = paste0(base, gsub("[ :\\-]", "_", time_now), 
-  #                 ".log")
-  #   file.create(path)
-  # } else {path = log_file_path}
-  # 
-  # if (data.type == 'TMT'){
-  #   pkg = "MSstatsTMT"
-  #   option_log = "MSstatsTMTLog"
-  # } else {
-  #   pkg = "MSstats"
-  #   option_log = "MSstatsLog"
-  # }
-  # 
-  # MSstatsLogsSettings(use_log_file, append,
-  #                     verbose, log_file_path = path, 
-  #                     pkg_name = pkg)
-  
-  # getOption(option_log)("INFO", "Starting parameter and data checks..")
-  if (!is.null(data.type) && (data.type == "TMT" || data.type == "LF")) {
-      ptm_label_type = data.type
-      protein_label_type = data.type
-  }
+                              base = "MSstatsPTM_log_") {
   
   Label = Site = NULL
   
@@ -241,12 +212,6 @@ groupComparisonPTM = function(data,
                   'ADJUSTED.Model'=adjusted_models, 
                   'Model.Details'=list('PTM'=ptm_model_details,
                                        'PROTEIN'=protein_model_details))
-  }
-  
-  if (!is.null(data.type) && (data.type == "TMT" || data.type == "LF")) {
-      warning("DEPRECATION NOTICE: The `data.type` argument is being deprecated. 
-              Please use `ptm_label_type` and `protein_label_type` instead ahead
-              of Release 3.22")
   }
 
   return(models)

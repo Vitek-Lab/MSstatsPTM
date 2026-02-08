@@ -6,8 +6,9 @@
 \usage{
 groupComparisonPTM(
   data,
-  data.type = NULL,
   contrast.matrix = "pairwise",
+  ptm_label_type = "LF",
+  protein_label_type = "LF",
   moderated = FALSE,
   adj.method = "BH",
   log_base = 2,
@@ -16,9 +17,7 @@ groupComparisonPTM(
   append = FALSE,
   verbose = TRUE,
   log_file_path = NULL,
-  base = "MSstatsPTM_log_",
-  ptm_label_type = "LF",
-  protein_label_type = "LF"
+  base = "MSstatsPTM_log_"
 )
 }
 \arguments{
@@ -27,11 +26,14 @@ function \code{\link[MSstatsPTM]{dataSummarizationPTM}}  or
 \code{\link[MSstatsPTM]{dataSummarizationPTM_TMT}} depending on acquisition
 type.}
 
-\item{data.type}{Type of data. Must be one of \code{LF} or \code{TMT}. Will be deprecated
-in favor of ptm_label_type and protein_label_type.}
-
 \item{contrast.matrix}{comparison between conditions of interests. Default
 models full pairwise comparison between all conditions}
+
+\item{ptm_label_type}{Indicator of labeling type for PTM dataset. Must be one
+of \code{LF} or \code{TMT}}
+
+\item{protein_label_type}{Indicator of labeling type for PROTEIN dataset.
+Must be one of \code{LF} or \code{TMT}}
 
 \item{moderated}{For TMT experiments only. TRUE will moderate t statistic;
 FALSE (default) uses ordinary t statistic. Default is FALSE.}
@@ -60,12 +62,6 @@ If not provided, such a file will be created automatically.
 If \code{append = TRUE}, has to be a valid path to a file.}
 
 \item{base}{start of the file name.}
-
-\item{ptm_label_type}{Indicator of labeling type for PTM dataset. Must be one
-of \code{LF} or \code{TMT}}
-
-\item{protein_label_type}{Indicator of labeling type for PROTEIN dataset.
-Must be one of \code{LF} or \code{TMT}}
 }
 \value{
 list of modeling results. Includes PTM, PROTEIN, and ADJUSTED
