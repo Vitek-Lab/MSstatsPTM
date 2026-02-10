@@ -88,7 +88,6 @@ groupComparisonPTM = function(data,
   
   ## Create pairwise matrix for label free
   if (contrast.matrix[1] == "pairwise"){
-    # getOption(option_log)("INFO", "Building pairwise matrix.")
     if ("GROUP" %in% colnames(data.ptm$ProteinLevelData)) {
       labels <- unique(data.ptm$ProteinLevelData$GROUP)
     } else if ("Condition" %in% colnames(data.ptm$ProteinLevelData)) {
@@ -102,7 +101,6 @@ groupComparisonPTM = function(data,
   ## PTM Modeling
   message("Starting PTM modeling...")
   if (ptm_label_type == "TMT"){
-    # getOption(option_log)("INFO", "Starting TMT PTM Model")
     ptm_model_full = groupComparisonTMT(data.ptm, 
                                         contrast.matrix = contrast.matrix,
                                         moderated = moderated, 
@@ -116,7 +114,6 @@ groupComparisonPTM = function(data,
     ptm_model_site_sep = ptm_model_full$ComparisonResult
     ptm_model_details = ptm_model_full$FittedModel
   } else if (ptm_label_type == "LF") {
-    # getOption(option_log)("INFO", "Starting non-TMT PTM Model")
     ptm_model_full = groupComparison(contrast.matrix,
                                       data.ptm, save_fitted_models, log_base)#, 
                                       # use_log_file, append, verbose, 
@@ -133,7 +130,6 @@ groupComparisonPTM = function(data,
     ## Protein Modeling
     message("Starting Protein modeling...")
     if (protein_label_type == "TMT"){
-      # getOption(option_log)("INFO", "Starting TMT Protein Model")
       protein_model_full = groupComparisonTMT(data.protein, 
                                           contrast.matrix = contrast.matrix,
                                           moderated = moderated, 
@@ -146,7 +142,6 @@ groupComparisonPTM = function(data,
       protein_model = protein_model_full$ComparisonResult
       protein_model_details = protein_model_full$FittedModel
     } else if (protein_label_type == "LF") {
-      # getOption(option_log)("INFO", "Starting non-TMT Protein Model")
       protein_model_full = groupComparison(contrast.matrix, 
                                            data.protein, save_fitted_models, 
                                            log_base, use_log_file)#, 
@@ -160,20 +155,16 @@ groupComparisonPTM = function(data,
     protein_model = as.data.table(protein_model)
     
     message("Starting adjustment...")
-    # getOption(option_log)("INFO", "Starting Protein Adjustment")
     ptm_model_site_sep = copy(ptm_model)
     
     ## extract global protein name
     ptm_model_site_sep = .extractProtein(ptm_model_site_sep, protein_model)
-    # getOption(option_log)("INFO", "Rcpp function extracted protein info")
     
     ## adjustProteinLevel function can only compare one label at a time
     comparisons = unique(ptm_model_site_sep[, Label])
     
     adjusted_model_list = list()
     for (i in seq_len(length(comparisons))) {
-      # getOption(option_log)("INFO", paste0("Adjusting for Comparison - ", 
-                                             # as.character(i)))
       temp_adjusted_model = .applyPtmAdjustment(comparisons[[i]],
                                                    ptm_model_site_sep,
                                                    protein_model)
@@ -212,7 +203,6 @@ groupComparisonPTM = function(data,
                                 use.names=TRUE)
     adjusted_models = adjusted_models[!is.na(adjusted_models$Protein)]
     
-    # getOption(option_log)("INFO", "Adjustment complete, returning models.")
     models = list('PTM.Model'=ptm_model, 
                   'PROTEIN.Model'=protein_model,
                   'ADJUSTED.Model'=adjusted_models, 
