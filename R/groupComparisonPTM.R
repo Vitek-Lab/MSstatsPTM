@@ -21,6 +21,14 @@
 #' type.
 #' @param contrast.matrix comparison between conditions of interests. Default 
 #' models full pairwise comparison between all conditions
+#' @param ptm_label_type Type of quantification used in the PTM dataset. 
+#' Must be either `"LF"` (label-free) or `"TMT"` (Tandem Mass Tag isobaric labeling).
+#' Choose `"LF"` for label-free quantification or `"TMT"` for TMT-labeled experiments.
+#' Default is `"LF"`.
+#' @param protein_label_type Type of quantification used in the protein dataset.
+#' Must be either `"LF"` (label-free) or `"TMT"` (Tandem Mass Tag isobaric labeling).
+#' Choose `"LF"` for label-free quantification or `"TMT"` for TMT-labeled experiments.
+#' Default is `"LF"`.
 #' @param moderated For TMT experiments only. TRUE will moderate t statistic; 
 #' FALSE (default) uses ordinary t statistic. Default is FALSE.
 #' @param adj.method For TMT experiments only. Adjusted method for multiple 
@@ -40,10 +48,6 @@
 #' If not provided, such a file will be created automatically.
 #' If `append = TRUE`, has to be a valid path to a file.
 #' @param base start of the file name.
-#' @param ptm_label_type Indicator of labeling type for PTM dataset. Must be one
-#' of `LF` or `TMT`
-#' @param protein_label_type Indicator of labeling type for PROTEIN dataset. 
-#' Must be one of `LF` or `TMT`
 #' @return list of modeling results. Includes PTM, PROTEIN, and ADJUSTED
 #'         data.tables with their corresponding model results.
 #'         
@@ -55,8 +59,8 @@
 #'                                      verbose = FALSE)
 groupComparisonPTM = function(data, 
                               contrast.matrix = "pairwise",
-                              ptm_label_type = "LF",
-                              protein_label_type = "LF",
+                              ptm_label_type = c("LF", "TMT"),
+                              protein_label_type = c("LF", "TMT"),
                               moderated = FALSE, 
                               adj.method = "BH",
                               log_base = 2,
@@ -68,6 +72,8 @@ groupComparisonPTM = function(data,
                               base = "MSstatsPTM_log_") {
   
   Label = Site = NULL
+  ptm_label_type = match.arg(ptm_label_type)
+  protein_label_type = match.arg(protein_label_type)
   
   data.ptm = data[["PTM"]]
   data.protein = data[["PROTEIN"]]

@@ -7,8 +7,8 @@
 groupComparisonPTM(
   data,
   contrast.matrix = "pairwise",
-  ptm_label_type = "LF",
-  protein_label_type = "LF",
+  ptm_label_type = c("LF", "TMT"),
+  protein_label_type = c("LF", "TMT"),
   moderated = FALSE,
   adj.method = "BH",
   log_base = 2,
@@ -29,11 +29,15 @@ type.}
 \item{contrast.matrix}{comparison between conditions of interests. Default
 models full pairwise comparison between all conditions}
 
-\item{ptm_label_type}{Indicator of labeling type for PTM dataset. Must be one
-of \code{LF} or \code{TMT}}
+\item{ptm_label_type}{Type of quantification used in the PTM dataset.
+Must be either \code{"LF"} (label-free) or \code{"TMT"} (Tandem Mass Tag isobaric labeling).
+Choose \code{"LF"} for label-free quantification or \code{"TMT"} for TMT-labeled experiments.
+Default is \code{"LF"}.}
 
-\item{protein_label_type}{Indicator of labeling type for PROTEIN dataset.
-Must be one of \code{LF} or \code{TMT}}
+\item{protein_label_type}{Type of quantification used in the protein dataset.
+Must be either \code{"LF"} (label-free) or \code{"TMT"} (Tandem Mass Tag isobaric labeling).
+Choose \code{"LF"} for label-free quantification or \code{"TMT"} for TMT-labeled experiments.
+Default is \code{"LF"}.}
 
 \item{moderated}{For TMT experiments only. TRUE will moderate t statistic;
 FALSE (default) uses ordinary t statistic. Default is FALSE.}
