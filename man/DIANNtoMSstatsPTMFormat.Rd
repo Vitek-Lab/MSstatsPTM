@@ -51,21 +51,27 @@ in \code{protein_id_col}. The protein names in these two columns must match in
 order to join the FASTA file with the DIA-NN output. Default is "uniprot_ac"
 for uniprot ID. For uniprot mnemonic ID, use "entry_name"}
 
-\item{global_qvalue_cutoff}{The global qvalue cutoff. Default is 0.01.}
+\item{global_qvalue_cutoff}{The qvalue cutoff for the Q.Value column, i.e.
+the run-specific precursor q-value. Default is 0.01.}
 
-\item{qvalue_cutoff}{local qvalue cutoff for library. Default is 0.01.}
+\item{qvalue_cutoff}{If MBR is false, the qvalue cutoff for the Global.Q.Value
+column, i.e. global precursor q-value.  If MBR is true, the qvalue cutoff for the
+Lib.Q.Value column, i.e. the q-value for the library created after the first MBR pass.
+Default is 0.01.}
 
-\item{pg_qvalue_cutoff}{local qvalue cutoff for protein groups Run should be
-the same as filename. Default is 0.01.}
+\item{pg_qvalue_cutoff}{If MBR is false, the qvalue cutoff for the Global.PG.Q.Value
+column, i.e. the global q-value for the protein group.  If MBR is true, the
+qvalue cutoff for the Lib.PG.Q.Value column, i.e. the protein group q-value for
+the library created after the first MBR pass. Run should be the same as filename.
+Default is 0.01.}
 
-\item{useUniquePeptide}{logical, if TRUE (default) removes peptides that are assigned for more than one proteins.
-We assume to use unique peptide for each protein.}
+\item{useUniquePeptide}{should unique pepties be removed}
 
-\item{removeFewMeasurements}{TRUE (default) will remove the features that have 1 or 2 measurements within each Run.}
+\item{removeFewMeasurements}{should proteins with few measurements be removed}
 
-\item{removeOxidationMpeptides}{TRUE (default) will remove the peptides including oxidation (M) sequence.}
+\item{removeOxidationMpeptides}{should peptides with oxidation be removed}
 
-\item{removeProtein_with1Feature}{TRUE will remove the proteins which have only 1 peptide and charge. Defaut is FALSE.}
+\item{removeProtein_with1Feature}{should proteins with a single feature be removed}
 
 \item{MBR}{True if analysis was done with match between runs}
 
@@ -73,18 +79,19 @@ We assume to use unique peptide for each protein.}
 Use 'FragmentQuantRaw' for quantified intensities for DIANN 1.9.x.
 Use 'auto' for quantified intensities for DIANN 2.x where each fragment intensity is a separate column, e.g. Fr0Quantity.}
 
-\item{use_log_file}{logical. If TRUE, information about data processing will
-be saved to a file.}
+\item{use_log_file}{logical. If TRUE, information about data processing
+will be saved to a file.}
 
-\item{append}{logical. If TRUE, information about data processing will be
-added to an existing log file.}
+\item{append}{logical. If TRUE, information about data processing will be added
+to an existing log file.}
 
-\item{verbose}{logical. If TRUE, information about data processing wil be
-printed to the console.}
+\item{verbose}{logical. If TRUE, information about data processing wil be printed
+to the console.}
 
 \item{log_file_path}{character. Path to a file to which information about
-data processing will be saved. If not provided, such a file will be created
-automatically. If 'append = TRUE', has to be a valid path to a file.}
+data processing will be saved.
+If not provided, such a file will be created automatically.
+If \code{append = TRUE}, has to be a valid path to a file.}
 }
 \value{
 \code{list} of one or two \code{data.frame} of class \code{MSstatsTMT}, named \code{PTM} and \code{PROTEIN}
@@ -120,7 +127,7 @@ head(msstatsptm_format$PTM)
 # Example DIANN 2.0
 input = system.file("tinytest/raw_data/DIANN/diann_2_ptm.parquet", 
                                         package = "MSstatsPTM")
-input = data.table::fread(input)
+input = arrow::read_parquet(input)
 annot = system.file("tinytest/raw_data/DIANN/annotation_diann_2.0_ptm.csv", 
                                         package = "MSstatsPTM")
 annot = data.table::fread(annot)
@@ -133,7 +140,8 @@ msstatsptm_format = DIANNtoMSstatsPTMFormat(
     protein_id_col = "Protein.Names", 
     fasta_path = fasta_path, 
     fasta_protein_name = "entry_name", 
-    use_log_file = FALSE
+    use_log_file = FALSE,
+    quantificationColumn = "auto"
 )
 
 head(msstatsptm_format$PTM)

@@ -20,24 +20,6 @@
 #' in `protein_id_col`. The protein names in these two columns must match in 
 #' order to join the FASTA file with the DIA-NN output. Default is "uniprot_ac"
 #' for uniprot ID. For uniprot mnemonic ID, use "entry_name"
-#' @param global_qvalue_cutoff The global qvalue cutoff. Default is 0.01.
-#' @param qvalue_cutoff local qvalue cutoff for library. Default is 0.01.
-#' @param pg_qvalue_cutoff local qvalue cutoff for protein groups Run should be 
-#' the same as filename. Default is 0.01.
-#' @param useUniquePeptide logical, if TRUE (default) removes peptides that are assigned for more than one proteins. 
-#' We assume to use unique peptide for each protein.
-#' @param removeFewMeasurements TRUE (default) will remove the features that have 1 or 2 measurements within each Run.
-#' @param removeOxidationMpeptides TRUE (default) will remove the peptides including oxidation (M) sequence.
-#' @param removeProtein_with1Feature TRUE will remove the proteins which have only 1 peptide and charge. Defaut is FALSE.
-#' @param use_log_file logical. If TRUE, information about data processing will 
-#' be saved to a file.
-#' @param append logical. If TRUE, information about data processing will be 
-#' added to an existing log file.
-#' @param verbose logical. If TRUE, information about data processing wil be 
-#' printed to the console.
-#' @param log_file_path character. Path to a file to which information about 
-#' data processing will be saved. If not provided, such a file will be created 
-#' automatically. If 'append = TRUE', has to be a valid path to a file.
 #' 
 #' @return `list` of one or two `data.frame` of class `MSstatsTMT`, named `PTM` and `PROTEIN`
 #' 
@@ -140,20 +122,20 @@ DIANNtoMSstatsPTMFormat = function(input,
     input = input[input[,..protein_id_col][[1]] != input$ProteinNameUnmod]
   }
   
-  ptm_input = DIANNtoMSstatsFormat(input, 
-                                   annotation,
-                                   global_qvalue_cutoff,
-                                   qvalue_cutoff,
-                                   pg_qvalue_cutoff,
-                                   useUniquePeptide,
-                                   removeFewMeasurements,
-                                   removeOxidationMpeptides,
-                                   removeProtein_with1Feature,
-                                   use_log_file,
-                                   append,
-                                   verbose,
-                                   log_file_path,
-                                   MBR,
+  ptm_input = DIANNtoMSstatsFormat(input = input, 
+                                   annotation = annotation,
+                                   global_qvalue_cutoff = global_qvalue_cutoff,
+                                   qvalue_cutoff = qvalue_cutoff,
+                                   pg_qvalue_cutoff = pg_qvalue_cutoff,
+                                   useUniquePeptide = useUniquePeptide,
+                                   removeFewMeasurements = removeFewMeasurements,
+                                   removeOxidationMpeptides = removeOxidationMpeptides,
+                                   removeProtein_with1Feature = removeProtein_with1Feature,
+                                   use_log_file = use_log_file,
+                                   append = append,
+                                   verbose = verbose,
+                                   log_file_path = log_file_path,
+                                   MBR = MBR,
                                    quantificationColumn = quantificationColumn)
   
   msstats_format = list(PTM=ptm_input, PROTEIN=NULL)
@@ -162,20 +144,20 @@ DIANNtoMSstatsPTMFormat = function(input,
     checkmate::assertTRUE(!is.null(input_protein) & 
                             !is.null(annotation_protein))
     
-    protein_input = DIANNtoMSstatsFormat(input_protein, 
-                                         annotation_protein,
-                                         global_qvalue_cutoff,
-                                         qvalue_cutoff,
-                                         pg_qvalue_cutoff,
-                                         useUniquePeptide,
-                                         removeFewMeasurements,
-                                         removeOxidationMpeptides,
-                                         removeProtein_with1Feature,
-                                         use_log_file,
-                                         append,
-                                         verbose,
-                                         log_file_path,
-                                         MBR,
+    protein_input = DIANNtoMSstatsFormat(input = input_protein, 
+                                         annotation = annotation_protein,
+                                         global_qvalue_cutoff = global_qvalue_cutoff,
+                                         qvalue_cutoff = qvalue_cutoff,
+                                         pg_qvalue_cutoff = pg_qvalue_cutoff,
+                                         useUniquePeptide = useUniquePeptide,
+                                         removeFewMeasurements = removeFewMeasurements,
+                                         removeOxidationMpeptides = removeOxidationMpeptides,
+                                         removeProtein_with1Feature = removeProtein_with1Feature,
+                                         use_log_file = use_log_file,
+                                         append = append,
+                                         verbose = verbose,
+                                         log_file_path = log_file_path,
+                                         MBR = MBR,
                                          quantificationColumn = quantificationColumn)
     
     msstats_format = list(PTM=ptm_input, PROTEIN=protein_input)
