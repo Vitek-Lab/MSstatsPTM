@@ -21,6 +21,7 @@ DIANNtoMSstatsPTMFormat(
   removeOxidationMpeptides = TRUE,
   removeProtein_with1Feature = FALSE,
   MBR = TRUE,
+  quantificationColumn = "FragmentQuantCorrected",
   use_log_file = TRUE,
   append = FALSE,
   verbose = TRUE,
@@ -28,10 +29,10 @@ DIANNtoMSstatsPTMFormat(
 )
 }
 \arguments{
-\item{input}{data.frame of \code{report.tsv} file produced by Philosopher}
+\item{input}{name of MSstats input report from Diann, which includes fragment-level data.
+Output fragment data with --export-quant flag in DIA-NN 2.0}
 
-\item{annotation}{annotation with Run, Fraction, TechRepMixture, Mixture, Channel,
-BioReplicate, Condition columns or a path to file. Refer to the example 'annotation' for the meaning of each column.}
+\item{annotation}{name of 'annotation.txt' data which includes Condition, BioReplicate, Run.}
 
 \item{input_protein}{same as \code{input} for global profiling run. Default is NULL.}
 
@@ -66,7 +67,11 @@ We assume to use unique peptide for each protein.}
 
 \item{removeProtein_with1Feature}{TRUE will remove the proteins which have only 1 peptide and charge. Defaut is FALSE.}
 
-\item{MBR}{If analaysis was done with match between runs or not. Default is TRUE.}
+\item{MBR}{True if analysis was done with match between runs}
+
+\item{quantificationColumn}{Use 'FragmentQuantCorrected'(default) column for quantified intensities for DIANN 1.8.x.
+Use 'FragmentQuantRaw' for quantified intensities for DIANN 1.9.x.
+Use 'auto' for quantified intensities for DIANN 2.x where each fragment intensity is a separate column, e.g. Fr0Quantity.}
 
 \item{use_log_file}{logical. If TRUE, information about data processing will
 be saved to a file.}
@@ -96,6 +101,27 @@ input = system.file("tinytest/raw_data/DIANN/report.tsv",
                                         package = "MSstatsPTM")
 input = data.table::fread(input)
 annot = system.file("tinytest/raw_data/DIANN/annot.csv", 
+                                        package = "MSstatsPTM")
+annot = data.table::fread(annot)
+fasta_path = system.file("extdata", "diann.fasta", 
+                       package="MSstatsPTM")
+
+msstatsptm_format = DIANNtoMSstatsPTMFormat(
+    input, 
+    annot, 
+    protein_id_col = "Protein.Names", 
+    fasta_path = fasta_path, 
+    fasta_protein_name = "entry_name", 
+    use_log_file = FALSE
+)
+
+head(msstatsptm_format$PTM)
+
+# Example DIANN 2.0
+input = system.file("tinytest/raw_data/DIANN/diann_2_ptm.parquet", 
+                                        package = "MSstatsPTM")
+input = data.table::fread(input)
+annot = system.file("tinytest/raw_data/DIANN/annotation_diann_2.0_ptm.csv", 
                                         package = "MSstatsPTM")
 annot = data.table::fread(annot)
 fasta_path = system.file("extdata", "diann.fasta", 

@@ -7,10 +7,8 @@
 #' 
 #' @importFrom data.table as.data.table
 #' @importFrom MSstatsConvert DIANNtoMSstatsFormat
+#' @inheritParams MSstatsConvert::DIANNtoMSstatsFormat
 #' 
-#' @param input data.frame of `report.tsv` file produced by Philosopher
-#' @param annotation annotation with Run, Fraction, TechRepMixture, Mixture, Channel, 
-#' BioReplicate, Condition columns or a path to file. Refer to the example 'annotation' for the meaning of each column.
 #' @param input_protein same as `input` for global profiling run. Default is NULL.
 #' @param annotation_protein same as `annotation` for global profiling run. Default is NULL.
 #' @param fasta_path A string of path to a FASTA file, used to match PTM peptides.
@@ -31,7 +29,6 @@
 #' @param removeFewMeasurements TRUE (default) will remove the features that have 1 or 2 measurements within each Run.
 #' @param removeOxidationMpeptides TRUE (default) will remove the peptides including oxidation (M) sequence.
 #' @param removeProtein_with1Feature TRUE will remove the proteins which have only 1 peptide and charge. Defaut is FALSE.
-#' @param MBR If analaysis was done with match between runs or not. Default is TRUE.
 #' @param use_log_file logical. If TRUE, information about data processing will 
 #' be saved to a file.
 #' @param append logical. If TRUE, information about data processing will be 
@@ -68,6 +65,28 @@
 #' 
 #' head(msstatsptm_format$PTM)
 #' 
+#' # Example DIANN 2.0
+#' input = system.file("tinytest/raw_data/DIANN/diann_2_ptm.parquet", 
+#'                                         package = "MSstatsPTM")
+#' input = arrow::read_parquet(input)
+#' annot = system.file("tinytest/raw_data/DIANN/annotation_diann_2.0_ptm.csv", 
+#'                                         package = "MSstatsPTM")
+#' annot = data.table::fread(annot)
+#' fasta_path = system.file("extdata", "diann.fasta", 
+#'                        package="MSstatsPTM")
+#' 
+#' msstatsptm_format = DIANNtoMSstatsPTMFormat(
+#'     input, 
+#'     annot, 
+#'     protein_id_col = "Protein.Names", 
+#'     fasta_path = fasta_path, 
+#'     fasta_protein_name = "entry_name", 
+#'     use_log_file = FALSE,
+#'     quantificationColumn = "auto"
+#' )
+#' 
+#' head(msstatsptm_format$PTM)
+#' 
 DIANNtoMSstatsPTMFormat = function(input,
                                    annotation,
                                    input_protein=NULL,
@@ -84,6 +103,7 @@ DIANNtoMSstatsPTMFormat = function(input,
                                    removeOxidationMpeptides = TRUE,
                                    removeProtein_with1Feature = FALSE,
                                    MBR=TRUE,
+                                   quantificationColumn = "FragmentQuantCorrected",
                                    use_log_file = TRUE,
                                    append = FALSE,
                                    verbose = TRUE,
@@ -133,7 +153,8 @@ DIANNtoMSstatsPTMFormat = function(input,
                                    append,
                                    verbose,
                                    log_file_path,
-                                   MBR)
+                                   MBR,
+                                   quantificationColumn = quantificationColumn)
   
   msstats_format = list(PTM=ptm_input, PROTEIN=NULL)
   
@@ -154,7 +175,8 @@ DIANNtoMSstatsPTMFormat = function(input,
                                          append,
                                          verbose,
                                          log_file_path,
-                                         MBR)
+                                         MBR,
+                                         quantificationColumn = quantificationColumn)
     
     msstats_format = list(PTM=ptm_input, PROTEIN=protein_input)
     
