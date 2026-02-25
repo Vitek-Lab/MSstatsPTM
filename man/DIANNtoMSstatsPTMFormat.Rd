@@ -62,10 +62,9 @@ Default is 0.01.}
 \item{pg_qvalue_cutoff}{If MBR is false, the qvalue cutoff for the Global.PG.Q.Value
 column, i.e. the global q-value for the protein group.  If MBR is true, the
 qvalue cutoff for the Lib.PG.Q.Value column, i.e. the protein group q-value for
-the library created after the first MBR pass. Run should be the same as filename.
-Default is 0.01.}
+the library created after the first MBR pass. Default is 0.01.}
 
-\item{useUniquePeptide}{should unique pepties be removed}
+\item{useUniquePeptide}{should unique peptides be removed}
 
 \item{removeFewMeasurements}{should proteins with few measurements be removed}
 
