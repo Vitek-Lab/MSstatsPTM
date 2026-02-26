@@ -23,7 +23,7 @@ Authors@R: c(
 License: Artistic-2.0
 Depends: R (>= 4.3)
 Imports: dplyr, gridExtra, stringr, stats, ggplot2, stringi,
-            grDevices, MSstatsTMT, MSstatsConvert, MSstats,
+            grDevices, MSstatsTMT, MSstatsConvert (>= 1.19.1), MSstats,
             data.table, Rcpp, Biostrings, checkmate, ggrepel, plotly, htmltools,
             rlang
 Suggests: 
@@ -32,6 +32,7 @@ Suggests:
     tinytest,
     covr,
     mockery,
+    arrow,
     testthat (>= 3.0.0)
 LazyData: true
 LinkingTo: Rcpp

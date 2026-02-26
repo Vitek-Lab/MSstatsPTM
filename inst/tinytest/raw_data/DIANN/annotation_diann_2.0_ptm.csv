@@ -1,0 +1,9 @@
+Run,BioReplicate,Condition
+Run1,1,Control
+Run2,2,Control
+Run3,3,Control
+Run4,4,Control
+Run5,5,Treatment
+Run6,6,Treatment
+Run7,7,Treatment
+Run8,8,Treatment
