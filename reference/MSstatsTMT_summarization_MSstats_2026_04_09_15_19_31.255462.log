@@ -1,0 +1,46 @@
+INFO  [2026-04-09 15:19:31] MSstats - dataProcess function
+INFO  [2026-04-09 15:19:31] Summary method: TMP
+INFO  [2026-04-09 15:19:31] censoredInt: NA
+INFO  [2026-04-09 15:19:31] Logarithm transformation with base 2 is done
+INFO  [2026-04-09 15:19:31] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, FEATURE, RUN)
+INFO  [2026-04-09 15:19:31] ** Use top100 features that have highest average of log2(intensity) across runs.
+INFO  [2026-04-09 15:19:31] 
+ # proteins: 85
+ # peptides per protein: 1-120
+ # features per peptide: 1-1
+INFO  [2026-04-09 15:19:31] Some proteins have only one feature: 
+ Protein_2108,
+ Protein_2207 ...
+INFO  [2026-04-09 15:19:31] 
+                    Condition_1 Condition_2 Condition_3 Condition_4 Condition_5 Condition_6
+             # runs           2           2           2           2           2           1
+    # bioreplicates           2           2           2           2           2           1
+ # tech. replicates           1           1           1           1           1           1
+INFO  [2026-04-09 15:19:31] == Start the summarization per subplot...
+INFO  [2026-04-09 15:19:31] == Summarization is done.
+INFO  [2026-04-09 15:19:31] MSstats - dataProcess function
+INFO  [2026-04-09 15:19:31] Summary method: TMP
+INFO  [2026-04-09 15:19:31] censoredInt: NA
+INFO  [2026-04-09 15:19:31] Logarithm transformation with base 2 is done
+INFO  [2026-04-09 15:19:32] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, FEATURE, RUN)
+INFO  [2026-04-09 15:19:32] ** Use top100 features that have highest average of log2(intensity) across runs.
+INFO  [2026-04-09 15:19:32] 
+ # proteins: 83
+ # peptides per protein: 1-160
+ # features per peptide: 1-1
+INFO  [2026-04-09 15:19:32] Some proteins have only one feature: 
+ Protein_2311,
+ Protein_2751 ...
+INFO  [2026-04-09 15:19:32] 
+                    Condition_1 Condition_2 Condition_3 Condition_4 Condition_5 Condition_6
+             # runs           2           2           1           2           2           2
+    # bioreplicates           2           2           1           2           2           2
+ # tech. replicates           1           1           1           1           1           1
+INFO  [2026-04-09 15:19:32] Some features are completely missing in at least one condition:  
+ Peptide10658_3_NA_NA,
+ Peptide17129_2_NA_NA,
+ Peptide3162_3_NA_NA,
+ NA,
+ NA ...
+INFO  [2026-04-09 15:19:32] == Start the summarization per subplot...
+INFO  [2026-04-09 15:19:33] == Summarization is done.
