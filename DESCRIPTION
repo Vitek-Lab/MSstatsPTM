@@ -41,6 +41,7 @@ biocViews: ImmunoOncology, MassSpectrometry, Proteomics, Software, DifferentialE
            OneChannel, TwoChannel, Normalization, QualityControl
 BugReports: https://github.com/Vitek-Lab/MSstatsPTM/issues
 Encoding: UTF-8
+URL: https://vitek-lab.github.io/MSstatsPTM/
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Config/testthat/edition: 3
