@@ -1,0 +1,79 @@
+INFO  [2026-04-16 22:12:49] Starting parameter and data checks..
+INFO  [2026-04-16 22:12:49] Parameter and data checks complete.
+INFO  [2026-04-16 22:12:49] Starting PTM summarization..
+INFO  [2026-04-16 22:12:49] MSstats - dataProcess function
+INFO  [2026-04-16 22:12:49] Summary method: TMP
+INFO  [2026-04-16 22:12:49] censoredInt: NA
+INFO  [2026-04-16 22:12:49] ** Features with one or two measurements across runs are removed.
+INFO  [2026-04-16 22:12:49] ** Fractionation handled.
+INFO  [2026-04-16 22:12:49] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2026-04-16 22:12:49] 
+
+INFO  [2026-04-16 22:12:49] Logarithm transformation with base 2 is done
+INFO  [2026-04-16 22:12:49] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, FEATURE, RUN)
+Normalization based on median: OK [2026-04-16 22:12:49] 
+INFO  [2026-04-16 22:12:49] ** Log2 intensities under cutoff = 13.732  were considered as censored missing values.
+INFO  [2026-04-16 22:12:49] ** Log2 intensities = NA were considered as censored missing values.
+INFO  [2026-04-16 22:12:49] ** Use all features that the dataset originally has.
+INFO  [2026-04-16 22:12:49] 
+ # proteins: 121
+ # peptides per protein: 1-5
+ # features per peptide: 1-1
+INFO  [2026-04-16 22:12:49] Some proteins have only one feature: 
+ Q9UHD8_K028,
+ Q9UHD8_K069,
+ Q9UHD8_K141,
+ Q9UHQ9_K046,
+ Q9UHQ9_K062 ...
+INFO  [2026-04-16 22:12:49] 
+                    CCCP Combo Ctrl USP30_OE
+             # runs    4     4    4        4
+    # bioreplicates    2     2    2        2
+ # tech. replicates    2     2    2        2
+INFO  [2026-04-16 22:12:49] Some features are completely missing in at least one condition:  
+ AMDQEITVNPQFVQK*SMGSQEDDSGNKPSSYS_4_NA_NA,
+ DLDEVLQTHSVFVNVSKGQVAK*_4_NA_NA,
+ DWAYSK*GFVTADMIR_2_NA_NA,
+ DWAYSK*GFVTADMIR_3_NA_NA,
+ EAIHALSSSEDGGHIFCTLESLK*R_4_NA_NA ...
+INFO  [2026-04-16 22:12:49] == Start the summarization per subplot...
+INFO  [2026-04-16 22:12:50] == Summarization is done.
+INFO  [2026-04-16 22:12:50] Starting Protein summarization..
+INFO  [2026-04-16 22:12:50] MSstats - dataProcess function
+INFO  [2026-04-16 22:12:50] Summary method: TMP
+INFO  [2026-04-16 22:12:50] censoredInt: NA
+INFO  [2026-04-16 22:12:50] ** Features with one or two measurements across runs are removed.
+INFO  [2026-04-16 22:12:50] ** Fractionation handled.
+INFO  [2026-04-16 22:12:50] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2026-04-16 22:12:50] 
+
+INFO  [2026-04-16 22:12:50] Logarithm transformation with base 2 is done
+INFO  [2026-04-16 22:12:50] Factorize in columns(GROUP, SUBJECT, GROUP_ORIGINAL, SUBJECT_ORIGINAL, FEATURE, RUN)
+Normalization based on median: OK [2026-04-16 22:12:50] 
+INFO  [2026-04-16 22:12:50] ** Log2 intensities under cutoff = 16.998  were considered as censored missing values.
+INFO  [2026-04-16 22:12:50] ** Log2 intensities = NA were considered as censored missing values.
+INFO  [2026-04-16 22:12:50] ** Use all features that the dataset originally has.
+INFO  [2026-04-16 22:12:50] 
+ # proteins: 26
+ # peptides per protein: 1-9
+ # features per peptide: 1-1
+INFO  [2026-04-16 22:12:50] Some proteins have only one feature: 
+ Q9UHD8,
+ Q9UHQ9,
+ Q9UIF8,
+ Q9UL25,
+ Q9UNH7 ...
+INFO  [2026-04-16 22:12:50] 
+                    CCCP Combo Ctrl USP30_OE
+             # runs    4     4    4        4
+    # bioreplicates    2     2    2        2
+ # tech. replicates    2     2    2        2
+INFO  [2026-04-16 22:12:50] Some features are completely missing in at least one condition:  
+ LMKMAR_2_NA_NA,
+ TDQFPLFLIIMGK_2_NA_NA,
+ TVYSHLFDHVVNR_4_NA_NA,
+ NA,
+ NA ...
+INFO  [2026-04-16 22:12:50] == Start the summarization per subplot...
+INFO  [2026-04-16 22:12:51] == Summarization is done.
+INFO  [2026-04-16 22:12:51] Summarization complete. Returning output
