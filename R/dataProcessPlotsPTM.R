@@ -52,7 +52,7 @@
 #' @param which.Protein List of proteins to plot. Will plot all PTMs associated 
 #' with listed Proteins. Default is NULL which will default to which.PTM.
 #' @param originalPlot TRUE(default) draws original profile plots, without
-#' normalization.
+#' summarization.
 #' @param summaryPlot TRUE(default) draws profile plots with protein
 #' summarization for each channel and MS run.
 #' @param address the name of folder that will store the results. Default folder

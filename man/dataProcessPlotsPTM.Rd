@@ -80,7 +80,7 @@ Default is "all", which generates all plots for each protein. For QC plot,
 with listed Proteins. Default is NULL which will default to which.PTM.}
 
 \item{originalPlot}{TRUE(default) draws original profile plots, without
-normalization.}
+summarization.}
 
 \item{summaryPlot}{TRUE(default) draws profile plots with protein
 summarization for each channel and MS run.}
