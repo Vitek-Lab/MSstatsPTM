@@ -124,7 +124,7 @@ dataProcessPlotsPTM(
 
 - originalPlot:
 
-  TRUE(default) draws original profile plots, without normalization.
+  TRUE(default) draws original profile plots, without summarization.
 
 - summaryPlot:
 

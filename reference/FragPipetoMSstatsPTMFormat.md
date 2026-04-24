@@ -314,46 +314,46 @@ msstats_data = FragPipetoMSstatsPTMFormat(fragpipe_input,
                                           mod_id_col = "STY",
                                           localization_cutoff=.75,
                                           remove_unlocalized_peptides=TRUE)
-#> INFO  [2026-04-16 22:12:39] ** Raw data from Philosopher imported successfully.
-#> INFO  [2026-04-16 22:12:39] ** Using provided annotation.
-#> INFO  [2026-04-16 22:12:39] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-16 22:12:39] ** The following options are used:
+#> INFO  [2026-04-24 19:22:52] ** Raw data from Philosopher imported successfully.
+#> INFO  [2026-04-24 19:22:52] ** Using provided annotation.
+#> INFO  [2026-04-24 19:22:52] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-24 19:22:52] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements within each run will be kept.
-#> INFO  [2026-04-16 22:12:39] ** Rows with values not greater than 0.6 in Purity are removed 
-#> WARN  [2026-04-16 22:12:39] ** PeptideProphetProbability not found in input columns.
-#> INFO  [2026-04-16 22:12:39] ** Sequences containing Oxidation are removed.
-#> INFO  [2026-04-16 22:12:39] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-16 22:12:39] ** Shared peptides are removed.
-#> INFO  [2026-04-16 22:12:39] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-16 22:12:39] ** PSMs have been aggregated to peptide ions.
-#> INFO  [2026-04-16 22:12:39] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-16 22:12:39] ** Features with one or two measurements across channels within each run are removed.
-#> INFO  [2026-04-16 22:12:39] ** Fractionation handled.
-#> INFO  [2026-04-16 22:12:39] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-16 22:12:39] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
-#> INFO  [2026-04-16 22:12:39] ** Raw data from Philosopher imported successfully.
-#> INFO  [2026-04-16 22:12:39] ** Using provided annotation.
-#> INFO  [2026-04-16 22:12:39] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-16 22:12:39] ** The following options are used:
+#> INFO  [2026-04-24 19:22:52] ** Rows with values not greater than 0.6 in Purity are removed 
+#> WARN  [2026-04-24 19:22:52] ** PeptideProphetProbability not found in input columns.
+#> INFO  [2026-04-24 19:22:52] ** Sequences containing Oxidation are removed.
+#> INFO  [2026-04-24 19:22:52] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-24 19:22:52] ** Shared peptides are removed.
+#> INFO  [2026-04-24 19:22:52] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-24 19:22:52] ** PSMs have been aggregated to peptide ions.
+#> INFO  [2026-04-24 19:22:52] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-24 19:22:52] ** Features with one or two measurements across channels within each run are removed.
+#> INFO  [2026-04-24 19:22:52] ** Fractionation handled.
+#> INFO  [2026-04-24 19:22:52] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-24 19:22:52] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
+#> INFO  [2026-04-24 19:22:52] ** Raw data from Philosopher imported successfully.
+#> INFO  [2026-04-24 19:22:52] ** Using provided annotation.
+#> INFO  [2026-04-24 19:22:52] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-24 19:22:52] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements within each run will be kept.
-#> INFO  [2026-04-16 22:12:39] ** Rows with values not greater than 0.6 in Purity are removed 
-#> WARN  [2026-04-16 22:12:39] ** PeptideProphetProbability not found in input columns.
-#> INFO  [2026-04-16 22:12:39] ** Sequences containing Oxidation are removed.
-#> INFO  [2026-04-16 22:12:39] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-16 22:12:39] ** Shared peptides are removed.
-#> INFO  [2026-04-16 22:12:39] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-16 22:12:40] ** PSMs have been aggregated to peptide ions.
-#> INFO  [2026-04-16 22:12:40] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-16 22:12:40] ** Features with one or two measurements across channels within each run are removed.
-#> INFO  [2026-04-16 22:12:40] ** Fractionation handled.
-#> INFO  [2026-04-16 22:12:40] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-16 22:12:40] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
+#> INFO  [2026-04-24 19:22:52] ** Rows with values not greater than 0.6 in Purity are removed 
+#> WARN  [2026-04-24 19:22:52] ** PeptideProphetProbability not found in input columns.
+#> INFO  [2026-04-24 19:22:52] ** Sequences containing Oxidation are removed.
+#> INFO  [2026-04-24 19:22:52] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-24 19:22:52] ** Shared peptides are removed.
+#> INFO  [2026-04-24 19:22:52] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-24 19:22:53] ** PSMs have been aggregated to peptide ions.
+#> INFO  [2026-04-24 19:22:53] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-24 19:22:53] ** Features with one or two measurements across channels within each run are removed.
+#> INFO  [2026-04-24 19:22:53] ** Fractionation handled.
+#> INFO  [2026-04-24 19:22:53] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-24 19:22:53] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
 head(msstats_data$PTM)
 #>                  ProteinName       PeptideSequence Charge
 #> 1 sp|Q9Y2W1|TR150_HUMAN_S805 AEEYTEETEEREES*TTGFDK      3
@@ -425,40 +425,40 @@ msstats_data = FragPipetoMSstatsPTMFormat(input,
                                           localization_cutoff=.75,
                                           protein_id_col = "ProteinName",
                                           peptide_id_col = "PeptideSequence")
-#> INFO  [2026-04-16 22:12:40] ** Raw data from FragPipe imported successfully.
-#> INFO  [2026-04-16 22:12:40] ** Using annotation extracted from quantification data.
-#> INFO  [2026-04-16 22:12:40] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-16 22:12:40] ** The following options are used:
+#> INFO  [2026-04-24 19:22:53] ** Raw data from FragPipe imported successfully.
+#> INFO  [2026-04-24 19:22:53] ** Using annotation extracted from quantification data.
+#> INFO  [2026-04-24 19:22:53] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-24 19:22:53] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be kept.
-#> INFO  [2026-04-16 22:12:40] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-16 22:12:40] ** Shared peptides are removed.
-#> INFO  [2026-04-16 22:12:40] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: sum
-#> INFO  [2026-04-16 22:12:40] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-16 22:12:40] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-16 22:12:40] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-16 22:12:40] ** Fractionation handled.
-#> INFO  [2026-04-16 22:12:40] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-16 22:12:40] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
-#> INFO  [2026-04-16 22:12:40] ** Raw data from FragPipe imported successfully.
-#> INFO  [2026-04-16 22:12:40] ** Using annotation extracted from quantification data.
-#> INFO  [2026-04-16 22:12:40] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-16 22:12:40] ** The following options are used:
+#> INFO  [2026-04-24 19:22:53] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-24 19:22:53] ** Shared peptides are removed.
+#> INFO  [2026-04-24 19:22:53] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: sum
+#> INFO  [2026-04-24 19:22:53] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-24 19:22:53] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-24 19:22:53] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-24 19:22:53] ** Fractionation handled.
+#> INFO  [2026-04-24 19:22:53] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-24 19:22:53] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-24 19:22:53] ** Raw data from FragPipe imported successfully.
+#> INFO  [2026-04-24 19:22:53] ** Using annotation extracted from quantification data.
+#> INFO  [2026-04-24 19:22:53] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-24 19:22:53] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be kept.
-#> INFO  [2026-04-16 22:12:40] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-16 22:12:40] ** Shared peptides are removed.
-#> INFO  [2026-04-16 22:12:40] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: sum
-#> INFO  [2026-04-16 22:12:40] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-16 22:12:40] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-16 22:12:40] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-16 22:12:40] ** Fractionation handled.
-#> INFO  [2026-04-16 22:12:40] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-16 22:12:40] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-24 19:22:53] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-24 19:22:53] ** Shared peptides are removed.
+#> INFO  [2026-04-24 19:22:53] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: sum
+#> INFO  [2026-04-24 19:22:53] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-24 19:22:53] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-24 19:22:53] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-24 19:22:53] ** Fractionation handled.
+#> INFO  [2026-04-24 19:22:53] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-24 19:22:53] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
                                           
 # If no global profiling run is available, omit input_protein and set:
 # msstats_data = FragPipetoMSstatsPTMFormat(input, annot,
