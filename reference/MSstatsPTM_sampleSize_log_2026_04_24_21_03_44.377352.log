@@ -1,0 +1,5 @@
+INFO  [2026-04-24 21:03:44] ** MSstatsPTM - designSampleSizePTM function
+INFO  [2026-04-24 21:03:44] Desired fold change = 2 - 2.75
+INFO  [2026-04-24 21:03:44] FDR = 0.05
+INFO  [2026-04-24 21:03:44] Power = 0.8
+INFO  [2026-04-24 21:03:44] The number of sample is calculated. - okay

@@ -446,26 +446,26 @@ msstats_format_tmt = MaxQtoMSstatsPTMFormat(evidence=maxq_tmt_evidence,
                         use_unmod_peptides=TRUE,
                         labeling_type = "TMT",
                         which_proteinid_ptm = "Proteins")
-#> INFO  [2026-04-24 19:22:53] ** Raw data from MaxQuant imported successfully.
-#> INFO  [2026-04-24 19:22:53] ** Rows with values of Potentialcontaminant equal to + are removed 
-#> INFO  [2026-04-24 19:22:53] ** Rows with values of Reverse equal to + are removed 
-#> INFO  [2026-04-24 19:22:53] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-24 19:22:53] ** Using provided annotation.
-#> INFO  [2026-04-24 19:22:53] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-24 19:22:53] ** The following options are used:
+#> INFO  [2026-04-24 21:03:29] ** Raw data from MaxQuant imported successfully.
+#> INFO  [2026-04-24 21:03:29] ** Rows with values of Potentialcontaminant equal to + are removed 
+#> INFO  [2026-04-24 21:03:29] ** Rows with values of Reverse equal to + are removed 
+#> INFO  [2026-04-24 21:03:29] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-24 21:03:29] ** Using provided annotation.
+#> INFO  [2026-04-24 21:03:29] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-24 21:03:29] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements within each run will be kept.
-#> INFO  [2026-04-24 19:22:53] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-24 19:22:53] ** Shared peptides are removed.
-#> INFO  [2026-04-24 19:22:53] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-24 19:22:53] ** PSMs have been aggregated to peptide ions.
-#> INFO  [2026-04-24 19:22:53] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-24 19:22:53] ** Features with one or two measurements across channels within each run are removed.
-#> INFO  [2026-04-24 19:22:53] ** Fractionation handled.
-#> INFO  [2026-04-24 19:22:53] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-24 19:22:53] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
+#> INFO  [2026-04-24 21:03:29] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-24 21:03:29] ** Shared peptides are removed.
+#> INFO  [2026-04-24 21:03:29] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-24 21:03:29] ** PSMs have been aggregated to peptide ions.
+#> INFO  [2026-04-24 21:03:29] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-24 21:03:29] ** Features with one or two measurements across channels within each run are removed.
+#> INFO  [2026-04-24 21:03:29] ** Fractionation handled.
+#> INFO  [2026-04-24 21:03:29] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-24 21:03:29] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
 
 head(msstats_format_tmt$PTM)
 #>   ProteinName                     PeptideSequence Charge
@@ -678,25 +678,25 @@ msstats_format_lf = MaxQtoMSstatsPTMFormat(evidence=maxq_lf_evidence,
                         use_unmod_peptides=TRUE,
                         labeling_type = "LF",
                         which_proteinid_ptm = "Proteins")
-#> INFO  [2026-04-24 19:22:53] ** Raw data from MaxQuant imported successfully.
-#> INFO  [2026-04-24 19:22:53] ** Rows with values of Potentialcontaminant equal to + are removed 
-#> INFO  [2026-04-24 19:22:53] ** Rows with values of Reverse equal to + are removed 
-#> INFO  [2026-04-24 19:22:53] ** Using provided annotation.
-#> INFO  [2026-04-24 19:22:53] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-24 19:22:53] ** The following options are used:
+#> INFO  [2026-04-24 21:03:29] ** Raw data from MaxQuant imported successfully.
+#> INFO  [2026-04-24 21:03:29] ** Rows with values of Potentialcontaminant equal to + are removed 
+#> INFO  [2026-04-24 21:03:29] ** Rows with values of Reverse equal to + are removed 
+#> INFO  [2026-04-24 21:03:29] ** Using provided annotation.
+#> INFO  [2026-04-24 21:03:29] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-24 21:03:29] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-24 19:22:53] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-24 19:22:53] ** Shared peptides are removed.
-#> INFO  [2026-04-24 19:22:53] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-24 19:22:53] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-24 19:22:53] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-24 19:22:53] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-24 19:22:53] ** Fractionation handled.
-#> INFO  [2026-04-24 19:22:53] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-24 19:22:53] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-24 21:03:29] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-24 21:03:29] ** Shared peptides are removed.
+#> INFO  [2026-04-24 21:03:29] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-04-24 21:03:29] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-24 21:03:29] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-24 21:03:29] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-24 21:03:29] ** Fractionation handled.
+#> INFO  [2026-04-24 21:03:29] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-24 21:03:29] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 head(msstats_format_lf$PTM)
 #>       ProteinName                               PeptideSequence PrecursorCharge
 #> 34 P09938_S15_S22 AAADALS(Phospho (STY))DLEIKDS(Phospho (STY))K               2
