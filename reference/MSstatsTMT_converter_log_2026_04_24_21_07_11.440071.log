@@ -1,0 +1,24 @@
+INFO  [2026-04-24 21:07:11] ** Raw data from MaxQuant imported successfully.
+INFO  [2026-04-24 21:07:11] ** Rows with values of Potentialcontaminant equal to + are removed 
+INFO  [2026-04-24 21:07:11] ** Rows with values of Reverse equal to + are removed 
+INFO  [2026-04-24 21:07:11] ** Features with all missing measurements across channels within each run are removed.
+INFO  [2026-04-24 21:07:11] ** Using provided annotation.
+INFO  [2026-04-24 21:07:11] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
+INFO  [2026-04-24 21:07:11] ** The following options are used:
+  - Features will be defined by the columns: PeptideSequence, PrecursorCharge
+  - Shared peptides will be removed.
+  - Proteins with single feature will not be removed.
+  - Features with less than 3 measurements within each run will be kept.
+INFO  [2026-04-24 21:07:11] ** Features with all missing measurements across channels within each run are removed.
+INFO  [2026-04-24 21:07:11] ** Shared peptides are removed.
+INFO  [2026-04-24 21:07:11] ** Features with all missing measurements across channels within each run are removed.
+INFO  [2026-04-24 21:07:11] ** PSMs have been aggregated to peptide ions.
+INFO  [2026-04-24 21:07:11] ** Run annotation merged with quantification data.
+INFO  [2026-04-24 21:07:11] ** Features with one or two measurements across channels within each run are removed.
+INFO  [2026-04-24 21:07:11] ** Fractionation handled.
+INFO  [2026-04-24 21:07:11] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2026-04-24 21:07:11] 
+
+INFO  [2026-04-24 21:07:11] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
+INFO  [2026-04-24 21:07:11] 
+

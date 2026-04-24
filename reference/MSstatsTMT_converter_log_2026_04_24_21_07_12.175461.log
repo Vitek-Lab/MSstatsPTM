@@ -1,0 +1,22 @@
+INFO  [2026-04-24 21:07:12] ** Raw data from ProteomeDiscoverer imported successfully.
+INFO  [2026-04-24 21:07:12] ** Raw data from ProteomeDiscoverer cleaned successfully.
+INFO  [2026-04-24 21:07:12] ** Using provided annotation.
+INFO  [2026-04-24 21:07:12] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
+INFO  [2026-04-24 21:07:12] ** The following options are used:
+  - Features will be defined by the columns: PeptideSequence, PrecursorCharge
+  - Shared peptides will be removed.
+  - Proteins with single feature will not be removed.
+  - Features with less than 3 measurements within each run will be removed.
+INFO  [2026-04-24 21:07:12] ** Features with all missing measurements across channels within each run are removed.
+INFO  [2026-04-24 21:07:12] ** Shared peptides are removed.
+INFO  [2026-04-24 21:07:12] ** Features with one or two measurements across channels within each run are removed.
+INFO  [2026-04-24 21:07:12] ** PSMs have been aggregated to peptide ions.
+INFO  [2026-04-24 21:07:12] ** Run annotation merged with quantification data.
+INFO  [2026-04-24 21:07:12] ** Features with one or two measurements across channels within each run are removed.
+INFO  [2026-04-24 21:07:12] ** Fractionation handled.
+INFO  [2026-04-24 21:07:12] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2026-04-24 21:07:12] 
+
+INFO  [2026-04-24 21:07:12] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
+INFO  [2026-04-24 21:07:12] 
+
