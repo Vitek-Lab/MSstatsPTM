@@ -665,7 +665,7 @@
       #   legend.title = element_blank()
       # )
     
-    print(pfinal)
+    if (!isPlotly) print(pfinal)
     plots[[i]] = pfinal
   }
   if (isPlotly) {
