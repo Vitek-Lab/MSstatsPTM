@@ -84,7 +84,7 @@ will be saved to a file.}
 \item{append}{logical. If TRUE, information about data processing will be added
 to an existing log file.}
 
-\item{verbose}{logical. If TRUE, information about data processing wil be printed
+\item{verbose}{logical. If TRUE, information about data processing will be printed
 to the console.}
 
 \item{log_file_path}{character. Path to a file to which information about
