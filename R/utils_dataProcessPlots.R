@@ -553,11 +553,12 @@
   if (is.numeric(ylimDown)) {
     y.limdown = ylimDown
   } else {
-    y.limdown = 0
+    all_abund = if (plot_global) c(datafeature.ptm$ABUNDANCE, datafeature.protein$ABUNDANCE) else datafeature.ptm$ABUNDANCE
+    y.limdown = max(floor(min(all_abund, na.rm = TRUE) - 3), 0)
   }
-  
+
   ## Apply pre-plot formatting
-  ptm.list = .preplot.format.tmt(datafeature.ptm, datarun.ptm, 
+  ptm.list = .preplot.format.tmt(datafeature.ptm, datarun.ptm,
                                        y.limup, type)
   datafeature.ptm = ptm.list[[1]]
   datarun.ptm = ptm.list[[2]]
@@ -871,13 +872,15 @@
     y.limup = ylimUp
   }
   
-  y.limdown = 0
   if (is.numeric(ylimDown)) {
     y.limdown = ylimDown
+  } else {
+    all_abund = if (length(data.table.list) == 4) c(datafeature.ptm$ABUNDANCE, datafeature.protein$ABUNDANCE) else datafeature.ptm$ABUNDANCE
+    y.limdown = max(floor(min(all_abund, na.rm = TRUE) - 3), 0)
   }
-  
+
   ## Apply pre-plot formatting
-  ptm.list = .preplot.format.tmt(datafeature.ptm, datarun.ptm, y.limup, 
+  ptm.list = .preplot.format.tmt(datafeature.ptm, datarun.ptm, y.limup,
                                        type)
   datafeature.ptm = ptm.list[[1]]
   datarun.ptm = ptm.list[[2]]
@@ -1374,10 +1377,11 @@
   if (is.numeric(ylimDown)) {
     y.limdown = ylimDown
   } else {
-    y.limdown = 0
+    all_abund = if (plot_global) c(datafeature.ptm$ABUNDANCE, datafeature.protein$ABUNDANCE) else datafeature.ptm$ABUNDANCE
+    y.limdown = max(floor(min(all_abund, na.rm = TRUE) - 3), 0)
   }
-  
-  ptm.list = .preplot.format.lf(datafeature.ptm, datarun.ptm, 
+
+  ptm.list = .preplot.format.lf(datafeature.ptm, datarun.ptm,
                                   y.limup, type)
   datafeature.ptm = ptm.list[[1]]
   datarun.ptm = ptm.list[[2]]
@@ -1667,11 +1671,13 @@
     y.limup = ylimUp
   }
   
-  y.limdown = 0
   if (is.numeric(ylimDown)) {
     y.limdown = ylimDown
+  } else {
+    all_abund = if (length(data.table.list) == 4) c(datafeature.ptm$ABUNDANCE, datafeature.protein$ABUNDANCE) else datafeature.ptm$ABUNDANCE
+    y.limdown = max(floor(min(all_abund, na.rm = TRUE) - 3), 0)
   }
-  
+
   ## Apply pre-plot formatting
   ptm.list = .preplot.format.lf(datafeature.ptm, datarun.ptm, y.limup, type)
   datafeature.ptm = ptm.list[[1]]

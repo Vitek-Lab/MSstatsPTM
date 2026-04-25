@@ -56,6 +56,7 @@ analysis and summarization
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://vitek-lab.github.io/MSstatsPTM/}
   \item Report bugs at \url{https://github.com/Vitek-Lab/MSstatsPTM/issues}
 }
 
