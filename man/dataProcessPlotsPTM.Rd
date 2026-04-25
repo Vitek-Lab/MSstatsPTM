@@ -44,7 +44,7 @@ off maximum of log2(intensities) after normalization + 3..}
 
 \item{ylimDown}{lower limit for y-axis in the log scale. FALSE(Default) for
 Profile Plot and QC Plot uses the lower limit as floor of minimum
-log2(intensities) after normalization - 3, or 0 if that value is negative..}
+log2(intensities) after normalization - 3, or 0 if that value is negative.}
 
 \item{x.axis.size}{size of x-axis labeling for "Run" and "channel in Profile
 Plot and QC Plot.}
