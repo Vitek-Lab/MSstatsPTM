@@ -63,6 +63,8 @@ visualizations.
 
 Useful links:
 
+- <https://vitek-lab.github.io/MSstatsPTM/>
+
 - Report bugs at <https://github.com/Vitek-Lab/MSstatsPTM/issues>
 
 ## Author

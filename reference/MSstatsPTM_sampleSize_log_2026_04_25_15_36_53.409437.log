@@ -1,0 +1,5 @@
+INFO  [2026-04-25 15:36:53] ** MSstatsPTM - designSampleSizePTM function
+INFO  [2026-04-25 15:36:53] Desired fold change = 2 - 2.75
+INFO  [2026-04-25 15:36:53] FDR = 0.05
+INFO  [2026-04-25 15:36:53] Power = TRUE
+INFO  [2026-04-25 15:36:53] Power is calculated. - okay

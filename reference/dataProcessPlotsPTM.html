@@ -111,7 +111,8 @@ off maximum of log2(intensities) after normalization + 3..</p></dd>
 
 <dt id="arg-ylimdown">ylimDown<a class="anchor" aria-label="anchor" href="#arg-ylimdown"></a></dt>
 <dd><p>lower limit for y-axis in the log scale. FALSE(Default) for
-Profile Plot and QC Plot uses 0..</p></dd>
+Profile Plot and QC Plot uses the lower limit as floor of minimum
+log2(intensities) after normalization - 3, or 0 if that value is negative.</p></dd>
 
 
 <dt id="arg-x-axis-size">x.axis.size<a class="anchor" aria-label="anchor" href="#arg-x-axis-size"></a></dt>

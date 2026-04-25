@@ -1,0 +1,21 @@
+INFO  [2026-04-25 15:36:35] ** Raw data from FragPipe imported successfully.
+INFO  [2026-04-25 15:36:35] ** Using annotation extracted from quantification data.
+INFO  [2026-04-25 15:36:35] ** Run labels were standardized to remove symbols such as '.' or '%'.
+INFO  [2026-04-25 15:36:35] ** The following options are used:
+  - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
+  - Shared peptides will be removed.
+  - Proteins with single feature will not be removed.
+  - Features with less than 3 measurements across runs will be kept.
+INFO  [2026-04-25 15:36:35] ** Features with all missing measurements across runs are removed.
+INFO  [2026-04-25 15:36:35] ** Shared peptides are removed.
+INFO  [2026-04-25 15:36:35] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: sum
+INFO  [2026-04-25 15:36:35] ** Features with all missing measurements across runs are removed.
+INFO  [2026-04-25 15:36:35] ** Run annotation merged with quantification data.
+INFO  [2026-04-25 15:36:35] ** Features with all missing measurements across runs are removed.
+INFO  [2026-04-25 15:36:35] ** Fractionation handled.
+INFO  [2026-04-25 15:36:35] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2026-04-25 15:36:35] 
+
+INFO  [2026-04-25 15:36:35] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+INFO  [2026-04-25 15:36:35] 
+

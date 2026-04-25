@@ -211,430 +211,28 @@ If <code>append = TRUE</code>, has to be a valid path to a file.</p></dd>
 <span class="r-in"><span>    fasta_protein_name <span class="op">=</span> <span class="st">"entry_name"</span>, </span></span>
 <span class="r-in"><span>    use_log_file <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Raw data from DIANN imported successfully.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Raw data from DIANN cleaned successfully.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Using provided annotation.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Run labels were standardized to remove symbols such as '.' or '%'.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Filtering on Global Q Value &lt; 0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** MBR was used to analyze the data. Now setting names and filtering</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] -- LibPGQValue &lt; 0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] -- LibQValue &lt; 0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** The following options are used:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Raw data from DIANN imported successfully.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Filtering on Q.Value &lt; 0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** MBR was used to analyze the data. Now setting names and filtering</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] -- LibPGQValue &lt; 0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] -- LibQValue &lt; 0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Raw data from DIANN cleaned successfully.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Using provided annotation.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Run labels were standardized to remove symbols such as '.' or '%'.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** The following options are used:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - Shared peptides will be removed.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - Proteins with single feature will not be removed.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - Features with less than 3 measurements across runs will be removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Sequences containing DECOY, Decoys are removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Sequences containing \(UniMod\:35\) are removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Features with all missing measurements across runs are removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Shared peptides are removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Features with one or two measurements across runs are removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Run annotation merged with quantification data.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2026-04-24 21:07:09] The following features have missing values in at least one run. ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DSNPEEIEIDFETLK(UniMod:121)PSTLR_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DSNPEEIEIDFETLK(UniMod:121)PSTLR_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DSNPEEIEIDFETLK(UniMod:121)PSTLR_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDLSTVK(UniMod:121)R_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDLSTVK(UniMod:121)R_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDLSTVK(UniMod:121)R_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDLSTVK(UniMod:121)R_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDLSTVK(UniMod:121)R_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDLSTVK(UniMod:121)R_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDLSTVK(UniMod:121)R_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDLSTVK(UniMod:121)R_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDLSTVK(UniMod:121)R_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDLSTVK(UniMod:121)R_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_2_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_2_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_2_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_2_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_2_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_2_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_2_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_2_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEFR_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPMDMGTIK(UniMod:121)R_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPMDMGTIK(UniMod:121)R_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPMDMGTIK(UniMod:121)R_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPMDMGTIK(UniMod:121)R_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPMDMGTIK(UniMod:121)R_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPMDMGTIK(UniMod:121)R_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPMDMGTIK(UniMod:121)R_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPMDMGTIK(UniMod:121)R_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_2_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_2_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_2_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_2_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_2_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_2_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_2_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_2_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_2_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_2_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TK(UniMod:121)EELALEK_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYHK(UniMod:121)IIK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYHK(UniMod:121)IIK_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYHK(UniMod:121)IIK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYHK(UniMod:121)IIK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYHK(UniMod:121)IIK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYHK(UniMod:121)IIK_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYHK(UniMod:121)IIK_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYHK(UniMod:121)IIK_3_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYHK(UniMod:121)IIK_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LQDVSGQLSSSK(UniMod:121)K_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LQDVSGQLSSSK(UniMod:121)K_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LQDVSGQLSSSK(UniMod:121)K_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LQDVSGQLSSSK(UniMod:121)K_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LQDVSGQLSSSK(UniMod:121)K_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LQDVSGQLSSSK(UniMod:121)K_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LQDVSGQLSSSK(UniMod:121)K_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LQDVSGQLSSSK(UniMod:121)K_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LQDVSGQLSSSK(UniMod:121)K_3_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DVPDSQQHPAPEK(UniMod:121)SSK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DVPDSQQHPAPEK(UniMod:121)SSK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DVPDSQQHPAPEK(UniMod:121)SSK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DVPDSQQHPAPEK(UniMod:121)SSK_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  DVPDSQQHPAPEK(UniMod:121)SSK_3_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_4_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_4_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDMSTIK(UniMod:121)SK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDMSTIK(UniMod:121)SK_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDMSTIK(UniMod:121)SK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDMSTIK(UniMod:121)SK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDMSTIK(UniMod:121)SK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  HPMDMSTIK(UniMod:121)SK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_2_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_2_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_2_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_2_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_2_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_2_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_2_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_2_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_2_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_2_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  K(UniMod:121)LQDVFEMR_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_2_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_2_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_2_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_2_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_2_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_2_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_2_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_2_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LNLPDYYK(UniMod:121)IIK_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  LPGEK(UniMod:121)LGR_2_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINK(UniMod:121)LPGEK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINK(UniMod:121)LPGEK_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINK(UniMod:121)LPGEK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINK(UniMod:121)LPGEK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINK(UniMod:121)LPGEK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINK(UniMod:121)LPGEK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINK(UniMod:121)LPGEK_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINK(UniMod:121)LPGEK_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINK(UniMod:121)LPGEK_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINK(UniMod:121)LPGEK_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SSK(UniMod:121)VSEQLK_2_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SSK(UniMod:121)VSEQLK_2_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SSK(UniMod:121)VSEQLK_2_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  SSK(UniMod:121)VSEQLK_2_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_2_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_2_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_2_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_2_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_2_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_2_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_2_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_2_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  TPMDMGTIK(UniMod:121)K_3_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VDVIAGSSK(UniMod:121)MK_2_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VDVIAGSSK(UniMod:121)MK_2_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VDVIAGSSK(UniMod:121)MK_2_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VDVIAGSSK(UniMod:121)MK_2_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VDVIAGSSK(UniMod:121)MK_2_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag12_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VVLK(UniMod:121)TLWK_2_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VVLK(UniMod:121)TLWK_2_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VVLK(UniMod:121)TLWK_2_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VVLK(UniMod:121)TLWK_2_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VVLK(UniMod:121)TLWK_2_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  VVLK(UniMod:121)TLWK_2_Frag7_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Updated quantification data to make balanced design. Missing values are marked by NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Sequences containing DECOY, Decoys are removed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Sequences containing \(UniMod\:35\) are removed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Features with all missing measurements across runs are removed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Shared peptides are removed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Features with one or two measurements across runs are removed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Run annotation merged with quantification data.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Updated quantification data to make balanced design. Missing values are marked by NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:33] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">msstatsptm_format</span><span class="op">$</span><span class="va">PTM</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       ProteinName                          PeptideSequence PrecursorCharge</span>
@@ -645,19 +243,19 @@ If <code>append = TRUE</code>, has to be a valid path to a file.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 BRD2_HUMAN_K614 ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK               3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 BRD2_HUMAN_K614 ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK               3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   FragmentIon ProductCharge IsotopeLabelType Condition BioReplicate</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       Frag3             1            Light      DMSO            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       Frag5             1            Light      DMSO            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      Frag10             1            Light      DMSO            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      Frag12             1            Light      DMSO            2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       Frag3             1            Light      MZ-1            4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       Frag5             1            Light      MZ-1            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Frag10             1            Light      DMSO            1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      Frag10             1            Light      DMSO            2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      Frag10             1            Light      DMSO            3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      Frag10             1            Light      MZ-1            4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Frag10             1            Light      MZ-1            5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      Frag10             1            Light      MZ-1            6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   Run Fraction Intensity</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 144-2024-GS-DMSO-R2        1   973.400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 144-2024-GS-DMSO-R2        1   408.661</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 144-2024-GS-DMSO-R2        1  1259.200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 144-2024-GS-DMSO-R2        1   383.783</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  144-2024-GS-MZ1-R1        1  1735.130</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  144-2024-GS-MZ1-R1        1   686.085</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 144-2024-GS-DMSO-R1        1        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 144-2024-GS-DMSO-R2        1  1259.200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 144-2024-GS-DMSO-R3        1        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  144-2024-GS-MZ1-R1        1  1776.290</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  144-2024-GS-MZ1-R2        1        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  144-2024-GS-MZ1-R3        1   733.464</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example DIANN 2.0</span></span></span>
 <span class="r-in"><span><span class="va">input</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"tinytest/raw_data/DIANN/diann_2_ptm.parquet"</span>, </span></span>
@@ -678,40 +276,28 @@ If <code>append = TRUE</code>, has to be a valid path to a file.</p></dd>
 <span class="r-in"><span>    use_log_file <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>    quantificationColumn <span class="op">=</span> <span class="st">"auto"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Raw data from DIANN imported successfully.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Raw data from DIANN cleaned successfully.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Using provided annotation.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Run labels were standardized to remove symbols such as '.' or '%'.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Filtering on Global Q Value &lt; 0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** MBR was used to analyze the data. Now setting names and filtering</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] -- LibPGQValue &lt; 0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] -- LibQValue &lt; 0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** The following options are used:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Raw data from DIANN imported successfully.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Filtering on Q.Value &lt; 0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** MBR was used to analyze the data. Now setting names and filtering</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] -- LibPGQValue &lt; 0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] -- LibQValue &lt; 0.01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Raw data from DIANN cleaned successfully.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Using provided annotation.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Run labels were standardized to remove symbols such as '.' or '%'.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** The following options are used:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - Shared peptides will be removed.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - Proteins with single feature will not be removed.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   - Features with less than 3 measurements across runs will be removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Sequences containing DECOY, Decoys are removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Sequences containing \(UniMod\:35\) are removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Features with all missing measurements across runs are removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Shared peptides are removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Features with one or two measurements across runs are removed.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Run annotation merged with quantification data.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> WARN  [2026-04-24 21:07:09] The following features have missing values in at least one run. AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag1_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag2_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag3_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag4_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag5_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag6_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag7_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag8_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag9_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag10_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag11_1,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag12_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Updated quantification data to make balanced design. Missing values are marked by NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-24 21:07:09] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Sequences containing DECOY, Decoys are removed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Sequences containing \(UniMod\:35\) are removed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Features with all missing measurements across runs are removed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Shared peptides are removed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Features with one or two measurements across runs are removed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Run annotation merged with quantification data.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Updated quantification data to make balanced design. Missing values are marked by NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> INFO  [2026-04-25 15:36:34] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">msstatsptm_format</span><span class="op">$</span><span class="va">PTM</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       ProteinName                          PeptideSequence PrecursorCharge</span>
@@ -722,19 +308,19 @@ If <code>append = TRUE</code>, has to be a valid path to a file.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 BRD2_HUMAN_K614 ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK               3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 BRD2_HUMAN_K614 ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK               3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   FragmentIon ProductCharge IsotopeLabelType Condition BioReplicate  Run</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1       Frag1             1            Light   Control            1 Run1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2       Frag2             1            Light   Control            1 Run1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3       Frag3             1            Light   Control            1 Run1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       Frag4             1            Light   Control            1 Run1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5       Frag5             1            Light   Control            1 Run1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6       Frag6             1            Light   Control            1 Run1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Fraction  Intensity</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1 102640.406</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1  20122.303</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        1   4221.658</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        1  31232.246</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5        1   5321.414</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6        1   7399.935</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Frag10             1            Light   Control            1 Run1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      Frag10             1            Light   Control            2 Run2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      Frag10             1            Light   Control            3 Run3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      Frag10             1            Light   Control            4 Run4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      Frag10             1            Light Treatment            5 Run5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      Frag10             1            Light Treatment            6 Run6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Fraction Intensity</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        1  5521.414</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        1  5652.361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        1  5783.308</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        1  5914.254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        1  6045.201</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        1  6176.148</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

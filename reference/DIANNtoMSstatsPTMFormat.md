@@ -169,430 +169,28 @@ msstatsptm_format = DIANNtoMSstatsPTMFormat(
     fasta_protein_name = "entry_name", 
     use_log_file = FALSE
 )
-#> INFO  [2026-04-24 21:07:09] ** Raw data from DIANN imported successfully.
-#> INFO  [2026-04-24 21:07:09] ** Raw data from DIANN cleaned successfully.
-#> INFO  [2026-04-24 21:07:09] ** Using provided annotation.
-#> INFO  [2026-04-24 21:07:09] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-24 21:07:09] ** Filtering on Global Q Value < 0.01
-#> INFO  [2026-04-24 21:07:09] ** MBR was used to analyze the data. Now setting names and filtering
-#> INFO  [2026-04-24 21:07:09] -- LibPGQValue < 0.01
-#> INFO  [2026-04-24 21:07:09] -- LibQValue < 0.01
-#> INFO  [2026-04-24 21:07:09] ** The following options are used:
+#> INFO  [2026-04-25 15:36:33] ** Raw data from DIANN imported successfully.
+#> INFO  [2026-04-25 15:36:33] ** Filtering on Q.Value < 0.01
+#> INFO  [2026-04-25 15:36:33] ** MBR was used to analyze the data. Now setting names and filtering
+#> INFO  [2026-04-25 15:36:33] -- LibPGQValue < 0.01
+#> INFO  [2026-04-25 15:36:33] -- LibQValue < 0.01
+#> INFO  [2026-04-25 15:36:33] ** Raw data from DIANN cleaned successfully.
+#> INFO  [2026-04-25 15:36:33] ** Using provided annotation.
+#> INFO  [2026-04-25 15:36:33] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-25 15:36:33] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-24 21:07:09] ** Sequences containing DECOY, Decoys are removed.
-#> INFO  [2026-04-24 21:07:09] ** Sequences containing \(UniMod\:35\) are removed.
-#> INFO  [2026-04-24 21:07:09] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-24 21:07:09] ** Shared peptides are removed.
-#> INFO  [2026-04-24 21:07:09] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-24 21:07:09] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-24 21:07:09] ** Run annotation merged with quantification data.
-#> WARN  [2026-04-24 21:07:09] The following features have missing values in at least one run. ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK_3_Frag3_1,
-#>  ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK_3_Frag5_1,
-#>  ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK_3_Frag10_1,
-#>  ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK_3_Frag12_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag1_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag2_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag3_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag4_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag5_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag6_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_3_Frag9_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag1_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag2_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag3_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag4_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag5_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag6_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag7_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag8_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag9_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag10_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag11_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag12_1,
-#>  DSNPEEIEIDFETLK(UniMod:121)PSTLR_3_Frag1_1,
-#>  DSNPEEIEIDFETLK(UniMod:121)PSTLR_3_Frag8_1,
-#>  DSNPEEIEIDFETLK(UniMod:121)PSTLR_3_Frag12_1,
-#>  HPMDLSTVK(UniMod:121)R_3_Frag1_1,
-#>  HPMDLSTVK(UniMod:121)R_3_Frag2_1,
-#>  HPMDLSTVK(UniMod:121)R_3_Frag3_1,
-#>  HPMDLSTVK(UniMod:121)R_3_Frag4_1,
-#>  HPMDLSTVK(UniMod:121)R_3_Frag5_1,
-#>  HPMDLSTVK(UniMod:121)R_3_Frag6_1,
-#>  HPMDLSTVK(UniMod:121)R_3_Frag7_1,
-#>  HPMDLSTVK(UniMod:121)R_3_Frag8_1,
-#>  HPMDLSTVK(UniMod:121)R_3_Frag10_1,
-#>  HPMDLSTVK(UniMod:121)R_3_Frag12_1,
-#>  K(UniMod:121)LQDVFEFR_2_Frag1_1,
-#>  K(UniMod:121)LQDVFEFR_2_Frag2_1,
-#>  K(UniMod:121)LQDVFEFR_2_Frag3_1,
-#>  K(UniMod:121)LQDVFEFR_2_Frag4_1,
-#>  K(UniMod:121)LQDVFEFR_2_Frag5_1,
-#>  K(UniMod:121)LQDVFEFR_2_Frag6_1,
-#>  K(UniMod:121)LQDVFEFR_2_Frag7_1,
-#>  K(UniMod:121)LQDVFEFR_2_Frag8_1,
-#>  K(UniMod:121)LQDVFEFR_3_Frag1_1,
-#>  K(UniMod:121)LQDVFEFR_3_Frag2_1,
-#>  K(UniMod:121)LQDVFEFR_3_Frag3_1,
-#>  K(UniMod:121)LQDVFEFR_3_Frag4_1,
-#>  K(UniMod:121)LQDVFEFR_3_Frag5_1,
-#>  K(UniMod:121)LQDVFEFR_3_Frag6_1,
-#>  K(UniMod:121)LQDVFEFR_3_Frag12_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag1_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag4_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag5_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag6_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag7_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag10_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHDVVAMAR_4_Frag12_1,
-#>  QPMDMGTIK(UniMod:121)R_3_Frag1_1,
-#>  QPMDMGTIK(UniMod:121)R_3_Frag2_1,
-#>  QPMDMGTIK(UniMod:121)R_3_Frag3_1,
-#>  QPMDMGTIK(UniMod:121)R_3_Frag4_1,
-#>  QPMDMGTIK(UniMod:121)R_3_Frag6_1,
-#>  QPMDMGTIK(UniMod:121)R_3_Frag7_1,
-#>  QPMDMGTIK(UniMod:121)R_3_Frag8_1,
-#>  QPMDMGTIK(UniMod:121)R_3_Frag10_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag1_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag2_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag3_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag4_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag5_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag6_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_3_Frag11_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag1_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag2_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag3_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag4_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag5_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag6_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag7_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag8_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag9_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag10_1,
-#>  QPVDAVK(UniMod:121)LGLPDYHK_4_Frag12_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag1_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag2_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag3_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag4_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag5_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag6_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag7_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag8_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag9_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag10_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag11_1,
-#>  SLHSAGPPLLAVTAAPPAQPLAK(UniMod:121)K_4_Frag12_1,
-#>  TK(UniMod:121)EELALEK_2_Frag1_1,
-#>  TK(UniMod:121)EELALEK_2_Frag2_1,
-#>  TK(UniMod:121)EELALEK_2_Frag3_1,
-#>  TK(UniMod:121)EELALEK_2_Frag4_1,
-#>  TK(UniMod:121)EELALEK_2_Frag6_1,
-#>  TK(UniMod:121)EELALEK_2_Frag7_1,
-#>  TK(UniMod:121)EELALEK_2_Frag8_1,
-#>  TK(UniMod:121)EELALEK_2_Frag9_1,
-#>  TK(UniMod:121)EELALEK_2_Frag10_1,
-#>  TK(UniMod:121)EELALEK_2_Frag12_1,
-#>  TK(UniMod:121)EELALEK_3_Frag1_1,
-#>  TK(UniMod:121)EELALEK_3_Frag3_1,
-#>  TK(UniMod:121)EELALEK_3_Frag4_1,
-#>  TK(UniMod:121)EELALEK_3_Frag5_1,
-#>  TK(UniMod:121)EELALEK_3_Frag6_1,
-#>  TK(UniMod:121)EELALEK_3_Frag8_1,
-#>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag1_1,
-#>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag2_1,
-#>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag4_1,
-#>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag6_1,
-#>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag7_1,
-#>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag9_1,
-#>  AVHEQLAALSQAPVNK(UniMod:121)PK_4_Frag11_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag1_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag2_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag3_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag4_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag5_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag6_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag7_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag9_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_3_Frag11_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag1_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag2_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag3_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag4_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag5_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag6_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag7_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag9_1,
-#>  DLEDGEVPQHAGK(UniMod:121)K_4_Frag10_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag1_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag2_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag3_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag4_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag5_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag6_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag7_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag8_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag9_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag10_1,
-#>  FAK(UniMod:121)MPDEPVEAPALPAPAAPMVSK_3_Frag11_1,
-#>  LNLPDYHK(UniMod:121)IIK_3_Frag1_1,
-#>  LNLPDYHK(UniMod:121)IIK_3_Frag2_1,
-#>  LNLPDYHK(UniMod:121)IIK_3_Frag3_1,
-#>  LNLPDYHK(UniMod:121)IIK_3_Frag4_1,
-#>  LNLPDYHK(UniMod:121)IIK_3_Frag6_1,
-#>  LNLPDYHK(UniMod:121)IIK_3_Frag7_1,
-#>  LNLPDYHK(UniMod:121)IIK_3_Frag9_1,
-#>  LNLPDYHK(UniMod:121)IIK_3_Frag11_1,
-#>  LNLPDYHK(UniMod:121)IIK_3_Frag12_1,
-#>  LQDVSGQLSSSK(UniMod:121)K_3_Frag1_1,
-#>  LQDVSGQLSSSK(UniMod:121)K_3_Frag2_1,
-#>  LQDVSGQLSSSK(UniMod:121)K_3_Frag3_1,
-#>  LQDVSGQLSSSK(UniMod:121)K_3_Frag4_1,
-#>  LQDVSGQLSSSK(UniMod:121)K_3_Frag5_1,
-#>  LQDVSGQLSSSK(UniMod:121)K_3_Frag6_1,
-#>  LQDVSGQLSSSK(UniMod:121)K_3_Frag8_1,
-#>  LQDVSGQLSSSK(UniMod:121)K_3_Frag10_1,
-#>  LQDVSGQLSSSK(UniMod:121)K_3_Frag11_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag1_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag2_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag3_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag4_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag5_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag6_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_3_Frag12_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag1_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag2_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag3_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag4_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag5_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag6_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag8_1,
-#>  QLSLDINRLPGEK(UniMod:121)LGR_4_Frag11_1,
-#>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag1_1,
-#>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag3_1,
-#>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag4_1,
-#>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag5_1,
-#>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag6_1,
-#>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag8_1,
-#>  VAQMPQEEVELLPPAPK(UniMod:121)GK_3_Frag12_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag1_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag2_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag3_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag4_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag5_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag7_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag8_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag9_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag10_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_2_Frag11_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag1_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag2_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag3_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag4_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag5_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag6_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag7_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag8_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag9_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag10_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag11_1,
-#>  C(UniMod:4)C(UniMod:4)SGILK(UniMod:121)EMFAK_3_Frag12_1,
-#>  DVPDSQQHPAPEK(UniMod:121)SSK_3_Frag1_1,
-#>  DVPDSQQHPAPEK(UniMod:121)SSK_3_Frag4_1,
-#>  DVPDSQQHPAPEK(UniMod:121)SSK_3_Frag5_1,
-#>  DVPDSQQHPAPEK(UniMod:121)SSK_3_Frag9_1,
-#>  DVPDSQQHPAPEK(UniMod:121)SSK_3_Frag11_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag1_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag2_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag3_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag4_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag5_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag6_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag7_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag8_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag9_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag10_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag11_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_3_Frag12_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_4_Frag1_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_4_Frag2_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_4_Frag3_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_4_Frag4_1,
-#>  FAK(UniMod:121)MPDEPEEPVVAVSSPAVPPPTK_4_Frag6_1,
-#>  HPMDMSTIK(UniMod:121)SK_3_Frag1_1,
-#>  HPMDMSTIK(UniMod:121)SK_3_Frag2_1,
-#>  HPMDMSTIK(UniMod:121)SK_3_Frag3_1,
-#>  HPMDMSTIK(UniMod:121)SK_3_Frag4_1,
-#>  HPMDMSTIK(UniMod:121)SK_3_Frag5_1,
-#>  HPMDMSTIK(UniMod:121)SK_3_Frag6_1,
-#>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag1_1,
-#>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag2_1,
-#>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag3_1,
-#>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag4_1,
-#>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag5_1,
-#>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag6_1,
-#>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag7_1,
-#>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag8_1,
-#>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag9_1,
-#>  INELPTEETEIMIVQAK(UniMod:121)GR_3_Frag12_1,
-#>  K(UniMod:121)LQDVFEMR_2_Frag1_1,
-#>  K(UniMod:121)LQDVFEMR_2_Frag2_1,
-#>  K(UniMod:121)LQDVFEMR_2_Frag3_1,
-#>  K(UniMod:121)LQDVFEMR_2_Frag4_1,
-#>  K(UniMod:121)LQDVFEMR_2_Frag5_1,
-#>  K(UniMod:121)LQDVFEMR_2_Frag6_1,
-#>  K(UniMod:121)LQDVFEMR_2_Frag7_1,
-#>  K(UniMod:121)LQDVFEMR_2_Frag8_1,
-#>  K(UniMod:121)LQDVFEMR_2_Frag9_1,
-#>  K(UniMod:121)LQDVFEMR_2_Frag10_1,
-#>  K(UniMod:121)LQDVFEMR_3_Frag1_1,
-#>  K(UniMod:121)LQDVFEMR_3_Frag2_1,
-#>  K(UniMod:121)LQDVFEMR_3_Frag3_1,
-#>  K(UniMod:121)LQDVFEMR_3_Frag4_1,
-#>  K(UniMod:121)LQDVFEMR_3_Frag5_1,
-#>  K(UniMod:121)LQDVFEMR_3_Frag6_1,
-#>  K(UniMod:121)LQDVFEMR_3_Frag7_1,
-#>  K(UniMod:121)LQDVFEMR_3_Frag9_1,
-#>  K(UniMod:121)LQDVFEMR_3_Frag10_1,
-#>  K(UniMod:121)LQDVFEMR_3_Frag12_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag1_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag2_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag3_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag6_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag9_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag10_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_3_Frag12_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag1_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag2_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag3_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag4_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag5_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag6_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag7_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag8_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag9_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag10_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag11_1,
-#>  LMFSNC(UniMod:4)YK(UniMod:121)YNPPDHEVVAMAR_4_Frag12_1,
-#>  LNLPDYYK(UniMod:121)IIK_2_Frag1_1,
-#>  LNLPDYYK(UniMod:121)IIK_2_Frag3_1,
-#>  LNLPDYYK(UniMod:121)IIK_2_Frag4_1,
-#>  LNLPDYYK(UniMod:121)IIK_2_Frag6_1,
-#>  LNLPDYYK(UniMod:121)IIK_2_Frag7_1,
-#>  LNLPDYYK(UniMod:121)IIK_2_Frag8_1,
-#>  LNLPDYYK(UniMod:121)IIK_2_Frag9_1,
-#>  LNLPDYYK(UniMod:121)IIK_2_Frag10_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag1_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag2_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag3_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag4_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag5_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag6_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag7_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag8_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag9_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag10_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag11_1,
-#>  LNLPDYYK(UniMod:121)IIK_3_Frag12_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag1_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag2_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag3_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag4_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag5_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag6_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag7_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag8_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag9_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag10_1,
-#>  LPGEK(UniMod:121)LGR_2_Frag11_1,
-#>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag1_1,
-#>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag2_1,
-#>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag3_1,
-#>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag4_1,
-#>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag6_1,
-#>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag8_1,
-#>  NSNPDEIEIDFETLK(UniMod:121)PSTLR_3_Frag10_1,
-#>  QLSLDINK(UniMod:121)LPGEK_3_Frag1_1,
-#>  QLSLDINK(UniMod:121)LPGEK_3_Frag2_1,
-#>  QLSLDINK(UniMod:121)LPGEK_3_Frag3_1,
-#>  QLSLDINK(UniMod:121)LPGEK_3_Frag4_1,
-#>  QLSLDINK(UniMod:121)LPGEK_3_Frag5_1,
-#>  QLSLDINK(UniMod:121)LPGEK_3_Frag6_1,
-#>  QLSLDINK(UniMod:121)LPGEK_3_Frag8_1,
-#>  QLSLDINK(UniMod:121)LPGEK_3_Frag9_1,
-#>  QLSLDINK(UniMod:121)LPGEK_3_Frag10_1,
-#>  QLSLDINK(UniMod:121)LPGEK_3_Frag12_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag1_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag2_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag3_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag4_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag5_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag6_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag7_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag8_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag9_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag10_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_3_Frag12_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag1_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag2_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag3_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag4_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag5_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag6_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag7_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag8_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag9_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag10_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag11_1,
-#>  QLSLDINKLPGEK(UniMod:121)LGR_4_Frag12_1,
-#>  SSK(UniMod:121)VSEQLK_2_Frag1_1,
-#>  SSK(UniMod:121)VSEQLK_2_Frag2_1,
-#>  SSK(UniMod:121)VSEQLK_2_Frag3_1,
-#>  SSK(UniMod:121)VSEQLK_2_Frag8_1,
-#>  TPMDMGTIK(UniMod:121)K_2_Frag1_1,
-#>  TPMDMGTIK(UniMod:121)K_2_Frag2_1,
-#>  TPMDMGTIK(UniMod:121)K_2_Frag3_1,
-#>  TPMDMGTIK(UniMod:121)K_2_Frag4_1,
-#>  TPMDMGTIK(UniMod:121)K_2_Frag5_1,
-#>  TPMDMGTIK(UniMod:121)K_2_Frag6_1,
-#>  TPMDMGTIK(UniMod:121)K_2_Frag7_1,
-#>  TPMDMGTIK(UniMod:121)K_2_Frag9_1,
-#>  TPMDMGTIK(UniMod:121)K_3_Frag1_1,
-#>  TPMDMGTIK(UniMod:121)K_3_Frag2_1,
-#>  TPMDMGTIK(UniMod:121)K_3_Frag3_1,
-#>  TPMDMGTIK(UniMod:121)K_3_Frag4_1,
-#>  TPMDMGTIK(UniMod:121)K_3_Frag5_1,
-#>  TPMDMGTIK(UniMod:121)K_3_Frag6_1,
-#>  TPMDMGTIK(UniMod:121)K_3_Frag7_1,
-#>  TPMDMGTIK(UniMod:121)K_3_Frag8_1,
-#>  TPMDMGTIK(UniMod:121)K_3_Frag10_1,
-#>  TPMDMGTIK(UniMod:121)K_3_Frag11_1,
-#>  VDVIAGSSK(UniMod:121)MK_2_Frag1_1,
-#>  VDVIAGSSK(UniMod:121)MK_2_Frag2_1,
-#>  VDVIAGSSK(UniMod:121)MK_2_Frag3_1,
-#>  VDVIAGSSK(UniMod:121)MK_2_Frag4_1,
-#>  VDVIAGSSK(UniMod:121)MK_2_Frag9_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag1_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag2_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag3_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag4_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag5_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag6_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag7_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag8_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag9_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag10_1,
-#>  VSEQLK(UniMod:121)C(UniMod:4)C(UniMod:4)SGILK_3_Frag12_1,
-#>  VVLK(UniMod:121)TLWK_2_Frag1_1,
-#>  VVLK(UniMod:121)TLWK_2_Frag2_1,
-#>  VVLK(UniMod:121)TLWK_2_Frag3_1,
-#>  VVLK(UniMod:121)TLWK_2_Frag4_1,
-#>  VVLK(UniMod:121)TLWK_2_Frag5_1,
-#>  VVLK(UniMod:121)TLWK_2_Frag7_1
-#> INFO  [2026-04-24 21:07:09] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-24 21:07:09] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-25 15:36:33] ** Sequences containing DECOY, Decoys are removed.
+#> INFO  [2026-04-25 15:36:33] ** Sequences containing \(UniMod\:35\) are removed.
+#> INFO  [2026-04-25 15:36:33] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-25 15:36:33] ** Shared peptides are removed.
+#> INFO  [2026-04-25 15:36:33] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-04-25 15:36:33] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-25 15:36:33] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-25 15:36:33] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-25 15:36:33] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 
 head(msstatsptm_format$PTM)
 #>       ProteinName                          PeptideSequence PrecursorCharge
@@ -603,19 +201,19 @@ head(msstatsptm_format$PTM)
 #> 5 BRD2_HUMAN_K614 ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK               3
 #> 6 BRD2_HUMAN_K614 ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK               3
 #>   FragmentIon ProductCharge IsotopeLabelType Condition BioReplicate
-#> 1       Frag3             1            Light      DMSO            2
-#> 2       Frag5             1            Light      DMSO            2
-#> 3      Frag10             1            Light      DMSO            2
-#> 4      Frag12             1            Light      DMSO            2
-#> 5       Frag3             1            Light      MZ-1            4
-#> 6       Frag5             1            Light      MZ-1            4
+#> 1      Frag10             1            Light      DMSO            1
+#> 2      Frag10             1            Light      DMSO            2
+#> 3      Frag10             1            Light      DMSO            3
+#> 4      Frag10             1            Light      MZ-1            4
+#> 5      Frag10             1            Light      MZ-1            5
+#> 6      Frag10             1            Light      MZ-1            6
 #>                   Run Fraction Intensity
-#> 1 144-2024-GS-DMSO-R2        1   973.400
-#> 2 144-2024-GS-DMSO-R2        1   408.661
-#> 3 144-2024-GS-DMSO-R2        1  1259.200
-#> 4 144-2024-GS-DMSO-R2        1   383.783
-#> 5  144-2024-GS-MZ1-R1        1  1735.130
-#> 6  144-2024-GS-MZ1-R1        1   686.085
+#> 1 144-2024-GS-DMSO-R1        1        NA
+#> 2 144-2024-GS-DMSO-R2        1  1259.200
+#> 3 144-2024-GS-DMSO-R3        1        NA
+#> 4  144-2024-GS-MZ1-R1        1  1776.290
+#> 5  144-2024-GS-MZ1-R2        1        NA
+#> 6  144-2024-GS-MZ1-R3        1   733.464
 
 # Example DIANN 2.0
 input = system.file("tinytest/raw_data/DIANN/diann_2_ptm.parquet", 
@@ -636,40 +234,28 @@ msstatsptm_format = DIANNtoMSstatsPTMFormat(
     use_log_file = FALSE,
     quantificationColumn = "auto"
 )
-#> INFO  [2026-04-24 21:07:09] ** Raw data from DIANN imported successfully.
-#> INFO  [2026-04-24 21:07:09] ** Raw data from DIANN cleaned successfully.
-#> INFO  [2026-04-24 21:07:09] ** Using provided annotation.
-#> INFO  [2026-04-24 21:07:09] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-24 21:07:09] ** Filtering on Global Q Value < 0.01
-#> INFO  [2026-04-24 21:07:09] ** MBR was used to analyze the data. Now setting names and filtering
-#> INFO  [2026-04-24 21:07:09] -- LibPGQValue < 0.01
-#> INFO  [2026-04-24 21:07:09] -- LibQValue < 0.01
-#> INFO  [2026-04-24 21:07:09] ** The following options are used:
+#> INFO  [2026-04-25 15:36:34] ** Raw data from DIANN imported successfully.
+#> INFO  [2026-04-25 15:36:34] ** Filtering on Q.Value < 0.01
+#> INFO  [2026-04-25 15:36:34] ** MBR was used to analyze the data. Now setting names and filtering
+#> INFO  [2026-04-25 15:36:34] -- LibPGQValue < 0.01
+#> INFO  [2026-04-25 15:36:34] -- LibQValue < 0.01
+#> INFO  [2026-04-25 15:36:34] ** Raw data from DIANN cleaned successfully.
+#> INFO  [2026-04-25 15:36:34] ** Using provided annotation.
+#> INFO  [2026-04-25 15:36:34] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-25 15:36:34] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-24 21:07:09] ** Sequences containing DECOY, Decoys are removed.
-#> INFO  [2026-04-24 21:07:09] ** Sequences containing \(UniMod\:35\) are removed.
-#> INFO  [2026-04-24 21:07:09] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-24 21:07:09] ** Shared peptides are removed.
-#> INFO  [2026-04-24 21:07:09] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-24 21:07:09] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-24 21:07:09] ** Run annotation merged with quantification data.
-#> WARN  [2026-04-24 21:07:09] The following features have missing values in at least one run. AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag1_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag2_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag3_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag4_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag5_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag6_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag7_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag8_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag9_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag10_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag11_1,
-#>  AVHEQLAALSQGPISK(UniMod:121)PK_4_Frag12_1
-#> INFO  [2026-04-24 21:07:09] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-24 21:07:09] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-25 15:36:34] ** Sequences containing DECOY, Decoys are removed.
+#> INFO  [2026-04-25 15:36:34] ** Sequences containing \(UniMod\:35\) are removed.
+#> INFO  [2026-04-25 15:36:34] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-25 15:36:34] ** Shared peptides are removed.
+#> INFO  [2026-04-25 15:36:34] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-04-25 15:36:34] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-25 15:36:34] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-25 15:36:34] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-25 15:36:34] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 
 head(msstatsptm_format$PTM)
 #>       ProteinName                          PeptideSequence PrecursorCharge
@@ -680,17 +266,17 @@ head(msstatsptm_format$PTM)
 #> 5 BRD2_HUMAN_K614 ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK               3
 #> 6 BRD2_HUMAN_K614 ASGSGGGSAALGPSGFGPSGGSGTK(UniMod:121)LPK               3
 #>   FragmentIon ProductCharge IsotopeLabelType Condition BioReplicate  Run
-#> 1       Frag1             1            Light   Control            1 Run1
-#> 2       Frag2             1            Light   Control            1 Run1
-#> 3       Frag3             1            Light   Control            1 Run1
-#> 4       Frag4             1            Light   Control            1 Run1
-#> 5       Frag5             1            Light   Control            1 Run1
-#> 6       Frag6             1            Light   Control            1 Run1
-#>   Fraction  Intensity
-#> 1        1 102640.406
-#> 2        1  20122.303
-#> 3        1   4221.658
-#> 4        1  31232.246
-#> 5        1   5321.414
-#> 6        1   7399.935
+#> 1      Frag10             1            Light   Control            1 Run1
+#> 2      Frag10             1            Light   Control            2 Run2
+#> 3      Frag10             1            Light   Control            3 Run3
+#> 4      Frag10             1            Light   Control            4 Run4
+#> 5      Frag10             1            Light Treatment            5 Run5
+#> 6      Frag10             1            Light Treatment            6 Run6
+#>   Fraction Intensity
+#> 1        1  5521.414
+#> 2        1  5652.361
+#> 3        1  5783.308
+#> 4        1  5914.254
+#> 5        1  6045.201
+#> 6        1  6176.148
 ```

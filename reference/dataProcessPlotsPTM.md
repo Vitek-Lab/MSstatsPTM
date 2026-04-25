@@ -62,7 +62,9 @@ dataProcessPlotsPTM(
 - ylimDown:
 
   lower limit for y-axis in the log scale. FALSE(Default) for Profile
-  Plot and QC Plot uses 0..
+  Plot and QC Plot uses the lower limit as floor of minimum
+  log2(intensities) after normalization - 3, or 0 if that value is
+  negative.
 
 - x.axis.size:
 

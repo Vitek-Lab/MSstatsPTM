@@ -1,0 +1,12 @@
+INFO  [2026-04-25 15:36:48] ** MSstatsTMT - proteinSummarization function
+INFO  [2026-04-25 15:36:48] Selected options:
+Method for protein summarization : msstats
+Constant median normalization between channels : TRUE
+Reference-channel based normalization between MS runs : TRUE
+Remove 'Norm' channels before inference: TRUE
+Remove 'Empty' channels before inference: TRUE
+INFO  [2026-04-25 15:36:48] Summarizing for Run : 1_1 ( 1  of  2 )
+INFO  [2026-04-25 15:36:49] Summarizing for Run : 2_1 ( 2  of  2 )
+INFO  [2026-04-25 15:36:50] ** Protein-level summarization done by MSstats.
+INFO  [2026-04-25 15:36:50] ** 'Norm' information in Condition is required for normalization. Please check it. At this moment, normalization is not performed.
+INFO  [2026-04-25 15:36:50] Summarization complete. Returning output

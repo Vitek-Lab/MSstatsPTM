@@ -140,42 +140,42 @@ metamorpheus_imported = MetamorpheusToMSstatsPTMFormat(
     mod_ids = c("\\[Common Fixed:Carbamidomethyl on C\\]")
 )
 #> [1] "FASTA file missing 3 Proteins. These will be removed. This may be due to non-unique identifications."
-#> INFO  [2026-04-24 21:07:11] ** Raw data from Metamorpheus imported successfully.
-#> INFO  [2026-04-24 21:07:11] ** Raw data from Metamorpheus cleaned successfully.
-#> INFO  [2026-04-24 21:07:11] ** Using provided annotation.
-#> INFO  [2026-04-24 21:07:11] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-24 21:07:11] ** The following options are used:
+#> INFO  [2026-04-25 15:36:36] ** Raw data from Metamorpheus imported successfully.
+#> INFO  [2026-04-25 15:36:36] ** Raw data from Metamorpheus cleaned successfully.
+#> INFO  [2026-04-25 15:36:36] ** Using provided annotation.
+#> INFO  [2026-04-25 15:36:36] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-25 15:36:36] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-24 21:07:11] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-24 21:07:11] ** Shared peptides are removed.
-#> INFO  [2026-04-24 21:07:11] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-24 21:07:11] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-24 21:07:11] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-24 21:07:11] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-24 21:07:11] ** Fractionation handled.
-#> INFO  [2026-04-24 21:07:11] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-24 21:07:11] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
-#> INFO  [2026-04-24 21:07:11] ** Raw data from Metamorpheus imported successfully.
-#> INFO  [2026-04-24 21:07:11] ** Raw data from Metamorpheus cleaned successfully.
-#> INFO  [2026-04-24 21:07:11] ** Using provided annotation.
-#> INFO  [2026-04-24 21:07:11] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-24 21:07:11] ** The following options are used:
+#> INFO  [2026-04-25 15:36:36] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-25 15:36:36] ** Shared peptides are removed.
+#> INFO  [2026-04-25 15:36:36] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-04-25 15:36:36] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-25 15:36:36] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-25 15:36:36] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-25 15:36:36] ** Fractionation handled.
+#> INFO  [2026-04-25 15:36:36] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-25 15:36:36] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-25 15:36:36] ** Raw data from Metamorpheus imported successfully.
+#> INFO  [2026-04-25 15:36:36] ** Raw data from Metamorpheus cleaned successfully.
+#> INFO  [2026-04-25 15:36:36] ** Using provided annotation.
+#> INFO  [2026-04-25 15:36:36] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-25 15:36:36] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-24 21:07:11] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-24 21:07:11] ** Shared peptides are removed.
-#> INFO  [2026-04-24 21:07:11] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-24 21:07:11] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-24 21:07:11] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-24 21:07:11] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-24 21:07:11] ** Fractionation handled.
-#> INFO  [2026-04-24 21:07:11] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-24 21:07:11] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-25 15:36:36] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-25 15:36:36] ** Shared peptides are removed.
+#> INFO  [2026-04-25 15:36:36] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-04-25 15:36:36] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-25 15:36:36] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-25 15:36:36] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-25 15:36:36] ** Fractionation handled.
+#> INFO  [2026-04-25 15:36:36] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-25 15:36:36] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 head(metamorpheus_imported$PTM)
 #>   ProteinName
 #> 1 P06748_C104
