@@ -245,27 +245,27 @@ msstats_input = SpectronauttoMSstatsPTMFormat(spectronaut_input,
                   mod_id = "\\[Phospho \\(STY\\)\\]",
                   fasta_protein_name = "uniprot_iso"
                   )
-#> INFO  [2026-04-25 15:40:08] ** Raw data from Spectronaut imported successfully.
-#> INFO  [2026-04-25 15:40:08] ** Raw data from Spectronaut cleaned successfully.
-#> INFO  [2026-04-25 15:40:08] ** Using provided annotation.
-#> INFO  [2026-04-25 15:40:08] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:08] ** The following options are used:
+#> INFO  [2026-04-29 18:52:29] ** Raw data from Spectronaut imported successfully.
+#> INFO  [2026-04-29 18:52:29] ** Raw data from Spectronaut cleaned successfully.
+#> INFO  [2026-04-29 18:52:29] ** Using provided annotation.
+#> INFO  [2026-04-29 18:52:29] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:52:29] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-25 15:40:08] ** Intensities with values of FExcludedFromQuantification equal to TRUE are replaced with NA
-#> WARN  [2026-04-25 15:40:08] ** PGQvalue not found in input columns.
-#> WARN  [2026-04-25 15:40:08] ** EGQvalue not found in input columns.
-#> INFO  [2026-04-25 15:40:08] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:08] ** Shared peptides are removed.
-#> INFO  [2026-04-25 15:40:08] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-25 15:40:08] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:08] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:08] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:08] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:08] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:08] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-29 18:52:29] ** Intensities with values of FExcludedFromQuantification equal to TRUE are replaced with NA
+#> WARN  [2026-04-29 18:52:29] ** PGQvalue not found in input columns.
+#> WARN  [2026-04-29 18:52:29] ** EGQvalue not found in input columns.
+#> INFO  [2026-04-29 18:52:29] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:52:29] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:52:29] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-04-29 18:52:29] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-29 18:52:29] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:52:29] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-29 18:52:29] ** Fractionation handled.
+#> INFO  [2026-04-29 18:52:29] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:52:29] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 
 head(msstats_input$PTM)
 #>    ProteinName                PeptideSequence PrecursorCharge FragmentIon

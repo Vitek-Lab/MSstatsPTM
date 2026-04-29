@@ -1,0 +1,22 @@
+INFO  [2026-04-29 18:52:26] ** Raw data from Metamorpheus imported successfully.
+INFO  [2026-04-29 18:52:26] ** Raw data from Metamorpheus cleaned successfully.
+INFO  [2026-04-29 18:52:26] ** Using provided annotation.
+INFO  [2026-04-29 18:52:26] ** Run labels were standardized to remove symbols such as '.' or '%'.
+INFO  [2026-04-29 18:52:26] ** The following options are used:
+  - Features will be defined by the columns: PeptideSequence, PrecursorCharge
+  - Shared peptides will be removed.
+  - Proteins with single feature will not be removed.
+  - Features with less than 3 measurements across runs will be removed.
+INFO  [2026-04-29 18:52:26] ** Features with all missing measurements across runs are removed.
+INFO  [2026-04-29 18:52:26] ** Shared peptides are removed.
+INFO  [2026-04-29 18:52:26] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+INFO  [2026-04-29 18:52:26] ** Features with one or two measurements across runs are removed.
+INFO  [2026-04-29 18:52:26] ** Run annotation merged with quantification data.
+INFO  [2026-04-29 18:52:26] ** Features with one or two measurements across runs are removed.
+INFO  [2026-04-29 18:52:26] ** Fractionation handled.
+INFO  [2026-04-29 18:52:26] ** Updated quantification data to make balanced design. Missing values are marked by NA
+INFO  [2026-04-29 18:52:26] 
+
+INFO  [2026-04-29 18:52:26] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+INFO  [2026-04-29 18:52:26] 
+

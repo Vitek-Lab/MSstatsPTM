@@ -195,44 +195,44 @@ pd_imported = PDtoMSstatsPTMFormat(
     use_localization_cutoff = FALSE,
     which_proteinid = "Master.Protein.Accessions")
 #> INFO: Extracting modifications
-#> INFO  [2026-04-25 15:40:05] ** Raw data from ProteomeDiscoverer imported successfully.
-#> INFO  [2026-04-25 15:40:05] ** Raw data from ProteomeDiscoverer cleaned successfully.
-#> INFO  [2026-04-25 15:40:05] ** Using provided annotation.
-#> INFO  [2026-04-25 15:40:05] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:05] ** The following options are used:
+#> INFO  [2026-04-29 18:52:26] ** Raw data from ProteomeDiscoverer imported successfully.
+#> INFO  [2026-04-29 18:52:26] ** Raw data from ProteomeDiscoverer cleaned successfully.
+#> INFO  [2026-04-29 18:52:26] ** Using provided annotation.
+#> INFO  [2026-04-29 18:52:27] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:52:27] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements within each run will be removed.
-#> INFO  [2026-04-25 15:40:05] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:05] ** Shared peptides are removed.
-#> INFO  [2026-04-25 15:40:05] ** Features with one or two measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:05] ** PSMs have been aggregated to peptide ions.
-#> INFO  [2026-04-25 15:40:05] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:05] ** Features with one or two measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:05] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:05] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:05] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
-#> INFO  [2026-04-25 15:40:05] ** Raw data from ProteomeDiscoverer imported successfully.
-#> INFO  [2026-04-25 15:40:05] ** Raw data from ProteomeDiscoverer cleaned successfully.
-#> INFO  [2026-04-25 15:40:05] ** Using provided annotation.
-#> INFO  [2026-04-25 15:40:05] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:05] ** The following options are used:
+#> INFO  [2026-04-29 18:52:27] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:52:27] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:52:27] ** Features with one or two measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:52:27] ** PSMs have been aggregated to peptide ions.
+#> INFO  [2026-04-29 18:52:27] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:52:27] ** Features with one or two measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:52:27] ** Fractionation handled.
+#> INFO  [2026-04-29 18:52:27] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:52:27] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
+#> INFO  [2026-04-29 18:52:27] ** Raw data from ProteomeDiscoverer imported successfully.
+#> INFO  [2026-04-29 18:52:27] ** Raw data from ProteomeDiscoverer cleaned successfully.
+#> INFO  [2026-04-29 18:52:27] ** Using provided annotation.
+#> INFO  [2026-04-29 18:52:27] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:52:27] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements within each run will be removed.
-#> INFO  [2026-04-25 15:40:05] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:05] ** Shared peptides are removed.
-#> INFO  [2026-04-25 15:40:05] ** Features with one or two measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:05] ** PSMs have been aggregated to peptide ions.
-#> INFO  [2026-04-25 15:40:05] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:05] ** For peptides overlapped between fractions of mixture1_1 use the fraction with maximal average abundance.
-#> INFO  [2026-04-25 15:40:05] ** Fractions belonging to same mixture have been combined.
-#> INFO  [2026-04-25 15:40:05] ** Features with one or two measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:05] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:05] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:05] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
+#> INFO  [2026-04-29 18:52:27] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:52:27] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:52:27] ** Features with one or two measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:52:27] ** PSMs have been aggregated to peptide ions.
+#> INFO  [2026-04-29 18:52:27] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:52:27] ** For peptides overlapped between fractions of mixture1_1 use the fraction with maximal average abundance.
+#> INFO  [2026-04-29 18:52:27] ** Fractions belonging to same mixture have been combined.
+#> INFO  [2026-04-29 18:52:27] ** Features with one or two measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:52:27] ** Fractionation handled.
+#> INFO  [2026-04-29 18:52:27] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:52:27] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
    
 head(pd_imported$PTM)
 #>   ProteinName    PeptideSequence Charge                  PSM  Mixture
@@ -422,17 +422,17 @@ msstats_format = PDtoMSstatsPTMFormat(pd_psm_input,
                                       use_unmod_peptides=TRUE, 
                                       which_proteinid = "Master.Protein.Accessions")
 #> INFO: Extracting modifications
-#> INFO  [2026-04-25 15:40:06] ** Raw data from ProteomeDiscoverer imported successfully.
-#> INFO  [2026-04-25 15:40:06] ** Raw data from ProteomeDiscoverer cleaned successfully.
-#> INFO  [2026-04-25 15:40:06] ** Using provided annotation.
-#> INFO  [2026-04-25 15:40:06] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:06] ** The following options are used:
+#> INFO  [2026-04-29 18:52:27] ** Raw data from ProteomeDiscoverer imported successfully.
+#> INFO  [2026-04-29 18:52:27] ** Raw data from ProteomeDiscoverer cleaned successfully.
+#> INFO  [2026-04-29 18:52:27] ** Using provided annotation.
+#> INFO  [2026-04-29 18:52:27] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:52:27] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-25 15:40:06] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:06] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:52:27] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:52:27] ** Shared peptides are removed.
 #> Warning: no non-missing arguments to max; returning -Inf
 #> Warning: no non-missing arguments to max; returning -Inf
 #> Warning: no non-missing arguments to max; returning -Inf
@@ -666,13 +666,13 @@ msstats_format = PDtoMSstatsPTMFormat(pd_psm_input,
 #> Warning: no non-missing arguments to max; returning -Inf
 #> Warning: no non-missing arguments to max; returning -Inf
 #> Warning: no non-missing arguments to max; returning -Inf
-#> INFO  [2026-04-25 15:40:06] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-25 15:40:06] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:06] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:06] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:06] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:06] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:06] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-29 18:52:27] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-04-29 18:52:27] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-29 18:52:27] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:52:27] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-29 18:52:27] ** Fractionation handled.
+#> INFO  [2026-04-29 18:52:27] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:52:27] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 
 head(msstats_format$PTM)
 #>   ProteinName                           PeptideSequence PrecursorCharge

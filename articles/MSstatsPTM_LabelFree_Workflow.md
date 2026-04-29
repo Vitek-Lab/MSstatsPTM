@@ -313,26 +313,26 @@ msstats_format_tmt = MaxQtoMSstatsPTMFormat(evidence=maxq_tmt_evidence,
                                     use_unmod_peptides=TRUE,
                                     labeling_type = "TMT",
                                     which_proteinid_ptm = "Proteins")
-#> INFO  [2026-04-25 15:40:50] ** Raw data from MaxQuant imported successfully.
-#> INFO  [2026-04-25 15:40:50] ** Rows with values of Potentialcontaminant equal to + are removed 
-#> INFO  [2026-04-25 15:40:50] ** Rows with values of Reverse equal to + are removed 
-#> INFO  [2026-04-25 15:40:50] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:50] ** Using provided annotation.
-#> INFO  [2026-04-25 15:40:50] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:50] ** The following options are used:
+#> INFO  [2026-04-29 18:53:08] ** Raw data from MaxQuant imported successfully.
+#> INFO  [2026-04-29 18:53:08] ** Rows with values of Potentialcontaminant equal to + are removed 
+#> INFO  [2026-04-29 18:53:08] ** Rows with values of Reverse equal to + are removed 
+#> INFO  [2026-04-29 18:53:08] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:53:08] ** Using provided annotation.
+#> INFO  [2026-04-29 18:53:08] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:53:08] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements within each run will be kept.
-#> INFO  [2026-04-25 15:40:50] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:50] ** Shared peptides are removed.
-#> INFO  [2026-04-25 15:40:50] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:50] ** PSMs have been aggregated to peptide ions.
-#> INFO  [2026-04-25 15:40:50] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:50] ** Features with one or two measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:50] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:51] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:51] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
+#> INFO  [2026-04-29 18:53:08] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:53:08] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:53:08] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:53:08] ** PSMs have been aggregated to peptide ions.
+#> INFO  [2026-04-29 18:53:08] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:53:08] ** Features with one or two measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:53:08] ** Fractionation handled.
+#> INFO  [2026-04-29 18:53:08] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:53:08] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
 
 head(msstats_format_tmt$PTM)
 #>   ProteinName                     PeptideSequence Charge
@@ -547,25 +547,25 @@ msstats_format_lf = MaxQtoMSstatsPTMFormat(evidence=maxq_lf_evidence,
                                      use_unmod_peptides=TRUE,
                                      labeling_type = "LF",
                                      which_proteinid_ptm = "Proteins")
-#> INFO  [2026-04-25 15:40:51] ** Raw data from MaxQuant imported successfully.
-#> INFO  [2026-04-25 15:40:51] ** Rows with values of Potentialcontaminant equal to + are removed 
-#> INFO  [2026-04-25 15:40:51] ** Rows with values of Reverse equal to + are removed 
-#> INFO  [2026-04-25 15:40:51] ** Using provided annotation.
-#> INFO  [2026-04-25 15:40:51] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:51] ** The following options are used:
+#> INFO  [2026-04-29 18:53:08] ** Raw data from MaxQuant imported successfully.
+#> INFO  [2026-04-29 18:53:08] ** Rows with values of Potentialcontaminant equal to + are removed 
+#> INFO  [2026-04-29 18:53:08] ** Rows with values of Reverse equal to + are removed 
+#> INFO  [2026-04-29 18:53:08] ** Using provided annotation.
+#> INFO  [2026-04-29 18:53:08] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:53:08] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:51] ** Shared peptides are removed.
-#> INFO  [2026-04-25 15:40:51] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-25 15:40:51] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:51] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:51] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:51] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:51] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:51] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-29 18:53:08] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:08] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:53:08] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-04-29 18:53:08] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:08] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:53:08] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:08] ** Fractionation handled.
+#> INFO  [2026-04-29 18:53:08] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:53:08] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 
 head(msstats_format_lf$PTM)
 #>       ProteinName                               PeptideSequence PrecursorCharge
@@ -768,46 +768,46 @@ msstats_data = FragPipetoMSstatsPTMFormat(fragpipe_input,
                                           mod_id_col = "STY",
                                           localization_cutoff=.75,
                                           remove_unlocalized_peptides=TRUE)
-#> INFO  [2026-04-25 15:40:51] ** Raw data from Philosopher imported successfully.
-#> INFO  [2026-04-25 15:40:51] ** Using provided annotation.
-#> INFO  [2026-04-25 15:40:51] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:51] ** The following options are used:
+#> INFO  [2026-04-29 18:53:09] ** Raw data from Philosopher imported successfully.
+#> INFO  [2026-04-29 18:53:09] ** Using provided annotation.
+#> INFO  [2026-04-29 18:53:09] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:53:09] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements within each run will be kept.
-#> INFO  [2026-04-25 15:40:51] ** Rows with values not greater than 0.6 in Purity are removed 
-#> WARN  [2026-04-25 15:40:51] ** PeptideProphetProbability not found in input columns.
-#> INFO  [2026-04-25 15:40:51] ** Sequences containing Oxidation are removed.
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:51] ** Shared peptides are removed.
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:51] ** PSMs have been aggregated to peptide ions.
-#> INFO  [2026-04-25 15:40:51] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:51] ** Features with one or two measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:51] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:51] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:51] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
-#> INFO  [2026-04-25 15:40:51] ** Raw data from Philosopher imported successfully.
-#> INFO  [2026-04-25 15:40:51] ** Using provided annotation.
-#> INFO  [2026-04-25 15:40:51] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:51] ** The following options are used:
+#> INFO  [2026-04-29 18:53:09] ** Rows with values not greater than 0.6 in Purity are removed 
+#> WARN  [2026-04-29 18:53:09] ** PeptideProphetProbability not found in input columns.
+#> INFO  [2026-04-29 18:53:09] ** Sequences containing Oxidation are removed.
+#> INFO  [2026-04-29 18:53:09] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:53:09] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:53:09] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:53:09] ** PSMs have been aggregated to peptide ions.
+#> INFO  [2026-04-29 18:53:09] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:53:09] ** Features with one or two measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:53:09] ** Fractionation handled.
+#> INFO  [2026-04-29 18:53:09] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:53:09] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
+#> INFO  [2026-04-29 18:53:09] ** Raw data from Philosopher imported successfully.
+#> INFO  [2026-04-29 18:53:09] ** Using provided annotation.
+#> INFO  [2026-04-29 18:53:09] ** Run and Channel labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:53:09] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements within each run will be kept.
-#> INFO  [2026-04-25 15:40:51] ** Rows with values not greater than 0.6 in Purity are removed 
-#> WARN  [2026-04-25 15:40:51] ** PeptideProphetProbability not found in input columns.
-#> INFO  [2026-04-25 15:40:51] ** Sequences containing Oxidation are removed.
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:51] ** Shared peptides are removed.
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:51] ** PSMs have been aggregated to peptide ions.
-#> INFO  [2026-04-25 15:40:51] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:51] ** Features with one or two measurements across channels within each run are removed.
-#> INFO  [2026-04-25 15:40:51] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:51] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:51] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
+#> INFO  [2026-04-29 18:53:09] ** Rows with values not greater than 0.6 in Purity are removed 
+#> WARN  [2026-04-29 18:53:09] ** PeptideProphetProbability not found in input columns.
+#> INFO  [2026-04-29 18:53:09] ** Sequences containing Oxidation are removed.
+#> INFO  [2026-04-29 18:53:09] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:53:09] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:53:09] ** Features with all missing measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:53:09] ** PSMs have been aggregated to peptide ions.
+#> INFO  [2026-04-29 18:53:09] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:53:09] ** Features with one or two measurements across channels within each run are removed.
+#> INFO  [2026-04-29 18:53:09] ** Fractionation handled.
+#> INFO  [2026-04-29 18:53:09] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:53:09] ** Finished preprocessing. The dataset is ready to be processed by the proteinSummarization function.
 head(msstats_data$PTM)
 #>                  ProteinName       PeptideSequence Charge
 #> 1 sp|Q9Y2W1|TR150_HUMAN_S805 AEEYTEETEEREES*TTGFDK      3
@@ -880,40 +880,40 @@ msstats_data = FragPipetoMSstatsPTMFormat(input,
                                           localization_cutoff=.75,
                                           protein_id_col = "ProteinName",
                                           peptide_id_col = "PeptideSequence")
-#> INFO  [2026-04-25 15:40:51] ** Raw data from FragPipe imported successfully.
-#> INFO  [2026-04-25 15:40:51] ** Using annotation extracted from quantification data.
-#> INFO  [2026-04-25 15:40:51] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:51] ** The following options are used:
+#> INFO  [2026-04-29 18:53:09] ** Raw data from FragPipe imported successfully.
+#> INFO  [2026-04-29 18:53:09] ** Using annotation extracted from quantification data.
+#> INFO  [2026-04-29 18:53:09] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:53:09] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be kept.
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:51] ** Shared peptides are removed.
-#> INFO  [2026-04-25 15:40:51] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: sum
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:51] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:51] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:51] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:51] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
-#> INFO  [2026-04-25 15:40:51] ** Raw data from FragPipe imported successfully.
-#> INFO  [2026-04-25 15:40:51] ** Using annotation extracted from quantification data.
-#> INFO  [2026-04-25 15:40:51] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:51] ** The following options are used:
+#> INFO  [2026-04-29 18:53:09] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:09] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:53:09] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: sum
+#> INFO  [2026-04-29 18:53:09] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:09] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:53:09] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:09] ** Fractionation handled.
+#> INFO  [2026-04-29 18:53:09] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:53:09] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-29 18:53:09] ** Raw data from FragPipe imported successfully.
+#> INFO  [2026-04-29 18:53:09] ** Using annotation extracted from quantification data.
+#> INFO  [2026-04-29 18:53:09] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:53:09] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be kept.
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:51] ** Shared peptides are removed.
-#> INFO  [2026-04-25 15:40:51] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: sum
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:51] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:51] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:51] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:51] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:51] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-29 18:53:09] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:09] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:53:09] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: sum
+#> INFO  [2026-04-29 18:53:09] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:09] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:53:09] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:09] ** Fractionation handled.
+#> INFO  [2026-04-29 18:53:09] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:53:09] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 head(msstats_data$PTM)
 #>                 ProteinName                                   PeptideSequence
 #> 1 sp|P02400|RLA4_YEAST_S100 FATVPTGGASSAAAGAAGAAAGGDAAEEEKEEEAKEES*DDDMGFGLFD
@@ -1120,17 +1120,17 @@ msstats_format = PDtoMSstatsPTMFormat(pd_psm_input,
                                  use_unmod_peptides=TRUE, 
                                  which_proteinid = "Master.Protein.Accessions")
 #> INFO: Extracting modifications
-#> INFO  [2026-04-25 15:40:52] ** Raw data from ProteomeDiscoverer imported successfully.
-#> INFO  [2026-04-25 15:40:52] ** Raw data from ProteomeDiscoverer cleaned successfully.
-#> INFO  [2026-04-25 15:40:52] ** Using provided annotation.
-#> INFO  [2026-04-25 15:40:52] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:52] ** The following options are used:
+#> INFO  [2026-04-29 18:53:10] ** Raw data from ProteomeDiscoverer imported successfully.
+#> INFO  [2026-04-29 18:53:10] ** Raw data from ProteomeDiscoverer cleaned successfully.
+#> INFO  [2026-04-29 18:53:10] ** Using provided annotation.
+#> INFO  [2026-04-29 18:53:10] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:53:10] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-25 15:40:52] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:52] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:53:10] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:10] ** Shared peptides are removed.
 #> Warning in aggregator(Intensity, na.rm = TRUE): no non-missing arguments to
 #> max; returning -Inf
 #> Warning in aggregator(Intensity, na.rm = TRUE): no non-missing arguments to
@@ -1597,13 +1597,13 @@ msstats_format = PDtoMSstatsPTMFormat(pd_psm_input,
 #> max; returning -Inf
 #> Warning in aggregator(Intensity, na.rm = TRUE): no non-missing arguments to
 #> max; returning -Inf
-#> INFO  [2026-04-25 15:40:52] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-25 15:40:52] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:52] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:52] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:52] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:52] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:52] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-29 18:53:10] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-04-29 18:53:10] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:10] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:53:10] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:10] ** Fractionation handled.
+#> INFO  [2026-04-29 18:53:10] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:53:10] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 
 head(msstats_format$PTM)
 #>   ProteinName                           PeptideSequence PrecursorCharge
@@ -1745,27 +1745,27 @@ msstats_input = SpectronauttoMSstatsPTMFormat(spectronaut_input,
                   mod_id = "\\[Phospho \\(STY\\)\\]",
                   fasta_protein_name = "uniprot_iso"
                   )
-#> INFO  [2026-04-25 15:40:53] ** Raw data from Spectronaut imported successfully.
-#> INFO  [2026-04-25 15:40:53] ** Raw data from Spectronaut cleaned successfully.
-#> INFO  [2026-04-25 15:40:53] ** Using provided annotation.
-#> INFO  [2026-04-25 15:40:53] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-25 15:40:53] ** The following options are used:
+#> INFO  [2026-04-29 18:53:10] ** Raw data from Spectronaut imported successfully.
+#> INFO  [2026-04-29 18:53:10] ** Raw data from Spectronaut cleaned successfully.
+#> INFO  [2026-04-29 18:53:10] ** Using provided annotation.
+#> INFO  [2026-04-29 18:53:10] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-04-29 18:53:10] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-25 15:40:53] ** Intensities with values of FExcludedFromQuantification equal to TRUE are replaced with NA
-#> WARN  [2026-04-25 15:40:53] ** PGQvalue not found in input columns.
-#> WARN  [2026-04-25 15:40:53] ** EGQvalue not found in input columns.
-#> INFO  [2026-04-25 15:40:53] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:53] ** Shared peptides are removed.
-#> INFO  [2026-04-25 15:40:53] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-25 15:40:53] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:53] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-25 15:40:53] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-25 15:40:53] ** Fractionation handled.
-#> INFO  [2026-04-25 15:40:53] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-25 15:40:53] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-04-29 18:53:10] ** Intensities with values of FExcludedFromQuantification equal to TRUE are replaced with NA
+#> WARN  [2026-04-29 18:53:10] ** PGQvalue not found in input columns.
+#> WARN  [2026-04-29 18:53:10] ** EGQvalue not found in input columns.
+#> INFO  [2026-04-29 18:53:10] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:10] ** Shared peptides are removed.
+#> INFO  [2026-04-29 18:53:10] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-04-29 18:53:10] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:10] ** Run annotation merged with quantification data.
+#> INFO  [2026-04-29 18:53:10] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-04-29 18:53:10] ** Fractionation handled.
+#> INFO  [2026-04-29 18:53:10] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-04-29 18:53:10] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
  
 head(msstats_input$PTM)
 #>    ProteinName                PeptideSequence PrecursorCharge FragmentIon
@@ -2017,12 +2017,12 @@ MSstatsPTM.model = groupComparisonPTM(MSstatsPTM.summary,
                                       contrast.matrix = comparison,
                                       use_log_file = FALSE, append = FALSE,
                                       verbose = FALSE)
-#> INFO  [2026-04-25 15:40:58]  == Start to test and get inference in whole plot ...
+#> INFO  [2026-04-29 18:53:14]  == Start to test and get inference in whole plot ...
 #>   |                                                                              |                                                                      |   0%  |                                                                              |=                                                                     |   1%  |                                                                              |=                                                                     |   2%  |                                                                              |==                                                                    |   2%  |                                                                              |==                                                                    |   3%  |                                                                              |===                                                                   |   4%  |                                                                              |===                                                                   |   5%  |                                                                              |====                                                                  |   6%  |                                                                              |=====                                                                 |   7%  |                                                                              |======                                                                |   8%  |                                                                              |======                                                                |   9%  |                                                                              |=======                                                               |  10%  |                                                                              |========                                                              |  11%  |                                                                              |========                                                              |  12%  |                                                                              |=========                                                             |  12%  |                                                                              |=========                                                             |  13%  |                                                                              |==========                                                            |  14%  |                                                                              |==========                                                            |  15%  |                                                                              |===========                                                           |  16%  |                                                                              |============                                                          |  17%  |                                                                              |=============                                                         |  18%  |                                                                              |=============                                                         |  19%  |                                                                              |==============                                                        |  20%  |                                                                              |==============                                                        |  21%  |                                                                              |===============                                                       |  21%  |                                                                              |================                                                      |  22%  |                                                                              |================                                                      |  23%  |                                                                              |=================                                                     |  24%  |                                                                              |=================                                                     |  25%  |                                                                              |==================                                                    |  26%  |                                                                              |===================                                                   |  26%  |                                                                              |===================                                                   |  27%  |                                                                              |====================                                                  |  28%  |                                                                              |====================                                                  |  29%  |                                                                              |=====================                                                 |  30%  |                                                                              |=====================                                                 |  31%  |                                                                              |======================                                                |  31%  |                                                                              |=======================                                               |  32%  |                                                                              |=======================                                               |  33%  |                                                                              |========================                                              |  34%  |                                                                              |========================                                              |  35%  |                                                                              |=========================                                             |  36%  |                                                                              |==========================                                            |  37%  |                                                                              |===========================                                           |  38%  |                                                                              |===========================                                           |  39%  |                                                                              |============================                                          |  40%  |                                                                              |=============================                                         |  41%  |                                                                              |==============================                                        |  42%  |                                                                              |==============================                                        |  43%  |                                                                              |===============================                                       |  44%  |                                                                              |===============================                                       |  45%  |                                                                              |================================                                      |  45%  |                                                                              |================================                                      |  46%  |                                                                              |=================================                                     |  47%  |                                                                              |==================================                                    |  48%  |                                                                              |==================================                                    |  49%  |                                                                              |===================================                                   |  50%  |                                                                              |====================================                                  |  51%  |                                                                              |====================================                                  |  52%  |                                                                              |=====================================                                 |  53%  |                                                                              |======================================                                |  54%  |                                                                              |======================================                                |  55%  |                                                                              |=======================================                               |  55%  |                                                                              |=======================================                               |  56%  |                                                                              |========================================                              |  57%  |                                                                              |========================================                              |  58%  |                                                                              |=========================================                             |  59%  |                                                                              |==========================================                            |  60%  |                                                                              |===========================================                           |  61%  |                                                                              |===========================================                           |  62%  |                                                                              |============================================                          |  63%  |                                                                              |=============================================                         |  64%  |                                                                              |==============================================                        |  65%  |                                                                              |==============================================                        |  66%  |                                                                              |===============================================                       |  67%  |                                                                              |===============================================                       |  68%  |                                                                              |================================================                      |  69%  |                                                                              |=================================================                     |  69%  |                                                                              |=================================================                     |  70%  |                                                                              |==================================================                    |  71%  |                                                                              |==================================================                    |  72%  |                                                                              |===================================================                   |  73%  |                                                                              |===================================================                   |  74%  |                                                                              |====================================================                  |  74%  |                                                                              |=====================================================                 |  75%  |                                                                              |=====================================================                 |  76%  |                                                                              |======================================================                |  77%  |                                                                              |======================================================                |  78%  |                                                                              |=======================================================               |  79%  |                                                                              |========================================================              |  79%  |                                                                              |========================================================              |  80%  |                                                                              |=========================================================             |  81%  |                                                                              |=========================================================             |  82%  |                                                                              |==========================================================            |  83%  |                                                                              |===========================================================           |  84%  |                                                                              |============================================================          |  85%  |                                                                              |============================================================          |  86%  |                                                                              |=============================================================         |  87%  |                                                                              |=============================================================         |  88%  |                                                                              |==============================================================        |  88%  |                                                                              |==============================================================        |  89%  |                                                                              |===============================================================       |  90%  |                                                                              |================================================================      |  91%  |                                                                              |================================================================      |  92%  |                                                                              |=================================================================     |  93%  |                                                                              |==================================================================    |  94%  |                                                                              |===================================================================   |  95%  |                                                                              |===================================================================   |  96%  |                                                                              |====================================================================  |  97%  |                                                                              |====================================================================  |  98%  |                                                                              |===================================================================== |  98%  |                                                                              |===================================================================== |  99%  |                                                                              |======================================================================| 100%
-#> INFO  [2026-04-25 15:41:01]  == Comparisons for all proteins are done.
-#> INFO  [2026-04-25 15:41:01]  == Start to test and get inference in whole plot ...
+#> INFO  [2026-04-29 18:53:17]  == Comparisons for all proteins are done.
+#> INFO  [2026-04-29 18:53:17]  == Start to test and get inference in whole plot ...
 #>   |                                                                              |                                                                      |   0%  |                                                                              |===                                                                   |   4%  |                                                                              |=====                                                                 |   8%  |                                                                              |========                                                              |  12%  |                                                                              |===========                                                           |  15%  |                                                                              |=============                                                         |  19%  |                                                                              |================                                                      |  23%  |                                                                              |===================                                                   |  27%  |                                                                              |======================                                                |  31%  |                                                                              |========================                                              |  35%  |                                                                              |===========================                                           |  38%  |                                                                              |==============================                                        |  42%  |                                                                              |================================                                      |  46%  |                                                                              |===================================                                   |  50%  |                                                                              |======================================                                |  54%  |                                                                              |========================================                              |  58%  |                                                                              |===========================================                           |  62%  |                                                                              |==============================================                        |  65%  |                                                                              |================================================                      |  69%  |                                                                              |===================================================                   |  73%  |                                                                              |======================================================                |  77%  |                                                                              |=========================================================             |  81%  |                                                                              |===========================================================           |  85%  |                                                                              |==============================================================        |  88%  |                                                                              |=================================================================     |  92%  |                                                                              |===================================================================   |  96%  |                                                                              |======================================================================| 100%
-#> INFO  [2026-04-25 15:41:01]  == Comparisons for all proteins are done.
+#> INFO  [2026-04-29 18:53:18]  == Comparisons for all proteins are done.
 head(MSstatsPTM.model$PTM.Model)
 #>        Protein     Label     log2FC         SE    Tvalue    DF    pvalue
 #>         <fctr>    <char>      <num>      <num>     <num> <int>     <num>
