@@ -26,11 +26,13 @@
 #'  log intensities across MS runs.
 #' "QCPlot" represents box plots of log intensities across channels and MS runs.
 #' @param ylimUp upper limit for y-axis in the log scale.
-#' FALSE(Default) for Profile Plot and QC Plot uses the upper limit as rounded
-#' off maximum of log2(intensities) after normalization + 3..
+#' FALSE(Default) for Profile Plot uses the maximum log2 intensity of the
+#' protein of interest + 5 per plot; for QC Plot uses the maximum across all
+#' proteins + 3.
 #' @param ylimDown lower limit for y-axis in the log scale. FALSE(Default) for
-#' Profile Plot and QC Plot uses the lower limit as floor of minimum
-#' log2(intensities) after normalization - 3, or 0 if that value is negative.
+#' Profile Plot uses the floor of the minimum log2 intensity of the protein of
+#' interest - 3 (minimum 0) per plot; for QC Plot uses the floor of the minimum
+#' across all proteins - 3, or 0 if that value is negative.
 #' @param x.axis.size size of x-axis labeling for "Run" and "channel in Profile
 #' Plot and QC Plot.
 #' @param y.axis.size size of y-axis labels. Default is 10.

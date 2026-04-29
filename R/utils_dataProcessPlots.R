@@ -606,20 +606,36 @@
     }
     
     ## factoring for run, channel, condition should be done before loop
-    
+
     for (i in seq_len(nrow(plot_proteins))) {
-      
-      ptm_temp = .plot.profile.tmt(ptm.list, 
-                           as.character(plot_proteins[, PROTEINNAME][i]), 
+      ptm_name = as.character(plot_proteins[, PROTEINNAME][i])
+      ptm_abund = datafeature.ptm[datafeature.ptm$PROTEINNAME == ptm_name, ]$ABUNDANCE
+      if (plot_global) {
+        protein_name = as.character(plot_proteins[, GLOBALPROTEIN][i])
+        protein_abund = datafeature.protein[datafeature.protein$PROTEINNAME == protein_name, ]$ABUNDANCE
+        all_abund = c(ptm_abund, protein_abund)
+      } else {
+        all_abund = ptm_abund
+      }
+      if (!is.numeric(ylimUp)) y.limup = ceiling(max(all_abund, na.rm = TRUE) + 5)
+      if (!is.numeric(ylimDown)) y.limdown = max(floor(min(all_abund, na.rm = TRUE) - 3), 0)
+      cur_ptm.list = ptm.list
+      cur_ptm.list[[3]]$abundance = y.limup - 0.5
+      cur_ptm.list[[4]]$abundance = y.limup - 0.5
+
+      ptm_temp = .plot.profile.tmt(cur_ptm.list,
+                           ptm_name,
                            y.limup, y.limdown, x.axis.size,
                            y.axis.size, text.size, text.angle, legend.size,
                            dot.size.profile, ncol.guide)
       if (plot_global){
-        protein_temp = .plot.profile.tmt(protein.list, 
-                                 as.character(
-                                   plot_proteins[, GLOBALPROTEIN][i]), 
+        cur_protein.list = protein.list
+        cur_protein.list[[3]]$abundance = y.limup - 0.5
+        cur_protein.list[[4]]$abundance = y.limup - 0.5
+        protein_temp = .plot.profile.tmt(cur_protein.list,
+                                 protein_name,
                                  y.limup, y.limdown, x.axis.size,
-                                 y.axis.size, text.size, text.angle, 
+                                 y.axis.size, text.size, text.angle,
                                  legend.size, dot.size.profile, ncol.guide)
         original_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = protein_temp)
         grid.arrange(ptm_temp, protein_temp, ncol=1)
@@ -628,8 +644,8 @@
         print(ptm_temp)
       }
       output_plots[["original_plot"]][[paste("plot",i)]] <- original_profile_plots
-      message(paste0("Drew the Profile plot for ", 
-                    as.character(plot_proteins[, PROTEINNAME][i]),
+      message(paste0("Drew the Profile plot for ",
+                    ptm_name,
                     " (", i, " of ", nrow(plot_proteins), ")"))
     }
     # end-loop for each protein
@@ -661,14 +677,31 @@
     }
     
     for (i in seq_len(nrow(plot_proteins))) {
-      
-      ptm_temp = .plot.profile.summary.tmt(ptm.list, as.character(
-        plot_proteins[, PROTEINNAME][i]), y.limup, y.limdown, x.axis.size,
-        y.axis.size, text.size, text.angle, legend.size,dot.size.profile, 
+      ptm_name = as.character(plot_proteins[, PROTEINNAME][i])
+      ptm_abund = datafeature.ptm[datafeature.ptm$PROTEINNAME == ptm_name, ]$ABUNDANCE
+      if (plot_global) {
+        protein_name = as.character(plot_proteins[, GLOBALPROTEIN][i])
+        protein_abund = datafeature.protein[datafeature.protein$PROTEINNAME == protein_name, ]$ABUNDANCE
+        all_abund = c(ptm_abund, protein_abund)
+      } else {
+        all_abund = ptm_abund
+      }
+      if (!is.numeric(ylimUp)) y.limup = ceiling(max(all_abund, na.rm = TRUE) + 5)
+      if (!is.numeric(ylimDown)) y.limdown = max(floor(min(all_abund, na.rm = TRUE) - 3), 0)
+      cur_ptm.list = ptm.list
+      cur_ptm.list[[3]]$abundance = y.limup - 0.5
+      cur_ptm.list[[4]]$abundance = y.limup - 0.5
+
+      ptm_temp = .plot.profile.summary.tmt(cur_ptm.list, ptm_name,
+        y.limup, y.limdown, x.axis.size,
+        y.axis.size, text.size, text.angle, legend.size, dot.size.profile,
         ncol.guide)
       if (plot_global){
-        protein_temp = .plot.profile.summary.tmt(protein.list, as.character(
-          plot_proteins[, GLOBALPROTEIN][i]), y.limup, y.limdown, x.axis.size,
+        cur_protein.list = protein.list
+        cur_protein.list[[3]]$abundance = y.limup - 0.5
+        cur_protein.list[[4]]$abundance = y.limup - 0.5
+        protein_temp = .plot.profile.summary.tmt(cur_protein.list, protein_name,
+          y.limup, y.limdown, x.axis.size,
           y.axis.size, text.size, text.angle, legend.size,
           dot.size.profile, ncol.guide)
         summary_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = protein_temp)
@@ -678,10 +711,9 @@
         print(ptm_temp)
       }
       output_plots[["summary_plot"]][[paste("plot",i)]] <- summary_profile_plots
-      message(paste("Drew the Profile plot for ", 
-                    as.character(plot_proteins[, PROTEINNAME][i]),
+      message(paste("Drew the Profile plot for ",
+                    ptm_name,
                     "(", i, " of ", nrow(plot_proteins), ")"))
-
       }
       
     if (address!=FALSE & !isPlotly) {
@@ -1430,20 +1462,33 @@
     ## factoring for run, channel, condition should be done before loop
     
     for (i in seq_len(nrow(plot_proteins))) {
-      
-      ptm_temp = .plot.profile.lf(ptm.list,
-                                   as.character(
-                                     plot_proteins[, PROTEINNAME][i]), 
+      ptm_name = as.character(plot_proteins[, PROTEINNAME][i])
+      ptm_abund = datafeature.ptm[datafeature.ptm$PROTEINNAME == ptm_name, ]$ABUNDANCE
+      if (plot_global) {
+        protein_name = as.character(plot_proteins[, GLOBALPROTEIN][i])
+        protein_abund = datafeature.protein[datafeature.protein$PROTEINNAME == protein_name, ]$ABUNDANCE
+        all_abund = c(ptm_abund, protein_abund)
+      } else {
+        all_abund = ptm_abund
+      }
+      if (!is.numeric(ylimUp)) y.limup = ceiling(max(all_abund, na.rm = TRUE) + 5)
+      if (!is.numeric(ylimDown)) y.limdown = max(floor(min(all_abund, na.rm = TRUE) - 3), 0)
+      cur_ptm.list = ptm.list
+      cur_ptm.list[[3]]$ABUNDANCE = y.limup - 1
+
+      ptm_temp = .plot.profile.lf(cur_ptm.list,
+                                   ptm_name,
                                    y.limup, y.limdown, x.axis.size,
-                                   y.axis.size, text.size, text.angle, 
+                                   y.axis.size, text.size, text.angle,
                                    legend.size, dot.size.profile, ncol.guide)
       if (plot_global) {
-        protein_temp = .plot.profile.lf(protein.list, 
-                                         as.character(
-                                           plot_proteins[, GLOBALPROTEIN][i]), 
+        cur_protein.list = protein.list
+        cur_protein.list[[3]]$ABUNDANCE = y.limup - 1
+        protein_temp = .plot.profile.lf(cur_protein.list,
+                                         protein_name,
                                          y.limup, y.limdown, x.axis.size,
-                                         y.axis.size, text.size, text.angle, 
-                                         legend.size, dot.size.profile, 
+                                         y.axis.size, text.size, text.angle,
+                                         legend.size, dot.size.profile,
                                          ncol.guide)
         original_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = protein_temp)
         grid.arrange(ptm_temp, protein_temp, ncol=1)
@@ -1452,8 +1497,8 @@
         print(ptm_temp)
       }
       output_plots[["original_plot"]][[paste("plot",i)]] <- original_profile_plots
-      message(paste0("Drew the Profile plot for ", 
-                    as.character(plot_proteins[, PROTEINNAME][i]),
+      message(paste0("Drew the Profile plot for ",
+                    ptm_name,
                     " (", i, " of ", nrow(plot_proteins), ")"))
     }
     # end-loop for each protein
@@ -1485,16 +1530,31 @@
     }
     
     for (i in seq_len(nrow(plot_proteins))) {
-      
-      ptm_temp = .plot.profile.summary.lf(ptm.list, as.character(
-        plot_proteins[, PROTEINNAME][i]), y.limup, y.limdown, x.axis.size,
-        y.axis.size, text.size, text.angle, legend.size,dot.size.profile, 
+      ptm_name = as.character(plot_proteins[, PROTEINNAME][i])
+      ptm_abund = datafeature.ptm[datafeature.ptm$PROTEINNAME == ptm_name, ]$ABUNDANCE
+      if (plot_global) {
+        protein_name = as.character(plot_proteins[, GLOBALPROTEIN][i])
+        protein_abund = datafeature.protein[datafeature.protein$PROTEINNAME == protein_name, ]$ABUNDANCE
+        all_abund = c(ptm_abund, protein_abund)
+      } else {
+        all_abund = ptm_abund
+      }
+      if (!is.numeric(ylimUp)) y.limup = ceiling(max(all_abund, na.rm = TRUE) + 5)
+      if (!is.numeric(ylimDown)) y.limdown = max(floor(min(all_abund, na.rm = TRUE) - 3), 0)
+      cur_ptm.list = ptm.list
+      cur_ptm.list[[3]]$ABUNDANCE = y.limup - 1
+
+      ptm_temp = .plot.profile.summary.lf(cur_ptm.list, ptm_name,
+        y.limup, y.limdown, x.axis.size,
+        y.axis.size, text.size, text.angle, legend.size, dot.size.profile,
         ncol.guide)
-      
+
       if (plot_global){
-        protein_temp = .plot.profile.summary.lf(protein.list, as.character(
-          plot_proteins[, GLOBALPROTEIN][i]), y.limup, y.limdown, x.axis.size,
-          y.axis.size, text.size, text.angle, legend.size, dot.size.profile, 
+        cur_protein.list = protein.list
+        cur_protein.list[[3]]$ABUNDANCE = y.limup - 1
+        protein_temp = .plot.profile.summary.lf(cur_protein.list, protein_name,
+          y.limup, y.limdown, x.axis.size,
+          y.axis.size, text.size, text.angle, legend.size, dot.size.profile,
           ncol.guide)
         summary_profile_plots <- list(PTEMP.PTM = ptm_temp, PTEMP.PROTEIN = protein_temp)
         grid.arrange(ptm_temp, protein_temp, ncol=1)
@@ -1503,8 +1563,8 @@
         print(ptm_temp)
       }
       output_plots[["summary_plot"]][[paste("plot",i)]] <- summary_profile_plots
-      message(paste("Drew the Profile plot for ", 
-                    as.character(plot_proteins[, PROTEINNAME][i]),
+      message(paste("Drew the Profile plot for ",
+                    ptm_name,
                     "(", i, " of ", nrow(plot_proteins), ")"))
     }
     if (address!=FALSE & !isPlotly) {
