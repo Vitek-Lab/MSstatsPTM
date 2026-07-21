@@ -37,7 +37,7 @@ BiocManager::install("MSstatsPTM")
 The development version can be installed directly from this repository:
 
 ```r
-BiocManager::install("Vitek-Lab/MSstatsPTM", ref = "devel")
+remotes::install_github("Vitek-Lab/MSstatsPTM")
 ```
 
 ## Quick Start
@@ -88,7 +88,7 @@ translates each tool's PTM and protein reports into MSstatsPTM format before
 | FragPipe | `FragPipetoMSstatsPTMFormat()` |
 | Metamorpheus | `MetamorpheusToMSstatsPTMFormat()` |
 | Protein Prospector | `ProteinProspectortoMSstatsPTMFormat()` |
-| Protein Pilot | `PStoMSstatsPTMFormat()` |
+| Peak Studio | `PStoMSstatsPTMFormat()` |
 
 See the [label-free](vignettes/MSstatsPTM_LabelFree_Workflow.Rmd) and
 [TMT](vignettes/MSstatsPTM_TMT_Workflow.Rmd) workflow vignettes for the required
