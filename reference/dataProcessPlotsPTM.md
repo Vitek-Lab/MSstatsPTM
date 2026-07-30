@@ -157,6 +157,7 @@ plot or pdf
 ## Examples
 
 ``` r
+
 # QCPlot
 dataProcessPlotsPTM(summary.data,
                     type = 'QCPLOT',

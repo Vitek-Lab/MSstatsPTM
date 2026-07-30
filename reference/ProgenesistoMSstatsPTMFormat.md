@@ -87,6 +87,7 @@ required by MSstatsPTM.
 ## Examples
 
 ``` r
+
 input = system.file("tinytest/raw_data/Progenesis/progenesis_peptide.csv", 
                                 package = "MSstatsPTM")
 input = data.table::fread(input)
@@ -99,24 +100,24 @@ prog_imported = ProgenesistoMSstatsPTMFormat(
     input, 
     annot
 )
-#> INFO  [2026-04-29 18:52:28] ** Raw data from Progenesis imported successfully.
-#> INFO  [2026-04-29 18:52:28] ** Raw data from Progenesis cleaned successfully.
-#> INFO  [2026-04-29 18:52:28] ** Using provided annotation.
-#> INFO  [2026-04-29 18:52:28] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-04-29 18:52:28] ** The following options are used:
+#> INFO  [2026-07-30 21:35:49] ** Raw data from Progenesis imported successfully.
+#> INFO  [2026-07-30 21:35:49] ** Raw data from Progenesis cleaned successfully.
+#> INFO  [2026-07-30 21:35:49] ** Using provided annotation.
+#> INFO  [2026-07-30 21:35:49] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-07-30 21:35:49] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-04-29 18:52:28] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-04-29 18:52:28] ** Shared peptides are removed.
-#> INFO  [2026-04-29 18:52:28] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-04-29 18:52:28] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-29 18:52:28] ** Run annotation merged with quantification data.
-#> INFO  [2026-04-29 18:52:28] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-04-29 18:52:28] ** Fractionation handled.
-#> INFO  [2026-04-29 18:52:28] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-04-29 18:52:28] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-07-30 21:35:49] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-07-30 21:35:49] ** Shared peptides are removed.
+#> INFO  [2026-07-30 21:35:49] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-07-30 21:35:49] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-07-30 21:35:49] ** Run annotation merged with quantification data.
+#> INFO  [2026-07-30 21:35:49] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-07-30 21:35:49] ** Fractionation handled.
+#> INFO  [2026-07-30 21:35:49] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-07-30 21:35:49] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 head(prog_imported$PTM)
 #>                                                               ProteinName
 #> 1 sp|A2ASS6|TITIN_MOUSE_AVTSPPRVKSPEPR_[4] Phospho (ST)|[10] Phospho (ST)
