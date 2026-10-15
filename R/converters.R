@@ -976,7 +976,8 @@ PDtoMSstatsPTMFormat = function(input,
 #' why an additional Type column indicating Protein or PTM is required.
 #' @param global_protein_input name of Progenesis output with unmodified
 #' peptides, which is wide-format. 'Accession', Sequence', 'Modification',
-#' 'Charge' and one column for each run are required
+#' 'Charge' and one column for each run are required. Default is NULL,
+#' in which case no global protein data is converted
 #' @param fasta_path string containing path to the corresponding fasta file for 
 #' the modified peptide dataset.
 #' @param useUniquePeptide TRUE(default) removes peptides that are assigned for
@@ -1014,7 +1015,7 @@ PDtoMSstatsPTMFormat = function(input,
 #' head(prog_imported$PTM)
 ProgenesistoMSstatsPTMFormat = function(ptm_input,
                                         annotation,
-                                        global_protein_input = FALSE,
+                                        global_protein_input = NULL,
                                         fasta_path = FALSE,
                                         useUniquePeptide=TRUE,
                                         summaryforMultipleRows=max, 
@@ -1049,7 +1050,7 @@ ProgenesistoMSstatsPTMFormat = function(ptm_input,
                                           removeOxidationMpeptides,
                                           removeProtein_with1Peptide)
   
-  if (global_protein_input[[1]][1] != FALSE){
+  if (!is.null(global_protein_input)){
     
     global_protein_input = .checkInputDataFrame(global_protein_input,
                                                 "global_protein_input")
