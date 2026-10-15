@@ -159,3 +159,46 @@ expect_error(
     MSstatsPTM:::.checkAnnotation(annotation_basic, "UNKNOWN"),
     pattern = "Labeling type must be either LF or TMT"
 )
+# MSstatsPTM:::.checkInputDataFrame tests
+## data.frame input is converted to data.table
+input_df <- data.frame(ProteinName = c("P1", "P2"), Intensity = c(1, 2))
+input_dt <- MSstatsPTM:::.checkInputDataFrame(input_df, "input")
+expect_true(data.table::is.data.table(input_dt))
+expect_equal(as.data.frame(input_dt), input_df)
+
+## data.table input is returned as data.table
+expect_true(data.table::is.data.table(
+    MSstatsPTM:::.checkInputDataFrame(data.table::as.data.table(input_df))
+))
+
+## Non data.frame inputs are rejected with the argument name in the message
+expect_error(
+    MSstatsPTM:::.checkInputDataFrame(as.matrix(input_df), "input"),
+    pattern = "input"
+)
+expect_error(
+    MSstatsPTM:::.checkInputDataFrame(list(a = 1), "protein_input"),
+    pattern = "protein_input"
+)
+expect_error(
+    MSstatsPTM:::.checkInputDataFrame("report.tsv", "input"),
+    pattern = "data.frame"
+)
+
+## NULL is rejected by default and allowed with null_ok = TRUE
+expect_error(MSstatsPTM:::.checkInputDataFrame(NULL, "input"))
+expect_null(MSstatsPTM:::.checkInputDataFrame(NULL, "input", null_ok = TRUE))
+
+## Converters reject non data.frame input
+expect_error(
+    SpectronauttoMSstatsPTMFormat("report.tsv"),
+    pattern = "data.frame"
+)
+expect_error(
+    SpectronauttoMSstatsPTMFormat(input_df, protein_input = "protein.tsv"),
+    pattern = "protein_input"
+)
+expect_error(
+    PStoMSstatsPTMFormat(as.matrix(input_df), annotation = NULL),
+    pattern = "data.frame"
+)

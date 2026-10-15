@@ -461,6 +461,16 @@ prog_imported = ProgenesistoMSstatsPTMFormat(
     18
 )
 
+## Default global_protein_input = NULL skips protein conversion
+expect_null(prog_imported$PROTEIN)
+
+## Non data.frame global_protein_input is rejected
+expect_error(ProgenesistoMSstatsPTMFormat(
+    input,
+    annot,
+    global_protein_input = "protein.csv"
+), pattern = "global_protein_input")
+
 
 # Fragpipe
 #### Happy Case

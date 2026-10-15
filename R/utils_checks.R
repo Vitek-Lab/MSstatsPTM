@@ -264,3 +264,17 @@
     stop(msg)
   }
 }
+
+#' Check that a converter input is a data.frame and convert it to data.table
+#' @param input converter input (e.g. a PTM or global protein report)
+#' @param var_name name of the argument, used in the error message
+#' @param null_ok if TRUE, a NULL input is allowed and returned unchanged
+#' @return `input` as a data.table, or NULL if `input` is NULL and `null_ok`
+#' @noRd
+.checkInputDataFrame = function(input, var_name = "input", null_ok = FALSE){
+  checkmate::assertDataFrame(input, null.ok = null_ok, .var.name = var_name)
+  if (is.null(input)){
+    return(NULL)
+  }
+  as.data.table(input)
+}
