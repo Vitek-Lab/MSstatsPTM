@@ -169,28 +169,28 @@ msstatsptm_format = DIANNtoMSstatsPTMFormat(
     fasta_protein_name = "entry_name", 
     use_log_file = FALSE
 )
-#> INFO  [2026-07-30 21:35:44] ** Raw data from DIANN imported successfully.
-#> INFO  [2026-07-30 21:35:44] ** Filtering on Q.Value < 0.01
-#> INFO  [2026-07-30 21:35:44] ** MBR was used to analyze the data. Now setting names and filtering
-#> INFO  [2026-07-30 21:35:44] -- LibPGQValue < 0.01
-#> INFO  [2026-07-30 21:35:44] -- LibQValue < 0.01
-#> INFO  [2026-07-30 21:35:44] ** Raw data from DIANN cleaned successfully.
-#> INFO  [2026-07-30 21:35:44] ** Using provided annotation.
-#> INFO  [2026-07-30 21:35:44] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-07-30 21:35:44] ** The following options are used:
+#> INFO  [2026-10-15 20:20:57] ** Raw data from DIANN imported successfully.
+#> INFO  [2026-10-15 20:20:57] ** Filtering on Q.Value < 0.01
+#> INFO  [2026-10-15 20:20:57] ** MBR was used to analyze the data. Now setting names and filtering
+#> INFO  [2026-10-15 20:20:57] -- LibPGQValue < 0.01
+#> INFO  [2026-10-15 20:20:57] -- LibQValue < 0.01
+#> INFO  [2026-10-15 20:20:57] ** Raw data from DIANN cleaned successfully.
+#> INFO  [2026-10-15 20:20:57] ** Using provided annotation.
+#> INFO  [2026-10-15 20:20:57] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-10-15 20:20:57] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-07-30 21:35:44] ** Sequences containing DECOY, Decoys are removed.
-#> INFO  [2026-07-30 21:35:44] ** Sequences containing \(UniMod\:35\) are removed.
-#> INFO  [2026-07-30 21:35:44] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-07-30 21:35:44] ** Shared peptides are removed.
-#> INFO  [2026-07-30 21:35:44] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-07-30 21:35:44] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-07-30 21:35:44] ** Run annotation merged with quantification data.
-#> INFO  [2026-07-30 21:35:44] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-07-30 21:35:44] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-10-15 20:20:57] ** Sequences containing DECOY, Decoys are removed.
+#> INFO  [2026-10-15 20:20:57] ** Sequences containing \(UniMod\:35\) are removed.
+#> INFO  [2026-10-15 20:20:57] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-10-15 20:20:57] ** Shared peptides are removed.
+#> INFO  [2026-10-15 20:20:57] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-10-15 20:20:57] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-10-15 20:20:57] ** Run annotation merged with quantification data.
+#> INFO  [2026-10-15 20:20:57] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-10-15 20:20:57] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 
 head(msstatsptm_format$PTM)
 #>       ProteinName                          PeptideSequence PrecursorCharge
@@ -234,28 +234,28 @@ msstatsptm_format = DIANNtoMSstatsPTMFormat(
     use_log_file = FALSE,
     quantificationColumn = "auto"
 )
-#> INFO  [2026-07-30 21:35:44] ** Raw data from DIANN imported successfully.
-#> INFO  [2026-07-30 21:35:44] ** Filtering on Q.Value < 0.01
-#> INFO  [2026-07-30 21:35:44] ** MBR was used to analyze the data. Now setting names and filtering
-#> INFO  [2026-07-30 21:35:44] -- LibPGQValue < 0.01
-#> INFO  [2026-07-30 21:35:44] -- LibQValue < 0.01
-#> INFO  [2026-07-30 21:35:44] ** Raw data from DIANN cleaned successfully.
-#> INFO  [2026-07-30 21:35:44] ** Using provided annotation.
-#> INFO  [2026-07-30 21:35:44] ** Run labels were standardized to remove symbols such as '.' or '%'.
-#> INFO  [2026-07-30 21:35:44] ** The following options are used:
+#> INFO  [2026-10-15 20:20:58] ** Raw data from DIANN imported successfully.
+#> INFO  [2026-10-15 20:20:58] ** Filtering on Q.Value < 0.01
+#> INFO  [2026-10-15 20:20:58] ** MBR was used to analyze the data. Now setting names and filtering
+#> INFO  [2026-10-15 20:20:58] -- LibPGQValue < 0.01
+#> INFO  [2026-10-15 20:20:58] -- LibQValue < 0.01
+#> INFO  [2026-10-15 20:20:58] ** Raw data from DIANN cleaned successfully.
+#> INFO  [2026-10-15 20:20:58] ** Using provided annotation.
+#> INFO  [2026-10-15 20:20:58] ** Run labels were standardized to remove symbols such as '.' or '%'.
+#> INFO  [2026-10-15 20:20:58] ** The following options are used:
 #>   - Features will be defined by the columns: PeptideSequence, PrecursorCharge, FragmentIon, ProductCharge
 #>   - Shared peptides will be removed.
 #>   - Proteins with single feature will not be removed.
 #>   - Features with less than 3 measurements across runs will be removed.
-#> INFO  [2026-07-30 21:35:44] ** Sequences containing DECOY, Decoys are removed.
-#> INFO  [2026-07-30 21:35:44] ** Sequences containing \(UniMod\:35\) are removed.
-#> INFO  [2026-07-30 21:35:44] ** Features with all missing measurements across runs are removed.
-#> INFO  [2026-07-30 21:35:44] ** Shared peptides are removed.
-#> INFO  [2026-07-30 21:35:44] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
-#> INFO  [2026-07-30 21:35:44] ** Features with one or two measurements across runs are removed.
-#> INFO  [2026-07-30 21:35:44] ** Run annotation merged with quantification data.
-#> INFO  [2026-07-30 21:35:44] ** Updated quantification data to make balanced design. Missing values are marked by NA
-#> INFO  [2026-07-30 21:35:44] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
+#> INFO  [2026-10-15 20:20:58] ** Sequences containing DECOY, Decoys are removed.
+#> INFO  [2026-10-15 20:20:58] ** Sequences containing \(UniMod\:35\) are removed.
+#> INFO  [2026-10-15 20:20:58] ** Features with all missing measurements across runs are removed.
+#> INFO  [2026-10-15 20:20:58] ** Shared peptides are removed.
+#> INFO  [2026-10-15 20:20:58] ** Multiple measurements in a feature and a run are summarized by summaryforMultipleRows: max
+#> INFO  [2026-10-15 20:20:58] ** Features with one or two measurements across runs are removed.
+#> INFO  [2026-10-15 20:20:58] ** Run annotation merged with quantification data.
+#> INFO  [2026-10-15 20:20:58] ** Updated quantification data to make balanced design. Missing values are marked by NA
+#> INFO  [2026-10-15 20:20:58] ** Finished preprocessing. The dataset is ready to be processed by the dataProcess function.
 
 head(msstatsptm_format$PTM)
 #>       ProteinName                          PeptideSequence PrecursorCharge
