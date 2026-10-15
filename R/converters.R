@@ -102,7 +102,9 @@ DIANNtoMSstatsPTMFormat = function(input,
     .checkAnnotation(annotation_protein, "LF")
   }
   
-  input = as.data.table(input)
+  input = .checkInputDataFrame(input, "input")
+  input_protein = .checkInputDataFrame(input_protein, "input_protein",
+                                       null_ok = TRUE)
   fasta = MSstatsPTM::tidyFasta(fasta_path)
   
   input = MSstatsPTMSiteLocator(input, 
@@ -310,7 +312,9 @@ FragPipetoMSstatsPTMFormat = function(input,
     }
   }
   
-  input = as.data.table(input)
+  input = .checkInputDataFrame(input, "input")
+  input_protein = .checkInputDataFrame(input_protein, "input_protein",
+                                       null_ok = TRUE)
   
   mod_id_col = .getFullModID(input, mod_id_col)
   input$Start = input$Protein.Start
@@ -558,10 +562,14 @@ MaxQtoMSstatsPTMFormat = function(evidence=NULL,
   #                           removeMpeptides)
   
   if (is.null(sites_data)){
-    evidence = as.data.table(evidence)
+    evidence = .checkInputDataFrame(evidence, "evidence")
   } else {
-    pho.data = as.data.table(sites_data)
+    pho.data = .checkInputDataFrame(sites_data, "sites_data")
   }
+  evidence_prot = .checkInputDataFrame(evidence_prot, "evidence_prot",
+                                       null_ok = TRUE)
+  proteinGroups = .checkInputDataFrame(proteinGroups, "proteinGroups",
+                                       null_ok = TRUE)
   
   annot.ptm = as.data.table(annotation)
   
@@ -820,7 +828,9 @@ PDtoMSstatsPTMFormat = function(input,
                                 verbose = TRUE,
                                 log_file_path = NULL){
   
-  input = as.data.table(input)
+  input = .checkInputDataFrame(input, "input")
+  protein_input = .checkInputDataFrame(protein_input, "protein_input",
+                                       null_ok = TRUE)
   
   if (is.null(fasta_path) & use_localization_cutoff == TRUE){
     stop("A FASTA file must be included if using a custom localization cutoff. Please pass a FASTA file to `fasta_path`.")
@@ -1013,7 +1023,7 @@ ProgenesistoMSstatsPTMFormat = function(ptm_input,
                                         removeProtein_with1Peptide=FALSE,
                                         mod.num = 'Single'){
   
-  ptm_input = as.data.table(ptm_input)
+  ptm_input = .checkInputDataFrame(ptm_input, "ptm_input")
   annotation = as.data.table(annotation)
   col_order = colnames(ptm_input)
   ptm_input$id = 1:nrow(ptm_input)
@@ -1041,7 +1051,8 @@ ProgenesistoMSstatsPTMFormat = function(ptm_input,
   
   if (global_protein_input[[1]][1] != FALSE){
     
-    global_protein_input = as.data.table(global_protein_input)
+    global_protein_input = .checkInputDataFrame(global_protein_input,
+                                                "global_protein_input")
     
     convert.prot = ProgenesistoMSstatsFormat(global_protein_input, 
                                              protein_annot,
@@ -1125,10 +1136,9 @@ PStoMSstatsPTMFormat = function(
     log_file_path = NULL
 ){
   
-  input = as.data.table(input)
-  if (!is.null(input_protein)){
-    input_protein = as.data.table(input_protein)
-  }
+  input = .checkInputDataFrame(input, "input")
+  input_protein = .checkInputDataFrame(input_protein, "input_protein",
+                                       null_ok = TRUE)
   
   .checkAnnotation(annotation, "LF")
   if (!is.null(annotation_protein)){
@@ -1273,7 +1283,9 @@ SkylinetoMSstatsPTMFormat = function(input,
 ){
   
   message("Converting modified data..")
-  input = as.data.table(input)
+  input = .checkInputDataFrame(input, "input")
+  input_protein = .checkInputDataFrame(input_protein, "input_protein",
+                                       null_ok = TRUE)
   input_prot = NULL
   if (!is.null(annotation)){
     .checkAnnotation(annotation, "LF")
@@ -1438,8 +1450,9 @@ SpectronauttoMSstatsPTMFormat = function(
     verbose = TRUE,
     log_file_path = NULL){
   
-  ## TODO: Add checks on input and params
-  input = as.data.table(input)
+  input = .checkInputDataFrame(input, "input")
+  protein_input = .checkInputDataFrame(protein_input, "protein_input",
+                                       null_ok = TRUE)
   ## Needed if input only call PSM
   if (!"EG.ModifiedSequence" %in% colnames(input)){
     input$PeptideSequence = .MSstatsPTMRemoveMods(input$EG.PrecursorId)
@@ -1585,7 +1598,9 @@ MetamorpheusToMSstatsPTMFormat = function(input,
                                         base = "MSstatsPTM_converter_log_")
     
     mod_id = mod_ids[[1]]
-    input = as.data.table(input)
+    input = .checkInputDataFrame(input, "input")
+    input_protein = .checkInputDataFrame(input_protein, "input_protein",
+                                         null_ok = TRUE)
     
     ## Check input parameters
     checkmate::assertTRUE(!is.null(input))
@@ -1731,7 +1746,9 @@ ProteinProspectortoMSstatsPTMFormat = function(
                                         base = "MSstatsPTM_converter_log_")
     
     mod_id = mod_ids[[1]]
-    input = as.data.table(input)
+    input = .checkInputDataFrame(input, "input")
+    input_protein = .checkInputDataFrame(input_protein, "input_protein",
+                                         null_ok = TRUE)
     
     ## Check input parameters 
     checkmate::assertTRUE(!is.null(input))
